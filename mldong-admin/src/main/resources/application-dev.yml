@@ -1,0 +1,9 @@
+# jdbc 配置
+jdbc.driver-class-name: com.mysql.cj.jdbc.Driver
+jdbc.url: jdbc:mysql://localhost:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+jdbc.username: root
+jdbc.password: 
+jdbc.max-idle: 10
+jdbc.max-wait: 10000
+jdbc.min-idle: 5
+

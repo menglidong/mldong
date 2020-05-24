@@ -1,0 +1,23 @@
+server: 
+  port: 18080
+spring:
+  application:
+    name: mldong-admin
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: ${jdbc.driver-class-name}
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password}
+    max-idle: ${jdbc.max-idle}
+    max-wait: ${jdbc.max-wait}
+    min-idle: ${jdbc.min-idle}
+  aop:
+    proxy-target-class: true
+    auto: true
