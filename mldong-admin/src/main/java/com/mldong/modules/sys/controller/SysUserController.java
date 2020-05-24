@@ -1,5 +1,9 @@
 package com.mldong.modules.sys.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +18,7 @@ import com.mldong.modules.sys.service.SysUserService;
 
 @RestController
 @RequestMapping("/sys/user")
+@Api(tags="sys-用户管理")
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
@@ -23,6 +28,7 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("save")
+	@ApiOperation(value="添加用户", notes="添加用户")
 	public int save(@RequestBody SysUser param) {
 		return sysUserService.save(param);
 	}
@@ -32,6 +38,7 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("update")
+	@ApiOperation(value="更新用户", notes="更新用户")
 	public int update(@RequestBody SysUser param) {
 		return sysUserService.update(param);
 	}
@@ -41,7 +48,8 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("delete")
-	public int delete(Long id) {
+	@ApiOperation(value="删除用户", notes="删除用户")
+	public int delete(@ApiParam(value="用户id")Long id) {
 		return sysUserService.delete(id);
 	}
 	/**
@@ -50,7 +58,8 @@ public class SysUserController {
 	 * @return
 	 */
 	@GetMapping("get")
-	public SysUser get(Long id) {
+	@ApiOperation(value="通过id获取用户", notes="通过id获取用户")
+	public SysUser get(@ApiParam(value="用户id",required=true)Long id) {
 		return sysUserService.get(id);
 	}
 	/**
@@ -59,7 +68,8 @@ public class SysUserController {
 	 * @return
 	 */
 	@GetMapping("list")
-	public Page<SysUser> list(SysUser param, @RequestParam(defaultValue="1")Integer pageNum, @RequestParam(defaultValue="10")int pageSize) {
+	@ApiOperation(value="分页查询用户列表", notes="分页查询用户列表")
+	public Page<SysUser> list(SysUser param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
 		return sysUserService.list(param, pageNum, pageSize);
 	}
 }

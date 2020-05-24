@@ -12,6 +12,24 @@
 	</properties>
 	<artifactId>mldong-common</artifactId>
 	<dependencies>
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!--swaggerui-->
+		<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+		<!--knife4j-->
+		<dependency>
+		    <groupId>com.github.xiaoymin</groupId>
+		    <artifactId>knife4j-spring-boot-starter</artifactId>
+		    <!--在引用时请在maven中央仓库搜索最新版本号-->
+		</dependency>
 	</dependencies>
 </project>
