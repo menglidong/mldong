@@ -1,3 +1,17 @@
+# 日志配置
+logging:
+  level:
+    com.mldong: DEBUG
+    org.springframework: DEBUG
+    tk.mybatis: DEBUG
+    tk.ibatis: DEBUG
+    tk.ibatis.common.jdbc.SimpleDataSource: DEBUG
+    tk.ibatis.common.jdbc.ScriptRunner: DEBUG
+    tk.ibatis.sqlmap.engine.impl.SqlMapClientDelegate: DEBUG
+    java.sql.Connection: DEBUG
+    java.sql.Statement: DEBUG
+    java.sql.PreparedStatement: DEBUG
+    org.springframework.scheduling: INFO
 # jdbc 配置
 jdbc.driver-class-name: com.mysql.cj.jdbc.Driver
 jdbc.url: jdbc:mysql://localhost:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai

@@ -103,7 +103,7 @@
         <logger name="org.springframework.web" level="ERROR"/>
         <logger name="org.springboot.sample" level="ERROR" />
         <logger name="org.apache" level="ERROR" />
-        <logger name="com.mole" level="debug" />
+        <logger name="com.mldong" level="debug" />
     </springProfile>
 
     <springProfile name="prod">
@@ -115,7 +115,7 @@
         <logger name="org.springframework.web" level="ERROR"/>
         <logger name="org.springboot.sample" level="ERROR" />
         <logger name="org.apache" level="ERROR" />
-        <logger name="com.mole" level="debug" />
+        <logger name="com.mldong" level="debug" />
     </springProfile>
 	
 

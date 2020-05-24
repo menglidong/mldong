@@ -45,35 +45,7 @@
 	        <artifactId>java-jwt</artifactId>  
 	        <version>${jwt.version}</version>  
 	    </dependency>  
-	    <!-- tk.mybatis -->
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.spring.boot.starter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>tk.mybatis</groupId>
-                <artifactId>mapper</artifactId>
-                <version>${tk.mybatis.version}</version>
-            </dependency>
-            <!--mapper-->
-            <dependency>
-                <groupId>tk.mybatis</groupId>
-                <artifactId>mapper-spring-boot-starter</artifactId>
-                <version>${mapper.spring.boot.starter.version}</version>
-            </dependency>
-            <!--pagehelper-->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.spring.boot.starter.version}</version>
-            </dependency>
-            <!-- tk.mybatis -->
-            <dependency>
-	            <groupId>net.sf.dozer</groupId>
-	            <artifactId>dozer</artifactId>
-	            <version>${dozer.version}</version>
-	        </dependency>
+	   
 			<!--swaggerui-->
 			<dependency>
 	            <groupId>io.springfox</groupId>
