@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.pagehelper.Page;
+import com.mldong.common.base.CommonPage;
+import com.mldong.common.base.CommonResult;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysUserService;
 
@@ -29,8 +30,13 @@ public class SysUserController {
 	 */
 	@PostMapping("save")
 	@ApiOperation(value="添加用户", notes="添加用户")
-	public int save(@RequestBody SysUser param) {
-		return sysUserService.save(param);
+	public CommonResult<?> save(@RequestBody SysUser param) {
+		int count = sysUserService.save(param);
+		if(count>0) {
+			return CommonResult.success();
+		} else {
+			return CommonResult.fail();
+		}
 	}
 	/**
 	 * 更新用户
@@ -39,8 +45,13 @@ public class SysUserController {
 	 */
 	@PostMapping("update")
 	@ApiOperation(value="更新用户", notes="更新用户")
-	public int update(@RequestBody SysUser param) {
-		return sysUserService.update(param);
+	public CommonResult<?> update(@RequestBody SysUser param) {
+		int count = sysUserService.update(param);
+		if(count>0) {
+			return CommonResult.success();
+		} else {
+			return CommonResult.fail();
+		}
 	}
 	/**
 	 * 删除用户
@@ -49,8 +60,13 @@ public class SysUserController {
 	 */
 	@PostMapping("delete")
 	@ApiOperation(value="删除用户", notes="删除用户")
-	public int delete(@ApiParam(value="用户id")Long id) {
-		return sysUserService.delete(id);
+	public CommonResult<?> delete(@ApiParam(value="用户id")Long id) {
+		int count = sysUserService.delete(id);
+		if(count>0) {
+			return CommonResult.success();
+		} else {
+			return CommonResult.fail();
+		}
 	}
 	/**
 	 * 通过id获取用户
@@ -59,8 +75,8 @@ public class SysUserController {
 	 */
 	@GetMapping("get")
 	@ApiOperation(value="通过id获取用户", notes="通过id获取用户")
-	public SysUser get(@ApiParam(value="用户id",required=true)Long id) {
-		return sysUserService.get(id);
+	public CommonResult<SysUser> get(@ApiParam(value="用户id",required=true)Long id) {
+		return CommonResult.success(sysUserService.get(id));
 	}
 	/**
 	 * 分页查询用户列表
@@ -69,7 +85,7 @@ public class SysUserController {
 	 */
 	@GetMapping("list")
 	@ApiOperation(value="分页查询用户列表", notes="分页查询用户列表")
-	public Page<SysUser> list(SysUser param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
-		return sysUserService.list(param, pageNum, pageSize);
+	public CommonResult<CommonPage<SysUser>> list(SysUser param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
+		return CommonResult.success(sysUserService.list(param, pageNum, pageSize));
 	}
 }

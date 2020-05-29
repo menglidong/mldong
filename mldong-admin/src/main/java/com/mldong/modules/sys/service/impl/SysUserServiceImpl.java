@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mldong.common.base.CommonPage;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.mapper.SysUserMapper;
 import com.mldong.modules.sys.service.SysUserService;
@@ -33,10 +34,10 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 
 	@Override
-	public Page<SysUser> list(SysUser t, int pageNum, int pageSize) {
+	public CommonPage<SysUser> list(SysUser t, int pageNum, int pageSize) {
 		Page<SysUser> page = PageHelper.startPage(pageNum, pageSize,true);
 		sysUserMapper.select(t);
-		return page;
+		return CommonPage.toPage(page);
 	}
 
 }

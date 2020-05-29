@@ -1,6 +1,6 @@
 package com.mldong.modules.sys.service;
 
-import com.github.pagehelper.Page;
+import com.mldong.common.base.CommonPage;
 import com.mldong.modules.sys.entity.SysUser;
 
 public interface SysUserService {
@@ -35,6 +35,6 @@ public interface SysUserService {
 	 * @param pageSize
 	 * @return
 	 */
-	public Page<SysUser> list(SysUser t, int pageNum, int pageSize);
+	public CommonPage<SysUser> list(SysUser t, int pageNum, int pageSize);
 
 }
