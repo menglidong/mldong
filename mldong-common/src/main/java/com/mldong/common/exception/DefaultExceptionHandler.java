@@ -1,4 +1,4 @@
-package com.mldong.common.ex;
+package com.mldong.common.exception;
 
 import java.util.stream.Collectors;
 
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mldong.common.base.CommonError;
 import com.mldong.common.base.CommonResult;
  /**
   * 全局异常处理类
@@ -19,7 +20,18 @@ import com.mldong.common.base.CommonResult;
 public class DefaultExceptionHandler {
  
     private static Logger log = LoggerFactory.getLogger(DefaultExceptionHandler.class);  
-    
+    /**
+     * 服务层异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BizException.class)
+    @ResponseBody
+    public CommonResult<CommonError> serviceExceptionHandler(BizException e) {
+    	log.error("服务层异常:", e);
+    	return CommonResult.fail(e.getError());
+    }
+
     /**
      * 控制层参数校验异常
      * @param e

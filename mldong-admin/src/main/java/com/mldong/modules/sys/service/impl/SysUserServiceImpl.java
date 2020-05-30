@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mldong.common.base.CommonPage;
+import com.mldong.common.exception.BizException;
 import com.mldong.modules.sys.entity.SysUser;
+import com.mldong.modules.sys.enums.SysErrEnum;
 import com.mldong.modules.sys.mapper.SysUserMapper;
 import com.mldong.modules.sys.service.SysUserService;
 @Service
@@ -15,6 +17,13 @@ public class SysUserServiceImpl implements SysUserService{
 	private SysUserMapper sysUserMapper;
 	@Override
 	public int save(SysUser param) {
+		SysUser q = new SysUser();
+		q.setUserName(param.getUserName());
+		SysUser user = sysUserMapper.selectOne(q);
+		if(null!=user) {
+			// 用户已存在
+			throw new BizException(SysErrEnum.SYS80000007);
+		}
 		return sysUserMapper.insertSelective(param);
 	}
 
