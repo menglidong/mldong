@@ -1,10 +1,20 @@
 package com.mldong.modules.sys.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import tk.mybatis.mapper.annotation.LogicDelete;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.mldong.annotation.DictEnum;
+import com.mldong.base.CodedEnum;
+import com.mldong.base.YesNoEnum;
 /**
  * 用户表实体
  * @author mldong
@@ -16,63 +26,36 @@ public class SysUser implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -2687095050668229447L;
-	/**
-	 * 主键
-	 */
 	@Id
+	@ApiModelProperty(value="主键")
 	private Long id;
-	/**
-	 * 用户名
-	 */
+	@ApiModelProperty(value="用户名")
 	private String userName;
-	/**
-	 * 姓名
-	 */
+	@ApiModelProperty(value="姓名")
 	private String realName;
-	/**
-	 * 头像
-	 */
+	@ApiModelProperty(value="头像")
 	private String avatar;
-	/**
-	 * 邮箱
-	 */
+	@ApiModelProperty(value="邮箱")
 	private String email;
-	/**
-	 * 手机号
-	 */
+	@ApiModelProperty(value="手机号")
 	private String mobilePhone;
-	/**
-	 * 联系电话
-	 */
+	@ApiModelProperty(value="联系电话")
 	private String telephone;
-	/**
-	 * 密码
-	 */
+	@ApiModelProperty(value="密码")
 	private String password;
-	/**
-	 * 加盐
-	 */
+	@ApiModelProperty(value="加盐")
 	private String salt;
-	/**
-	 * 性别
-	 */
+	@ApiModelProperty(value="性别")
 	private Integer sex;
-	/**
-	 * 是否锁定
-	 */
-	private Boolean isLocked;
-	/**
-	 * 创建时间
-	 */
+	@ApiModelProperty(value="是否锁定")
+	private YesNoEnum isLocked;
+	@ApiModelProperty(value="创建时间")
 	private Date createTime;
-	/**
-	 * 更新时间
-	 */
+	@ApiModelProperty(value="更新时间")
 	private Date updateTime;
-	/**
-	 * 是否删除
-	 */
-	private Boolean isDeleted;
+	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
+	@ApiModelProperty(value="是否删除")
+	private YesNoEnum isDeleted;
 	public Long getId() {
 		return id;
 	}
@@ -134,10 +117,10 @@ public class SysUser implements Serializable{
 	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
-	public Boolean getIsLocked() {
+	public YesNoEnum getIsLocked() {
 		return isLocked;
 	}
-	public void setIsLocked(Boolean isLocked) {
+	public void setIsLocked(YesNoEnum isLocked) {
 		this.isLocked = isLocked;
 	}
 	public Date getCreateTime() {
@@ -152,11 +135,46 @@ public class SysUser implements Serializable{
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	public Boolean getIsDeleted() {
+	public YesNoEnum getIsDeleted() {
 		return isDeleted;
 	}
-	public void setIsDeleted(Boolean isDeleted) {
+	public void setIsDeleted(YesNoEnum isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	@DictEnum(name="性别", key="sys_user_sex")
+	public enum SexEnum implements CodedEnum {
+		
+		/**
+		 * 男
+		 */
+		MALE(1, "男"),
+		/**
+		 * 女
+		 */
+		FEMALE(2, "女"),
+		/**
+		 * 未知
+		 */
+		UNKNOWN(3, "未知"),
+		;
+		private int value;
+		private String name;
+		@JsonCreator
+	    public static SexEnum forValue(int value) {
+	        return CodedEnum.codeOf(SexEnum.class, value).get();
+
+	    }
+		SexEnum(int value, String name) {
+			this.value = value;
+			this.name = name;
+		}
+		@JsonValue
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
 	
+    }
 }

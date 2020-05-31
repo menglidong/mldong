@@ -1,7 +1,6 @@
 package com.mldong.modules.sys.service.impl;
 
 import java.util.Date;
-
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -12,6 +11,7 @@ import tk.mybatis.mapper.entity.Condition;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mldong.base.YesNoEnum;
 import com.mldong.common.base.CommonPage;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
@@ -33,7 +33,7 @@ public class SysUserServiceImpl implements SysUserService{
 		BeanUtils.copyProperties(param, user);
 		user.setCreateTime(now);
 		user.setUpdateTime(now);
-		user.setIsDeleted(false);
+		user.setIsDeleted(YesNoEnum.NO);
 		return sysUserMapper.insertSelective(user);
 	}
 
@@ -50,7 +50,7 @@ public class SysUserServiceImpl implements SysUserService{
 	public int remove(List<Long> ids) {
 		Date now = new Date();
 		SysUser upUser = new SysUser();
-		upUser.setIsDeleted(true);
+		upUser.setIsDeleted(YesNoEnum.YES);
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysUser.class);
 		condition.createCriteria().andIn("id", ids);

@@ -27,6 +27,7 @@ mybatis:
   mapper-locations: classpath*:mapper/*/*.xml,classpath*:dao/*/*.xml,classpath*:repo/*/*.xml
   configuration:
     map-underscore-to-camel-case: true
+    default-enum-type-handler: com.mldong.base.CodedEnumTypeHandler
 # mapper配置
 mapper:
   mappers:
