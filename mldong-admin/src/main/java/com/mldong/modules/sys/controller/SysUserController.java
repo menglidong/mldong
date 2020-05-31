@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
+import com.mldong.common.base.IdsParam;
+import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysUserService;
 
@@ -30,7 +32,7 @@ public class SysUserController {
 	 */
 	@PostMapping("save")
 	@ApiOperation(value="添加用户", notes="添加用户")
-	public CommonResult<?> save(@RequestBody SysUser param) {
+	public CommonResult<?> save(@RequestBody SysUserParam param) {
 		int count = sysUserService.save(param);
 		if(count>0) {
 			return CommonResult.success();
@@ -45,7 +47,7 @@ public class SysUserController {
 	 */
 	@PostMapping("update")
 	@ApiOperation(value="更新用户", notes="更新用户")
-	public CommonResult<?> update(@RequestBody SysUser param) {
+	public CommonResult<?> update(@RequestBody SysUserParam param) {
 		int count = sysUserService.update(param);
 		if(count>0) {
 			return CommonResult.success();
@@ -58,10 +60,10 @@ public class SysUserController {
 	 * @param param
 	 * @return
 	 */
-	@PostMapping("delete")
+	@PostMapping("remove")
 	@ApiOperation(value="删除用户", notes="删除用户")
-	public CommonResult<?> delete(@ApiParam(value="用户id")Long id) {
-		int count = sysUserService.delete(id);
+	public CommonResult<?> remove(@RequestBody IdsParam param) {
+		int count = sysUserService.remove(param.getIds());
 		if(count>0) {
 			return CommonResult.success();
 		} else {
@@ -85,7 +87,7 @@ public class SysUserController {
 	 */
 	@GetMapping("list")
 	@ApiOperation(value="分页查询用户列表", notes="分页查询用户列表")
-	public CommonResult<CommonPage<SysUser>> list(SysUser param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
+	public CommonResult<CommonPage<SysUser>> list(SysUserParam param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
 		return CommonResult.success(sysUserService.list(param, pageNum, pageSize));
 	}
 }

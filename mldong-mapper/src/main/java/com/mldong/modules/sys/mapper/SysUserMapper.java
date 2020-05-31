@@ -1,11 +1,12 @@
 package com.mldong.modules.sys.mapper;
 
+import com.mldong.base.BaseMapper;
 import com.mldong.modules.sys.entity.SysUser;
 
-import tk.mybatis.mapper.common.BaseMapper;
+
 /**
  * sys_user 持久层
- * @author MLD
+ * @author mldong
  *
  */
 public interface SysUserMapper extends BaseMapper<SysUser>{

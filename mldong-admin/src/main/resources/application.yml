@@ -30,7 +30,7 @@ mybatis:
 # mapper配置
 mapper:
   mappers:
-    - com.mldong.common.base.BaseMapper
+    - com.mldong.base.BaseMapper
   not-empty: false
   identity: MYSQL
   use-simple-type: true

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mldong.modules.sys.dao.SysUserDao">
+	<resultMap id="BaseResultMap" extends="com.mldong.modules.sys.mapper.SysUserMapper.BaseResultMap" 
+	type="com.mldong.modules.sys.dto.SysUserResult">
+		<result column="role_name" property="roleName" />   
+	</resultMap>
+	<select id="selectWithRoleName" resultMap="BaseResultMap">
+		select u.*, 'aaaaa' as role_name from sys_user u
+	</select>
+</mapper>
