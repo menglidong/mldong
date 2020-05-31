@@ -28,9 +28,19 @@ public class CommonResult<T> implements Serializable{
 		this.code = type.value;
 		this.msg = msg;
 	}
+	
 	public CommonResult(Type type,String msg,T data) {
 		this.code = type.value;
 		this.msg = msg;
+		this.data = data;
+	}
+	public CommonResult(CommonError error) {
+		this.code = error.getValue(); 
+		this.msg = error.getName();
+	}
+	public CommonResult(CommonError error,T data) {
+		this.code = error.getValue(); 
+		this.msg = error.getName();
 		this.data = data;
 	}
 	public enum Type {
@@ -89,6 +99,20 @@ public class CommonResult<T> implements Serializable{
 	 */
 	public static <T> CommonResult<T> fail() {
 		return fail("操作失败", null);
+	}
+	/**
+	 * 自定义异常返回
+	 * @return
+	 */
+	public static <T> CommonResult<T> error(CommonError error,T data) {
+		return new CommonResult<T>(error, data);
+	}
+	/**
+	 * 自定义异常返回
+	 * @return
+	 */
+	public static <T> CommonResult<T> error(CommonError error) {
+		return error(error,null);
 	}
 	public int getCode() {
 		return code;

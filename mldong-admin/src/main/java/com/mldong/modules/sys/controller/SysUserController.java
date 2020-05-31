@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
+import com.mldong.common.base.IdParam;
 import com.mldong.common.base.IdsParam;
+import com.mldong.common.validator.Groups;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysUserService;
@@ -32,7 +34,7 @@ public class SysUserController {
 	 */
 	@PostMapping("save")
 	@ApiOperation(value="添加用户", notes="添加用户")
-	public CommonResult<?> save(@RequestBody SysUserParam param) {
+	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) SysUserParam param) {
 		int count = sysUserService.save(param);
 		if(count>0) {
 			return CommonResult.success();
@@ -47,7 +49,7 @@ public class SysUserController {
 	 */
 	@PostMapping("update")
 	@ApiOperation(value="更新用户", notes="更新用户")
-	public CommonResult<?> update(@RequestBody SysUserParam param) {
+	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) SysUserParam param) {
 		int count = sysUserService.update(param);
 		if(count>0) {
 			return CommonResult.success();
@@ -75,17 +77,17 @@ public class SysUserController {
 	 * @param param
 	 * @return
 	 */
-	@GetMapping("get")
+	@PostMapping("get")
 	@ApiOperation(value="通过id获取用户", notes="通过id获取用户")
-	public CommonResult<SysUser> get(@ApiParam(value="用户id",required=true)Long id) {
-		return CommonResult.success(sysUserService.get(id));
+	public CommonResult<SysUser> get(@RequestBody IdParam param) {
+		return CommonResult.success(sysUserService.get(param.getId()));
 	}
 	/**
 	 * 分页查询用户列表
 	 * @param param
 	 * @return
 	 */
-	@GetMapping("list")
+	@PostMapping("list")
 	@ApiOperation(value="分页查询用户列表", notes="分页查询用户列表")
 	public CommonResult<CommonPage<SysUser>> list(SysUserParam param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
 		return CommonResult.success(sysUserService.list(param, pageNum, pageSize));
