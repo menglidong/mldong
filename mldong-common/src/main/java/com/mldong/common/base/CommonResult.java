@@ -33,6 +33,11 @@ public class CommonResult<T> implements Serializable{
 		this.code = type.value;
 		this.msg = msg;
 		this.data = data;
+		if(data instanceof CommonError) {
+			CommonError error = (CommonError) data;
+			this.code = error.getValue();
+			this.msg = error.getName();
+		}
 	}
 	public CommonResult(CommonError error) {
 		this.code = error.getValue(); 
