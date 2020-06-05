@@ -12,9 +12,9 @@ import tk.mybatis.mapper.annotation.LogicDelete;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.mldong.annotation.DictEnum;
-import com.mldong.base.CodedEnum;
-import com.mldong.base.YesNoEnum;
+import com.mldong.common.annotation.DictEnum;
+import com.mldong.common.base.CodedEnum;
+import com.mldong.common.base.YesNoEnum;
 /**
  * 用户表实体
  * @author mldong

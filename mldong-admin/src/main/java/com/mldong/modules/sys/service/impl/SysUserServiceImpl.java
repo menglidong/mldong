@@ -11,8 +11,8 @@ import tk.mybatis.mapper.entity.Condition;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mldong.base.YesNoEnum;
 import com.mldong.common.base.CommonPage;
+import com.mldong.common.base.YesNoEnum;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.mapper.SysUserMapper;

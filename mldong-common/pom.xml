@@ -21,12 +21,6 @@
 	        <groupId>com.github.pagehelper</groupId>
 	        <artifactId>pagehelper-spring-boot-starter</artifactId>
 	     </dependency>
-	     <!-- 引入持久层 -->
-	     <dependency>
-		    <groupId>com.mldong</groupId>
-		    <artifactId>mldong-mapper</artifactId>
-		    <version>${parent.version}</version>
-		</dependency>
 		<!--swaggerui-->
 		<dependency>
             <groupId>io.springfox</groupId>
@@ -42,5 +36,10 @@
 		    <artifactId>knife4j-spring-boot-starter</artifactId>
 		    <!--在引用时请在maven中央仓库搜索最新版本号-->
 		</dependency>
+		<!-- tk.mapper -->
+		<dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+        </dependency>
 	</dependencies>
 </project>

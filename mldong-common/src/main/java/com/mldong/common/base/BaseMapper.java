@@ -1,4 +1,4 @@
-package com.mldong.base;
+package com.mldong.common.base;
 
 import tk.mybatis.mapper.common.ConditionMapper;
 import tk.mybatis.mapper.common.Marker;

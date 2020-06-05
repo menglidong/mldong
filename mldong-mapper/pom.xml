@@ -42,5 +42,11 @@
 	            <groupId>io.springfox</groupId>
 	            <artifactId>springfox-swagger2</artifactId>
 	        </dependency>
+	        <!-- common -->
+	        <dependency>
+			    <groupId>com.mldong</groupId>
+			    <artifactId>mldong-common</artifactId>
+			    <version>${parent.version}</version>
+			</dependency>
 	</dependencies>
 </project>

@@ -1,0 +1,75 @@
+# 数值类型
+TINYINT:
+  javaType: Integer
+  fullJavaType: java.lang.Integer
+SMALLINT:
+  javaType: Integer
+  fullJavaType: java.lang.Integer
+MEDIUMINT:
+  javaType: Integer
+  fullJavaType: java.lang.Integer
+INT:
+  javaType: Integer
+  fullJavaType: java.lang.Integer
+INTEGER:
+  javaType: Integer
+  fullJavaType: java.lang.Integer
+BIGINT:
+  javaType: Long
+  fullJavaType: java.lang.Long
+FLOAT:
+  javaType: Float
+  fullJavaType: java.lang.Float
+DOUBLE:
+  javaType: Double
+  fullJavaType: java.lang.Double
+DECIMAL:
+  javaType: BigDecimal
+  fullJavaType: java.math.BigDecimal
+# 日期类型
+DATE:
+  javaType: Date
+  fullJavaType: java.util.Date
+TIME:
+  javaType: Date
+  fullJavaType: java.util.Date
+YEAR:
+  javaType: Integer
+  fullJavaType: java.lang.Integer
+DATETIME:
+  javaType: Date
+  fullJavaType: java.util.Date
+TIMESTAP:
+  javaType: Timestamp
+  fullJavaType: java.sql.Timestamp
+# 字符串类型
+CHAR:
+  javaType: String
+  fullJavaType: java.lang.String
+VARCHAR:
+  javaType: String
+  fullJavaType: java.lang.String
+TINYBLOB:
+  javaType: "byte[]"
+  fullJavaType: "byte[]"
+TINYTEXT:
+  javaType: String
+  fullJavaType: java.lang.String
+BLOB:
+  javaType: "byte[]"
+  fullJavaType: "byte[]"
+TEXT:
+  javaType: String
+  fullJavaType: java.lang.String
+MEDIUMBLOB:
+  javaType: "byte[]"
+  fullJavaType: "byte[]"
+MEDIUMTEXT:
+  javaType: String
+  fullJavaType: java.lang.String
+LONGBLOB:
+  javaType: "byte[]"
+  fullJavaType: "byte[]"
+LONGTEXT:
+  javaType: String
+  fullJavaType: java.lang.String

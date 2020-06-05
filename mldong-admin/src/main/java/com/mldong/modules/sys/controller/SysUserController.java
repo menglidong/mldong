@@ -37,9 +37,9 @@ public class SysUserController {
 	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) SysUserParam param) {
 		int count = sysUserService.save(param);
 		if(count>0) {
-			return CommonResult.success();
+			return CommonResult.success("添加用户成功", null);
 		} else {
-			return CommonResult.fail();
+			return CommonResult.fail("添加用户失败", null);
 		}
 	}
 	/**
@@ -52,9 +52,9 @@ public class SysUserController {
 	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) SysUserParam param) {
 		int count = sysUserService.update(param);
 		if(count>0) {
-			return CommonResult.success();
+			return CommonResult.success("更新用户成功", null);
 		} else {
-			return CommonResult.fail();
+			return CommonResult.fail("更新用户失败", null);
 		}
 	}
 	/**
@@ -67,9 +67,9 @@ public class SysUserController {
 	public CommonResult<?> remove(@RequestBody IdsParam param) {
 		int count = sysUserService.remove(param.getIds());
 		if(count>0) {
-			return CommonResult.success();
+			return CommonResult.success("删除用户成功", null);
 		} else {
-			return CommonResult.fail();
+			return CommonResult.fail("删除用户失败", null);
 		}
 	}
 	/**
@@ -80,7 +80,7 @@ public class SysUserController {
 	@PostMapping("get")
 	@ApiOperation(value="通过id获取用户", notes="通过id获取用户")
 	public CommonResult<SysUser> get(@RequestBody IdParam param) {
-		return CommonResult.success(sysUserService.get(param.getId()));
+		return CommonResult.success("获取用户成功",sysUserService.get(param.getId()));
 	}
 	/**
 	 * 分页查询用户列表
@@ -90,6 +90,6 @@ public class SysUserController {
 	@PostMapping("list")
 	@ApiOperation(value="分页查询用户列表", notes="分页查询用户列表")
 	public CommonResult<CommonPage<SysUser>> list(SysUserParam param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
-		return CommonResult.success(sysUserService.list(param, pageNum, pageSize));
+		return CommonResult.success("查询用户成功",sysUserService.list(param, pageNum, pageSize));
 	}
 }

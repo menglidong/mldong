@@ -1,6 +1,6 @@
 package com.mldong.modules.sys.mapper;
 
-import com.mldong.base.BaseMapper;
+import com.mldong.common.base.BaseMapper;
 import com.mldong.modules.sys.entity.SysUser;
 
 

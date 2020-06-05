@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
-import com.mldong.base.CodedEnum;
+import com.mldong.common.base.CodedEnum;
 import com.mldong.common.base.CommonError;
 import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.constant.GlobalErrEnum;

@@ -1,4 +1,4 @@
-package com.mldong.base;
+package com.mldong.common.base;
 
 import java.util.Arrays;
 import java.util.Optional;

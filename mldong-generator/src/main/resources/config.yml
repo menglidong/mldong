@@ -1,0 +1,81 @@
+database:
+  # jdbc驱动
+  driverClass: "com.mysql.cj.jdbc.Driver"
+  # 数据库地址
+  url: "jdbc:mysql://localhost:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai"
+  # 数据库名称
+  dbName: "mldong"
+  # 用户名
+  username: "root"
+  # 密码
+  password: ""
+# 包名
+basePackage: "com.mldong"
+# 作者
+author: "mldong"
+# 生成代码目标目录
+targetProject: "D:/mldong/couse-workspace/mldong/"
+# 模块名
+moduleName: "sys"
+# 模块描述 
+moduleDesc: "系统管理"
+tables:
+  - tableName: "sys_role"
+templates:
+    # 模板名称
+  - name: "实体类"
+    # 是否选中，选中则会生成对应代码
+    selected: true
+    # 文件存在是否覆盖
+    covered: true
+    # 模板文件名称
+    templateFile: "entity.ftl"
+    # 代码生成目录
+    targetPath: "mldong-mapper/src/main/java/${basePackage}/modules/${moduleName}/entity/"
+    # 生成文件名(同上需要占位符，代码中要转换)
+    targetFileName: "${table.className}.java"
+    # 生成文件编码
+    encoding: "utf-8"
+    # 模板名称
+  - name: "持久层类"
+    selected: true
+    covered: true
+    templateFile: "mapper.ftl"
+    targetPath: "mldong-mapper/src/main/java/${basePackage}/modules/${moduleName}/mapper/"
+    targetFileName: "${table.className}Mapper.java"
+    encoding: "utf-8"
+  - name: "持久层xml"
+    selected: true
+    covered: true
+    templateFile: "mapperXml.ftl"
+    targetPath: "mldong-mapper/src/main/resources/mapper/${moduleName}"
+    targetFileName: "${table.tableName}_mapper.xml"
+    encoding: "utf-8"
+  - name: "dto参数"
+    selected: true
+    covered: true
+    templateFile: "dto.ftl"
+    targetPath: "mldong-admin/src/main/java/${basePackage}/modules/${moduleName}/dto/"
+    targetFileName: "${table.className}Param.java"
+    encoding: "utf-8"
+  - name: "业务接口"
+    selected: true
+    covered: true
+    templateFile: "service.ftl"
+    targetPath: "mldong-admin/src/main/java/${basePackage}/modules/${moduleName}/service/"
+    targetFileName: "${table.className}Service.java"
+    encoding: "utf-8"
+  - name: "业务接口实现"
+    selected: true
+    covered: true
+    templateFile: "serviceImpl.ftl"
+    targetPath: "mldong-admin/src/main/java/${basePackage}/modules/${moduleName}/service/impl/"
+    targetFileName: "${table.className}ServiceImpl.java"
+    encoding: "utf-8"
+  - name: "控制层"
+    selected: true
+    covered: true
+    templateFile: "controller.ftl"
+    targetPath: "mldong-admin/src/main/java/${basePackage}/modules/${moduleName}/controller/"
+    targetFileName: "${table.className}Controller.java"
+    encoding: "utf-8"

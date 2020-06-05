@@ -1,4 +1,4 @@
-package com.mldong.base;
+package com.mldong.common.base;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
