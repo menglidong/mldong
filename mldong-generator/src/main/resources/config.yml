@@ -79,3 +79,10 @@ templates:
     targetPath: "mldong-admin/src/main/java/${basePackage}/modules/${moduleName}/controller/"
     targetFileName: "${table.className}Controller.java"
     encoding: "utf-8"
+  - name: "分页参数"
+    selected: true
+    covered: true
+    templateFile: "pageParam.ftl"
+    targetPath: "mldong-admin/src/main/java/${basePackage}/modules/${moduleName}/dto/"
+    targetFileName: "${table.className}PageParam.java"
+    encoding: "utf-8"

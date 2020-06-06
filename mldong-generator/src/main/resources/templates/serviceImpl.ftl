@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Condition;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import ${basePackage}.common.base.CommonPage;
 import ${basePackage}.common.base.YesNoEnum;
 import ${basePackage}.modules.sys.dto.${table.className}Param;
+import ${basePackage}.modules.sys.dto.${table.className}PageParam;
 import ${basePackage}.modules.sys.entity.${table.className};
 import ${basePackage}.modules.sys.mapper.${table.className}Mapper;
 import ${basePackage}.modules.sys.service.${table.className}Service;
@@ -64,10 +64,9 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 	}
 
 	@Override
-	public CommonPage<${table.className}> list(${table.className}Param param, int pageNum, int pageSize) {
-		Page<${table.className}> page = PageHelper.startPage(pageNum, pageSize,true);
+	public CommonPage<${table.className}> list(${table.className}PageParam param) {
+		Page<${table.className}> page =param.buildPage(true);
 		${table.className} ${table.tableCameName} = new ${table.className}();
-		BeanUtils.copyProperties(param, ${table.tableCameName});
 		${table.tableCameName}Mapper.select(${table.tableCameName});
 		return CommonPage.toPage(page);
 	}

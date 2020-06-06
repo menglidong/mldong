@@ -4,6 +4,7 @@ import java.util.List;
 
 import ${basePackage}.common.base.CommonPage;
 import ${basePackage}.modules.${moduleName}.dto.${table.className}Param;
+import ${basePackage}.modules.${moduleName}.dto.${table.className}PageParam;
 import ${basePackage}.modules.${moduleName}.entity.${table.className};
 /**
  * <p>业务接口层</p>
@@ -38,11 +39,9 @@ public interface ${table.className}Service {
 	public ${table.className} get(Long id);
 	/**
 	 * 分页查询${table.remark}列表
-	 * @param t
-	 * @param pageNum
-	 * @param pageSize
+	 * @param param	分页查询参数
 	 * @return
 	 */
-	public CommonPage<${table.className}> list(${table.className}Param t, int pageNum, int pageSize);
+	public CommonPage<${table.className}> list(${table.className}PageParam param);
 
 }

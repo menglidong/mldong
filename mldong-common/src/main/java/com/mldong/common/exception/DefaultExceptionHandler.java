@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.mldong.common.base.CodedEnum;
 import com.mldong.common.base.CommonError;
 import com.mldong.common.base.CommonResult;
@@ -86,6 +87,23 @@ public class DefaultExceptionHandler {
 					return CommonResult.fail(e1);
 				}
     		}
+    	} else if(e.getCause().getClass().isAssignableFrom(InvalidFormatException.class)) {
+    		// 如果是InvalidFormatException
+    		final InvalidFormatException invalidFormatException = (InvalidFormatException) e.getCause(); 
+    		// Class<?> clazz = invalidFormatException.getTargetType();
+    		
+			return CommonResult.error(new CommonError() {
+				
+				@Override
+				public int getValue() {
+					return GlobalErrEnum.GL99990100.getValue();
+				}
+				
+				@Override
+				public String getName() {
+					return invalidFormatException.getMessage();
+				}
+			},null);
     	}
     	return CommonResult.fail();
     }

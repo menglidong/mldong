@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.mldong.common.base.CommonPage;
 import com.mldong.modules.sys.dto.SysRoleParam;
+import com.mldong.modules.sys.dto.SysRolePageParam;
 import com.mldong.modules.sys.entity.SysRole;
 /**
  * <p>业务接口层</p>
  * <p>角色</p>
  *
- * @since 2020-06-06 09:10:26
+ * @since 2020-06-06 06:19:21
  */
 public interface SysRoleService {
 	/**
@@ -38,11 +39,9 @@ public interface SysRoleService {
 	public SysRole get(Long id);
 	/**
 	 * 分页查询角色列表
-	 * @param t
-	 * @param pageNum
-	 * @param pageSize
+	 * @param param	分页查询参数
 	 * @return
 	 */
-	public CommonPage<SysRole> list(SysRoleParam t, int pageNum, int pageSize);
+	public CommonPage<SysRole> list(SysRolePageParam param);
 
 }

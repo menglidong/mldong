@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Condition;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.YesNoEnum;
 import com.mldong.modules.sys.dto.SysRoleParam;
+import com.mldong.modules.sys.dto.SysRolePageParam;
 import com.mldong.modules.sys.entity.SysRole;
 import com.mldong.modules.sys.mapper.SysRoleMapper;
 import com.mldong.modules.sys.service.SysRoleService;
@@ -21,7 +21,7 @@ import com.mldong.modules.sys.service.SysRoleService;
  * <p>业务接口实现层</p>
  * <p>角色</p>
  *
- * @since 2020-06-06 09:10:26
+ * @since 2020-06-06 06:19:21
  */
 @Service
 public class SysRoleServiceImpl implements SysRoleService{
@@ -64,10 +64,9 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	public CommonPage<SysRole> list(SysRoleParam param, int pageNum, int pageSize) {
-		Page<SysRole> page = PageHelper.startPage(pageNum, pageSize,true);
+	public CommonPage<SysRole> list(SysRolePageParam param) {
+		Page<SysRole> page =param.buildPage(true);
 		SysRole sysRole = new SysRole();
-		BeanUtils.copyProperties(param, sysRole);
 		sysRoleMapper.select(sysRole);
 		return CommonPage.toPage(page);
 	}

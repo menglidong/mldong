@@ -2,14 +2,12 @@ package ${basePackage}.modules.${moduleName}.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ${basePackage}.common.base.CommonPage;
@@ -18,6 +16,7 @@ import ${basePackage}.common.base.IdParam;
 import ${basePackage}.common.base.IdsParam;
 import ${basePackage}.common.validator.Groups;
 import ${basePackage}.modules.sys.dto.${table.className}Param;
+import ${basePackage}.modules.sys.dto.${table.className}PageParam;
 import ${basePackage}.modules.sys.entity.${table.className};
 import ${basePackage}.modules.sys.service.${table.className}Service;
 
@@ -89,7 +88,7 @@ public class ${table.className}Controller {
 	 */
 	@PostMapping("list")
 	@ApiOperation(value="分页查询${table.remark?replace("表","")}列表", notes="分页查询${table.remark?replace("表","")}列表")
-	public CommonResult<CommonPage<${table.className}>> list(${table.className}Param param, @ApiParam(value="第n页，默认1")@RequestParam(defaultValue="1")Integer pageNum, @ApiParam(value="每页大小，默认10")@RequestParam(defaultValue="10")int pageSize) {
-		return CommonResult.success("查询${table.remark?replace("表","")}成功",${table.tableCameName}Service.list(param, pageNum, pageSize));
+	public CommonResult<CommonPage<${table.className}>> list(${table.className}PageParam param) {
+		return CommonResult.success("查询${table.remark?replace("表","")}成功",${table.tableCameName}Service.list(param));
 	}
 }

@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Condition;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.mldong.common.base.CommonPage;
+import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.tk.ConditionUtil;
+import com.mldong.modules.sys.dto.SysUserPageParam;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.mapper.SysUserMapper;
@@ -63,11 +65,14 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 
 	@Override
-	public CommonPage<SysUser> list(SysUserParam param, int pageNum, int pageSize) {
-		Page<SysUser> page = PageHelper.startPage(pageNum, pageSize,true);
-		SysUser user = new SysUser();
-		BeanUtils.copyProperties(param, user);
-		sysUserMapper.select(user);
+	public CommonPage<SysUser> list(SysUserPageParam param) {
+		Page<SysUser> page =param.buildPage(true);
+		List<WhereParam> queryModelList = param.getWhereParams();
+		if(null == queryModelList || queryModelList.isEmpty()) {
+			SysUser user = new SysUser();
+			sysUserMapper.select(user);
+		} else {
+			sysUserMapper.selectByCondition(ConditionUtil.buildCondition(SysUser.class, queryModelList));		}
 		return CommonPage.toPage(page);
 	}
 
