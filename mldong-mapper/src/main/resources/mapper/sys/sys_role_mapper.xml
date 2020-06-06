@@ -12,36 +12,4 @@
 		<result column="is_enabled" property="isEnabled" />  
 		<result column="remark" property="remark" />  
 	</resultMap>
-	<delete id="deleteBatchByIds" parameterType="java.util.List">
-		delete from sys_role
-		where id in
-		<foreach collection="list" item="item" index="index" open="("
-			close=")" separator=",">
-			#{item}
-		</foreach>
-	</delete>
-	<update id="removeBatchByIds" parameterType="java.util.List">
-		update sys_role
-		<set>
-			update_time=now(),
-			is_deleted=1
-		</set>
-		where id in
-		<foreach collection="list" item="item" index="index" open="("
-			close=")" separator=",">
-			#{item}
-		</foreach>
-	</update>
-	<update id="restoreBatchByIds" parameterType="java.util.List">
-		update sys_role
-		<set>
-			update_time=now(),
-			is_deleted=0
-		</set>
-		where id in
-		<foreach collection="list" item="item" index="index" open="("
-			close=")" separator=",">
-			#{item}
-		</foreach>
-	</update>
 </mapper>

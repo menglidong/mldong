@@ -11,36 +11,4 @@
 	    </#if>
 	</#list>
 	</resultMap>
-	<delete id="deleteBatchByIds" parameterType="java.util.List">
-		delete from ${table.tableName}
-		where id in
-		<#noparse><foreach collection="list" item="item" index="index" open="("
-			close=")" separator=","></#noparse>
-			<#noparse>#{item}</#noparse>
-		<#noparse></foreach></#noparse>
-	</delete>
-	<update id="removeBatchByIds" parameterType="java.util.List">
-		update ${table.tableName}
-		<set>
-			update_time=now(),
-			is_deleted=1
-		</set>
-		where id in
-		<#noparse><foreach collection="list" item="item" index="index" open="("</#noparse>
-			close=")" separator=",">
-			<#noparse>#{item}</#noparse>
-		<#noparse></foreach></#noparse>
-	</update>
-	<update id="restoreBatchByIds" parameterType="java.util.List">
-		update ${table.tableName}
-		<set>
-			update_time=now(),
-			is_deleted=0
-		</set>
-		where id in
-		<#noparse><foreach collection="list" item="item" index="index" open="("
-			close=")" separator=","></#noparse>
-			<#noparse>#{item}</#noparse>
-		<#noparse></foreach></#noparse>
-	</update>
 </mapper>
