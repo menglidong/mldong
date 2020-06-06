@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 import com.mldong.generator.config.GeneratorConfig;
 import com.mldong.generator.config.model.TableConfigModel;
@@ -23,6 +26,7 @@ import com.mldong.generator.engine.TemplateEngine;
  *
  */
 public class Generator {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Generator.class);
 	public static void main(String[] args) throws FileNotFoundException {
         String configPath = "src/main/resources/config.yml";
         String dataTypePath = "src/main/resources/dataType.yml";
@@ -42,7 +46,7 @@ public class Generator {
 			// 获取表
 			List<Table> tableList = dataBase.getTables(tableConfigModel.getTableName());
 			tableList.forEach(table -> {
-				System.out.println("元数据:"+gson.toJson(table)+"生成表");
+				LOGGER.info("元数据:{}",gson.toJson(table));
 				Map<String, Object> model = new HashMap<String, Object>();
 				String targetProject = config.getConfigModel().getTargetProject();
 				model.put("targetProject", targetProject);

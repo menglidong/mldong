@@ -8,6 +8,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mldong.common.enums.ErrorEnum;
 import com.mldong.common.exception.GeneratorException;
 import com.mldong.common.util.StringUtil;
@@ -24,7 +27,7 @@ import freemarker.template.Template;
  *
  */
 public class FreeMarkerImpl implements TemplateEngine {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(FreeMarkerImpl.class);
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
 	private Configuration config;
@@ -92,10 +95,10 @@ public class FreeMarkerImpl implements TemplateEngine {
 			String targetFileName = processToString(model,
 					templateConfigModel.getTargetFileName());
 			File file = new File(targetPath + File.separator + targetFileName);
-			System.out.println("目标文件:"+targetPath);
 			// 文件存在且可覆盖 or 文件不存在==>代码生成
-			if ((file.exists() && templateConfigModel.isCovered())
-					|| !file.exists()) {
+			boolean isFileExists = file.exists();
+			if ((isFileExists && templateConfigModel.isCovered())
+					|| !isFileExists) {
 				File directory = new File(targetPath);
 				if (!directory.exists()) {
 					directory.mkdirs();
@@ -106,8 +109,14 @@ public class FreeMarkerImpl implements TemplateEngine {
 				template.process(model, out);
 				out.flush();
 				out.close();
+				if(isFileExists) {
+					LOGGER.info("目标文件已重新生成覆盖:{}",file.getPath());
+				} else {
+					LOGGER.info("目标文件新生成:{}",file.getPath());
+				}
+			} else {
+				LOGGER.info("目标文件已存在，如需要重新生成，请先删除目标文件:{}",file.getPath());
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new GeneratorException(ErrorEnum.templateEngineProcess);
