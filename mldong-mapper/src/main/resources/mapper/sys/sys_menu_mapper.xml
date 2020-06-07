@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mldong.modules.sys.mapper.SysRoleMapper">
-	<resultMap id="BaseResultMap" type="com.mldong.modules.sys.entity.SysRole">
+<mapper namespace="com.mldong.modules.sys.mapper.SysMenuMapper">
+	<resultMap id="BaseResultMap" type="com.mldong.modules.sys.entity.SysMenu">
 		<id column="id" property="id" />
+		<result column="parent_id" property="parentId" />  
 		<result column="name" property="name" />  
-		<result column="role_key" property="roleKey" />  
-		<result column="role_type" property="roleType" />  
-		<result column="is_enabled" property="isEnabled" />  
-		<result column="remark" property="remark" />  
+		<result column="sort" property="sort" />  
+		<result column="route_name" property="routeName" />  
+		<result column="icon" property="icon" />  
+		<result column="is_show" property="isShow" />  
 		<result column="create_time" property="createTime" />  
 		<result column="update_time" property="updateTime" />  
 		<result column="is_deleted" property="isDeleted" />  

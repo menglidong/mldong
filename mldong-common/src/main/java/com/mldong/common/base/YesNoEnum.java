@@ -2,11 +2,13 @@ package com.mldong.common.base;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.mldong.common.annotation.DictEnum;
 /**
  * yes_no
  * @author mldong
  *
  */
+@DictEnum(key="yes_no",name="是否")
 public enum YesNoEnum implements CodedEnum{
 	/**
 	 * 是

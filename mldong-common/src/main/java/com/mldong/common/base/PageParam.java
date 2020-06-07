@@ -27,25 +27,40 @@ public class PageParam<T> {
 	public int getPageNum() {
 		return pageNum;
 	}
+	@ApiModelProperty(value="关键字")
+	private String keyworks;
 	@ApiModelProperty(value="自定义查询参数集合")
 	private List<WhereParam> whereParams;
-
 	
-	public List<WhereParam> getWhereParams() {
-		return whereParams;
-	}
-	public void setWhereParams(List<WhereParam> whereParams) {
-		this.whereParams = whereParams;
-	}
-	public void setPageNum(int pageNum) {
-		this.pageNum = pageNum;
-	}
+	
 	public int getPageSize() {
 		return pageSize;
 	}
+
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+
+	public String getKeyworks() {
+		return keyworks;
+	}
+
+	public void setKeyworks(String keyworks) {
+		this.keyworks = keyworks;
+	}
+
+	public List<WhereParam> getWhereParams() {
+		return whereParams;
+	}
+
+	public void setWhereParams(List<WhereParam> whereParams) {
+		this.whereParams = whereParams;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+
 	public <T> Page<T> buildPage() {
         return buildPage(false);
     }
@@ -59,4 +74,5 @@ public class PageParam<T> {
     	}
         return PageHelper.startPage(this.pageNum, this.pageSize, count);
     }
+    
 }

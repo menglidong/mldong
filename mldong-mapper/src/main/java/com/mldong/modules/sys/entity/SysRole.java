@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import tk.mybatis.mapper.annotation.LogicDelete;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.mldong.common.annotation.DictEnum;
@@ -19,7 +18,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_role - 角色</p>
- * @since 2020-06-06 06:19:21
+ * @since 2020-06-07 10:04:17
  */
 @Table(name="sys_role")
 @ApiModel(description="角色")
@@ -31,13 +30,6 @@ public class SysRole implements Serializable{
 	@Id
 	@ApiModelProperty(value="主键")
     private Long id;
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-    @ApiModelProperty(value = "更新时间")
-    private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|YES,2->已删除|NO)")
-	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
-    private YesNoEnum isDeleted;
     @ApiModelProperty(value = "角色名称")
     private String name;
     @ApiModelProperty(value = "角色标识(唯一)")
@@ -48,6 +40,13 @@ public class SysRole implements Serializable{
     private YesNoEnum isEnabled;
     @ApiModelProperty(value = "备注")
     private String remark;
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+    @ApiModelProperty(value = "更新时间")
+    private Date updateTime;
+    @ApiModelProperty(value = "是否删除(1->未删除|YES,2->已删除|NO)")
+	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
+    private YesNoEnum isDeleted;
     /**
      * 获取主键
      *
@@ -62,51 +61,6 @@ public class SysRole implements Serializable{
      */
     public void setId(Long id){
         this.id = id;
-    }
-    /**
-     * 获取创建时间
-     *
-     */
-    public Date getCreateTime(){
-        return this.createTime;
-    }
-	 /**
-     * 设置创建时间
-     *
-     * @param createTime
-     */
-    public void setCreateTime(Date createTime){
-        this.createTime = createTime;
-    }
-    /**
-     * 获取更新时间
-     *
-     */
-    public Date getUpdateTime(){
-        return this.updateTime;
-    }
-	 /**
-     * 设置更新时间
-     *
-     * @param updateTime
-     */
-    public void setUpdateTime(Date updateTime){
-        this.updateTime = updateTime;
-    }
-    /**
-     * 获取是否删除(1->未删除|YES,2->已删除|NO)
-     *
-     */
-    public YesNoEnum getIsDeleted(){
-        return this.isDeleted;
-    }
-	 /**
-     * 设置是否删除(1->未删除|YES,2->已删除|NO)
-     *
-     * @param isDeleted
-     */
-    public void setIsDeleted(YesNoEnum isDeleted){
-        this.isDeleted = isDeleted;
     }
     /**
      * 获取角色名称
@@ -182,6 +136,51 @@ public class SysRole implements Serializable{
      */
     public void setRemark(String remark){
         this.remark = remark;
+    }
+    /**
+     * 获取创建时间
+     *
+     */
+    public Date getCreateTime(){
+        return this.createTime;
+    }
+	 /**
+     * 设置创建时间
+     *
+     * @param createTime
+     */
+    public void setCreateTime(Date createTime){
+        this.createTime = createTime;
+    }
+    /**
+     * 获取更新时间
+     *
+     */
+    public Date getUpdateTime(){
+        return this.updateTime;
+    }
+	 /**
+     * 设置更新时间
+     *
+     * @param updateTime
+     */
+    public void setUpdateTime(Date updateTime){
+        this.updateTime = updateTime;
+    }
+    /**
+     * 获取是否删除(1->未删除|YES,2->已删除|NO)
+     *
+     */
+    public YesNoEnum getIsDeleted(){
+        return this.isDeleted;
+    }
+	 /**
+     * 设置是否删除(1->未删除|YES,2->已删除|NO)
+     *
+     * @param isDeleted
+     */
+    public void setIsDeleted(YesNoEnum isDeleted){
+        this.isDeleted = isDeleted;
     }
     @DictEnum(key="sys_role_role_type",name="角色类型")
     public enum RoleTypeEnum implements CodedEnum {

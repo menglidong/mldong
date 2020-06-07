@@ -2,6 +2,8 @@ package com.mldong.modules.sys.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.AuthorizationScope;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +24,11 @@ import com.mldong.modules.sys.service.SysUserService;
 
 @RestController
 @RequestMapping("/sys/user")
-@Api(tags="sys-用户管理")
+@Api(tags="sys-用户管理",authorizations={
+    @Authorization(value="sys|系统管理",scopes={
+    	@AuthorizationScope(description="用户管理",scope="sys:user:index")
+    })
+})
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
@@ -32,7 +38,11 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("save")
-	@ApiOperation(value="添加用户", notes="添加用户")
+	@ApiOperation(value="添加用户", notes="添加用户",authorizations={
+		@Authorization(value="添加用户",scopes={
+	    	@AuthorizationScope(description="添加用户",scope="sys:user:save")
+	    })
+	})
 	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) SysUserParam param) {
 		int count = sysUserService.save(param);
 		if(count>0) {
@@ -47,7 +57,11 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("update")
-	@ApiOperation(value="更新用户", notes="更新用户")
+	@ApiOperation(value="更新用户", notes="更新用户",authorizations={
+		@Authorization(value="更新用户",scopes={
+	    	@AuthorizationScope(description="更新用户",scope="sys:user:update")
+	    })
+	})
 	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) SysUserParam param) {
 		int count = sysUserService.update(param);
 		if(count>0) {
@@ -62,7 +76,11 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("remove")
-	@ApiOperation(value="删除用户", notes="删除用户")
+	@ApiOperation(value="删除用户", notes="删除用户",authorizations={
+		@Authorization(value="删除用户",scopes={
+	    	@AuthorizationScope(description="删除用户",scope="sys:user:remove")
+	    })
+	})
 	public CommonResult<?> remove(@RequestBody IdsParam param) {
 		int count = sysUserService.remove(param.getIds());
 		if(count>0) {
@@ -77,8 +95,12 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("get")
-	@ApiOperation(value="通过id获取用户", notes="通过id获取用户")
-	public CommonResult<SysUser> get(@RequestBody IdParam param) {
+	@ApiOperation(value="通过id获取用户", notes="通过id获取用户",authorizations={
+		@Authorization(value="通过id获取用户",scopes={
+	    	@AuthorizationScope(description="通过id获取用户",scope="sys:user:get")
+	    })
+	})
+	public CommonResult<SysUser> get(@RequestBody @Validated IdParam param) {
 		return CommonResult.success("获取用户成功",sysUserService.get(param.getId()));
 	}
 	/**
@@ -87,8 +109,12 @@ public class SysUserController {
 	 * @return
 	 */
 	@PostMapping("list")
-	@ApiOperation(value="分页查询用户列表", notes="分页查询用户列表")
-	public CommonResult<CommonPage<SysUser>> list(@RequestBody SysUserPageParam param) {
+	@ApiOperation(value="分页查询用户列表", notes="分页查询用户列表",authorizations={
+		@Authorization(value="分页查询用户列表",scopes={
+	    	@AuthorizationScope(description="分页查询用户列表",scope="sys:user:list")
+	    })
+	})
+	public CommonResult<CommonPage<SysUser>> list(@RequestBody @Validated SysUserPageParam param) {
 		return CommonResult.success("查询用户成功",sysUserService.list(param));
 	}
 }

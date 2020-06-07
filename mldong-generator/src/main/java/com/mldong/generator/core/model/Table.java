@@ -164,7 +164,7 @@ public class Table {
 	 */
 	public boolean isHasOtherCodedType() {
 		return getColumns().stream().filter(item->{
-			return !"YesNoEnum".equals(item.getJavaType());
+			return item.isCodedType();
 		}).count() >0;
 	}
 	/**

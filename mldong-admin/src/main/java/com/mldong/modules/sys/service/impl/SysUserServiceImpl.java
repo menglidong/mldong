@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tk.mybatis.mapper.entity.Condition;
 
@@ -28,6 +29,7 @@ import com.mldong.modules.sys.service.SysUserService;
 public class SysUserServiceImpl implements SysUserService{
 	@Autowired
 	private SysUserMapper sysUserMapper;
+	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(SysUserParam param) {
 		Date now = new Date();
@@ -38,7 +40,7 @@ public class SysUserServiceImpl implements SysUserService{
 		user.setIsDeleted(YesNoEnum.NO);
 		return sysUserMapper.insertSelective(user);
 	}
-
+	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(SysUserParam param) {
 		Date now = new Date();
@@ -47,7 +49,7 @@ public class SysUserServiceImpl implements SysUserService{
 		user.setUpdateTime(now);
 		return sysUserMapper.updateByPrimaryKeySelective(user);
 	}
-
+	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int remove(List<Long> ids) {
 		Date now = new Date();
@@ -67,12 +69,13 @@ public class SysUserServiceImpl implements SysUserService{
 	@Override
 	public CommonPage<SysUser> list(SysUserPageParam param) {
 		Page<SysUser> page =param.buildPage(true);
-		List<WhereParam> queryModelList = param.getWhereParams();
-		if(null == queryModelList || queryModelList.isEmpty()) {
+		List<WhereParam> whereParams = param.getWhereParams();
+		if(null == whereParams || whereParams.isEmpty()) {
 			SysUser user = new SysUser();
 			sysUserMapper.select(user);
 		} else {
-			sysUserMapper.selectByCondition(ConditionUtil.buildCondition(SysUser.class, queryModelList));		}
+			sysUserMapper.selectByCondition(ConditionUtil.buildCondition(SysUser.class, whereParams));
+		}
 		return CommonPage.toPage(page);
 	}
 

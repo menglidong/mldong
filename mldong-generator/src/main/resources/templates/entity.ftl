@@ -10,11 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import tk.mybatis.mapper.annotation.LogicDelete;
-
+<#if table.hasOtherCodedType>
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import ${basePackage}.common.annotation.DictEnum;
 import ${basePackage}.common.base.CodedEnum;
+</#if>
 import ${basePackage}.common.base.YesNoEnum;
 /**
  * <p>实体类</p>

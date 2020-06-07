@@ -10,7 +10,7 @@ import com.mldong.modules.sys.entity.SysRole;
  * <p>业务接口层</p>
  * <p>角色</p>
  *
- * @since 2020-06-06 06:19:21
+ * @since 2020-06-07 10:04:17
  */
 public interface SysRoleService {
 	/**

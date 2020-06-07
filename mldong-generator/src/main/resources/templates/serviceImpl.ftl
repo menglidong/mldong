@@ -6,12 +6,15 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tk.mybatis.mapper.entity.Condition;
 
 import com.github.pagehelper.Page;
 import ${basePackage}.common.base.CommonPage;
+import ${basePackage}.common.base.WhereParam;
 import ${basePackage}.common.base.YesNoEnum;
+import ${basePackage}.common.tk.ConditionUtil;
 import ${basePackage}.modules.sys.dto.${table.className}Param;
 import ${basePackage}.modules.sys.dto.${table.className}PageParam;
 import ${basePackage}.modules.sys.entity.${table.className};
@@ -27,6 +30,7 @@ import ${basePackage}.modules.sys.service.${table.className}Service;
 public class ${table.className}ServiceImpl implements ${table.className}Service{
 	@Autowired
 	private ${table.className}Mapper ${table.tableCameName}Mapper;
+	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(${table.className}Param param) {
 		Date now = new Date();
@@ -37,7 +41,7 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 		${table.tableCameName}.setIsDeleted(YesNoEnum.NO);
 		return ${table.tableCameName}Mapper.insertSelective(${table.tableCameName});
 	}
-
+	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(${table.className}Param param) {
 		Date now = new Date();
@@ -46,7 +50,7 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 		${table.tableCameName}.setUpdateTime(now);
 		return ${table.tableCameName}Mapper.updateByPrimaryKeySelective(${table.tableCameName});
 	}
-
+	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int remove(List<Long> ids) {
 		Date now = new Date();
@@ -66,8 +70,12 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 	@Override
 	public CommonPage<${table.className}> list(${table.className}PageParam param) {
 		Page<${table.className}> page =param.buildPage(true);
-		${table.className} ${table.tableCameName} = new ${table.className}();
-		${table.tableCameName}Mapper.select(${table.tableCameName});
+		List<WhereParam> whereParams = param.getWhereParams();
+		if(null == whereParams || whereParams.isEmpty()) {
+			${table.className} ${table.tableCameName} = new ${table.className}();
+			${table.tableCameName}Mapper.select(${table.tableCameName});
+		} else {
+			${table.tableCameName}Mapper.selectByCondition(ConditionUtil.buildCondition(${table.className}.class, whereParams));		}
 		return CommonPage.toPage(page);
 	}
 

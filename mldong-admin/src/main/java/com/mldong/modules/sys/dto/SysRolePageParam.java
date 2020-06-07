@@ -5,8 +5,8 @@ import com.mldong.modules.sys.entity.SysRole;
 /**
  * <p>分页查询实体</p>
  * <p>Table: sys_role - 角色</p>
- * @since 2020-06-06 04:49:06
+ * @since 2020-06-07 10:04:17
  */
 public class SysRolePageParam extends PageParam<SysRole> {
-	
+
 }
