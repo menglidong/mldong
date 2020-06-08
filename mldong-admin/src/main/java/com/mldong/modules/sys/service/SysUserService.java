@@ -3,6 +3,7 @@ package com.mldong.modules.sys.service;
 import java.util.List;
 
 import com.mldong.common.base.CommonPage;
+import com.mldong.common.base.IdsParam;
 import com.mldong.modules.sys.dto.SysUserPageParam;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
@@ -42,5 +43,10 @@ public interface SysUserService {
 	 * @return
 	 */
 	public CommonPage<SysUser> list(SysUserPageParam param);
-
+	/**
+	 * 重置密码
+	 * @param param
+	 * @return
+	 */
+	public int resetPassword(IdsParam param);
 }

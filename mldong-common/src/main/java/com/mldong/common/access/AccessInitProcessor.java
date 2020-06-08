@@ -125,5 +125,23 @@ public class AccessInitProcessor implements BeanPostProcessor{
 	public List<SysAccessModel> getAccessList() {
 		return accessList;
 	}
-	
+	/**
+	 * 获取apiOperation获取权限标识
+	 * @param apiOperation
+	 * @return
+	 */
+	public static String getAccess(ApiOperation apiOperation) {
+		if(apiOperation==null) {
+			return null;
+		}
+		Authorization[] authorizations = apiOperation.authorizations();
+		if(authorizations.length == 0) {
+			return null;
+		}
+		AuthorizationScope[] authorizationScopes = authorizations[0].scopes();
+		if(authorizationScopes.length == 0) {
+			return null;
+		}
+		return authorizationScopes[0].scope();
+	}
 }

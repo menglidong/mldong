@@ -41,5 +41,15 @@
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper</artifactId>
         </dependency>
+        <!-- commons工具库 -->
+        <dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		</dependency>
+		<!-- jwt -->  
+	    <dependency>  
+	        <groupId>com.auth0</groupId>  
+	        <artifactId>java-jwt</artifactId>  
+	    </dependency> 
 	</dependencies>
 </project>

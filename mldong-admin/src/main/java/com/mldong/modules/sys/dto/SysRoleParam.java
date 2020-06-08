@@ -10,7 +10,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: sys_role - 角色</p>
- * @since 2020-06-07 10:04:17
+ * @since 2020-06-08 10:26:59
  */
 @ApiModel(description="角色")
 public class SysRoleParam{

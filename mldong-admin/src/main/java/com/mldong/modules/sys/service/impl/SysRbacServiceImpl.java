@@ -18,6 +18,8 @@ import com.mldong.common.access.model.SysAccessModel;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.IdAndIdsParam;
 import com.mldong.common.config.GlobalProperties;
+import com.mldong.common.interceptor.AuthInterceptorService;
+import com.mldong.common.token.TokenStrategy;
 import com.mldong.modules.sys.dao.SysUserDao;
 import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysMenu;
@@ -31,7 +33,7 @@ import com.mldong.modules.sys.mapper.SysUserRoleMapper;
 import com.mldong.modules.sys.service.SysRbacService;
 
 @Service
-public class SysRbacServiceImpl implements SysRbacService {
+public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorService{
 	@Autowired
 	private AccessInitProcessor accessInitProcessor;
 	@Autowired
@@ -44,6 +46,8 @@ public class SysRbacServiceImpl implements SysRbacService {
 	private SysRoleMenuMapper sysRoleMenuMapper;
 	@Autowired
 	private GlobalProperties globalProperties;
+	@Autowired
+	private TokenStrategy tokenStrategy;
 	@Override
 	public List<SysAccessModel> listAccessTree() {
 		return accessInitProcessor.getAccessList();
@@ -157,7 +161,6 @@ public class SysRbacServiceImpl implements SysRbacService {
 		if(userId.equals(globalProperties.getSuperAdminId())) {
 			return true;
 		}
-		
  		return loadUserAccessList(userId).contains(access);
 	}
 	@Override
@@ -172,6 +175,15 @@ public class SysRbacServiceImpl implements SysRbacService {
 	@Cacheable(value = "menu_user_id",key="#userId")
 	public List<SysMenu> loadUserMenuList(Long userId) {
 		return sysUserDao.selectUserMenu(userId);
+	}
+	@Override
+	public boolean verifyToken(String token) {
+		return tokenStrategy.verifyToken(token);
+	}
+	@Override
+	public boolean hasAuth(String token, String access) {
+		Long userId = tokenStrategy.getUserId(token);
+		return hasAccess(userId, access);
 	}
 
 }

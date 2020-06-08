@@ -18,7 +18,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_role - 角色</p>
- * @since 2020-06-07 10:04:17
+ * @since 2020-06-08 10:26:59
  */
 @Table(name="sys_role")
 @ApiModel(description="角色")
