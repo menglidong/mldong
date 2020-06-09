@@ -7,7 +7,7 @@ import com.mldong.common.jwt.JwtToken;
 import com.mldong.common.token.TokenStrategy;
 
 @Component
-public class TokenStrategyImpl implements TokenStrategy{
+public class JwtTokenStrategyImpl implements TokenStrategy{
 	@Autowired
 	private JwtToken jwtToken;
 

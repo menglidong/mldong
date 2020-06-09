@@ -14,7 +14,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_user_login_times - 用户登录次数</p>
- * @since 2020-06-08 08:51:26
+ * @since 2020-06-09 08:21:41
  */
 @Table(name="sys_user_login_times")
 @ApiModel(description="用户登录次数")
@@ -28,6 +28,8 @@ public class SysUserLoginTimes implements Serializable{
     private Long id;
     @ApiModelProperty(value = "用户id")
     private Long userId;
+    @ApiModelProperty(value = "登录ip")
+    private String loginIp;
     @ApiModelProperty(value = "登录次数")
     private Integer times;
     @ApiModelProperty(value = "创建时间")
@@ -66,6 +68,21 @@ public class SysUserLoginTimes implements Serializable{
      */
     public void setUserId(Long userId){
         this.userId = userId;
+    }
+    /**
+     * 获取登录ip
+     *
+     */
+    public String getLoginIp(){
+        return this.loginIp;
+    }
+	 /**
+     * 设置登录ip
+     *
+     * @param loginIp
+     */
+    public void setLoginIp(String loginIp){
+        this.loginIp = loginIp;
     }
     /**
      * 获取登录次数

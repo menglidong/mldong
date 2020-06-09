@@ -20,7 +20,7 @@ public class SysLoginVo implements Serializable{
 	private Long userId;
 	@ApiModelProperty(value="用户名")
 	private String userName;
-	@ApiModelProperty(value="用户名")
+	@ApiModelProperty(value="姓名")
 	private String realName;
 	@ApiModelProperty(value="头像")
 	private String avatar;
