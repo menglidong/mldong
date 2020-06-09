@@ -1,5 +1,8 @@
 package com.mldong.modules.sys.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +20,7 @@ import com.mldong.modules.sys.service.SysLoginService;
 import com.mldong.modules.sys.vo.SysLoginVo;
 
 @RestController
+@Api(tags="sys-登录模块")
 public class SysLoginController {
 	@Autowired
 	private SysLoginService sysLoginService;
@@ -27,6 +31,7 @@ public class SysLoginController {
 	 */
 	@PostMapping("/sys/login")
 	@AuthIgnore
+	@ApiOperation(value="登录系统", notes="登录系统")
 	public CommonResult<SysLoginVo> login(@RequestBody @Validated SysLoginParam param) {
 		return CommonResult.success("登录成功", sysLoginService.login(param));
 	}
@@ -35,6 +40,7 @@ public class SysLoginController {
 	 * @return
 	 */
 	@PostMapping("/sys/logout")
+	@ApiOperation(value="退出系统", notes="退出系统")
 	@AuthIgnore
 	public CommonResult<?> logout(HttpServletRequest request) {
 		String token = getToken(request);
