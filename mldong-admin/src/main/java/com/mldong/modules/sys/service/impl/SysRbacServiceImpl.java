@@ -185,5 +185,8 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 		Long userId = tokenStrategy.getUserId(token);
 		return hasAccess(userId, access);
 	}
-
+	@Override
+	public Long getUserId(String token) {
+		return tokenStrategy.getUserId(token);
+	}
 }

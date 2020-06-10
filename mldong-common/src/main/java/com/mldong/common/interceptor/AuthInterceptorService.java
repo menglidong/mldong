@@ -18,4 +18,10 @@ public interface AuthInterceptorService {
 	 * @return
 	 */
 	public boolean hasAuth(String token,String access);
+	/**
+	 * 通过token获取id
+	 * @param token
+	 * @return
+	 */
+	public Long getUserId(String token);
 }
