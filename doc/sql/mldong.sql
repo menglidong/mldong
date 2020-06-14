@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50619
 File Encoding         : 65001
 
-Date: 2020-06-14 11:42:46
+Date: 2020-06-14 18:58:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -169,7 +169,7 @@ DROP TABLE IF EXISTS `sys_upload_record`;
 CREATE TABLE `sys_upload_record` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `biz_type` varchar(32) DEFAULT NULL COMMENT '业务类型',
-  `biz_id` bigint(20) unsigned DEFAULT NULL COMMENT '业务id',
+  `biz_id` varchar(40) DEFAULT NULL COMMENT '业务id',
   `url` varchar(100) DEFAULT NULL COMMENT '文件保存的资源路径',
   `file_name` varchar(100) DEFAULT NULL COMMENT '上传的原始文件名',
   `file_size` bigint(20) unsigned DEFAULT NULL COMMENT '资源大小，单位为字节',
