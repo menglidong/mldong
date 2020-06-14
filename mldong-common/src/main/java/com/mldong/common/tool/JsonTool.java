@@ -1,5 +1,6 @@
 package com.mldong.common.tool;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,7 +56,7 @@ public class JsonTool {
 			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return new HashMap<String, Object>();
 		} 
 	}
 	/**

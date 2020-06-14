@@ -21,6 +21,18 @@ public class GlobalProperties {
 	 * 默认密码
 	 */
 	private String defaultPassword = "mldong@321";
+	/**
+	 * 七牛云ak
+	 */
+	private String qiniuAccessKey = "";
+	/**
+	 * 七牛云sk
+	 */
+	private String qiniuSecretKey = "";
+	/**
+	 * 七牛云空间名称
+	 */
+	private String qiniuBucket = "";
 	public Long getSuperAdminId() {
 		return superAdminId;
 	}
@@ -51,6 +63,30 @@ public class GlobalProperties {
 
 	public void setDefaultPassword(String defaultPassword) {
 		this.defaultPassword = defaultPassword;
+	}
+
+	public String getQiniuAccessKey() {
+		return qiniuAccessKey;
+	}
+
+	public void setQiniuAccessKey(String qiniuAccessKey) {
+		this.qiniuAccessKey = qiniuAccessKey;
+	}
+
+	public String getQiniuSecretKey() {
+		return qiniuSecretKey;
+	}
+
+	public void setQiniuSecretKey(String qiniuSecretKey) {
+		this.qiniuSecretKey = qiniuSecretKey;
+	}
+
+	public String getQiniuBucket() {
+		return qiniuBucket;
+	}
+
+	public void setQiniuBucket(String qiniuBucket) {
+		this.qiniuBucket = qiniuBucket;
 	}
 	
 }

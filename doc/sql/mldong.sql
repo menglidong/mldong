@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50619
 File Encoding         : 65001
 
-Date: 2020-06-12 21:38:28
+Date: 2020-06-14 11:42:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -136,6 +136,53 @@ CREATE TABLE `sys_role_menu` (
 
 -- ----------------------------
 -- Records of sys_role_menu
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_upload_config`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_upload_config`;
+CREATE TABLE `sys_upload_config` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `biz_type` varchar(32) NOT NULL COMMENT '业务类型',
+  `file_size_min` bigint(20) unsigned DEFAULT '0' COMMENT '限定上传文件大小最小值，单位`byte`。（0为不限制）',
+  `file_size_max` bigint(20) unsigned DEFAULT '0' COMMENT '限定上传文件大小最大值，单位`byte`。（0为不限制）',
+  `file_ext` varchar(64) NOT NULL COMMENT '限定用户上传后辍(多个逗号分割)',
+  `base_url` varchar(32) DEFAULT '' COMMENT '访问地址前辍',
+  `callback_url` varchar(100) DEFAULT '' COMMENT '回调地址',
+  `naming_strategy` varchar(32) NOT NULL COMMENT '命名策略',
+  `is_record` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否记录(1->不记录|NO,2->记录|YES)',
+  `create_time` datetime(3) NOT NULL COMMENT '创建时间',
+  `update_time` datetime(3) NOT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='上传配置';
+
+-- ----------------------------
+-- Records of sys_upload_config
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_upload_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_upload_record`;
+CREATE TABLE `sys_upload_record` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `biz_type` varchar(32) DEFAULT NULL COMMENT '业务类型',
+  `biz_id` bigint(20) unsigned DEFAULT NULL COMMENT '业务id',
+  `url` varchar(100) DEFAULT NULL COMMENT '文件保存的资源路径',
+  `file_name` varchar(100) DEFAULT NULL COMMENT '上传的原始文件名',
+  `file_size` bigint(20) unsigned DEFAULT NULL COMMENT '资源大小，单位为字节',
+  `mime_type` varchar(32) DEFAULT NULL COMMENT '资源类型',
+  `file_ext` varchar(10) DEFAULT NULL COMMENT '上传资源的后缀名',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='上传记录';
+
+-- ----------------------------
+-- Records of sys_upload_record
 -- ----------------------------
 
 -- ----------------------------

@@ -56,6 +56,10 @@
 	        <groupId>com.auth0</groupId>  
 	        <artifactId>java-jwt</artifactId>  
 	    </dependency> 
-
+		<!-- 七牛sdk -->
+		<dependency>
+		  <groupId>com.qiniu</groupId>
+		  <artifactId>qiniu-java-sdk</artifactId>
+		</dependency>
 	</dependencies>
 </project>

@@ -53,6 +53,14 @@ public enum GlobalErrEnum implements CommonError {
 	 * 文件后辍不允许
 	 */
 	GL99990006(99990006, "文件后辍不允许"),
+	/**
+	 * 文件上传异常
+	 */
+	GL99990007(99990007, "文件上传异常"),
+	/**
+	 * 文件上传配置不存在
+	 */
+	GL99990008(99990008, "文件上传配置不存在"),
 	;
 	
 	private GlobalErrEnum(int value, String name){
