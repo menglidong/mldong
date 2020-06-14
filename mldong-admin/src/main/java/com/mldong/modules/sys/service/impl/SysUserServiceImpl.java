@@ -83,6 +83,8 @@ public class SysUserServiceImpl implements SysUserService{
 				user.setPassword(passwordEncry);
 			}
 		}
+		// 用户名不能修改
+		user.setUserName(null);
 		return sysUserMapper.updateByPrimaryKeySelective(user);
 	}
 	@Transactional(rollbackFor=Exception.class)

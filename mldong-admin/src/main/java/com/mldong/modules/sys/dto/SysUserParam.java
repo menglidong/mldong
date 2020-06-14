@@ -10,8 +10,11 @@ import com.mldong.common.validator.Groups;
 import com.mldong.modules.sys.entity.SysUser;
 
 public class SysUserParam {
+	@ApiModelProperty(value="主键-更新时必填")
+	@NotBlank(message="主键不能为空",groups={Groups.Update.class})
+    private Long id;
 	@ApiModelProperty(name="用户名",required=true)
-	@NotBlank(message="用户名不能为空",groups={Groups.Save.class,Groups.Update.class})
+	@NotBlank(message="用户名不能为空",groups={Groups.Save.class})
 	private String userName;
 	@ApiModelProperty(name="姓名",required=true)
 	@NotBlank(message="姓名不能为空",groups={Groups.Save.class,Groups.Update.class})
@@ -34,6 +37,13 @@ public class SysUserParam {
 	private String confirmPassword;
 	@ApiModelProperty(name="性别",required=false)
 	private SysUser.SexEnum sex;
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getUserName() {
 		return userName;
 	}
