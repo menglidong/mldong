@@ -8,8 +8,8 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import com.mldong.common.logger.LoggerModel;
 import com.mldong.common.tool.JsonTool;
-import com.mldong.common.web.logger.LoggerModel;
 /**
  * 全局的响应处理，这里能拿到控制层的返回参数，然后可以对该参数进行加密处理再返回，或是日志记录
  * @author mldong

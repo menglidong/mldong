@@ -10,7 +10,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.mldong.common.base.constant.CommonConstants;
-import com.mldong.common.web.logger.LoggerModel;
+import com.mldong.common.logger.LoggerModel;
 
 /**
  * @author mldong

@@ -1,4 +1,4 @@
-package com.mldong.common.web.logger;
+package com.mldong.common.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

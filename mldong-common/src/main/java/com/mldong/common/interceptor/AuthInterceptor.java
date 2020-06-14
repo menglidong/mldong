@@ -16,9 +16,9 @@ import com.mldong.common.access.AccessInitProcessor;
 import com.mldong.common.annotation.AuthIgnore;
 import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.exception.BizException;
+import com.mldong.common.logger.ILoggerStore;
+import com.mldong.common.logger.LoggerModel;
 import com.mldong.common.web.RequestHolder;
-import com.mldong.common.web.logger.ILoggerStore;
-import com.mldong.common.web.logger.LoggerModel;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 	@Autowired
@@ -44,6 +44,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 			String ip = RequestHolder.getIPAddress();
 			loggerModel.setIp(ip);
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			ApiOperation apiOperation =  handlerMethod.getMethodAnnotation(ApiOperation.class);
+			if(null!=apiOperation) {
+				loggerModel.setDescription(apiOperation.value());
+			}
 			AuthIgnore authIgnore = handlerMethod.getMethodAnnotation(AuthIgnore.class);
 			if(null != authIgnore) {
 				// 要忽略权限
@@ -61,7 +65,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 				throw new BizException(GlobalErrEnum.GL99990401);
 			}
 			RequestHolder.setUserId(userId);
-			ApiOperation apiOperation = handlerMethod.getMethodAnnotation(ApiOperation.class);
 			String access = AccessInitProcessor.getAccess(apiOperation);
 			if(null == access) {
 				// 没有定义，直接放行

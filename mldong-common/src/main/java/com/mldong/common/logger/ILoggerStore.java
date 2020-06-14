@@ -1,4 +1,4 @@
-package com.mldong.common.web.logger;
+package com.mldong.common.logger;
 
 /**
  * 日志存储接口

@@ -1,4 +1,4 @@
-package com.mldong.common.web.logger;
+package com.mldong.common.logger;
 
 import java.io.Serializable;
 

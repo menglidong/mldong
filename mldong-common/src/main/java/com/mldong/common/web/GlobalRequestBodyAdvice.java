@@ -1,7 +1,5 @@
 package com.mldong.common.web;
 
-import io.swagger.annotations.ApiOperation;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +14,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
-import com.mldong.common.web.logger.LoggerModel;
+import com.mldong.common.logger.LoggerModel;
 /**
  * 全局的请求处理，可以在这里对原始的参数进行解密，或者请求参数日志记录
  * @author mldong
@@ -42,10 +40,6 @@ public class GlobalRequestBodyAdvice implements RequestBodyAdvice{
 			Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
 		LoggerModel loggerModel = RequestHolder.getLoggerModel();
 		if(null != loggerModel) {
-			ApiOperation apiOperation = parameter.getAnnotatedElement().getAnnotation(ApiOperation.class);
-			if(null!=apiOperation) {
-				loggerModel.setDescription(apiOperation.value());
-			}
 			String body = IOUtils.toString(inputMessage.getBody(), charset);
 			// 设置请求正文 这里拿到的是InputStream的内容
 			loggerModel.setBody(body);
