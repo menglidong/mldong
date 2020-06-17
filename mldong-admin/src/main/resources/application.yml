@@ -42,3 +42,7 @@ pagehelper:
   reasonable: false
   supportMethodsArguments: true
   params: count=countSql
+
+# 启用自定义文档
+knife4j:
+  markdowns: classpath:markdown/*
