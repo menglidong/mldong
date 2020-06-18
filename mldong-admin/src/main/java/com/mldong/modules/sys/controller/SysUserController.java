@@ -17,10 +17,12 @@ import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.IdParam;
 import com.mldong.common.base.IdsParam;
 import com.mldong.common.validator.Groups;
+import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.sys.dto.SysUserPageParam;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysUserService;
+import com.mldong.modules.sys.vo.SysUserVo;
 
 @RestController
 @RequestMapping("/sys/user")
@@ -116,5 +118,15 @@ public class SysUserController {
 	})
 	public CommonResult<CommonPage<SysUser>> list(@RequestBody @Validated SysUserPageParam param) {
 		return CommonResult.success("查询用户成功",sysUserService.list(param));
+	}
+	/**
+	 * 获取当前用户信息
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("info")
+	@ApiOperation(value="获取当前用户信息", notes="获取当前用户信息")
+	public CommonResult<SysUserVo> info() {
+		return CommonResult.success(sysUserService.getUserInfo(RequestHolder.getUserId()));
 	}
 }

@@ -7,6 +7,7 @@ import com.mldong.common.base.IdsParam;
 import com.mldong.modules.sys.dto.SysUserPageParam;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
+import com.mldong.modules.sys.vo.SysUserVo;
 /**
  * 用户管理业务接口
  * @author mldong
@@ -49,4 +50,9 @@ public interface SysUserService {
 	 * @return
 	 */
 	public int resetPassword(IdsParam param);
+	/**
+	 * 获取用户信息
+	 * @return
+	 */
+	public SysUserVo getUserInfo(Long userId);
 }

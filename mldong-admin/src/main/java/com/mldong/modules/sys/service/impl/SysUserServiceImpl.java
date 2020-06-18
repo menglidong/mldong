@@ -26,7 +26,9 @@ import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.enums.SysErrEnum;
 import com.mldong.modules.sys.mapper.SysUserMapper;
+import com.mldong.modules.sys.service.SysRbacService;
 import com.mldong.modules.sys.service.SysUserService;
+import com.mldong.modules.sys.vo.SysUserVo;
 /**
  * 用户管理业务
  * @author mldong
@@ -38,6 +40,8 @@ public class SysUserServiceImpl implements SysUserService{
 	private SysUserMapper sysUserMapper;
 	@Autowired
 	private GlobalProperties globalProperties;
+	@Autowired
+	private SysRbacService sysRbacService;
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(SysUserParam param) {
@@ -127,6 +131,18 @@ public class SysUserServiceImpl implements SysUserService{
 		Condition condition = new Condition(SysUser.class);
 		condition.createCriteria().andIn("id", param.getIds());
 		return sysUserMapper.updateByConditionSelective(user, condition);
+	}
+	@Override
+	public SysUserVo getUserInfo(Long userId) {
+		SysUser user = sysUserMapper.selectByPrimaryKey(userId);
+		if(null == userId) {
+			return null;
+		}
+		SysUserVo vo = new SysUserVo();
+		BeanUtils.copyProperties(user, vo);
+		vo.setAccessList(sysRbacService.loadUserAccessList(userId));
+		vo.setMenuList(sysRbacService.loadUserMenuList(userId));
+		return vo;
 	}
 
 }
