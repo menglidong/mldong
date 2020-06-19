@@ -13,22 +13,22 @@ public enum YesNoEnum implements CodedEnum{
 	/**
 	 * 是
 	 */
-	YES(1, "是"),
+	YES(2, "是"),
 	/**
 	 * 否
 	 */
-	NO(2,"否")
+	NO(1,"否")
 	;
 	private int value;
 	private String name;
 	/**
 	 * 未删除
 	 */
-	public final static int Y=1;
+	public final static int Y=2;
 	/**
 	 * 已删除
 	 */
-	public final static int N=2;
+	public final static int N=1;
 	@JsonCreator
     public static YesNoEnum forValue(int value) {
         return CodedEnum.codeOf(YesNoEnum.class, value).get();
