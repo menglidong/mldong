@@ -3,7 +3,7 @@ package ${basePackage}.modules.${moduleName}.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.mldong.common.validator.Groups;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 <#if table.hasOtherDate>
 import java.util.Date;
 </#if>
@@ -25,7 +25,7 @@ public class ${table.className}Param{
 <#list table.columns as column>
     <#if column.primaryKey>
 	@ApiModelProperty(value="${column.remark}-更新时必填")
-	@NotBlank(message="${column.remark}不能为空",groups={Groups.Update.class})
+	@NotEmpty(message="${column.remark}不能为空",groups={Groups.Update.class})
     private ${column.javaType} ${column.javaProperty};
     <#else>
     <#if "isDeleted,createTime,updateTime"?contains(column.javaProperty)==false>

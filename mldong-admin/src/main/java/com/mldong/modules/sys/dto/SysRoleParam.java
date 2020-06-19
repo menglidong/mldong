@@ -2,8 +2,12 @@ package com.mldong.modules.sys.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
 import com.mldong.common.validator.Groups;
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 import com.mldong.modules.sys.entity.SysRole;
 import com.mldong.common.base.YesNoEnum;
 
@@ -16,7 +20,7 @@ import com.mldong.common.base.YesNoEnum;
 public class SysRoleParam{
 
 	@ApiModelProperty(value="主键-更新时必填")
-	@NotBlank(message="主键不能为空",groups={Groups.Update.class})
+	@NotEmpty(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
     @ApiModelProperty(value = "角色名称",required=true)
     @NotBlank(message="角色名称不能为空",groups={Groups.Save.class,Groups.Update.class})

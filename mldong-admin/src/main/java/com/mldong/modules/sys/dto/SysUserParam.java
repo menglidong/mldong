@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import com.mldong.common.annotation.PhoneValidator;
 import com.mldong.common.validator.Groups;
@@ -11,7 +12,7 @@ import com.mldong.modules.sys.entity.SysUser;
 
 public class SysUserParam {
 	@ApiModelProperty(value="主键-更新时必填")
-	@NotBlank(message="主键不能为空",groups={Groups.Update.class})
+	@NotEmpty(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
 	@ApiModelProperty(name="用户名",required=true)
 	@NotBlank(message="用户名不能为空",groups={Groups.Save.class})

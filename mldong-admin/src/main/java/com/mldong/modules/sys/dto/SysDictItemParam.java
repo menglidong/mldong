@@ -2,8 +2,11 @@ package com.mldong.modules.sys.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
 import com.mldong.common.validator.Groups;
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * <p>接收请求参数实体</p>
@@ -14,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 public class SysDictItemParam{
 
 	@ApiModelProperty(value="主键-更新时必填")
-	@NotBlank(message="主键不能为空",groups={Groups.Update.class})
+	@NotEmpty(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
     @ApiModelProperty(value = "字典id",required=true)
     private Long dictId;
