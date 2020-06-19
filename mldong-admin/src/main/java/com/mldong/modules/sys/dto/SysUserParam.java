@@ -29,11 +29,9 @@ public class SysUserParam {
 	private String mobilePhone;
 	@ApiModelProperty(name="联系电话",required=false)
 	private String telephone;
-	@ApiModelProperty(name="密码",required=true)
-	@NotBlank(message="密码不能为空",groups={Groups.Save.class})
+	@ApiModelProperty(name="密码",required=false)
 	private String password;
-	@ApiModelProperty(name="确认密码",required=true)
-	@NotBlank(message="确认密码不能为空",groups={Groups.Save.class})
+	@ApiModelProperty(name="确认密码",required=false)
 	private String confirmPassword;
 	@ApiModelProperty(name="性别",required=false)
 	private SysUser.SexEnum sex;

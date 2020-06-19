@@ -52,10 +52,15 @@ public class SysUserServiceImpl implements SysUserService{
 			// 用户名已存在
 			throw new BizException(SysErrEnum.SYS80000007);
 		}
-		if(!param.getPassword().equals(param.getConfirmPassword())) {
-			// 两密码不一致
-			throw new BizException(SysErrEnum.SYS80000005);
+		if(StringUtils.isNotEmpty(param.getPassword()) && StringUtils.isNotEmpty(param.getConfirmPassword())) {
+			if(!param.getPassword().equals(param.getConfirmPassword())) {
+				// 两密码不一致
+				throw new BizException(SysErrEnum.SYS80000005);
+			}
+		} else {
+			param.setPassword(globalProperties.getDefaultPassword());
 		}
+		
 		Date now = new Date();
 		SysUser user = new SysUser();
 		BeanUtils.copyProperties(param, user);
@@ -89,11 +94,20 @@ public class SysUserServiceImpl implements SysUserService{
 		}
 		// 用户名不能修改
 		user.setUserName(null);
+		if(globalProperties.getSuperAdminId().equals(param.getId())) {
+			// 超级管理员被锁
+			user.setIsLocked(null);
+		}
 		return sysUserMapper.updateByPrimaryKeySelective(user);
 	}
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int remove(List<Long> ids) {
+		// 超级管理员不能被删除
+		ids.remove(globalProperties.getSuperAdminId());
+		if(ids.isEmpty()) {
+			return 1;
+		}
 		Date now = new Date();
 		SysUser upUser = new SysUser();
 		upUser.setIsDeleted(YesNoEnum.YES);
