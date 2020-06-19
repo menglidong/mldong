@@ -25,7 +25,7 @@ public class ${table.className}Param{
 <#list table.columns as column>
     <#if column.primaryKey>
 	@ApiModelProperty(value="${column.remark}-更新时必填")
-	@NotEmpty(message="${column.remark}不能为空",groups={Groups.Update.class})
+	@NotNull(message="${column.remark}不能为空",groups={Groups.Update.class})
     private ${column.javaType} ${column.javaProperty};
     <#else>
     <#if "isDeleted,createTime,updateTime"?contains(column.javaProperty)==false>

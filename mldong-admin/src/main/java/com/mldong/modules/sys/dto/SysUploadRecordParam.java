@@ -2,8 +2,10 @@ package com.mldong.modules.sys.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
+
 import com.mldong.common.validator.Groups;
-import javax.validation.constraints.NotBlank;
 
 /**
  * <p>接收请求参数实体</p>
@@ -14,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 public class SysUploadRecordParam{
 
 	@ApiModelProperty(value="主键-更新时必填")
-	@NotBlank(message="主键不能为空",groups={Groups.Update.class})
+	@NotNull(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
     @ApiModelProperty(value = "业务类型",required=false)
     private String bizType;
