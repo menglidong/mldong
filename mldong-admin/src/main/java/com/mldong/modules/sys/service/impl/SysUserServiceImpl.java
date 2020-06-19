@@ -110,11 +110,13 @@ public class SysUserServiceImpl implements SysUserService{
 		}
 		Date now = new Date();
 		SysUser upUser = new SysUser();
-		upUser.setIsDeleted(YesNoEnum.YES);
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysUser.class);
 		condition.createCriteria().andIn("id", ids);
-		return sysUserMapper.updateByConditionSelective(upUser, condition);
+		// 更新时间
+		sysUserMapper.updateByConditionSelective(upUser, condition);
+		// 逻辑删除
+		return sysUserMapper.deleteByCondition(condition);
 	}
 
 	@Override

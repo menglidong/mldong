@@ -59,6 +59,9 @@ public class SysRoleServiceImpl implements SysRoleService{
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysRole.class);
 		condition.createCriteria().andIn("id", ids);
+		// 更新时间
+		sysRoleMapper.updateByConditionSelective(upUser, condition);
+		// 逻辑删除
 		return sysRoleMapper.updateByConditionSelective(upUser, condition);
 	}
 

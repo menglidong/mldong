@@ -77,6 +77,9 @@ public class SysUploadRecordServiceImpl implements SysUploadRecordService{
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysUploadRecord.class);
 		condition.createCriteria().andIn("id", ids);
+		// 更新时间
+		sysUploadRecordMapper.updateByConditionSelective(upUser, condition);
+		// 逻辑删除
 		return sysUploadRecordMapper.updateByConditionSelective(upUser, condition);
 	}
 

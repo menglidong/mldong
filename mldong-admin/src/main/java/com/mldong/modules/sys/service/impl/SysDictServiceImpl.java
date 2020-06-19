@@ -82,6 +82,9 @@ public class SysDictServiceImpl implements SysDictService{
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysDict.class);
 		condition.createCriteria().andIn("id", ids);
+		// 更新时间
+		sysDictMapper.updateByConditionSelective(upUser, condition);
+		// 逻辑删除
 		return sysDictMapper.updateByConditionSelective(upUser, condition);
 	}
 

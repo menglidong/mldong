@@ -70,6 +70,9 @@ public class SysDictItemServiceImpl implements SysDictItemService{
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysDictItem.class);
 		condition.createCriteria().andIn("id", ids);
+		// 更新时间
+		sysDictItemMapper.updateByConditionSelective(upUser, condition);
+		// 逻辑删除
 		return sysDictItemMapper.updateByConditionSelective(upUser, condition);
 	}
 

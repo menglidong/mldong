@@ -59,6 +59,9 @@ public class SysMenuServiceImpl implements SysMenuService{
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysMenu.class);
 		condition.createCriteria().andIn("id", ids);
+		// 更新时间
+		sysMenuMapper.updateByConditionSelective(upUser, condition);
+		// 逻辑删除
 		return sysMenuMapper.updateByConditionSelective(upUser, condition);
 	}
 

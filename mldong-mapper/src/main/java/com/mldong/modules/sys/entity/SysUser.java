@@ -48,7 +48,7 @@ public class SysUser implements Serializable{
     private String salt;
     @ApiModelProperty(value = "性别(1->男|MALE,2->女|FEMALE,3->未知|UNKNOWN)")
     private SexEnum sex;
-    @ApiModelProperty(value = "是否锁定(1->已锁定|YES,2->未锁定|NO)")
+    @ApiModelProperty(value = "是否锁定(2->已锁定|YES,1->未锁定|NO)")
     private YesNoEnum isLocked;
     @ApiModelProperty(value = "备注")
     private String remark;

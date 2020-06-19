@@ -54,12 +54,15 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 	@Override
 	public int remove(List<Long> ids) {
 		Date now = new Date();
-		${table.className} upUser = new ${table.className}();
-		upUser.setIsDeleted(YesNoEnum.YES);
-		upUser.setUpdateTime(now);
+		${table.className} up${table.className} = new ${table.className}();
+		up${table.className}.setIsDeleted(YesNoEnum.YES);
+		up${table.className}.setUpdateTime(now);
 		Condition condition = new Condition(${table.className}.class);
 		condition.createCriteria().andIn("id", ids);
-		return ${table.tableCameName}Mapper.updateByConditionSelective(upUser, condition);
+		// 更新时间
+		${table.tableCameName}Mapper.updateByConditionSelective(up${table.className}, condition);
+		// 逻辑删除
+		return ${table.tableCameName}Mapper.updateByConditionSelective(up${table.className}, condition);
 	}
 
 	@Override
