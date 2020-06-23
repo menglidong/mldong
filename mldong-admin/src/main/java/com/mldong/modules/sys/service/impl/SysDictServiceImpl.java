@@ -107,8 +107,12 @@ public class SysDictServiceImpl implements SysDictService{
 	@Cacheable(value = "sys_dict_key",key="#param.dictKey+'-'+#param.type")
 	@Override
 	public DictModel getByDictKey(SysDictKeyParam param) {
+		DictModel dictModel = null;
 		if("enum".equals(param.getType())) {
-			return dictScanner.getDictMap().get(param.getDictKey());
+			dictModel =  dictScanner.getDictMap().get(param.getDictKey());
+		}
+		if(null != dictModel) {
+			return dictModel;
 		}
 		SysDict q = new SysDict();
 		q.setDictKey(param.getDictKey());
@@ -123,7 +127,7 @@ public class SysDictServiceImpl implements SysDictService{
 		if(list.isEmpty()) {
 			return null;
 		}
-		DictModel dictModel =  new DictModel();
+		dictModel =  new DictModel();
 		dictModel.setDictKey(dict.getDictKey());
 		dictModel.setName(dict.getName());
 		BeanUtils.copyProperties(dict, dictModel);
