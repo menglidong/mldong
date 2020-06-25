@@ -64,11 +64,15 @@ public class ConditionUtil {
 				break;
 			case IN:
 				listObject = (List<Object>) model.getPropertyValue();
-				criteria.andIn(model.getPropertyName(), listObject );
+				if(!listObject.isEmpty()) {
+					criteria.andIn(model.getPropertyName(), listObject );
+				}
 				break;
 			case NIN:
 				listObject = (List<Object>) model.getPropertyValue();
-				criteria.andNotIn(model.getPropertyName(), listObject );
+				if(!listObject.isEmpty()) {
+					criteria.andNotIn(model.getPropertyName(), listObject );
+				}
 			case OR:
 				Map<String,Object> map = (Map<String, Object>) model.getPropertyValue();
 				WhereParam param = new WhereParam();
@@ -113,11 +117,15 @@ public class ConditionUtil {
 					break;
 				case IN:
 					listObject = (List<Object>) param.getPropertyValue();
-					criteria.orIn(param.getPropertyName(), listObject );
+					if(!listObject.isEmpty()) {
+						criteria.orIn(param.getPropertyName(), listObject );
+					}
 					break;
 				case NIN:
 					listObject = (List<Object>) param.getPropertyValue();
-					criteria.orNotIn(param.getPropertyName(), listObject );
+					if(!listObject.isEmpty()) {
+						criteria.orNotIn(param.getPropertyName(), listObject );
+					}
 				default:
 					break;
 				}
