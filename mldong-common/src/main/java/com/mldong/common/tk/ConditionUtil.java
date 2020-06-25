@@ -1,10 +1,12 @@
 package com.mldong.common.tk;
 
 import java.util.List;
+import java.util.Map;
 
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
+import com.mldong.common.base.OperateTypeEnum;
 import com.mldong.common.base.WhereParam;
 
 /**
@@ -67,6 +69,58 @@ public class ConditionUtil {
 			case NIN:
 				listObject = (List<Object>) model.getPropertyValue();
 				criteria.andNotIn(model.getPropertyName(), listObject );
+			case OR:
+				Map<String,Object> map = (Map<String, Object>) model.getPropertyValue();
+				WhereParam param = new WhereParam();
+				param.setOperateType(OperateTypeEnum.valueOf(map.get("operateType").toString()));
+				param.setPropertyName(map.get("propertyName").toString());
+				param.setPropertyValue(map.get("propertyValue"));
+				switch (param.getOperateType()) {
+				case EQ:
+					criteria.orEqualTo(param.getPropertyName(), param.getPropertyValue());
+					break;
+				case NE:
+					criteria.orNotEqualTo(param.getPropertyName(), param.getPropertyValue());
+					break;
+				case GT:
+					criteria.orGreaterThan(param.getPropertyName(), param.getPropertyValue());
+					break;
+				case GE:
+					criteria.orGreaterThanOrEqualTo(param.getPropertyName(), param.getPropertyValue());
+					break;
+				case LT:
+					criteria.orLessThan(param.getPropertyName(), param.getPropertyValue());
+					break;
+				case LE:
+					criteria.orLessThanOrEqualTo(param.getPropertyName(), param.getPropertyValue());
+					break;
+				case BT:
+					listObject = (List<Object>) param.getPropertyValue();
+					criteria.andBetween(param.getPropertyName(), listObject.get(0),listObject.get(1));
+					break;
+				case NBT:
+					listObject = (List<Object>) param.getPropertyValue();
+					criteria.orNotBetween(param.getPropertyName(), listObject.get(0),listObject.get(1));
+					break;
+				case LIKE:
+					criteria.orLike(param.getPropertyName(), "%"+param.getPropertyValue()+"%");
+					break;
+				case LLIKE:
+					criteria.orLike(param.getPropertyName(), "%"+param.getPropertyValue());
+					break;
+				case RLIKE:
+					criteria.orLike(model.getPropertyName(), param.getPropertyValue()+"%");
+					break;
+				case IN:
+					listObject = (List<Object>) param.getPropertyValue();
+					criteria.orIn(param.getPropertyName(), listObject );
+					break;
+				case NIN:
+					listObject = (List<Object>) param.getPropertyValue();
+					criteria.orNotIn(param.getPropertyName(), listObject );
+				default:
+					break;
+				}
 			default:
 				break;
 			}

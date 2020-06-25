@@ -17,7 +17,8 @@ public enum OperateTypeEnum {
 	LLIKE("左模糊","like '%a'"),
 	RLIKE("右模糊","like 'a%'"),
 	IN("包含","in"),
-	NIN("不包含","not in")
+	NIN("不包含","not in"),
+	OR("或", "or (xxxx)")
 	;
 	OperateTypeEnum(String name,String desc) {
 		this.name = name;
