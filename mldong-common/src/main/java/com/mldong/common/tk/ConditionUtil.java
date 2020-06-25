@@ -23,15 +23,6 @@ public class ConditionUtil {
 	 * @return
 	 */
 	public static Condition buildCondition(Class<?> clazz,List<WhereParam> list) {
-		if(list.size()==1) {
-			// 仅一个查询条件，且为or语句的，需要转成and
-			if(OperateTypeEnum.OR.equals(list.get(0).getOperateType())) {
-				Map<String,Object> map = (Map<String, Object>) list.get(0).getPropertyValue();
-				list.get(0).setOperateType(OperateTypeEnum.valueOf(map.get("operateType").toString()));
-				list.get(0).setPropertyName(map.get("propertyName").toString());
-				list.get(0).setPropertyValue(map.get("propertyValue"));
-			}
-		}
 		Condition condition = new Condition(clazz);
 		Criteria criteria = condition.createCriteria();
 		for(WhereParam model: list) {
