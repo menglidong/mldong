@@ -1,4 +1,4 @@
-﻿# mldong敏捷开发平台
+﻿# mldong快速开发平台
 敏捷开发平台
 
 ## 目录结构
@@ -24,7 +24,7 @@
 
 ## 开发规范
 ### 关于表名
-表名使用下划线。例：模块名_表名。主表中必要字段（id/create_time/update_time/is_deleted,如为父子关系表,新增字段(parent_id/display_order)
+表名使用下划线。例：模块名_表名。主表中必要字段（`id/create_time/update_time/is_deleted`,如为父子关系表,新增字段(`parent_id/sort/name`)
 
 如要生成枚举类型，注释可这样写如：
 申请状态(10->初建|CREATE,15->摇号中|LOTING,20->已命中|HITED,25->已发送|SENDED,30->已核销|FINISHED,35->已废弃|OBSOLETE)
