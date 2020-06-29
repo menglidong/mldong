@@ -1,5 +1,6 @@
 package com.mldong.modules.sys.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import com.mldong.modules.sys.entity.SysRoleAccess;
 import com.mldong.modules.sys.entity.SysRoleMenu;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.entity.SysUserRole;
+import com.mldong.modules.sys.mapper.SysMenuMapper;
 import com.mldong.modules.sys.mapper.SysRoleAccessMapper;
 import com.mldong.modules.sys.mapper.SysRoleMenuMapper;
 import com.mldong.modules.sys.mapper.SysUserRoleMapper;
@@ -48,6 +50,8 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 	private GlobalProperties globalProperties;
 	@Autowired
 	private TokenStrategy tokenStrategy;
+	@Autowired
+	private SysMenuMapper sysMenuMapper;
 	@Override
 	public List<SysAccessModel> listAccessTree() {
 		return accessInitProcessor.getAccessList();
@@ -166,6 +170,9 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 	@Override
 	@Cacheable(value = "access_user_id",key="#userId")
 	public List<String> loadUserAccessList(Long userId) {
+		if(userId.equals(globalProperties.getSuperAdminId())) {
+			return Arrays.asList("admin");
+		}
 		return sysUserDao.selectUserAccess(userId).stream()
 				.map(item->{
 					return item.getAccess();
@@ -174,6 +181,9 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 	@Override
 	@Cacheable(value = "menu_user_id",key="#userId")
 	public List<SysMenu> loadUserMenuList(Long userId) {
+		if(userId.equals(globalProperties.getSuperAdminId())) {
+			return sysMenuMapper.selectAll();
+		}
 		return sysUserDao.selectUserMenu(userId);
 	}
 	@Override
