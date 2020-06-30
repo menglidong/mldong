@@ -161,7 +161,7 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 		if(param.getIds().isEmpty()) {
 			delConditin.createCriteria().andEqualTo("roleId", roleId);
 			// 删除不在已选中列表中资源
-			sysRoleMenuMapper.deleteByCondition(delConditin);
+			sysRoleAccessMapper.deleteByCondition(delConditin);
 		} else {
 			delConditin.createCriteria().andEqualTo("roleId", roleId)
 			.andNotIn("access", param.getIds());
