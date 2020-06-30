@@ -53,8 +53,10 @@ public class AccessInitProcessor implements BeanPostProcessor{
 				if(null == moduleAccess) {
 					moduleAccess = handleAuthorization(authorization);
 					moduleAccess.setChildren(new ArrayList<>());
-					accessList.add(moduleAccess);
-					moduleMap.put(authorization.value(), moduleAccess);
+					if(StringTool.isNotEmpty(moduleAccess.getAccess())) {
+						accessList.add(moduleAccess);
+						moduleMap.put(authorization.value(), moduleAccess);
+					}
 				}
 				// 处理控制类
 				AuthorizationScope[] authorizationScopes = authorization.scopes();
@@ -62,7 +64,9 @@ public class AccessInitProcessor implements BeanPostProcessor{
 					AuthorizationScope authorizationScope = authorizationScopes[0];
 					SysAccessModel controllerAccess = handleAuthorizationScope(authorizationScope);
 					controllerAccess.setChildren(new ArrayList<>());
-					moduleAccess.getChildren().add(controllerAccess);
+					if(StringTool.isNotEmpty(controllerAccess.getAccess())) {
+						moduleAccess.getChildren().add(controllerAccess);
+					}
 					// 处理方法
 					Method[] methods = bean.getClass().getMethods();
 					for (Method method : methods) {
