@@ -16,6 +16,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.mldong.common.access.model.SysAccessModel;
+import com.mldong.common.tool.StringTool;
 /**
  * 控制类权限处理器(主要将注解转成权限资源模型)
  * @author mldong
@@ -76,7 +77,9 @@ public class AccessInitProcessor implements BeanPostProcessor{
 							if(authorizations.length>0) {
 								authorizationScope = authorizationScopes[0];
 								SysAccessModel methodAccess = handleAuthorizationScope(authorizationScope);
-								controllerAccess.getChildren().add(methodAccess);
+								if(StringTool.isNotEmpty(methodAccess.getAccess())) {
+									controllerAccess.getChildren().add(methodAccess);
+								}
 							}
 						}
 					}
