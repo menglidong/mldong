@@ -18,7 +18,7 @@ public class SysMenuTreeVo implements Serializable {
 	@ApiModelProperty("默认选中节点")
 	private List<String> defaultCheckedKeys;
 	@ApiModelProperty("节点集合")
-	private List<SysMenu> data;
+	private List<SysMenu> rows;
 	public List<String> getDefaultExpandedKeys() {
 		return defaultExpandedKeys;
 	}
@@ -31,11 +31,12 @@ public class SysMenuTreeVo implements Serializable {
 	public void setDefaultCheckedKeys(List<String> defaultCheckedKeys) {
 		this.defaultCheckedKeys = defaultCheckedKeys;
 	}
-	public List<SysMenu> getData() {
-		return data;
+	public List<SysMenu> getRows() {
+		return rows;
 	}
-	public void setData(List<SysMenu> data) {
-		this.data = data;
+	public void setRows(List<SysMenu> rows) {
+		this.rows = rows;
 	}
+	
 	
 }

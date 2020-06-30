@@ -67,7 +67,7 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 			vo.getDefaultCheckedKeys().add(item.getAccess());
 		});
 		List<SysAccessModel> allAccess = accessInitProcessor.getAccessList();
-		vo.setData(allAccess);
+		vo.setRows(allAccess);
 		// 默认展开第一行
 		allAccess.forEach(item->{
 			vo.getDefaultExpandedKeys().add(item.getAccess());
@@ -86,7 +86,7 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 			vo.getDefaultCheckedKeys().add(item.getMenuId().toString());
 		});
 		List<SysMenu> allMenu = sysMenuMapper.selectAll();
-		vo.setData(allMenu);
+		vo.setRows(allMenu);
 		// 默认展开第一行
 		allMenu.stream().filter(item->{
 			return new Long(0L).equals(item.getParentId());

@@ -18,7 +18,7 @@ public class SysAccessTreeVo implements Serializable {
 	@ApiModelProperty("默认选中节点")
 	private List<String> defaultCheckedKeys;
 	@ApiModelProperty("节点集合")
-	private List<SysAccessModel> data;
+	private List<SysAccessModel> rows;
 	public List<String> getDefaultExpandedKeys() {
 		return defaultExpandedKeys;
 	}
@@ -31,11 +31,12 @@ public class SysAccessTreeVo implements Serializable {
 	public void setDefaultCheckedKeys(List<String> defaultCheckedKeys) {
 		this.defaultCheckedKeys = defaultCheckedKeys;
 	}
-	public List<SysAccessModel> getData() {
-		return data;
+	public List<SysAccessModel> getRows() {
+		return rows;
 	}
-	public void setData(List<SysAccessModel> data) {
-		this.data = data;
+	public void setRows(List<SysAccessModel> rows) {
+		this.rows = rows;
 	}
+	
 	
 }
