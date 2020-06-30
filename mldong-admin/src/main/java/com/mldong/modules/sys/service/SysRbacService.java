@@ -2,12 +2,13 @@ package com.mldong.modules.sys.service;
 
 import java.util.List;
 
-import com.mldong.common.access.model.SysAccessModel;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.IdAndIdsParam;
 import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysMenu;
 import com.mldong.modules.sys.entity.SysUser;
+import com.mldong.modules.sys.vo.SysAccessTreeVo;
+import com.mldong.modules.sys.vo.SysMenuTreeVo;
 
 /**
  * 权限管理相关接口
@@ -17,9 +18,18 @@ import com.mldong.modules.sys.entity.SysUser;
 public interface SysRbacService {
 	/**
 	 * 获取权限树
+	 * @param userId 当前用户id
+	 * @param roleId 角色id
 	 * @return
 	 */
-	public List<SysAccessModel> listAccessTree();
+	public SysAccessTreeVo listAccessTree(Long userId, Long roleId);
+	/**
+	 * 获取菜单树
+	 * @param userId 当前用户id
+	 * @param roleId 角色id
+	 * @return
+	 */
+	public SysMenuTreeVo listMenuByRoleId(Long userId, Long roleId);
 	/**
 	 * 角色成员列表
 	 * @param param

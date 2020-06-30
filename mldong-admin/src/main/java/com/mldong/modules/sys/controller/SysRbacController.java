@@ -5,8 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import io.swagger.annotations.AuthorizationScope;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,13 +12,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mldong.common.access.model.SysAccessModel;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.IdAndIdsParam;
+import com.mldong.common.base.IdParam;
+import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysRbacService;
+import com.mldong.modules.sys.vo.SysAccessTreeVo;
+import com.mldong.modules.sys.vo.SysMenuTreeVo;
 
 @RestController
 @RequestMapping("/sys/rbac")
@@ -39,10 +40,18 @@ public class SysRbacController {
 	    	@AuthorizationScope(description="获取权限资源树",scope="sys:role:listAccessTree")
 	    })
 	})
-	public CommonResult<List<SysAccessModel>> listAccessTree() {
-		return CommonResult.success("获取权限资源树",sysRbacService.listAccessTree());
+	public CommonResult<SysAccessTreeVo> listAccessTree(@RequestBody @Validated IdParam param) {
+		return CommonResult.success("获取权限资源树",sysRbacService.listAccessTree(RequestHolder.getUserId(), param.getId()));
 	}
-
+	@PostMapping("listMenuByRoleId")
+	@ApiOperation(value="通过角色id获取菜单", notes="通过角色id获取菜单",authorizations={
+		@Authorization(value="通过角色id获取菜单",scopes={
+	    	@AuthorizationScope(description="通过角色id获取菜单",scope="sys:role:listMenuByRoleId")
+	    })
+	})
+	public CommonResult<SysMenuTreeVo> listMenuByRoleId(@RequestBody @Validated IdParam param) {
+		return CommonResult.success("获取权限资源树",sysRbacService.listMenuByRoleId(RequestHolder.getUserId(), param.getId()));
+	}
 	@PostMapping("listUserByRoleId")
 	@ApiOperation(value="角色成员列表", notes="角色成员列表",authorizations={
 		@Authorization(value="角色成员列表",scopes={

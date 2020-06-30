@@ -1,5 +1,6 @@
 package com.mldong.modules.sys.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,8 @@ import com.mldong.modules.sys.mapper.SysRoleAccessMapper;
 import com.mldong.modules.sys.mapper.SysRoleMenuMapper;
 import com.mldong.modules.sys.mapper.SysUserRoleMapper;
 import com.mldong.modules.sys.service.SysRbacService;
+import com.mldong.modules.sys.vo.SysAccessTreeVo;
+import com.mldong.modules.sys.vo.SysMenuTreeVo;
 
 @Service
 public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorService{
@@ -53,8 +56,44 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
 	@Override
-	public List<SysAccessModel> listAccessTree() {
-		return accessInitProcessor.getAccessList();
+	public SysAccessTreeVo listAccessTree(Long userId, Long roleId) {
+		SysAccessTreeVo vo = new SysAccessTreeVo();
+		vo.setDefaultCheckedKeys(new ArrayList<>());
+		vo.setDefaultExpandedKeys(new ArrayList<>());
+		SysRoleAccess q = new SysRoleAccess();
+		q.setRoleId(roleId);
+		List<SysRoleAccess> roleAccessList = sysRoleAccessMapper.select(q);
+		roleAccessList.forEach(item->{
+			vo.getDefaultCheckedKeys().add(item.getAccess());
+		});
+		List<SysAccessModel> allAccess = accessInitProcessor.getAccessList();
+		vo.setData(allAccess);
+		// 默认展开第一行
+		allAccess.forEach(item->{
+			vo.getDefaultExpandedKeys().add(item.getAccess());
+		});
+		return vo;
+	}
+	@Override
+	public SysMenuTreeVo listMenuByRoleId(Long userId, Long roleId) {
+		SysMenuTreeVo vo = new SysMenuTreeVo();
+		vo.setDefaultCheckedKeys(new ArrayList<>());
+		vo.setDefaultExpandedKeys(new ArrayList<>());
+		SysRoleMenu q = new SysRoleMenu();
+		q.setRoleId(roleId);
+		List<SysRoleMenu> roleMenuList = sysRoleMenuMapper.select(q);
+		roleMenuList.forEach(item->{
+			vo.getDefaultCheckedKeys().add(item.getMenuId().toString());
+		});
+		List<SysMenu> allMenu = sysMenuMapper.selectAll();
+		vo.setData(allMenu);
+		// 默认展开第一行
+		allMenu.stream().filter(item->{
+			return new Long(0L).equals(item.getParentId());
+		}).forEach(item->{
+			vo.getDefaultExpandedKeys().add(item.getId().toString());
+		});
+		return vo;
 	}
 	@Override
 	public CommonPage<SysUser> listUserByRoleId(SysUserWithRoleIdPageParam param) {
