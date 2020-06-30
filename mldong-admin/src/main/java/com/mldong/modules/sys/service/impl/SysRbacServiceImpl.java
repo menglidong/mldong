@@ -156,11 +156,18 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 				sysRoleAccessMapper.insertSelective(q);
 			}
 		});
+		
 		Condition delConditin = new Condition(SysRoleAccess.class);
-		delConditin.createCriteria().andEqualTo("roleId", roleId)
-		.andNotIn("access", param.getIds());
-		// 删除不在已选中列表中资源
-		sysRoleAccessMapper.deleteByCondition(delConditin);
+		if(param.getIds().isEmpty()) {
+			delConditin.createCriteria().andEqualTo("roleId", roleId);
+			// 删除不在已选中列表中资源
+			sysRoleMenuMapper.deleteByCondition(delConditin);
+		} else {
+			delConditin.createCriteria().andEqualTo("roleId", roleId)
+			.andNotIn("access", param.getIds());
+			// 删除不在已选中列表中资源
+			sysRoleAccessMapper.deleteByCondition(delConditin);
+		}
 		return 1;
 	}
 	@Caching(evict={
@@ -193,10 +200,16 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 			}
 		});
 		Condition delConditin = new Condition(SysRoleMenu.class);
-		delConditin.createCriteria().andEqualTo("roleId", roleId)
-		.andNotIn("menuId", param.getIds());
-		// 删除不在已选中列表中资源
-		sysRoleMenuMapper.deleteByCondition(delConditin);
+		if(param.getIds().isEmpty()) {
+			delConditin.createCriteria().andEqualTo("roleId", roleId);
+			// 删除不在已选中列表中资源
+			sysRoleMenuMapper.deleteByCondition(delConditin);
+		} else {
+			delConditin.createCriteria().andEqualTo("roleId", roleId)
+			.andNotIn("menuId", param.getIds());
+			// 删除不在已选中列表中资源
+			sysRoleMenuMapper.deleteByCondition(delConditin);
+		}
 		return 1;
 	}
 	@Caching(evict={
