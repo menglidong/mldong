@@ -273,6 +273,9 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 			return item.getParentId();
 		}).collect(Collectors.toList()));
 		List<SysMenu> newList = sysMenuMapper.selectByCondition(condition);
+		if(newList.isEmpty()) {
+			return;
+		}
 		userMenuList.addAll(newList);
 		List<SysMenu> newNoParentList = userMenuList.stream().filter(item->{
 			return userMenuList.stream().filter(itemm-> {
