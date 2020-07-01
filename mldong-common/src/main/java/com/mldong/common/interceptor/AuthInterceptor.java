@@ -18,6 +18,7 @@ import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.exception.BizException;
 import com.mldong.common.logger.ILoggerStore;
 import com.mldong.common.logger.LoggerModel;
+import com.mldong.common.tool.StringTool;
 import com.mldong.common.web.RequestHolder;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
@@ -66,7 +67,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			}
 			RequestHolder.setUserId(userId);
 			String access = AccessInitProcessor.getAccess(apiOperation);
-			if(null == access) {
+			if(StringTool.isEmpty(access)) {
 				// 没有定义，直接放行
 				return true;
 			}
