@@ -102,11 +102,7 @@ public class SysDictController {
 		return CommonResult.success("查询字典成功",sysDictService.list(param));
 	}
 	@PostMapping("getByDictKey")
-	@ApiOperation(value="通过字典唯一编码查询", notes="通过字典唯一编码查询",authorizations={
-		@Authorization(value="通过字典唯一编码查询",scopes={
-	    	@AuthorizationScope(description="通过字典唯一编码查询",scope="sys:dict:getByDictKey")
-	    })
-	})
+	@ApiOperation(value="通过字典唯一编码查询", notes="通过字典唯一编码查询")
 	public CommonResult<DictModel> getByDictKey(@RequestBody @Validated SysDictKeyParam param) {
 		return CommonResult.success("通过字典唯一编码查询成功",sysDictService.getByDictKey(param));
 	}
