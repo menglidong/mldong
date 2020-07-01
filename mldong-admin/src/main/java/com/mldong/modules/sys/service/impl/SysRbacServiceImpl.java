@@ -6,13 +6,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
+
 import tk.mybatis.mapper.entity.Condition;
+
 
 import com.github.pagehelper.Page;
 import com.mldong.common.access.AccessInitProcessor;
@@ -246,7 +249,37 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 		if(userId.equals(globalProperties.getSuperAdminId())) {
 			return sysMenuMapper.selectAll();
 		}
-		return sysUserDao.selectUserMenu(userId);
+		List<SysMenu> userMenuList =  sysUserDao.selectUserMenu(userId);
+		List<SysMenu> noParentList = userMenuList.stream().filter(item->{
+			return userMenuList.stream().filter(itemm-> {
+				return itemm.getId().equals(item.getParentId());
+			}).count() == 0 && (item.getParentId() !=null || !new Long(0).equals(item.getParentId()));
+		}).collect(Collectors.toList());
+		tranfer(userMenuList, noParentList,1);
+		return userMenuList;
+	}
+	/**
+	 * 递归转换，追加父级菜单
+	 * @param userMenuList 当前用户菜单
+	 * @param noParentList 没有父节点的菜单
+	 * @param level 深度，支支持5级
+	 */
+	private void tranfer(List<SysMenu> userMenuList, List<SysMenu> noParentList, int level){
+		if(noParentList.isEmpty() || level > 5) {
+			return;
+		}
+		Condition condition = new Condition(SysMenu.class);
+		condition.createCriteria().andIn("id", noParentList.stream().map(item->{
+			return item.getParentId();
+		}).collect(Collectors.toList()));
+		List<SysMenu> newList = sysMenuMapper.selectByCondition(condition);
+		userMenuList.addAll(newList);
+		List<SysMenu> newNoParentList = userMenuList.stream().filter(item->{
+			return userMenuList.stream().filter(itemm-> {
+				return itemm.getId().equals(item.getParentId());
+			}).count() == 0 && (item.getParentId() !=null || !new Long(0).equals(item.getParentId()));
+		}).collect(Collectors.toList());
+		tranfer(userMenuList, newNoParentList,level+1);
 	}
 	@Override
 	public boolean verifyToken(String token) {
