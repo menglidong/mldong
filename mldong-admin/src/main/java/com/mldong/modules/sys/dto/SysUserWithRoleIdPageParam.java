@@ -2,14 +2,14 @@ package com.mldong.modules.sys.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.mldong.common.base.PageParam;
 import com.mldong.modules.sys.entity.SysUser;
 
 public class SysUserWithRoleIdPageParam extends PageParam<SysUser> {
 	@ApiModelProperty(value="角色id",required=true)
-	@NotBlank(message="角色id")
+	@NotNull
 	private Long roleId;
 
 	public Long getRoleId() {
