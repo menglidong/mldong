@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mldong-admin-test
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mldong-admin-nodeport
+  namespace: mldong-admin-test
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: mldong-admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mldong-admin
+  namespace: mldong-admin-test
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: mldong-admin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mldong-admin
+  namespace: mldong-admin-test
+spec:
+  selector:
+    matchLabels:
+      app: mldong-admin
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mldong-admin
+    spec:
+      containers:
+        - name: mldong-admin
+          image: registry-vpc.cn-zhangjiakou.aliyuncs.com/mldong/java/mldong-admin:202007082217_9d83c5c
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: port
+              protocol: TCP
+          command: ["/bin/sh"]
+          args: ["-c", "set -e && java -jar app.jar --spring.profiles.active=test --server.port=8080"]
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+  name: mldong-admin-ingress
+  namespace: mldong-admin-test
+spec:
+  rules:
+    - host: c.mldong.com
+      http:
+        paths:
+          - backend:
+              serviceName: mldong-admin
+              servicePort: 8080
+            path: /
