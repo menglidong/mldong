@@ -1,0 +1,164 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mldong-admin-test
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-cm
+  namespace: mldong-admin-test
+data:
+  a.conf: |-
+    server {
+      listen       80;
+      server_name  a.mldong.com;
+      location / {
+        root   /usr/share/nginx/html/mldong-vue;
+        index  index.html index.htm;
+      }
+      error_page   500 502 503 504  /50x.html;
+      location = /50x.html {
+        root   /usr/share/nginx/html;
+      }
+    }
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mldong-vue-test-pv
+  labels:
+    alicloud-pvname: mldong-vue-test-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  csi:
+    driver: nasplugin.csi.alibabacloud.com
+    volumeHandle: mldong-vue-test-pv
+    volumeAttributes:
+      server: "9fdd94bf87-wfq72.cn-zhangjiakou.nas.aliyuncs.com"
+      path: "/"
+      vers: "3"
+  storageClassName: nas
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    pv.kubernetes.io/bind-completed: 'yes'
+    pv.kubernetes.io/bound-by-controller: 'yes'
+  finalizers:
+    - kubernetes.io/pvc-protection
+  name: mldong-vue-test-pvc
+  namespace: mldong-admin-test
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      alicloud-pvname: mldong-vue-test-pv
+  storageClassName: nas
+  volumeMode: Filesystem
+  volumeName: mldong-vue-test-pv
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: mldong-admin-test
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: registry-vpc.cn-zhangjiakou.aliyuncs.com/mldong/java/nginx:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: port
+              protocol: TCP
+          volumeMounts:
+            - name: mldong-vue-test-pvc
+              mountPath: "/usr/share/nginx/html"
+            - name: nginx-cm
+              mountPath: "/etc/nginx/conf.d"
+      volumes:
+        - name: mldong-vue-test-pvc
+          persistentVolumeClaim: 
+            claimName: mldong-vue-test-pvc
+        - name: nginx-cm
+          configMap:
+            name: nginx-cm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeport
+  namespace: mldong-admin-test
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: mldong-admin-test
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+  name: nginx-ingress
+  namespace: mldong-admin-test
+spec:
+  rules:
+    - host: a.mldong.com
+      http:
+        paths:
+          - backend:
+              serviceName: nginx
+              servicePort: 80
+            path: /
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: mldong-admin-api
+  namespace: mldong-admin-test
+spec:
+  rules:
+  - host: a.mldong.com
+    http:
+      paths:
+      - backend:
+          serviceName: mldong-admin
+          servicePort: 8080
+        path: /api(/|$)(.*)
+       
