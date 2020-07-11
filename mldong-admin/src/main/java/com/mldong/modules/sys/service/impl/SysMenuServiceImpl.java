@@ -55,14 +55,13 @@ public class SysMenuServiceImpl implements SysMenuService{
 	public int remove(List<Long> ids) {
 		Date now = new Date();
 		SysMenu upUser = new SysMenu();
-		upUser.setIsDeleted(YesNoEnum.YES);
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysMenu.class);
 		condition.createCriteria().andIn("id", ids);
 		// 更新时间
 		sysMenuMapper.updateByConditionSelective(upUser, condition);
 		// 逻辑删除
-		return sysMenuMapper.updateByConditionSelective(upUser, condition);
+		return sysMenuMapper.deleteByCondition(condition);
 	}
 
 	@Override

@@ -78,14 +78,13 @@ public class SysDictServiceImpl implements SysDictService{
 	public int remove(List<Long> ids) {
 		Date now = new Date();
 		SysDict upUser = new SysDict();
-		upUser.setIsDeleted(YesNoEnum.YES);
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysDict.class);
 		condition.createCriteria().andIn("id", ids);
 		// 更新时间
 		sysDictMapper.updateByConditionSelective(upUser, condition);
 		// 逻辑删除
-		return sysDictMapper.updateByConditionSelective(upUser, condition);
+		return sysDictMapper.deleteByCondition(condition);
 	}
 
 	@Override

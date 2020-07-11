@@ -66,14 +66,13 @@ public class SysDictItemServiceImpl implements SysDictItemService{
 	public int remove(List<Long> ids) {
 		Date now = new Date();
 		SysDictItem upUser = new SysDictItem();
-		upUser.setIsDeleted(YesNoEnum.YES);
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysDictItem.class);
 		condition.createCriteria().andIn("id", ids);
 		// 更新时间
 		sysDictItemMapper.updateByConditionSelective(upUser, condition);
 		// 逻辑删除
-		return sysDictItemMapper.updateByConditionSelective(upUser, condition);
+		return sysDictItemMapper.deleteByCondition(condition);
 	}
 
 	@Override

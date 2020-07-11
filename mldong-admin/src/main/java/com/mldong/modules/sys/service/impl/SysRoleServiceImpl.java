@@ -55,14 +55,13 @@ public class SysRoleServiceImpl implements SysRoleService{
 	public int remove(List<Long> ids) {
 		Date now = new Date();
 		SysRole upUser = new SysRole();
-		upUser.setIsDeleted(YesNoEnum.YES);
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysRole.class);
 		condition.createCriteria().andIn("id", ids);
 		// 更新时间
 		sysRoleMapper.updateByConditionSelective(upUser, condition);
 		// 逻辑删除
-		return sysRoleMapper.updateByConditionSelective(upUser, condition);
+		return sysRoleMapper.deleteByCondition(condition);
 	}
 
 	@Override

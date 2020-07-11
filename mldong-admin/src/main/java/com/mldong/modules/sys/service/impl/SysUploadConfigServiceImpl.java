@@ -55,14 +55,13 @@ public class SysUploadConfigServiceImpl implements SysUploadConfigService{
 	public int remove(List<Long> ids) {
 		Date now = new Date();
 		SysUploadConfig upUser = new SysUploadConfig();
-		upUser.setIsDeleted(YesNoEnum.YES);
 		upUser.setUpdateTime(now);
 		Condition condition = new Condition(SysUploadConfig.class);
 		condition.createCriteria().andIn("id", ids);
 		// 更新时间
 		sysUploadConfigMapper.updateByConditionSelective(upUser, condition);
 		// 逻辑删除
-		return sysUploadConfigMapper.updateByConditionSelective(upUser, condition);
+		return sysUploadConfigMapper.deleteByCondition(condition);
 	}
 
 	@Override
