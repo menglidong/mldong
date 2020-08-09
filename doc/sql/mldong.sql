@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50619
 File Encoding         : 65001
 
-Date: 2020-06-14 18:58:12
+Date: 2020-08-09 22:13:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -200,7 +200,7 @@ CREATE TABLE `sys_user` (
   `password` varchar(40) DEFAULT NULL COMMENT '密码',
   `salt` varchar(10) DEFAULT NULL COMMENT '加盐',
   `sex` int(6) unsigned DEFAULT '1' COMMENT '性别(1->男|MALE,2->女|FEMALE,3->未知|UNKNOWN)',
-  `is_locked` tinyint(1) unsigned DEFAULT '2' COMMENT '是否锁定(1->已锁定|YES,2->未锁定|NO)',
+  `is_locked` tinyint(1) unsigned DEFAULT '1' COMMENT '是否锁定(2->已锁定|YES,1->未锁定|NO)',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_time` datetime(3) NOT NULL COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
@@ -208,12 +208,12 @@ CREATE TABLE `sys_user` (
   PRIMARY KEY (`id`),
   KEY `real_name` (`real_name`),
   KEY `user_name` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '蒙立东', '', '', '18276163680', '', '7b93ca5f9d7d0608299cf87c5ba3c164', 'v7hc7v69', '1', '2', null, '2020-06-09 21:47:33.417', '2020-06-09 21:47:33.417', '2');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '蒙立东', '', '', '18276163680', '', '52618c88aa68c63d37e50d6acd8b8456', 'v7hc7v69', '1', '1', null, '2020-06-09 21:47:33.417', '2020-06-09 21:47:33.417', '1');
 
 -- ----------------------------
 -- Table structure for `sys_user_login_times`
