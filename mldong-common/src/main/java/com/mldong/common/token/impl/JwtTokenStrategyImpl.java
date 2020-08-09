@@ -6,14 +6,16 @@ import org.springframework.stereotype.Component;
 import com.mldong.common.jwt.JwtToken;
 import com.mldong.common.token.TokenStrategy;
 
+import java.util.Map;
+
 @Component
 public class JwtTokenStrategyImpl implements TokenStrategy{
 	@Autowired
 	private JwtToken jwtToken;
 
 	@Override
-	public String generateToken(Long userId, String userName) {
-		return jwtToken.generateToken(userId, userName);
+	public String generateToken(Long userId, String userName, Map<String,Object> map) {
+		return jwtToken.generateToken(userId, userName, map);
 	}
 	@Override
 	public boolean verifyToken(String token) {
@@ -26,5 +28,10 @@ public class JwtTokenStrategyImpl implements TokenStrategy{
 	@Override
 	public String getUserName(String token) {
 		return jwtToken.getUserName(token);
+	}
+
+	@Override
+	public Map<String, Object> getExt(String token) {
+		return jwtToken.getExt(token);
 	}
 }

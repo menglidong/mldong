@@ -1,13 +1,16 @@
 package com.mldong.common.token;
 
+import java.util.Map;
+
 public interface TokenStrategy {
 	/**
-	 * 通过用户id和用户生成token
+	 * 通过用户id和用户名称生成token
 	 * @param userId 用户id
 	 * @param userName 用户密码
+	 * @param map 额外参数
 	 * @return
 	 */
-	public String generateToken(Long userId,String userName);
+	public String generateToken(Long userId,String userName, Map<String,Object> map);
 	/**
 	 * 校验token是否合法
 	 * @param token 临时令牌
@@ -26,4 +29,12 @@ public interface TokenStrategy {
 	 * @return
 	 */
 	public String getUserName(String token);
+
+	/**
+	 * 获取额外参数
+	 * @param  token
+	 * @return
+	 */
+	public Map<String,Object> getExt(String token);
+
 }

@@ -1,7 +1,10 @@
 package com.mldong.common.jwt;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.mldong.common.tool.JsonTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +24,7 @@ public class JwtToken {
 	 * @param userName
 	 * @return
 	 */
-	public String generateToken(Long userId,String userName) {
+	public String generateToken(Long userId,String userName, Map<String,Object> ext) {
 		 Date now = new Date();  
 	        Algorithm algorithm = Algorithm.HMAC256(properties.getSecret()); //算法  
 	        String token = JWT.create()  
@@ -29,7 +32,8 @@ public class JwtToken {
 	            .withIssuedAt(now) //签发时间  
 	            .withExpiresAt(new Date(now.getTime() + properties.getExpireTime())) //过期时间  
 	            .withClaim("userId", userId)
-	            .withClaim("userName", userName) //保存身份标识  
+	            .withClaim("userName", userName) //保存身份标识
+                    .withClaim("ext", JsonTool.toJson(ext))
 	            .sign(algorithm); 
 	    return token;
 	}
@@ -72,5 +76,13 @@ public class JwtToken {
             ex.printStackTrace();  
         }  
         return 0L;  
-    }  
+    }
+    public Map<String,Object> getExt(String token) {
+        try{
+            return JsonTool.jsonToMap(JWT.decode(token).getClaim("ext").asString());
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return new HashMap<>();
+    }
 }

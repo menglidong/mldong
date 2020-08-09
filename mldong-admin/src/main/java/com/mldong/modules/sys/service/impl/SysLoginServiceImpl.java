@@ -1,6 +1,7 @@
 package com.mldong.modules.sys.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,7 +103,7 @@ public class SysLoginServiceImpl implements SysLoginService{
 		String userName = user.getUserName();
 		String realName = user.getRealName();
 		// 创建token
-		String token = generateTokenStrategy.generateToken(userId, userName);
+		String token = generateTokenStrategy.generateToken(userId, userName, new HashMap<>());
 		vo.setAccessList(sysRbacService.loadUserAccessList(userId));
 		vo.setAvatar(avatar);
 		vo.setMenuList(sysRbacService.loadUserMenuList(userId));
