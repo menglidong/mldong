@@ -21,7 +21,7 @@ public class InterceptorConfig implements WebMvcConfigurer{
 		if(interceptorList!=null) {
 			interceptorList.forEach(interceptor->{
 				registry.addInterceptor(interceptor)
-				.excludePathPatterns("/swagger-resources/**","/v2/api-docs-ext/**","/v2/api-docs/**");
+				.excludePathPatterns("/swagger-resources/**","/v2/api-docs-ext/**","/v2/api-docs/**","/druid/**");
 			});
 		}
 	}

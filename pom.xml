@@ -13,10 +13,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+	  <spring-boot-admin.version>2.3.0</spring-boot-admin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 	<jwt.version>3.7.0</jwt.version>
-    <com.alibaba.druid.version>1.0.18</com.alibaba.druid.version>
+    <com.alibaba.druid.version>1.1.10</com.alibaba.druid.version>
     <tk.mybatis.version>4.1.5</tk.mybatis.version>
     <mybatis.spring.boot.starter.version>2.1.0</mybatis.spring.boot.starter.version>
     <mapper.spring.boot.starter.version>2.1.0</mapper.spring.boot.starter.version>
@@ -33,14 +34,28 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
-
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server</artifactId>
+			<version>${spring-boot-admin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server-ui</artifactId>
+			<version>${spring-boot-admin.version}</version>
+		</dependency>
 		<!--druid数据库连接池-->
 		<dependency>
 	        <groupId>com.alibaba</groupId>
-	        <artifactId>druid</artifactId>
+	        <artifactId>druid-spring-boot-starter</artifactId>
 	        <version>${com.alibaba.druid.version}</version>
         </dependency>
-		<!-- jwt -->  
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${com.alibaba.druid.version}</version>
+		</dependency>
+		<!-- jwt -->
 	    <dependency>  
 	        <groupId>com.auth0</groupId>  
 	        <artifactId>java-jwt</artifactId>  

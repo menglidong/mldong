@@ -7,7 +7,7 @@
     <logger name="org.springframework.web" level="INFO"/>
     <logger name="org.springboot.sample" level="TRACE" />
 
-    
+
     <property name="log.lever" value="debug" />
     <property name="log.maxHistory" value="30" />
     <property name="log.filePath" value="logs" />
@@ -107,7 +107,7 @@
     </springProfile>
 
     <springProfile name="prod">
-    	<root level="debug">
+    	<root level="ERROR">
 			<appender-ref ref="infoAppenderAsync" />
 			<appender-ref ref="debugAppenderAsync" />
 			<appender-ref ref="errorAppenderAsync" />
@@ -115,8 +115,8 @@
         <logger name="org.springframework.web" level="ERROR"/>
         <logger name="org.springboot.sample" level="ERROR" />
         <logger name="org.apache" level="ERROR" />
-        <logger name="com.mldong" level="debug" />
+        <logger name="com.mldong" level="ERROR" />
     </springProfile>
-	
+
 
 </configuration>
