@@ -42,6 +42,9 @@ spring:
       time-between-eviction-runs-millis: 6000
       # 连接保持空闲而不被驱逐的最小时间
       min-evictable-idle-time-millis: 1800000
+      # spring监控页面的配置
+      aop-patterns:
+        - com.mldong.modules.*.service.*
       # 监控页面相关配置
       stat-view-servlet:
         enable: true
