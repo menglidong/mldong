@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : me
-Source Server Version : 50619
-Source Host           : localhost:3306
+Source Server         : hyper-db-root
+Source Server Version : 50731
+Source Host           : 192.168.1.160:3306
 Source Database       : mldong
 
 Target Server Type    : MYSQL
-Target Server Version : 50619
+Target Server Version : 50731
 File Encoding         : 65001
 
-Date: 2020-08-09 22:13:25
+Date: 2020-09-06 20:14:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `sys_dict`
+-- Table structure for sys_dict
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict` (
@@ -36,7 +36,7 @@ CREATE TABLE `sys_dict` (
 INSERT INTO `sys_dict` VALUES ('1', '测试', 'sys_test', '测试', '2020-06-11 23:11:49.532', '2020-06-11 23:11:49.532', '2');
 
 -- ----------------------------
--- Table structure for `sys_dict_item`
+-- Table structure for sys_dict_item
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_item`;
 CREATE TABLE `sys_dict_item` (
@@ -58,7 +58,7 @@ CREATE TABLE `sys_dict_item` (
 INSERT INTO `sys_dict_item` VALUES ('1', '1', '男', '10', '10.00', '', '2020-06-11 23:12:37.042', '2020-06-11 23:12:37.042', '2');
 
 -- ----------------------------
--- Table structure for `sys_menu`
+-- Table structure for sys_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
@@ -80,7 +80,38 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `sys_role`
+-- Table structure for sys_request_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_request_log`;
+CREATE TABLE `sys_request_log` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `track_id` char(40) DEFAULT NULL COMMENT '请求唯一标识',
+  `request_type` int(10) unsigned DEFAULT '99' COMMENT '请求类型(10->添加|SAVE,20->修改|UPDATE,30->删除|REMOVE,40->导入|IMPORT,50->导出|EXPORT,99->其他|OTHER)',
+  `uri` varchar(64) DEFAULT NULL COMMENT '请求路径',
+  `query_string` varchar(255) DEFAULT NULL COMMENT '请求url参数',
+  `method` char(8) DEFAULT NULL COMMENT '请求方式',
+  `description` varchar(64) DEFAULT NULL COMMENT '操作说明',
+  `ip` varchar(16) DEFAULT NULL COMMENT '客户端ip',
+  `body` text COMMENT '请求体',
+  `token` varchar(255) DEFAULT NULL COMMENT '请求token',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
+  `user_name` varchar(64) DEFAULT NULL COMMENT '用户名',
+  `return_data` longtext COMMENT '返回参数',
+  `start_time` datetime(3) DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime(3) DEFAULT NULL COMMENT '结束时间',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
+
+-- ----------------------------
+-- Records of sys_request_log
+-- ----------------------------
+INSERT INTO `sys_request_log` VALUES ('2', '369fc910-bc9b-4514-9152-1d1a645050f9', '30', '/sys/user/remove', '', 'POST', '删除用户', '0:0:0:0:0:0:0:1', '{\n	\"ids\": [22]\n}', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTU5OTQwMTIyMSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTU5OTM5NDAyMSwidXNlcklkIjoxfQ.obM5vUe_4UtK4Grz7ud8ZOIiiQGZ1a-s_PwA6K8gY94', '1', 'admin', '{\"code\":99999999,\"msg\":\"删除用户失败\",\"data\":null}', '2020-09-06 20:08:28.135', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '1');
+
+-- ----------------------------
+-- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
@@ -102,7 +133,7 @@ CREATE TABLE `sys_role` (
 INSERT INTO `sys_role` VALUES ('1', '普通管理员', 'NORMAL_MANAGE', '10', '1', '普通管理员', '2020-05-31 07:07:26.000', '2020-05-31 07:07:29.000', '2');
 
 -- ----------------------------
--- Table structure for `sys_role_access`
+-- Table structure for sys_role_access
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_access`;
 CREATE TABLE `sys_role_access` (
@@ -121,7 +152,7 @@ CREATE TABLE `sys_role_access` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `sys_role_menu`
+-- Table structure for sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
@@ -139,7 +170,7 @@ CREATE TABLE `sys_role_menu` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `sys_upload_config`
+-- Table structure for sys_upload_config
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_upload_config`;
 CREATE TABLE `sys_upload_config` (
@@ -163,7 +194,7 @@ CREATE TABLE `sys_upload_config` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `sys_upload_record`
+-- Table structure for sys_upload_record
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_upload_record`;
 CREATE TABLE `sys_upload_record` (
@@ -186,7 +217,7 @@ CREATE TABLE `sys_upload_record` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `sys_user`
+-- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
@@ -216,7 +247,7 @@ CREATE TABLE `sys_user` (
 INSERT INTO `sys_user` VALUES ('1', 'admin', '蒙立东', '', '', '18276163680', '', '52618c88aa68c63d37e50d6acd8b8456', 'v7hc7v69', '1', '1', null, '2020-06-09 21:47:33.417', '2020-06-09 21:47:33.417', '1');
 
 -- ----------------------------
--- Table structure for `sys_user_login_times`
+-- Table structure for sys_user_login_times
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_login_times`;
 CREATE TABLE `sys_user_login_times` (
@@ -235,7 +266,7 @@ CREATE TABLE `sys_user_login_times` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `sys_user_role`
+-- Table structure for sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
