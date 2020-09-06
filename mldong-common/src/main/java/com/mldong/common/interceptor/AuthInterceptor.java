@@ -1,5 +1,6 @@
 package com.mldong.common.interceptor;
 
+import com.mldong.common.logger.IRequestLogStore;
 import io.swagger.annotations.ApiOperation;
 
 import java.util.Map;
@@ -27,6 +28,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 	private AuthInterceptorService authInterceptorService;
 	@Autowired
 	private ILoggerStore loggerStore;
+	@Autowired(required = false)
+	private IRequestLogStore requestLogStore;
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -91,6 +94,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 		if(null != loggerModel) {
 			loggerModel.setEndTime(System.currentTimeMillis());
 			loggerStore.save(loggerModel);
+			if(requestLogStore!=null) {
+				requestLogStore.saveRequestLog(loggerModel);
+			}
 		}
 		// 记得要移除！！！！！
 		RequestHolder.removeLoggerModel();

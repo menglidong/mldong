@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mldong.modules.sys.mapper.SysRequestLogMapper">
+	<resultMap id="BaseResultMap" type="com.mldong.modules.sys.entity.SysRequestLog">
+		<id column="id" property="id" />
+		<result column="track_id" property="trackId" />  
+		<result column="request_type" property="requestType" />  
+		<result column="uri" property="uri" />  
+		<result column="query_string" property="queryString" />  
+		<result column="method" property="method" />  
+		<result column="description" property="description" />  
+		<result column="ip" property="ip" />  
+		<result column="body" property="body" />  
+		<result column="token" property="token" />  
+		<result column="user_id" property="userId" />  
+		<result column="user_name" property="userName" />  
+		<result column="return_data" property="returnData" />  
+		<result column="start_time" property="startTime" />  
+		<result column="end_time" property="endTime" />  
+		<result column="create_time" property="createTime" />  
+		<result column="update_time" property="updateTime" />  
+		<result column="is_deleted" property="isDeleted" />  
+	</resultMap>
+</mapper>
