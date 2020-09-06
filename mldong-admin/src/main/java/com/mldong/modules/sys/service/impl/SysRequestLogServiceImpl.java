@@ -85,6 +85,11 @@ public class SysRequestLogServiceImpl implements SysRequestLogService, IRequestL
 
 	@Override
 	public int saveRequestLog(LoggerModel model) {
+		if(model.getUri().contains("get")
+				|| model.getUri().contains("list")
+				|| model.getUri().contains("info")) {
+			return 1;
+		}
 		Date now = new Date();
 		SysRequestLog log = new SysRequestLog();
 		BeanUtils.copyProperties(model, log, "startTime","endTime");
@@ -103,8 +108,6 @@ public class SysRequestLogServiceImpl implements SysRequestLogService, IRequestL
 			log.setRequestType(SysRequestLog.RequestTypeEnum.EXPORT);
 		} else if(model.getUri().contains("import")) {
 			log.setRequestType(SysRequestLog.RequestTypeEnum.IMPORT);
-		} else if(model.getUri().contains("get") || model.getUri().contains("list")) {
-			// 忽略get和list
 		} else  {
 			log.setRequestType(SysRequestLog.RequestTypeEnum.OTHER);
 		}
