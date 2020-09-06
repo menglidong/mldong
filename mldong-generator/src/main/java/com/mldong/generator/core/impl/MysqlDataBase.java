@@ -173,8 +173,8 @@ public class MysqlDataBase implements DataBase{
 			// 表名
 			// String tableName = rs.getString("TABLE_NAME");
 			column.setColumnName(columnName);
-			int size = rs.getInt("CHARACTER_MAXIMUM_LENGTH");
-			column.setSize(size==0?rs.getInt("NUMERIC_PRECISION"):size);
+			long size = rs.getLong("CHARACTER_MAXIMUM_LENGTH");
+			column.setSize(size==0L?rs.getLong("NUMERIC_PRECISION"):size);
 			column.setNullable("YES".equals(rs.getString("IS_NULLABLE")));
 			column.setDefaultValue(rs.getString("COLUMN_DEFAULT"));
 			column.setDataType(rs.getString("DATA_TYPE"));

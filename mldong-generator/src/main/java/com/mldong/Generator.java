@@ -28,9 +28,10 @@ import com.mldong.generator.engine.TemplateEngine;
 public class Generator {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Generator.class);
 	public static void main(String[] args) throws FileNotFoundException {
-        String configPath = "src/main/resources/config.yml";
-        String dataTypePath = "src/main/resources/dataType.yml";
-        String templateDir = "src/main/resources/templates";
+		String path = Generator.class.getResource("/").getPath();
+        String configPath = path+"config.yml";
+        String dataTypePath = path+ "dataType.yml";
+        String templateDir = path + "/templates";
 		GeneratorConfig config = new GeneratorConfig(configPath, dataTypePath);
 		// 加载配置
 	    config.loadConfig();

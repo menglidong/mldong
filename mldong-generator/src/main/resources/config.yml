@@ -2,25 +2,25 @@ database:
   # jdbc驱动
   driverClass: "com.mysql.cj.jdbc.Driver"
   # 数据库地址
-  url: "jdbc:mysql://localhost:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai"
+  url: "jdbc:mysql://192.168.1.160:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai"
   # 数据库名称
   dbName: "mldong"
   # 用户名
-  username: "root"
+  username: "u_mldong"
   # 密码
-  password: ""
+  password: "8Eli@gr#AUk"
 # 包名
 basePackage: "com.mldong"
 # 作者
 author: "mldong"
 # 生成代码目标目录
-targetProject: "D:/mldong/couse-workspace/mldong/"
+targetProject: "D:/mldong/back-workspace/mldong/"
 # 模块名
 moduleName: "sys"
 # 模块描述 
 moduleDesc: "系统管理"
 tables:
-  - tableName: "sys_role"
+  - tableName: "sys_request_log"
 templates:
     # 模板名称
   - name: "实体类"

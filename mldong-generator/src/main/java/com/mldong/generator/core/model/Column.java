@@ -26,7 +26,7 @@ public class Column {
 	/**
 	 * 列长度
 	 */
-	private int size;
+	private long size;
 	/**
 	 * 小数点位数
 	 */
@@ -94,10 +94,10 @@ public class Column {
 	public void setForeignKey(boolean foreignKey) {
 		this.foreignKey = foreignKey;
 	}
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
 	}
 	public int getDecimalDigits() {
