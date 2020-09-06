@@ -14,7 +14,7 @@ public class DefaultLoggerStoreImpl implements ILoggerStore {
 	private final static Logger LOGGER = LoggerFactory.getLogger(DefaultLoggerStoreImpl.class);
 	@Override
 	public int save(LoggerModel model) {
-		LOGGER.info("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
+		LOGGER.info("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
 				model.getTrackId(),
 				model.getUri(),
 				model.getQueryString(),
@@ -24,6 +24,8 @@ public class DefaultLoggerStoreImpl implements ILoggerStore {
 				model.getBody(),
 				model.getToken(),
 				model.getUserId(),
+				model.getUserName(),
+				model.getExt()!=null?model.getExt().toString():"",
 				model.getReturnData(),
 				model.getStartTime(),
 				model.getEndTime());

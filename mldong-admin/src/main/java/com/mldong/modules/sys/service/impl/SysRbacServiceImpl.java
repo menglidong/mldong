@@ -1,9 +1,6 @@
 package com.mldong.modules.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -296,5 +293,15 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 	@Override
 	public Long getUserId(String token) {
 		return tokenStrategy.getUserId(token);
+	}
+
+	@Override
+	public String getUserName(String token) {
+		return tokenStrategy.getUserName(token);
+	}
+
+	@Override
+	public Map<String,Object> getExt(String token) {
+		return tokenStrategy.getExt(token);
 	}
 }

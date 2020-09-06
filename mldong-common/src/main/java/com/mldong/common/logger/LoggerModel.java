@@ -1,6 +1,7 @@
 package com.mldong.common.logger;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 日志实体类
@@ -49,6 +50,8 @@ public class LoggerModel implements Serializable{
 	 * 请求用户id，登录用户id，登录状态下存在
 	 */
 	private Long userId;
+	private String userName;
+	private Map<String,Object> ext;
 	/**
 	 * 返回结果，请求的结果
 	 */
@@ -128,5 +131,20 @@ public class LoggerModel implements Serializable{
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
-	
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Map<String, Object> getExt() {
+		return ext;
+	}
+
+	public void setExt(Map<String, Object> ext) {
+		this.ext = ext;
+	}
 }

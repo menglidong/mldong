@@ -2,6 +2,7 @@ package com.mldong.common.interceptor;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +62,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 			}
 			Long userId = authInterceptorService.getUserId(token);
 			loggerModel.setUserId(userId);
+			String userName = authInterceptorService.getUserName(token);
+			loggerModel.setUserName(userName);
+			Map<String,Object> ext = authInterceptorService.getExt(token);
+			loggerModel.setExt(ext);
 			if(!authInterceptorService.verifyToken(token)) {
 				// token校验不通过
 				throw new BizException(GlobalErrEnum.GL99990401);

@@ -1,4 +1,7 @@
 package com.mldong.common.interceptor;
+
+import java.util.Map;
+
 /**
  * 权限拦截器所需要的服务，由业务层实现
  * @author mldong
@@ -24,4 +27,18 @@ public interface AuthInterceptorService {
 	 * @return
 	 */
 	public Long getUserId(String token);
+
+	/**
+	 * 获取用户名
+	 * @param token
+	 * @return
+	 */
+	public String getUserName(String token);
+
+	/**
+	 * 获取扩展参数
+	 * @param token
+	 * @return
+	 */
+	public Map<String,Object> getExt(String token);
 }
