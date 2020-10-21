@@ -14,7 +14,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_dept - 部门</p>
- * @since 2020-10-21 09:39:50
+ * @since 2020-10-21 04:02:26
  */
 @Table(name="sys_dept")
 @ApiModel(description="部门")
@@ -28,9 +28,9 @@ public class SysDept implements Serializable{
     private Long id;
     @ApiModelProperty(value = "父级id")
     private Long parentId;
-    @ApiModelProperty(value = "机构编码")
+    @ApiModelProperty(value = "部门名称")
     private String name;
-    @ApiModelProperty(value = "机构编码")
+    @ApiModelProperty(value = "部门编码")
     private String code;
     @ApiModelProperty(value = "排序")
     private Double sort;
@@ -84,14 +84,14 @@ public class SysDept implements Serializable{
         this.parentId = parentId;
     }
     /**
-     * 获取机构编码
+     * 获取部门名称
      *
      */
     public String getName(){
         return this.name;
     }
 	 /**
-     * 设置机构编码
+     * 设置部门名称
      *
      * @param name
      */
@@ -99,14 +99,14 @@ public class SysDept implements Serializable{
         this.name = name;
     }
     /**
-     * 获取机构编码
+     * 获取部门编码
      *
      */
     public String getCode(){
         return this.code;
     }
 	 /**
-     * 设置机构编码
+     * 设置部门编码
      *
      * @param code
      */
