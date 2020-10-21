@@ -13,6 +13,8 @@
 		<result column="salt" property="salt" />  
 		<result column="sex" property="sex" />  
 		<result column="is_locked" property="isLocked" />  
+		<result column="dept_id" property="deptId" />  
+		<result column="post_id" property="postId" />  
 		<result column="remark" property="remark" />  
 		<result column="create_time" property="createTime" />  
 		<result column="update_time" property="updateTime" />  

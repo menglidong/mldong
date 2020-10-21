@@ -37,7 +37,11 @@ public enum SysErrEnum implements CommonError {
 	/**
 	 * 用户名已存在
 	 */
-	SYS80000007(80009007, "用户名已存在")
+	SYS80000007(80009007, "用户名已存在"),
+	/**
+	 * 部门已禁用
+	 */
+	SYS80000008(80009008, "部门已禁用")
 	;
 	public final int value;
 	public final String name;

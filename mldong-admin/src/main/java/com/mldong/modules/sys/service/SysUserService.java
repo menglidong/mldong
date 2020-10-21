@@ -6,6 +6,7 @@ import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.IdsParam;
 import com.mldong.modules.sys.dto.SysUserPageParam;
 import com.mldong.modules.sys.dto.SysUserParam;
+import com.mldong.modules.sys.dto.SysUserResult;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.vo.SysUserVo;
 /**
@@ -55,4 +56,11 @@ public interface SysUserService {
 	 * @return
 	 */
 	public SysUserVo getUserInfo(Long userId);
+	/*#######################*/
+	/**
+	 * 分页查询用户列表-包含扩展信息
+	 * @param param
+	 * @return
+	 */
+	public CommonPage<SysUserResult> listWithExt(SysUserPageParam param);
 }

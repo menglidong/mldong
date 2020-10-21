@@ -1,5 +1,6 @@
 package com.mldong.modules.sys.controller;
 
+import com.mldong.modules.sys.dto.SysUserResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -128,5 +129,19 @@ public class SysUserController {
 	@ApiOperation(value="获取当前用户信息", notes="获取当前用户信息")
 	public CommonResult<SysUserVo> info() {
 		return CommonResult.success(sysUserService.getUserInfo(RequestHolder.getUserId()));
+	}
+	/**
+	 * 自定义分页查询用户列表
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("listWithExt")
+	@ApiOperation(value="自定义分页查询用户列表", notes="自定义分页查询用户列表",authorizations={
+			@Authorization(value="自定义分页查询用户列表",scopes={
+					@AuthorizationScope(description="自定义分页查询用户列表",scope="sys:user:listWithExt")
+			})
+	})
+	public CommonResult<CommonPage<SysUserResult>> listWithExt(@RequestBody @Validated SysUserPageParam param) {
+		return CommonResult.success("查询用户成功",sysUserService.listWithExt(param));
 	}
 }

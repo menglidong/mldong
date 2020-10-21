@@ -2,6 +2,7 @@ package com.mldong.modules.sys.dao;
 
 import java.util.List;
 
+import com.mldong.modules.sys.dto.SysUserPageParam;
 import org.apache.ibatis.annotations.Param;
 
 import com.mldong.modules.sys.dto.SysUserResult;
@@ -12,10 +13,10 @@ import com.mldong.modules.sys.entity.SysUser;
 
 public interface SysUserDao {
 	/**
-	 * 查询包含角色名称
+	 * 查询包含角色/部门/岗位名称的实体
 	 * @return
 	 */
-	public List<SysUserResult> selectWithRoleName();
+	public List<SysUserResult> selectWithExt(SysUserPageParam param);
 	/**
 	 * 通过角色id查询列表
 	 * @param param

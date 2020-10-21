@@ -3,6 +3,8 @@ package com.mldong.modules.sys.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.mldong.modules.sys.dao.SysUserDao;
+import com.mldong.modules.sys.dto.SysUserResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ public class SysUserServiceImpl implements SysUserService{
 	private GlobalProperties globalProperties;
 	@Autowired
 	private SysRbacService sysRbacService;
+	@Autowired
+	private SysUserDao sysUserDao;
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(SysUserParam param) {
@@ -161,4 +165,10 @@ public class SysUserServiceImpl implements SysUserService{
 		return vo;
 	}
 
+	@Override
+	public CommonPage<SysUserResult> listWithExt(SysUserPageParam param) {
+		Page<SysUserResult> page =param.buildPage(true);
+		sysUserDao.selectWithExt(param);
+		return CommonPage.toPage(page);
+	}
 }

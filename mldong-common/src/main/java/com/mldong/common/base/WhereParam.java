@@ -1,5 +1,6 @@
 package com.mldong.common.base;
 
+import com.mldong.common.tool.StringTool;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * 自定义查询实体
@@ -7,6 +8,11 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 public class WhereParam {
+	/**
+	 * 表别名-xml自定义查询需要
+	 */
+	@ApiModelProperty(value="表别名",required=false)
+	private String tableAlias;
 	/**
 	 * 操作类型
 	 */
@@ -22,7 +28,15 @@ public class WhereParam {
 	 */
 	@ApiModelProperty(value="属性值",required=true)
 	private Object propertyValue;
-	
+
+	public String getTableAlias() {
+		return tableAlias;
+	}
+
+	public void setTableAlias(String tableAlias) {
+		this.tableAlias = tableAlias;
+	}
+
 	public OperateTypeEnum getOperateType() {
 		return operateType;
 	}
@@ -42,5 +56,7 @@ public class WhereParam {
 		this.propertyValue = propertyValue;
 	}
 	
-	
+	public String getColumnName() {
+		return (StringTool.isNotEmpty(tableAlias) ? (tableAlias + ".") : "") + StringTool.humpToLine(propertyName);
+	}
 }

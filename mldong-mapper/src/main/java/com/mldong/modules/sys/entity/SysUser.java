@@ -18,7 +18,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_user - 用户</p>
- * @since 2020-06-09 08:21:31
+ * @since 2020-10-21 09:45:22
  */
 @Table(name="sys_user")
 @ApiModel(description="用户")
@@ -50,6 +50,10 @@ public class SysUser implements Serializable{
     private SexEnum sex;
     @ApiModelProperty(value = "是否锁定(2->已锁定|YES,1->未锁定|NO)")
     private YesNoEnum isLocked;
+    @ApiModelProperty(value = "部门id")
+    private Long deptId;
+    @ApiModelProperty(value = "岗位id")
+    private Long postId;
     @ApiModelProperty(value = "备注")
     private String remark;
     @ApiModelProperty(value = "创建时间")
@@ -210,19 +214,49 @@ public class SysUser implements Serializable{
         this.sex = sex;
     }
     /**
-     * 获取是否锁定(1->已锁定|YES,2->未锁定|NO)
+     * 获取是否锁定(2->已锁定|YES,1->未锁定|NO)
      *
      */
     public YesNoEnum getIsLocked(){
         return this.isLocked;
     }
 	 /**
-     * 设置是否锁定(1->已锁定|YES,2->未锁定|NO)
+     * 设置是否锁定(2->已锁定|YES,1->未锁定|NO)
      *
      * @param isLocked
      */
     public void setIsLocked(YesNoEnum isLocked){
         this.isLocked = isLocked;
+    }
+    /**
+     * 获取部门id
+     *
+     */
+    public Long getDeptId(){
+        return this.deptId;
+    }
+	 /**
+     * 设置部门id
+     *
+     * @param deptId
+     */
+    public void setDeptId(Long deptId){
+        this.deptId = deptId;
+    }
+    /**
+     * 获取岗位id
+     *
+     */
+    public Long getPostId(){
+        return this.postId;
+    }
+	 /**
+     * 设置岗位id
+     *
+     * @param postId
+     */
+    public void setPostId(Long postId){
+        this.postId = postId;
     }
     /**
      * 获取备注

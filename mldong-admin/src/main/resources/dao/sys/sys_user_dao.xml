@@ -3,10 +3,16 @@
 <mapper namespace="com.mldong.modules.sys.dao.SysUserDao">
 	<resultMap id="BaseResultMap" extends="com.mldong.modules.sys.mapper.SysUserMapper.BaseResultMap" 
 	type="com.mldong.modules.sys.dto.SysUserResult">
-		<result column="role_name" property="roleName" />   
+		<result column="role_name" property="roleName" />
+		<result column="dept_name" property="deptName" />
+		<result column="post_name" property="postName" />
 	</resultMap>
-	<select id="selectWithRoleName" resultMap="BaseResultMap">
-		select u.*, 'aaaaa' as role_name from sys_user u where u.is_deleted=1
+
+	<select id="selectWithExt" resultMap="BaseResultMap">
+		select u.*,d.`name` as dept_name from sys_user u left join sys_dept d on u.dept_id = d.id
+		where u.is_deleted = 1
+		and
+		<include refid="com.mldong.common.base.BaseMapper.commonWhereSql"></include>
 	</select>
 	<!-- 通过角色id查询 -->
 	<select id="selectUserByRoleId" resultMap="com.mldong.modules.sys.mapper.SysUserMapper.BaseResultMap">
