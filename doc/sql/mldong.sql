@@ -1,19 +1,45 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : hyper-db-root
-Source Server Version : 50731
+Source Server         : dev
+Source Server Version : 50728
 Source Host           : 192.168.1.160:3306
 Source Database       : mldong
 
 Target Server Type    : MYSQL
-Target Server Version : 50731
+Target Server Version : 50728
 File Encoding         : 65001
 
-Date: 2020-09-06 20:14:01
+Date: 2020-10-21 18:04:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for sys_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dept`;
+CREATE TABLE `sys_dept` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `parent_id` bigint(20) DEFAULT '0' COMMENT '父级id',
+  `name` varchar(100) NOT NULL COMMENT '部门名称',
+  `code` varchar(30) DEFAULT NULL COMMENT '部门编码',
+  `sort` double(10,2) DEFAULT '10.00' COMMENT '排序',
+  `contacts` varchar(20) DEFAULT NULL COMMENT '联系人',
+  `mobile_phone` varchar(15) DEFAULT NULL COMMENT '联系人手机号',
+  `telephone` varchar(20) DEFAULT NULL COMMENT '电话',
+  `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `is_enabled` tinyint(1) unsigned DEFAULT '2' COMMENT '是否启用(1->禁用|NO,2->启用|YES)',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|YES,2->已删除|NO)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='部门';
+
+-- ----------------------------
+-- Records of sys_dept
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_dict
@@ -80,6 +106,26 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for sys_post
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_post`;
+CREATE TABLE `sys_post` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(100) NOT NULL COMMENT '岗位名称',
+  `code` varchar(30) NOT NULL COMMENT '岗位编号',
+  `sort` double(10,2) unsigned DEFAULT '10.00' COMMENT '排序',
+  `is_enabled` tinyint(1) unsigned DEFAULT '2' COMMENT '是否启用(1->禁用|NO,2->启用|YES)',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|YES,2->已删除|NO)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='岗位';
+
+-- ----------------------------
+-- Records of sys_post
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_request_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_request_log`;
@@ -103,12 +149,14 @@ CREATE TABLE `sys_request_log` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
 
 -- ----------------------------
 -- Records of sys_request_log
 -- ----------------------------
-INSERT INTO `sys_request_log` VALUES ('2', '369fc910-bc9b-4514-9152-1d1a645050f9', '30', '/sys/user/remove', '', 'POST', '删除用户', '0:0:0:0:0:0:0:1', '{\n	\"ids\": [22]\n}', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTU5OTQwMTIyMSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTU5OTM5NDAyMSwidXNlcklkIjoxfQ.obM5vUe_4UtK4Grz7ud8ZOIiiQGZ1a-s_PwA6K8gY94', '1', 'admin', '{\"code\":99999999,\"msg\":\"删除用户失败\",\"data\":null}', '2020-09-06 20:08:28.135', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '1');
+INSERT INTO `sys_request_log` VALUES ('2', '369fc910-bc9b-4514-9152-1d1a645050f9', '30', '/sys/user/remove', '', 'POST', '删除用户222', '0:0:0:0:0:0:0:1', '{\n	\"ids\": [22]\n}', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTU5OTQwMTIyMSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTU5OTM5NDAyMSwidXNlcklkIjoxfQ.obM5vUe_4UtK4Grz7ud8ZOIiiQGZ1a-s_PwA6K8gY94', '1', 'admin', '{\"code\":99999999,\"msg\":\"删除用户失败\",\"data\":null}', '2020-09-06 20:08:28.135', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '1');
+INSERT INTO `sys_request_log` VALUES ('3', '05169859-7acf-4396-8673-cf8106b43d0d', '99', '/error', '', 'GET', null, '0:0:0:0:0:0:0:1', null, null, '0', '', '{\"code\":99990401,\"msg\":\"未授权\",\"data\":null}', '2020-10-21 09:06:15.160', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '1');
+INSERT INTO `sys_request_log` VALUES ('4', '2f3669e2-3a53-4aed-a772-51471a992c08', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzI1MzcwOCwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzI0NjUwOCwidXNlcklkIjoxfQ.NTvo-FUGWdvK2M_GiphPAWdtDginnQ72337nxpw6pXQ\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-21 10:15:08.257', '2020-10-21 10:15:09.114', '2020-10-21 10:15:09.115', '2020-10-21 10:15:09.115', '1');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -232,6 +280,8 @@ CREATE TABLE `sys_user` (
   `salt` varchar(10) DEFAULT NULL COMMENT '加盐',
   `sex` int(6) unsigned DEFAULT '1' COMMENT '性别(1->男|MALE,2->女|FEMALE,3->未知|UNKNOWN)',
   `is_locked` tinyint(1) unsigned DEFAULT '1' COMMENT '是否锁定(2->已锁定|YES,1->未锁定|NO)',
+  `dept_id` bigint(20) unsigned DEFAULT NULL COMMENT '部门id',
+  `post_id` bigint(20) unsigned DEFAULT NULL COMMENT '岗位id',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_time` datetime(3) NOT NULL COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
@@ -244,7 +294,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '蒙立东', '', '', '18276163680', '', '52618c88aa68c63d37e50d6acd8b8456', 'v7hc7v69', '1', '1', null, '2020-06-09 21:47:33.417', '2020-06-09 21:47:33.417', '1');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '蒙立东', '', '', '18276163680', '', '52618c88aa68c63d37e50d6acd8b8456', 'v7hc7v69', '1', '1', null, null, null, '2020-06-09 21:47:33.417', '2020-06-09 21:47:33.417', '1');
 
 -- ----------------------------
 -- Table structure for sys_user_login_times
