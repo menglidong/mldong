@@ -36,7 +36,10 @@ public class SysUserParam {
 	private String confirmPassword;
 	@ApiModelProperty(name="性别",required=false)
 	private SysUser.SexEnum sex;
-	
+	@ApiModelProperty(name="部门id", required = true)
+	private Long deptId;
+	@ApiModelProperty(name="岗位id", required = true)
+	private Long postId;
 	public Long getId() {
 		return id;
 	}
@@ -97,5 +100,20 @@ public class SysUserParam {
 	public void setSex(SysUser.SexEnum sex) {
 		this.sex = sex;
 	}
-	
+
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
+	public Long getPostId() {
+		return postId;
+	}
+
+	public void setPostId(Long postId) {
+		this.postId = postId;
+	}
 }
