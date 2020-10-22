@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mldong.modules.cms.mapper.CmsCategoryMapper">
+	<resultMap id="BaseResultMap" type="com.mldong.modules.cms.entity.CmsCategory">
+		<id column="id" property="id" />
+		<result column="parent_id" property="parentId" />  
+		<result column="name" property="name" />  
+		<result column="sort" property="sort" />  
+		<result column="icon" property="icon" />  
+		<result column="is_nav" property="isNav" />  
+		<result column="is_show" property="isShow" />  
+		<result column="seo_keyworks" property="seoKeyworks" />  
+		<result column="seo_description" property="seoDescription" />  
+		<result column="create_time" property="createTime" />  
+		<result column="update_time" property="updateTime" />  
+		<result column="is_deleted" property="isDeleted" />  
+	</resultMap>
+</mapper>

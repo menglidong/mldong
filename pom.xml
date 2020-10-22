@@ -153,8 +153,9 @@
 </pluginRepositories>
 <modules>
 	<module>mldong-admin</module>
-	<module>mldong-common</module>
 	<module>mldong-generator</module>
-	<module>mldong-mapper</module>
+    <module>mldong-sys-parent</module>
+	<module>mldong-cms-parent</module>
+	<module>mldong-framework</module>
 </modules>
 </project>

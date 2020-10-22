@@ -17,10 +17,10 @@ import ${basePackage}.common.base.CommonResult;
 import ${basePackage}.common.base.IdParam;
 import ${basePackage}.common.base.IdsParam;
 import ${basePackage}.common.validator.Groups;
-import ${basePackage}.modules.sys.dto.${table.className}Param;
-import ${basePackage}.modules.sys.dto.${table.className}PageParam;
-import ${basePackage}.modules.sys.entity.${table.className};
-import ${basePackage}.modules.sys.service.${table.className}Service;
+import ${basePackage}.modules.${moduleName}.dto.${table.className}Param;
+import ${basePackage}.modules.${moduleName}.dto.${table.className}PageParam;
+import ${basePackage}.modules.${moduleName}.entity.${table.className};
+import ${basePackage}.modules.${moduleName}.service.${table.className}Service;
 
 @RestController
 @RequestMapping("/${moduleName}/${table.tableCameName?replace(moduleName,"")?uncap_first}")

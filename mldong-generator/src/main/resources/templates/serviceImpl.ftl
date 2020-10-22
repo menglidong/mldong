@@ -15,11 +15,11 @@ import ${basePackage}.common.base.CommonPage;
 import ${basePackage}.common.base.WhereParam;
 import ${basePackage}.common.base.YesNoEnum;
 import ${basePackage}.common.tk.ConditionUtil;
-import ${basePackage}.modules.sys.dto.${table.className}Param;
-import ${basePackage}.modules.sys.dto.${table.className}PageParam;
-import ${basePackage}.modules.sys.entity.${table.className};
-import ${basePackage}.modules.sys.mapper.${table.className}Mapper;
-import ${basePackage}.modules.sys.service.${table.className}Service;
+import ${basePackage}.modules.${moduleName}.dto.${table.className}Param;
+import ${basePackage}.modules.${moduleName}.dto.${table.className}PageParam;
+import ${basePackage}.modules.${moduleName}.entity.${table.className};
+import ${basePackage}.modules.${moduleName}.mapper.${table.className}Mapper;
+import ${basePackage}.modules.${moduleName}.service.${table.className}Service;
 /**
  * <p>业务接口实现层</p>
  * <p>${table.remark}</p>
