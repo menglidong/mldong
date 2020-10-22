@@ -2,57 +2,60 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mldong.common.base.BaseMapper">
 	<sql id="commonWhereSql">
-		<foreach collection="whereParams" item="item" separator="and">
-			<choose>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@EQ">
-					${item.columnName}=#{item.propertyValue}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@NE">
-					${item.columnName} <![CDATA[ <> ]]> #{item.propertyValue}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@GT">
-					${item.columnName} <![CDATA[ > ]]> #{item.propertyValue}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@GE">
-					${item.columnName} <![CDATA[ >= ]]> #{item.propertyValue}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LT">
-					${item.columnName} <![CDATA[ < ]]> #{item.propertyValue}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LE">
-					${item.columnName} <![CDATA[ <= ]]> #{item.propertyValue}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@BT">
-					${item.columnName} between #{item.propertyValue[0]} and #{item.propertyValue[1]}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@NBT">
-					${item.columnName} not between #{item.propertyValue[0]} and #{item.propertyValue[1]}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LIKE">
-					<bind name="_search" value="'%'+item.propertyValue+'%'" />
-					${item.columnName} like #{_search}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LLIKE">
-					<bind name="_search" value="'%'+item.propertyValue" />
-					${item.columnName} like #{_search}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@RLIKE">
-					<bind name="_search" value="item.propertyValue+'%'" />
-					${item.columnName} like #{_search}
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@IN">
-					${item.columnName} in
-					<foreach collection="item.propertyValue" item="v" index="index" open="(" close=")" separator=",">
-						#{v}
-					</foreach>
-				</when>
-				<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@NIN">
-					${item.columnName} not in
-					<foreach collection="item.propertyValue" item="v" index="index" open="(" close=")" separator=",">
-						#{v}
-					</foreach>
-				</when>
-			</choose>
-		</foreach>
+		<if test="whereParams != null and whereParams.size() > 0">
+		    and
+			<foreach collection="whereParams" item="item" separator="and">
+				<choose>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@EQ">
+						${item.columnName}=#{item.propertyValue}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@NE">
+						${item.columnName} <![CDATA[ <> ]]> #{item.propertyValue}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@GT">
+						${item.columnName} <![CDATA[ > ]]> #{item.propertyValue}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@GE">
+						${item.columnName} <![CDATA[ >= ]]> #{item.propertyValue}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LT">
+						${item.columnName} <![CDATA[ < ]]> #{item.propertyValue}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LE">
+						${item.columnName} <![CDATA[ <= ]]> #{item.propertyValue}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@BT">
+						${item.columnName} between #{item.propertyValue[0]} and #{item.propertyValue[1]}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@NBT">
+						${item.columnName} not between #{item.propertyValue[0]} and #{item.propertyValue[1]}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LIKE">
+						<bind name="_search" value="'%'+item.propertyValue+'%'" />
+						${item.columnName} like #{_search}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@LLIKE">
+						<bind name="_search" value="'%'+item.propertyValue" />
+						${item.columnName} like #{_search}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@RLIKE">
+						<bind name="_search" value="item.propertyValue+'%'" />
+						${item.columnName} like #{_search}
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@IN">
+						${item.columnName} in
+						<foreach collection="item.propertyValue" item="v" index="index" open="(" close=")" separator=",">
+							#{v}
+						</foreach>
+					</when>
+					<when test="item.operateType == @com.mldong.common.base.OperateTypeEnum@NIN">
+						${item.columnName} not in
+						<foreach collection="item.propertyValue" item="v" index="index" open="(" close=")" separator=",">
+							#{v}
+						</foreach>
+					</when>
+				</choose>
+			</foreach>
+		</if>
 	</sql>
 </mapper>

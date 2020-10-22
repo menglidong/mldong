@@ -11,7 +11,6 @@
 	<select id="selectWithExt" resultMap="BaseResultMap">
 		select u.*,d.`name` as dept_name from sys_user u left join sys_dept d on u.dept_id = d.id
 		where u.is_deleted = 1
-		and
 		<include refid="com.mldong.common.base.BaseMapper.commonWhereSql"></include>
 	</select>
 	<!-- 通过角色id查询 -->
