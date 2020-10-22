@@ -26,5 +26,20 @@ public class SysUserResult extends SysUser{
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public String getPostName() {
+		return postName;
+	}
+
+	public void setPostName(String postName) {
+		this.postName = postName;
+	}
 }
