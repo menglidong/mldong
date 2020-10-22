@@ -10,10 +10,60 @@ Target Server Type    : MYSQL
 Target Server Version : 50728
 File Encoding         : 65001
 
-Date: 2020-10-21 18:04:42
+Date: 2020-10-22 18:15:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for cms_article
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_article`;
+CREATE TABLE `cms_article` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `category_id` bigint(20) unsigned DEFAULT NULL COMMENT '栏目id',
+  `title` varchar(120) NOT NULL COMMENT '标题',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `cover` varchar(255) DEFAULT NULL COMMENT '大图',
+  `author` varchar(30) DEFAULT NULL COMMENT '作者',
+  `source` varchar(64) DEFAULT NULL COMMENT '文章来源',
+  `sort` double(10,2) unsigned DEFAULT '10.00' COMMENT '排序',
+  `publish_time` datetime(3) DEFAULT NULL COMMENT '发布时间',
+  `is_publish` tinyint(1) DEFAULT NULL COMMENT '是否发布(1->否|NO,2->是|YES)',
+  `content` mediumtext COMMENT '文本内容',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章';
+
+-- ----------------------------
+-- Records of cms_article
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for cms_category
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_category`;
+CREATE TABLE `cms_category` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `parent_id` bigint(20) unsigned DEFAULT NULL COMMENT '父栏目id',
+  `name` varchar(100) NOT NULL COMMENT '栏目名称',
+  `sort` double(10,2) unsigned DEFAULT '10.00' COMMENT '排序',
+  `icon` varchar(255) DEFAULT NULL COMMENT '图标',
+  `is_nav` tinyint(1) unsigned DEFAULT '2' COMMENT '是否导航(1->否|NO,2->是|YES)',
+  `is_show` tinyint(1) unsigned DEFAULT '2' COMMENT '是否显示(1->否|NO,2->是|YES)',
+  `seo_keyworks` varchar(100) DEFAULT NULL COMMENT 'seo关键字',
+  `seo_description` varchar(255) DEFAULT NULL COMMENT 'seo描述',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='栏目';
+
+-- ----------------------------
+-- Records of cms_category
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -149,7 +199,7 @@ CREATE TABLE `sys_request_log` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
 
 -- ----------------------------
 -- Records of sys_request_log
@@ -157,6 +207,7 @@ CREATE TABLE `sys_request_log` (
 INSERT INTO `sys_request_log` VALUES ('2', '369fc910-bc9b-4514-9152-1d1a645050f9', '30', '/sys/user/remove', '', 'POST', '删除用户222', '0:0:0:0:0:0:0:1', '{\n	\"ids\": [22]\n}', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTU5OTQwMTIyMSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTU5OTM5NDAyMSwidXNlcklkIjoxfQ.obM5vUe_4UtK4Grz7ud8ZOIiiQGZ1a-s_PwA6K8gY94', '1', 'admin', '{\"code\":99999999,\"msg\":\"删除用户失败\",\"data\":null}', '2020-09-06 20:08:28.135', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '2020-09-06 20:08:28.301', '1');
 INSERT INTO `sys_request_log` VALUES ('3', '05169859-7acf-4396-8673-cf8106b43d0d', '99', '/error', '', 'GET', null, '0:0:0:0:0:0:0:1', null, null, '0', '', '{\"code\":99990401,\"msg\":\"未授权\",\"data\":null}', '2020-10-21 09:06:15.160', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '1');
 INSERT INTO `sys_request_log` VALUES ('4', '2f3669e2-3a53-4aed-a772-51471a992c08', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzI1MzcwOCwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzI0NjUwOCwidXNlcklkIjoxfQ.NTvo-FUGWdvK2M_GiphPAWdtDginnQ72337nxpw6pXQ\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-21 10:15:08.257', '2020-10-21 10:15:09.114', '2020-10-21 10:15:09.115', '2020-10-21 10:15:09.115', '1');
+INSERT INTO `sys_request_log` VALUES ('5', '91180755-98bd-469c-9ea1-f0d21ea872df', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzMzNzAwNiwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzMyOTgwNiwidXNlcklkIjoxfQ.RuRZPD_KqHV60o9xtPD7H5k5_VBU9RsVZGHJu1za_us\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-22 09:23:26.095', '2020-10-22 09:23:26.854', '2020-10-22 09:23:26.855', '2020-10-22 09:23:26.855', '1');
 
 -- ----------------------------
 -- Table structure for sys_role
