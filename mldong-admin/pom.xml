@@ -67,7 +67,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.mldong</groupId>
-			<artifactId>mldong-token-strategy-redis</artifactId>
+			<artifactId>mldong-token-strategy-jwt</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
 	</dependencies>
