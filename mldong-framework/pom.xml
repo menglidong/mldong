@@ -15,5 +15,8 @@
         <module>mldong-common-base</module>
         <module>mldong-swagger</module>
         <module>mldong-token-strategy-jwt</module>
+        <module>mldong-token-strategy-redis</module>
+        <module>mldong-admin-interceptor-service</module>
+        <module>mldong-app-interceptor-service</module>
     </modules>
 </project>

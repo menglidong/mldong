@@ -20,8 +20,6 @@ import com.mldong.common.access.model.SysAccessModel;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.IdAndIdsParam;
 import com.mldong.common.config.GlobalProperties;
-import com.mldong.common.interceptor.AuthInterceptorService;
-import com.mldong.common.token.TokenStrategy;
 import com.mldong.modules.sys.dao.SysUserDao;
 import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysMenu;
@@ -38,7 +36,7 @@ import com.mldong.modules.sys.vo.SysAccessTreeVo;
 import com.mldong.modules.sys.vo.SysMenuTreeVo;
 
 @Service
-public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorService{
+public class SysRbacServiceImpl implements SysRbacService{
 	@Autowired
 	private AccessInitProcessor accessInitProcessor;
 	@Autowired
@@ -51,8 +49,6 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 	private SysRoleMenuMapper sysRoleMenuMapper;
 	@Autowired
 	private GlobalProperties globalProperties;
-	@Autowired
-	private TokenStrategy tokenStrategy;
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
 	@Override
@@ -280,28 +276,5 @@ public class SysRbacServiceImpl implements SysRbacService, AuthInterceptorServic
 			}).count() == 0 && (item.getParentId() !=null || !new Long(0).equals(item.getParentId()));
 		}).collect(Collectors.toList());
 		tranfer(userMenuList, newNoParentList,level+1);
-	}
-	@Override
-	public boolean verifyToken(String token) {
-		return tokenStrategy.verifyToken(token);
-	}
-	@Override
-	public boolean hasAuth(String token, String access) {
-		Long userId = tokenStrategy.getUserId(token);
-		return hasAccess(userId, access);
-	}
-	@Override
-	public Long getUserId(String token) {
-		return tokenStrategy.getUserId(token);
-	}
-
-	@Override
-	public String getUserName(String token) {
-		return tokenStrategy.getUserName(token);
-	}
-
-	@Override
-	public Map<String,Object> getExt(String token) {
-		return tokenStrategy.getExt(token);
 	}
 }

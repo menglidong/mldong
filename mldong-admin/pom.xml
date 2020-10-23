@@ -13,11 +13,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.mldong</groupId>
-			<artifactId>mldong-sys-domain</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.mldong</groupId>
 			<artifactId>mldong-sys-portal</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
@@ -72,7 +67,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.mldong</groupId>
-			<artifactId>mldong-token-strategy-jwt</artifactId>
+			<artifactId>mldong-token-strategy-redis</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
 	</dependencies>

@@ -82,6 +82,9 @@ public class RequestHolder {
 		if(StringUtils.isEmpty(token)) {
 			token = request.getParameter(CommonConstants.TOKEN);
 		}
+		if(token == null) {
+			token = "";
+		}
 		return token;
 	}
 }

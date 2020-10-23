@@ -72,5 +72,10 @@
             <version>${parent.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.mldong</groupId>
+            <artifactId>mldong-admin-interceptor-service</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

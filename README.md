@@ -1,25 +1,30 @@
-﻿# mldong快速开发平台
+# mldong快速开发平台
 快速开发平台
 
 ## 目录结构
 ```lua
-├── mldong-common  工具类及通用代码
+├── mldong-admin  后台管理，只有启动类，通过maven模块依赖的方式聚合业务模块
+├── mldong-app  用户端接口，有控制层代码，通过maven模块依赖业务接口实现模块供控制层调用
+├── mldong-cms-parent  内容管理模块
+	├── mldong-cms-domain  entity/vo/dto/enum等实体类模块
+	├── mldong-cms-portal  控制层模块
+	├── mldong-cms-repository  持久层模块
+		└── modules
+			└──cms
+                ├── mapper 持久层-由代码生成器生成，不可手动变更
+                └── dao 持久层-自定义层，需手动添加修改
+	└── mldong-cms-service  业务模块
+├── mldong-framework  框架/基类等
 ├── mldong-generator  代码生成器
-├── mldong-admin  管理端接口
-    ├── component  组件包
-    ├── config  配置加载
-    └── modules
-      └──sys
-        ├── dao 持久层-该层代码可自定义
-        ├── dto dto层，可为查询结果实体、请求参数实体、业务实体
-        ├── enums 错误码定义
-		├── vo vo层，前端需要什么，定义什么
-        └── service 服务层
-└── mldong-mapper 持久层，该层代码由代码生成器生成，不可手动变更
-    └── modules
-      └──sys
-        ├── entity 实体类
-        └── mapper 持久层
+└── mldong-sys-parent 系统管理模块
+	├── mldong-sys-domain  entity/vo/dto/enum等实体类模块
+	├── mldong-sys-portal  控制层模块
+	├── mldong-sys-repository  持久层模块
+		└── modules
+			└──sys
+                ├── mapper 持久层-由代码生成器生成，不可手动变更
+                └── dao 持久层-自定义层，需手动添加修改
+	└── mldong-cms-service  业务模块
 ```
 
 ## 开发规范
@@ -131,7 +136,7 @@ templates:
     # 模板文件名称
     templateFile: "entity.ftl"
     # 代码生成目录
-    targetPath: "mldong-mapper/src/main/java/${basePackage}/modules/${moduleName}/entity/"
+    targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-domain/src/main/java/${basePackage}/modules/${moduleName}/entity/"
     # 生成文件名(同上需要占位符，代码中要转换)
     targetFileName: "${table.className}.java"
     # 生成文件编码

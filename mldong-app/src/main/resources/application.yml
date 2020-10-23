@@ -1,8 +1,8 @@
 server: 
-  port: 18001
+  port: 18081
 spring:
   application:
-    name: mldong-sys
+    name: mldong-app
   profiles:
     active: dev
   jackson:
@@ -109,7 +109,6 @@ pagehelper:
 # 启用自定义文档
 knife4j:
   markdowns: classpath:markdown/*
-
 # 全局配置
 g:
-  userType: __ADMIN__
+  userType: __APP__

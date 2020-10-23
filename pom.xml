@@ -157,5 +157,6 @@
     <module>mldong-sys-parent</module>
 	<module>mldong-cms-parent</module>
 	<module>mldong-framework</module>
+	<module>mldong-app</module>
 </modules>
 </project>
