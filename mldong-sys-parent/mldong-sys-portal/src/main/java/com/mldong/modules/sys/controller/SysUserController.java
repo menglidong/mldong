@@ -1,5 +1,6 @@
 package com.mldong.modules.sys.controller;
 
+import com.mldong.common.annotation.LoginUser;
 import com.mldong.modules.sys.dto.SysUserResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +19,6 @@ import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.IdParam;
 import com.mldong.common.base.IdsParam;
 import com.mldong.common.validator.Groups;
-import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.sys.dto.SysUserPageParam;
 import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
@@ -122,13 +122,12 @@ public class SysUserController {
 	}
 	/**
 	 * 获取当前用户信息
-	 * @param param
 	 * @return
 	 */
 	@PostMapping("info")
 	@ApiOperation(value="获取当前用户信息", notes="获取当前用户信息")
-	public CommonResult<SysUserVo> info() {
-		return CommonResult.success(sysUserService.getUserInfo(RequestHolder.getUserId()));
+	public CommonResult<SysUserVo> info(@LoginUser Long userId) {
+		return CommonResult.success(sysUserService.getUserInfo(userId));
 	}
 	/**
 	 * 自定义分页查询用户列表

@@ -1,5 +1,6 @@
 package com.mldong.modules.sys.controller;
 
+import com.mldong.common.annotation.LoginUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -16,7 +17,6 @@ import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.IdAndIdsParam;
 import com.mldong.common.base.IdParam;
-import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysRbacService;
@@ -40,8 +40,8 @@ public class SysRbacController {
 	    	@AuthorizationScope(description="获取权限资源树",scope="sys:role:listAccessTree")
 	    })
 	})
-	public CommonResult<SysAccessTreeVo> listAccessTree(@RequestBody @Validated IdParam param) {
-		return CommonResult.success("获取权限资源树",sysRbacService.listAccessTree(RequestHolder.getUserId(), param.getId()));
+	public CommonResult<SysAccessTreeVo> listAccessTree(@RequestBody @Validated IdParam param, @LoginUser Long userId) {
+		return CommonResult.success("获取权限资源树",sysRbacService.listAccessTree(userId, param.getId()));
 	}
 	@PostMapping("listMenuByRoleId")
 	@ApiOperation(value="通过角色id获取菜单", notes="通过角色id获取菜单",authorizations={
@@ -49,8 +49,8 @@ public class SysRbacController {
 	    	@AuthorizationScope(description="通过角色id获取菜单",scope="sys:role:listMenuByRoleId")
 	    })
 	})
-	public CommonResult<SysMenuTreeVo> listMenuByRoleId(@RequestBody @Validated IdParam param) {
-		return CommonResult.success("获取权限资源树",sysRbacService.listMenuByRoleId(RequestHolder.getUserId(), param.getId()));
+	public CommonResult<SysMenuTreeVo> listMenuByRoleId(@RequestBody @Validated IdParam param, @LoginUser Long userId) {
+		return CommonResult.success("获取权限资源树",sysRbacService.listMenuByRoleId(userId, param.getId()));
 	}
 	@PostMapping("listUserByRoleId")
 	@ApiOperation(value="角色成员列表", notes="角色成员列表",authorizations={
