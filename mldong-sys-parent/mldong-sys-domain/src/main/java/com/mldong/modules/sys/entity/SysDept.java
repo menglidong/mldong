@@ -50,7 +50,7 @@ public class SysDept implements Serializable{
     private Date createTime;
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|YES,2->已删除|NO)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
     /**
