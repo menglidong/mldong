@@ -7,6 +7,9 @@ import javax.validation.constraints.*;
 <#if table.hasOtherDate>
 import java.util.Date;
 </#if>
+<#if (table.hasBigDecimalColumn)>
+import java.math.BigDecimal;
+</#if>
 <#if table.hasOtherCodedType>
 import ${basePackage}.modules.${moduleName}.entity.${table.className};
 </#if>

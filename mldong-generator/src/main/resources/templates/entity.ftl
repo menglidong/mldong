@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
-
+<#if (table.hasBigDecimalColumn)>
+import java.math.BigDecimal;
+</#if>
 import javax.persistence.Id;
 import javax.persistence.Table;
 
