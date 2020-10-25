@@ -136,10 +136,9 @@ public class JsonTool {
 
 
 	public static Boolean parseBoolean(String body, String field) {
-		ObjectMapper mapper = new ObjectMapper();
 		JsonNode node = null;
 		try {
-			node = mapper.readTree(body);
+			node = objectMapper.readTree(body);
 			JsonNode leaf = node.get(field);
 			if(leaf != null)
 				return leaf.asBoolean();
@@ -150,10 +149,9 @@ public class JsonTool {
 	}
 
 	public static Short parseShort(String body, String field) {
-		ObjectMapper mapper = new ObjectMapper();
 		JsonNode node = null;
 		try {
-			node = mapper.readTree(body);
+			node = objectMapper.readTree(body);
 			JsonNode leaf = node.get(field);
 			if(leaf != null) {
 				Integer value = leaf.asInt();
@@ -164,5 +162,15 @@ public class JsonTool {
 		}
 		return null;
 	}
-
+	public static <T> T parseObject(String body, String field, Class<T> clazz) {
+		JsonNode node = null;
+		try {
+			node = objectMapper.readTree(body);
+			node = node.get(field);
+			return objectMapper.treeToValue(node, clazz);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
