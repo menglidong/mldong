@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_upload_config - 上传配置</p>
- * @since 2020-10-26 09:58:37
+ * @since 2020-10-26 10:39:01
  */
 @Table(name="sys_upload_config")
 @ApiModel(description="上传配置")
@@ -35,6 +35,10 @@ public class SysUploadConfig implements Serializable{
     private Long fileSizeMax;
     @ApiModelProperty(value = "限定用户上传后辍(多个逗号分割)")
     private String fileExt;
+    @ApiModelProperty(value = "上传目录")
+    private String uploadDir;
+    @ApiModelProperty(value = "上传子目录")
+    private String uploadSubDir;
     @ApiModelProperty(value = "访问地址前辍")
     private String baseUrl;
     @ApiModelProperty(value = "回调地址")
@@ -141,6 +145,36 @@ public class SysUploadConfig implements Serializable{
      */
     public void setFileExt(String fileExt){
         this.fileExt = fileExt;
+    }
+    /**
+     * 获取上传目录
+     *
+     */
+    public String getUploadDir(){
+        return this.uploadDir;
+    }
+	 /**
+     * 设置上传目录
+     *
+     * @param uploadDir
+     */
+    public void setUploadDir(String uploadDir){
+        this.uploadDir = uploadDir;
+    }
+    /**
+     * 获取上传子目录
+     *
+     */
+    public String getUploadSubDir(){
+        return this.uploadSubDir;
+    }
+	 /**
+     * 设置上传子目录
+     *
+     * @param uploadSubDir
+     */
+    public void setUploadSubDir(String uploadSubDir){
+        this.uploadSubDir = uploadSubDir;
     }
     /**
      * 获取访问地址前辍

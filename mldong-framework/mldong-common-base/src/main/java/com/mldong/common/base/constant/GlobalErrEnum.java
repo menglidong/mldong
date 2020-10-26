@@ -61,6 +61,10 @@ public enum GlobalErrEnum implements CommonError {
 	 * 文件上传配置不存在
 	 */
 	GL99990008(99990008, "文件上传配置不存在"),
+	/**
+	 * 文件超过上传最大值
+	 */
+	GL99990009(99990009, "文件超过上传最大值"),
 	;
 	
 	private GlobalErrEnum(int value, String name){

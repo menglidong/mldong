@@ -8,6 +8,8 @@
 		<result column="file_size_min" property="fileSizeMin" />  
 		<result column="file_size_max" property="fileSizeMax" />  
 		<result column="file_ext" property="fileExt" />  
+		<result column="upload_dir" property="uploadDir" />  
+		<result column="upload_sub_dir" property="uploadSubDir" />  
 		<result column="base_url" property="baseUrl" />  
 		<result column="callback_url" property="callbackUrl" />  
 		<result column="naming_strategy" property="namingStrategy" />  

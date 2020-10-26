@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50728
 File Encoding         : 65001
 
-Date: 2020-10-22 18:15:52
+Date: 2020-10-26 10:36:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -83,7 +83,7 @@ CREATE TABLE `sys_dept` (
   `is_enabled` tinyint(1) unsigned DEFAULT '2' COMMENT '是否启用(1->禁用|NO,2->启用|YES)',
   `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
-  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|YES,2->已删除|NO)',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='部门';
 
@@ -167,7 +167,7 @@ CREATE TABLE `sys_post` (
   `is_enabled` tinyint(1) unsigned DEFAULT '2' COMMENT '是否启用(1->禁用|NO,2->启用|YES)',
   `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
-  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|YES,2->已删除|NO)',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='岗位';
 
@@ -199,7 +199,7 @@ CREATE TABLE `sys_request_log` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
 
 -- ----------------------------
 -- Records of sys_request_log
@@ -208,6 +208,24 @@ INSERT INTO `sys_request_log` VALUES ('2', '369fc910-bc9b-4514-9152-1d1a645050f9
 INSERT INTO `sys_request_log` VALUES ('3', '05169859-7acf-4396-8673-cf8106b43d0d', '99', '/error', '', 'GET', null, '0:0:0:0:0:0:0:1', null, null, '0', '', '{\"code\":99990401,\"msg\":\"未授权\",\"data\":null}', '2020-10-21 09:06:15.160', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '1');
 INSERT INTO `sys_request_log` VALUES ('4', '2f3669e2-3a53-4aed-a772-51471a992c08', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzI1MzcwOCwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzI0NjUwOCwidXNlcklkIjoxfQ.NTvo-FUGWdvK2M_GiphPAWdtDginnQ72337nxpw6pXQ\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-21 10:15:08.257', '2020-10-21 10:15:09.114', '2020-10-21 10:15:09.115', '2020-10-21 10:15:09.115', '1');
 INSERT INTO `sys_request_log` VALUES ('5', '91180755-98bd-469c-9ea1-f0d21ea872df', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzMzNzAwNiwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzMyOTgwNiwidXNlcklkIjoxfQ.RuRZPD_KqHV60o9xtPD7H5k5_VBU9RsVZGHJu1za_us\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-22 09:23:26.095', '2020-10-22 09:23:26.854', '2020-10-22 09:23:26.855', '2020-10-22 09:23:26.855', '1');
+INSERT INTO `sys_request_log` VALUES ('6', '7d6d1ec5-ffac-4f88-89fe-f97bc8eb0c13', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"21f78109accb498088d54df9cd8cc910\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:50:11.362', '2020-10-23 11:50:12.800', '2020-10-23 11:50:12.801', '2020-10-23 11:50:12.801', '1');
+INSERT INTO `sys_request_log` VALUES ('7', '4d145037-eda3-4606-aa8a-e7f361cccaf5', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"7e9cd2f4b0a4448c8cca50ceda936996\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:52:29.380', '2020-10-23 11:52:29.398', '2020-10-23 11:52:29.398', '2020-10-23 11:52:29.398', '1');
+INSERT INTO `sys_request_log` VALUES ('8', '0498ee32-f1ae-4d3a-918f-b0e157ef64c9', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"682211a8a0fb4eae95fe6eede9cf6778\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:58:51.930', '2020-10-23 11:58:53.372', '2020-10-23 11:58:53.372', '2020-10-23 11:58:53.372', '1');
+INSERT INTO `sys_request_log` VALUES ('9', '3341b8e6-2fb0-4b41-ad95-7d0c5b04a31b', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"cb99d1169e3b4e7e8e278c77eba04503\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:59:21.224', '2020-10-23 11:59:22.654', '2020-10-23 11:59:22.655', '2020-10-23 11:59:22.655', '1');
+INSERT INTO `sys_request_log` VALUES ('10', '36ebddf9-86d3-4ac8-9cf8-d27bb075d1b4', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"fc84aac2d3ed4d56868104a81aad86bf\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 12:01:22.509', '2020-10-23 12:01:23.946', '2020-10-23 12:01:23.946', '2020-10-23 12:01:23.946', '1');
+INSERT INTO `sys_request_log` VALUES ('11', '7a2334e6-e270-4684-bbbd-2634de702c35', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"c9a5b84ed83d416c844523948043b3b0\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:02:05.823', '2020-10-23 15:02:07.252', '2020-10-23 15:02:07.252', '2020-10-23 15:02:07.252', '1');
+INSERT INTO `sys_request_log` VALUES ('12', '68ced801-ed0b-41ee-8384-efc5c944c6c4', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"980c5dad24864e078e5265f6c61b85a2\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:05:06.216', '2020-10-23 15:05:07.681', '2020-10-23 15:05:07.682', '2020-10-23 15:05:07.682', '1');
+INSERT INTO `sys_request_log` VALUES ('13', '3f1dc587-5ec5-40bc-baf8-581bdd8c86cd', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzQ0NDIyNiwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzQzNzAyNiwidXNlcklkIjoxfQ.dlZQJ8AAKrViLxvrBIZLK05LEhazKdcEjr4iogdmCBs\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:10:26.405', '2020-10-23 15:10:27.234', '2020-10-23 15:10:27.235', '2020-10-23 15:10:27.235', '1');
+INSERT INTO `sys_request_log` VALUES ('14', '12264fac-9ce3-4fac-910c-3e023370bc10', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":99999999,\"msg\":\"Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to localhost:6379\",\"data\":null}', '2020-10-23 15:14:20.970', '2020-10-23 15:14:24.434', '2020-10-23 15:14:24.434', '2020-10-23 15:14:24.434', '1');
+INSERT INTO `sys_request_log` VALUES ('15', 'd1c2a333-fdc7-427c-9da3-0f8c8412ce6f', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"f45485d2316b467a9d3009a7ba0a4570\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:15:55.608', '2020-10-23 15:15:57.121', '2020-10-23 15:15:57.121', '2020-10-23 15:15:57.121', '1');
+INSERT INTO `sys_request_log` VALUES ('16', 'f2d959dc-30d4-43ee-b120-78fcd4c3168d', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzQ0NjI5NiwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzQzOTA5NiwidXNlcklkIjoxfQ.bO6a7zDtVUdtsudZFKmP9Nk0QJxYqZCsB-nqXxZjoX4\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:44:56.534', '2020-10-23 15:44:57.344', '2020-10-23 15:44:57.345', '2020-10-23 15:44:57.345', '1');
+INSERT INTO `sys_request_log` VALUES ('17', 'c9b74293-7fcc-45ae-aa2f-a28f2d20dcfc', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-26 10:23:25.357', '2020-10-26 10:23:25.569', '2020-10-26 10:23:25.569', '2020-10-26 10:23:25.569', '1');
+INSERT INTO `sys_request_log` VALUES ('18', 'e74b3ad6-5913-4ac4-8d4e-df5a49579d1d', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990008,\"msg\":\"文件上传配置不存在\",\"data\":null}', '2020-10-26 10:23:50.732', '2020-10-26 10:23:50.744', '2020-10-26 10:23:50.744', '2020-10-26 10:23:50.744', '1');
+INSERT INTO `sys_request_log` VALUES ('19', 'f9560f4e-feca-4983-be05-02615cdc4f8b', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990006,\"msg\":\"文件后辍不允许\",\"data\":null}', '2020-10-26 10:24:36.277', '2020-10-26 10:24:36.287', '2020-10-26 10:24:36.287', '2020-10-26 10:24:36.287', '1');
+INSERT INTO `sys_request_log` VALUES ('20', '6c9e8935-2788-4bd2-ac37-b039d9e0a945', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990006,\"msg\":\"文件后辍不允许\",\"data\":null}', '2020-10-26 10:24:43.743', '2020-10-26 10:24:43.752', '2020-10-26 10:24:43.753', '2020-10-26 10:24:43.753', '1');
+INSERT INTO `sys_request_log` VALUES ('21', '3bd5ab99-ec23-4131-bcba-702174177cc9', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990006,\"msg\":\"文件后辍不允许\",\"data\":null}', '2020-10-26 10:26:15.894', '2020-10-26 10:28:55.310', '2020-10-26 10:28:55.310', '2020-10-26 10:28:55.310', '1');
+INSERT INTO `sys_request_log` VALUES ('22', '39d815a3-4023-45ca-8213-82f5f0b9e9f7', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":0,\"msg\":\"操作成功\",\"data\":{\"uploadRecordId\":1,\"bizId\":\"\",\"bizType\":\"\",\"baseUrl\":\"http://qiniu.mldong.com\",\"url\":\"common/7c003d02-9147-45bf-9563-b36a43435c3a.png\",\"fileSize\":806888,\"mimeType\":\"image/png\",\"fileName\":null,\"fileExt\":\".png\"}}', '2020-10-26 10:29:09.182', '2020-10-26 10:29:10.172', '2020-10-26 10:29:10.172', '2020-10-26 10:29:10.172', '1');
+INSERT INTO `sys_request_log` VALUES ('23', 'f71f2584-a015-406d-bb61-63d96114b34d', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":0,\"msg\":\"操作成功\",\"data\":{\"uploadRecordId\":2,\"bizId\":\"\",\"bizType\":\"\",\"baseUrl\":\"http://qiniu.mldong.com\",\"url\":\"2362a448-48bd-47fc-b09d-3ba7212a25a9.png\",\"fileSize\":806888,\"mimeType\":\"image/png\",\"fileName\":null,\"fileExt\":\".png\"}}', '2020-10-26 10:31:00.269', '2020-10-26 10:31:01.243', '2020-10-26 10:31:01.243', '2020-10-26 10:31:01.243', '1');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -222,7 +240,7 @@ CREATE TABLE `sys_role` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_time` datetime(3) NOT NULL COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
-  `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|YES,2->已删除|NO)',
+  `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色';
 
@@ -274,23 +292,29 @@ CREATE TABLE `sys_role_menu` (
 DROP TABLE IF EXISTS `sys_upload_config`;
 CREATE TABLE `sys_upload_config` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `biz_name` varchar(100) DEFAULT NULL COMMENT '业务名称',
   `biz_type` varchar(32) NOT NULL COMMENT '业务类型',
   `file_size_min` bigint(20) unsigned DEFAULT '0' COMMENT '限定上传文件大小最小值，单位`byte`。（0为不限制）',
   `file_size_max` bigint(20) unsigned DEFAULT '0' COMMENT '限定上传文件大小最大值，单位`byte`。（0为不限制）',
   `file_ext` varchar(64) NOT NULL COMMENT '限定用户上传后辍(多个逗号分割)',
+  `upload_dir` varchar(100) DEFAULT '' COMMENT '上传目录',
+  `upload_sub_dir` varchar(255) DEFAULT '' COMMENT '上传子目录',
   `base_url` varchar(32) DEFAULT '' COMMENT '访问地址前辍',
   `callback_url` varchar(100) DEFAULT '' COMMENT '回调地址',
   `naming_strategy` varchar(32) NOT NULL COMMENT '命名策略',
   `is_record` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否记录(1->不记录|NO,2->记录|YES)',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_time` datetime(3) NOT NULL COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='上传配置';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='上传配置';
 
 -- ----------------------------
 -- Records of sys_upload_config
 -- ----------------------------
+INSERT INTO `sys_upload_config` VALUES ('1', '通用', 'common', '0', '10485760', '.png,.gif,.jpng', 'D:/mldong/upload/common', '', 'http://qiniu.mldong.com', '', 'default', '1', '通用-10M', '2020-10-26 09:47:35.000', '2020-10-26 09:47:38.000', '1');
+INSERT INTO `sys_upload_config` VALUES ('2', '食谱大图', 'stms_recipe_cover', '0', '10485760', '.png,.gif,.jpeg', 'D:/mldong/upload/image', '', 'http://qiniu.mldong.com', '', 'default', '1', '食谱大图-10M', '2020-10-26 09:49:06.000', '2020-10-26 09:49:10.000', '1');
 
 -- ----------------------------
 -- Table structure for sys_upload_record
@@ -309,11 +333,13 @@ CREATE TABLE `sys_upload_record` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='上传记录';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='上传记录';
 
 -- ----------------------------
 -- Records of sys_upload_record
 -- ----------------------------
+INSERT INTO `sys_upload_record` VALUES ('1', '', '', 'common/7c003d02-9147-45bf-9563-b36a43435c3a.png', '工作汇报20201015.png', '806888', 'image/png', '.png', '2020-10-26 10:29:09.962', '2020-10-26 10:29:09.962', '1');
+INSERT INTO `sys_upload_record` VALUES ('2', '', '', '2362a448-48bd-47fc-b09d-3ba7212a25a9.png', '工作汇报20201015.png', '806888', 'image/png', '.png', '2020-10-26 10:31:01.061', '2020-10-26 10:31:01.061', '1');
 
 -- ----------------------------
 -- Table structure for sys_user
