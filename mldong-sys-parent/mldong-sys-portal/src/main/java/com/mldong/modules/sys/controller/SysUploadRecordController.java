@@ -141,7 +141,7 @@ public class SysUploadRecordController {
 		Date now = new Date();
 		SysUploadRecord record = new SysUploadRecord();
 		record.setBizId("");
-		record.setBizType("");
+		record.setBizType(config.getBizType());
 		record.setCreateTime(now);
 		record.setFileExt(suffixName);
 		record.setFileSize(file.getSize());
@@ -150,7 +150,9 @@ public class SysUploadRecordController {
 		record.setMimeType(file.getContentType());
 		record.setUpdateTime(now);
 		record.setUrl(config.getUploadSubDir()+"/"+fileName);
-		sysUploadRecordService.saveReturnId(record);
+		if(YesNoEnum.YES.equals(config.getIsRecord())) {
+			sysUploadRecordService.saveReturnId(record);
+		}
 		UploadResult result = new UploadResult();
 		result.setUploadRecordId(record.getId());
 		result.setBaseUrl(config.getBaseUrl());

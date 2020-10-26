@@ -16,11 +16,11 @@ author: "mldong"
 # 生成代码目标目录
 targetProject: "D:/mldong/back-workspace/mldong/"
 # 模块名
-moduleName: "cms"
+moduleName: "sys"
 # 模块描述 
-moduleDesc: "内容管理"
+moduleDesc: "系统管理"
 tables:
-  - tableName: "cms_%"
+  - tableName: "sys_upload_config"
 templates:
     # 模板名称
   - name: "实体类"
