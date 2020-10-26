@@ -3,6 +3,7 @@
 <mapper namespace="com.mldong.modules.sys.mapper.SysUploadConfigMapper">
 	<resultMap id="BaseResultMap" type="com.mldong.modules.sys.entity.SysUploadConfig">
 		<id column="id" property="id" />
+		<result column="biz_name" property="bizName" />  
 		<result column="biz_type" property="bizType" />  
 		<result column="file_size_min" property="fileSizeMin" />  
 		<result column="file_size_max" property="fileSizeMax" />  
@@ -11,6 +12,7 @@
 		<result column="callback_url" property="callbackUrl" />  
 		<result column="naming_strategy" property="namingStrategy" />  
 		<result column="is_record" property="isRecord" />  
+		<result column="remark" property="remark" />  
 		<result column="create_time" property="createTime" />  
 		<result column="update_time" property="updateTime" />  
 		<result column="is_deleted" property="isDeleted" />  

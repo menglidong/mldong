@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_upload_config - 上传配置</p>
- * @since 2020-06-14 10:55:36
+ * @since 2020-10-26 09:58:37
  */
 @Table(name="sys_upload_config")
 @ApiModel(description="上传配置")
@@ -26,6 +25,8 @@ public class SysUploadConfig implements Serializable{
 	@Id
 	@ApiModelProperty(value="主键")
     private Long id;
+    @ApiModelProperty(value = "业务名称")
+    private String bizName;
     @ApiModelProperty(value = "业务类型")
     private String bizType;
     @ApiModelProperty(value = "限定上传文件大小最小值，单位`byte`。（0为不限制）")
@@ -42,6 +43,8 @@ public class SysUploadConfig implements Serializable{
     private String namingStrategy;
     @ApiModelProperty(value = "是否记录(1->不记录|NO,2->记录|YES)")
     private YesNoEnum isRecord;
+    @ApiModelProperty(value = "备注")
+    private String remark;
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
     @ApiModelProperty(value = "更新时间")
@@ -63,6 +66,21 @@ public class SysUploadConfig implements Serializable{
      */
     public void setId(Long id){
         this.id = id;
+    }
+    /**
+     * 获取业务名称
+     *
+     */
+    public String getBizName(){
+        return this.bizName;
+    }
+	 /**
+     * 设置业务名称
+     *
+     * @param bizName
+     */
+    public void setBizName(String bizName){
+        this.bizName = bizName;
     }
     /**
      * 获取业务类型
@@ -183,6 +201,21 @@ public class SysUploadConfig implements Serializable{
      */
     public void setIsRecord(YesNoEnum isRecord){
         this.isRecord = isRecord;
+    }
+    /**
+     * 获取备注
+     *
+     */
+    public String getRemark(){
+        return this.remark;
+    }
+	 /**
+     * 设置备注
+     *
+     * @param remark
+     */
+    public void setRemark(String remark){
+        this.remark = remark;
     }
     /**
      * 获取创建时间
