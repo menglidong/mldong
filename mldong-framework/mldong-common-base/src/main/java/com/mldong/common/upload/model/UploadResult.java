@@ -1,4 +1,7 @@
 package com.mldong.common.upload.model;
+
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * 上传结果实体
  * @author mldong
@@ -6,38 +9,59 @@ package com.mldong.common.upload.model;
  */
 public class UploadResult {
 	/**
+	 * 上传记录id
+	 */
+	@ApiModelProperty(value="上传记录id")
+	private Long uploadRecordId;
+	/**
 	 * 业务id
 	 */
+	@ApiModelProperty(value="业务id")
 	private String bizId;
 	/**
 	 * 业务类型
 	 */
+	@ApiModelProperty(value="业务类型")
 	private String bizType;
 	/**
 	 * 基础路径
 	 */
+	@ApiModelProperty(value="基础路径")
 	private String baseUrl;
 	/**
 	 * 文件保存的资源路径
 	 */
+	@ApiModelProperty(value="文件保存的资源路径")
 	private String url;
 	/**
 	 * 文件大小
 	 */
+	@ApiModelProperty(value="文件大小")
 	private Long fileSize;
 	/**
 	 * 媒体类型
 	 */
+	@ApiModelProperty(value="媒体类型")
 	private String mimeType;
 	/**
 	 * 文件名
 	 */
+	@ApiModelProperty(value="文件名")
 	private String fileName;
 	/**
 	 * 文件后辍
 	 */
+	@ApiModelProperty(value="文件后辍")
 	private String fileExt;
-	
+
+	public Long getUploadRecordId() {
+		return uploadRecordId;
+	}
+
+	public void setUploadRecordId(Long uploadRecordId) {
+		this.uploadRecordId = uploadRecordId;
+	}
+
 	public String getBizId() {
 		return bizId;
 	}
