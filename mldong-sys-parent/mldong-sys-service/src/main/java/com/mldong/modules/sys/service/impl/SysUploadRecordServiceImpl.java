@@ -150,7 +150,7 @@ public class SysUploadRecordServiceImpl implements SysUploadRecordService{
 	}
 
 	@Override
-	public Long saveReturnId(SysUploadRecord uploadRecord) {
-		return new Long(sysUploadRecordMapper.insertUseGeneratedKeys(uploadRecord));
+	public int saveReturnId(SysUploadRecord uploadRecord) {
+		return sysUploadRecordMapper.insertUseGeneratedKeys(uploadRecord);
 	}
 }

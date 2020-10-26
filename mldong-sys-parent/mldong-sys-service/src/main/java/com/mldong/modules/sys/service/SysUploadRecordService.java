@@ -65,5 +65,5 @@ public interface SysUploadRecordService{
 	 * @param uploadRecord
 	 * @return
 	 */
-	public Long saveReturnId(SysUploadRecord uploadRecord);
+	public int saveReturnId(SysUploadRecord uploadRecord);
 }
