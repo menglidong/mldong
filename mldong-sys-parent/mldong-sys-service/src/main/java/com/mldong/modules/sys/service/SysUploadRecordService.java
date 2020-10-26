@@ -59,4 +59,11 @@ public interface SysUploadRecordService{
 	 * @return
 	 */
 	public UploadResult handleCallback(String callbackAuthHeader, String callbackBody);
+
+	/**
+	 * 保存上传记录并返回主键
+	 * @param uploadRecord
+	 * @return
+	 */
+	public Long saveReturnId(SysUploadRecord uploadRecord);
 }
