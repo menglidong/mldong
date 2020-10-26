@@ -81,4 +81,11 @@ public class SysUploadConfigServiceImpl implements SysUploadConfigService{
 		return CommonPage.toPage(page);
 	}
 
+	@Override
+	public SysUploadConfig getByBizType(String bizType) {
+		SysUploadConfig config = new SysUploadConfig();
+		config.setBizType(bizType);
+		return sysUploadConfigMapper.selectOne(config);
+	}
+
 }

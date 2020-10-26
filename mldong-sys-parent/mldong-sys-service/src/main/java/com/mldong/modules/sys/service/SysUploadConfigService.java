@@ -44,4 +44,11 @@ public interface SysUploadConfigService {
 	 */
 	public CommonPage<SysUploadConfig> list(SysUploadConfigPageParam param);
 
+	/**
+	 * 通过业务id获取记录
+	 * @param bizType
+	 * @return
+	 */
+	public SysUploadConfig getByBizType(String bizType);
+
 }
