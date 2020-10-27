@@ -84,6 +84,7 @@ public class SysDeptServiceImpl implements SysDeptService{
 	@Override
 	public CommonPage<SysDept> list(SysDeptPageParam param) {
 		Page<SysDept> page =param.buildPage(true);
+		page.setOrderBy("sort asc");
 		List<WhereParam> whereParams = param.getWhereParams();
 		if(null == whereParams || whereParams.isEmpty()) {
 			SysDept sysDept = new SysDept();

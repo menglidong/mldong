@@ -72,6 +72,7 @@ public class SysMenuServiceImpl implements SysMenuService{
 	@Override
 	public CommonPage<SysMenu> list(SysMenuPageParam param) {
 		Page<SysMenu> page =param.buildPage(true);
+		page.setOrderBy("sort asc");
 		List<WhereParam> whereParams = param.getWhereParams();
 		if(null == whereParams || whereParams.isEmpty()) {
 			SysMenu sysMenu = new SysMenu();
