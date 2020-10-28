@@ -60,21 +60,21 @@ templates:
     encoding: "utf-8"
   - name: "业务接口"
     selected: true
-    covered: true
+    covered: false
     templateFile: "service.ftl"
     targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-service/src/main/java/${basePackage}/modules/${moduleName}/service/"
     targetFileName: "${table.className}Service.java"
     encoding: "utf-8"
   - name: "业务接口实现"
     selected: true
-    covered: true
+    covered: false
     templateFile: "serviceImpl.ftl"
     targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-service/src/main/java/${basePackage}/modules/${moduleName}/service/impl/"
     targetFileName: "${table.className}ServiceImpl.java"
     encoding: "utf-8"
   - name: "控制层"
     selected: true
-    covered: true
+    covered: false
     templateFile: "controller.ftl"
     targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-portal/src/main/java/${basePackage}/modules/${moduleName}/controller/"
     targetFileName: "${table.className}Controller.java"
