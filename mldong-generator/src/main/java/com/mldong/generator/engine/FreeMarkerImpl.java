@@ -1,11 +1,8 @@
 package com.mldong.generator.engine;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -97,6 +94,9 @@ public class FreeMarkerImpl implements TemplateEngine {
 			File file = new File(targetPath + File.separator + targetFileName);
 			// 文件存在且可覆盖 or 文件不存在==>代码生成
 			boolean isFileExists = file.exists();
+			if(isFileExists) {
+				model.put("addContent", getAddContent(file));
+			}
 			if ((isFileExists && templateConfigModel.isCovered())
 					|| !isFileExists) {
 				File directory = new File(targetPath);
@@ -122,5 +122,46 @@ public class FreeMarkerImpl implements TemplateEngine {
 			throw new GeneratorException(ErrorEnum.templateEngineProcess);
 		}
 	}
-
+	private List<String> getAddContent(File file) {
+		List<String> list = new ArrayList<>();
+		BufferedReader reader = null;
+		StringBuffer sbf = new StringBuffer();
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempStr;
+			boolean isStart = false;
+			while ((tempStr = reader.readLine()) != null) {
+				if(tempStr.contains("START###################")) {
+					isStart = true;
+					continue;
+				}
+				if(tempStr.contains("###################END")) {
+					isStart = false;
+					if(sbf.length()>0) {
+						sbf.deleteCharAt(sbf.length()-1);
+					}
+					list.add(sbf.toString());
+					sbf.delete(0,sbf.length());
+					continue;
+				}
+				if(isStart) {
+					sbf.append(tempStr);
+					sbf.append("\n");
+				}
+			}
+			reader.close();
+			return list;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
 }

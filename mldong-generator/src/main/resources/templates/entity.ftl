@@ -19,6 +19,13 @@ import ${basePackage}.common.annotation.DictEnum;
 import ${basePackage}.common.base.CodedEnum;
 </#if>
 import ${basePackage}.common.base.YesNoEnum;
+// START###################
+<#list addContent as item>
+<#if item_index==0>
+${item}
+</#if>
+</#list>
+// ###################END
 /**
  * <p>实体类</p>
  * <p>Table: ${table.tableName} - ${table.remark?replace("表","")}</p>
@@ -46,6 +53,13 @@ public class ${table.className} implements Serializable{
     </#if>
     </#if>
 </#list>
+// START###################
+<#list addContent as item>
+<#if item_index==1>
+${item}
+</#if>
+</#list>
+// ###################END
 <#list table.columns as column>
     /**
      * 获取${column.remark}
@@ -62,6 +76,13 @@ public class ${table.className} implements Serializable{
     public void ${column.setterMethodName}(${column.javaType} ${column.javaProperty}){
         this.${column.javaProperty} = ${column.javaProperty};
     }
+	// START###################
+<#list addContent as item>
+<#if item_index==2>
+${item}
+</#if>
+</#list>
+	// ###################END
 </#list>
 <#list table.columns as column>
     <#if column.codedType>
@@ -82,6 +103,13 @@ public class ${table.className} implements Serializable{
 		${coded.name}(${coded.value}, "${coded.remark}");
 		</#if>
 	</#list>
+		// START###################
+<#list addContent as item>
+<#if item_index==3>
+${item}
+</#if>
+</#list>
+		// ###################END
 		private int value;
 		private String name;
 		@JsonCreator
