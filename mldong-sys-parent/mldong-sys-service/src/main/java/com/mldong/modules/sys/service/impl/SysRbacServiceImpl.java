@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+import com.mldong.modules.sys.vo.MetaVo;
+import com.mldong.modules.sys.vo.RouterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -209,7 +211,8 @@ public class SysRbacServiceImpl implements SysRbacService{
 		return 1;
 	}
 	@Caching(evict={
-			@CacheEvict(value="menu_user_id")
+			@CacheEvict(value="menu_user_id"),
+			@CacheEvict(value="router_user_id")
 	})
 	@Override
 	public int deleteRoleMenu(IdAndIdsParam param) {
@@ -250,6 +253,46 @@ public class SysRbacServiceImpl implements SysRbacService{
 		}).collect(Collectors.toList());
 		tranfer(userMenuList, noParentList,1);
 		return userMenuList;
+	}
+
+	@Override
+	@Cacheable(value = "router_user_id",key="#userId")
+	public List<RouterVo> getRouters(Long userId) {
+		List<SysMenu> menus = loadUserMenuList(userId);
+		return buildTree(menus, 0L);
+	}
+	private List<RouterVo> buildTree(List<SysMenu> menus, Long id) {
+		List<RouterVo> routers = new ArrayList<>();
+		menus.forEach(menu -> {
+			if(id.equals(menu.getParentId())) {
+				List<RouterVo> children = buildTree(menus, menu.getId());
+				RouterVo router = new RouterVo();
+				router.setAlwayShow(true);
+				router.setComponent(menu.getRouteName().replaceAll(":","/"));
+				router.setHidden(false);
+				router.setName(menu.getRouteName());
+				router.setPath("/" + router.getComponent());
+				router.setRedirect(null);
+				router.setChildren(children);
+				MetaVo meta = new MetaVo();
+				meta.setActiveMenu(null);
+				meta.setAffix(false);
+				meta.setBreadcrumb(true);
+				meta.setIcon(menu.getIcon());
+				meta.setNoCache(true);
+				// meta.setTagName(menu.getName());
+				meta.setTitle(menu.getName());
+				router.setMeta(meta);
+				if(children.size() > 0) {
+					router.setChildren(children);
+				}
+				if(!menu.getRouteName().contains(":")) {
+					router.setComponent("Layout");
+				}
+				routers.add(router);
+			}
+		});
+		return routers;
 	}
 	/**
 	 * 递归转换，追加父级菜单

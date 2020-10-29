@@ -7,6 +7,7 @@ import com.mldong.common.base.IdAndIdsParam;
 import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysMenu;
 import com.mldong.modules.sys.entity.SysUser;
+import com.mldong.modules.sys.vo.RouterVo;
 import com.mldong.modules.sys.vo.SysAccessTreeVo;
 import com.mldong.modules.sys.vo.SysMenuTreeVo;
 
@@ -96,4 +97,11 @@ public interface SysRbacService {
 	 * @return
 	 */
 	public List<SysMenu> loadUserMenuList(Long userId);
+
+	/**
+	 * 获取路由菜单
+	 * @param userId
+	 * @return
+	 */
+	public List<RouterVo> getRouters(Long userId);
 }

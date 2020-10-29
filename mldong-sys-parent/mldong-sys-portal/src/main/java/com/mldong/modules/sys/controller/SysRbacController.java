@@ -1,6 +1,7 @@
 package com.mldong.modules.sys.controller;
 
 import com.mldong.common.annotation.LoginUser;
+import com.mldong.modules.sys.vo.RouterVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -22,6 +23,8 @@ import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysRbacService;
 import com.mldong.modules.sys.vo.SysAccessTreeVo;
 import com.mldong.modules.sys.vo.SysMenuTreeVo;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/sys/rbac")
@@ -115,20 +118,6 @@ public class SysRbacController {
 			return CommonResult.fail("保存角色权限资源关系失败", null);
 		}
 	}
-//	@PostMapping("deleteRoleAccess")
-//	@ApiOperation(value="删除角色权限资源关系", notes="删除角色权限资源关系",authorizations={
-//		@Authorization(value="删除角色权限资源关系",scopes={
-//	    	@AuthorizationScope(description="删除角色权限资源关系",scope="sys:role:deleteRoleAccess")
-//	    })
-//	})
-//	public CommonResult<?> deleteRoleAccess(@RequestBody @Validated IdAndIdsParam param) {
-//		int count = sysRbacService.deleteRoleAccess(param);
-//		if(count>0) {
-//			return CommonResult.success("保存角色权限资源关系成功", null);
-//		} else {
-//			return CommonResult.fail("保存角色权限资源关系失败", null);
-//		}
-//	}
 	@PostMapping("saveRoleMenu")
 	@ApiOperation(value="保存角色菜单关系", notes="保存角色菜单关系",authorizations={
 		@Authorization(value="保存角色菜单关系",scopes={
@@ -143,18 +132,13 @@ public class SysRbacController {
 			return CommonResult.fail("保存角色菜单关系失败", null);
 		}
 	}
-//	@PostMapping("deleteRoleMenu")
-//	@ApiOperation(value="删除角色菜单关系", notes="删除角色菜单关系",authorizations={
-//		@Authorization(value="删除角色菜单关系",scopes={
-//	    	@AuthorizationScope(description="删除角色菜单关系",scope="sys:role:deleteRoleMenu")
-//	    })
-//	})
-//	public CommonResult<?> deleteRoleMenu(@RequestBody @Validated IdAndIdsParam param) {
-//		int count = sysRbacService.deleteRoleMenu(param);
-//		if(count>0) {
-//			return CommonResult.success("删除角色菜单关系成功", null);
-//		} else {
-//			return CommonResult.fail("删除角色菜单关系失败", null);
-//		}
-//	}
+	/**
+	 * 获取当前用户路由列表
+	 * @return
+	 */
+	@PostMapping("getRouters")
+	@ApiOperation(value="获取当前用户路由列表", notes="获取当前用户路由列表")
+	public CommonResult<List<RouterVo>> getRouters(@LoginUser Long userId) {
+		return CommonResult.success(sysRbacService.getRouters(userId));
+	}
 }
