@@ -65,6 +65,10 @@ public enum GlobalErrEnum implements CommonError {
 	 * 文件超过上传最大值
 	 */
 	GL99990009(99990009, "文件超过上传最大值"),
+	/**
+	 * 审核不通过原因不能为空
+	 */
+	GL99990010(99990010, "审核不通过原因不能为空"),
 	;
 	
 	private GlobalErrEnum(int value, String name){
