@@ -76,14 +76,14 @@ ${item}
     public void ${column.setterMethodName}(${column.javaType} ${column.javaProperty}){
         this.${column.javaProperty} = ${column.javaProperty};
     }
-	// START###################
+</#list>
+// START###################
 <#list addContent as item>
-<#if item_index==2>
-${item}
-</#if>
+	<#if item_index==2>
+		${item}
+	</#if>
 </#list>
-	// ###################END
-</#list>
+// ###################END
 <#list table.columns as column>
     <#if column.codedType>
     <#if column.javaProperty!="isDeleted">
