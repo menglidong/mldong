@@ -244,6 +244,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 	@Cacheable(value = "menu_user_id",key="#userId")
 	public List<SysMenu> loadUserMenuList(Long userId) {
 		PageParam<SysMenu> pageParam = new PageParam<>();
+		pageParam.setPageSize(10000);
 		Page<SysMenu> page = pageParam.buildPage(false);
 		page.setOrderBy("sort asc");
 		if(userId.equals(globalProperties.getSuperAdminId())) {
