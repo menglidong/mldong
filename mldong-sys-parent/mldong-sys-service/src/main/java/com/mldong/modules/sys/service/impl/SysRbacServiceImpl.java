@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+import com.mldong.common.base.PageParam;
 import com.mldong.modules.sys.vo.MetaVo;
 import com.mldong.modules.sys.vo.RouterVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,6 +243,9 @@ public class SysRbacServiceImpl implements SysRbacService{
 	@Override
 	@Cacheable(value = "menu_user_id",key="#userId")
 	public List<SysMenu> loadUserMenuList(Long userId) {
+		PageParam<SysMenu> pageParam = new PageParam<>();
+		Page<SysMenu> page = pageParam.buildPage(false);
+		page.setOrderBy("sort asc");
 		if(userId.equals(globalProperties.getSuperAdminId())) {
 			return sysMenuMapper.selectAll();
 		}
