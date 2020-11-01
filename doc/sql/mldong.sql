@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : dev
-Source Server Version : 50728
+Source Server         : hyper-db-root
+Source Server Version : 50731
 Source Host           : 192.168.1.160:3306
 Source Database       : mldong
 
 Target Server Type    : MYSQL
-Target Server Version : 50728
+Target Server Version : 50731
 File Encoding         : 65001
 
-Date: 2020-10-26 10:36:08
+Date: 2020-11-01 23:53:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -85,11 +85,13 @@ CREATE TABLE `sys_dept` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='部门';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='部门';
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
+INSERT INTO `sys_dept` VALUES ('6', '0', '广西大学', '1', '10.00', null, null, null, null, null, '2', '2020-10-21 16:48:38.445', '2020-10-22 08:52:50.531', '1');
+INSERT INTO `sys_dept` VALUES ('7', '6', '计算机与电子信息学院', '2', '10.00', null, null, null, null, null, '2', '2020-10-21 16:48:51.857', '2020-10-22 08:53:03.495', '1');
 
 -- ----------------------------
 -- Table structure for sys_dict
@@ -104,12 +106,15 @@ CREATE TABLE `sys_dict` (
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='字典';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='字典';
 
 -- ----------------------------
 -- Records of sys_dict
 -- ----------------------------
 INSERT INTO `sys_dict` VALUES ('1', '测试', 'sys_test', '测试', '2020-06-11 23:11:49.532', '2020-06-11 23:11:49.532', '2');
+INSERT INTO `sys_dict` VALUES ('2', '用户类型', 'user_type', '用户类型123', '2020-06-28 21:23:32.961', '2020-07-16 23:51:19.401', '1');
+INSERT INTO `sys_dict` VALUES ('3', '测试', '3333', null, '2020-07-03 15:38:00.319', '2020-07-03 15:38:00.319', '1');
+INSERT INTO `sys_dict` VALUES ('4', '123', '123', '123', '2020-07-03 16:33:48.592', '2020-07-03 16:33:48.592', '1');
 
 -- ----------------------------
 -- Table structure for sys_dict_item
@@ -126,12 +131,14 @@ CREATE TABLE `sys_dict_item` (
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='字典项';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='字典项';
 
 -- ----------------------------
 -- Records of sys_dict_item
 -- ----------------------------
 INSERT INTO `sys_dict_item` VALUES ('1', '1', '男', '10', '10.00', '', '2020-06-11 23:12:37.042', '2020-06-11 23:12:37.042', '2');
+INSERT INTO `sys_dict_item` VALUES ('2', '2', 'test1', '10', '10.00', '普通用户', '2020-08-03 19:16:33.780', '2020-08-03 19:18:52.088', '2');
+INSERT INTO `sys_dict_item` VALUES ('3', '2', 'test1', '10', '10.00', '普通用户', '2020-08-03 19:19:04.534', '2020-08-03 19:50:26.957', '1');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -149,10 +156,53 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COMMENT='菜单';
 
 -- ----------------------------
 -- Records of sys_menu
+-- ----------------------------
+INSERT INTO `sys_menu` VALUES ('1', '0', '系统设置', '10.00', 'sys', 'sys', '2', '2020-06-25 21:05:01.000', '2020-09-08 15:31:18.640', '1');
+INSERT INTO `sys_menu` VALUES ('2', '1', '菜单管理', '1.00', 'sys:menu:index', 'tree-table', '2', '2020-06-25 21:06:34.000', '2020-10-30 08:49:07.433', '1');
+INSERT INTO `sys_menu` VALUES ('3', '1', '用户管理', '2.00', 'sys:user:index', 'user', '2', '2020-06-25 21:07:05.000', '2020-10-30 08:49:40.069', '1');
+INSERT INTO `sys_menu` VALUES ('4', '1', '角色管理', '3.00', 'sys:role:index', 'peoples', '2', '2020-06-25 21:07:37.000', '2020-10-30 08:50:08.941', '1');
+INSERT INTO `sys_menu` VALUES ('5', '1', '字典管理', '4.00', 'sys:dict:index', 'dict', '2', '2020-06-25 21:08:08.000', '2020-10-30 08:50:30.754', '1');
+INSERT INTO `sys_menu` VALUES ('6', '0', '内容管理', '11.00', 'cms', 'cms', '2', '2020-06-25 21:09:05.000', '2020-06-29 09:31:58.956', '1');
+INSERT INTO `sys_menu` VALUES ('7', '6', '栏目管理', '1.00', 'cms:category:index', 'table', '2', '2020-06-25 21:09:36.000', '2020-10-30 08:53:54.727', '1');
+INSERT INTO `sys_menu` VALUES ('8', '6', '模型管理', '2.00', 'cms:model:index', 'build', '2', '2020-06-25 21:10:23.000', '2020-10-30 08:55:12.253', '1');
+INSERT INTO `sys_menu` VALUES ('9', '6', '文章管理', '3.00', 'cms:article:index', 'documentation', '2', '2020-06-25 21:10:50.000', '2020-10-30 08:55:19.841', '1');
+INSERT INTO `sys_menu` VALUES ('10', '0', '订单管理', '12.00', 'oms', 'oms', '2', '2020-06-25 21:11:29.000', '2020-06-29 09:31:58.956', '1');
+INSERT INTO `sys_menu` VALUES ('11', '10', '订单列表', '1.00', 'oms:order:index', 'clipboard', '2', '2020-06-25 21:11:55.000', '2020-10-30 08:55:49.596', '1');
+INSERT INTO `sys_menu` VALUES ('12', '10', '订单设置', '2.00', 'oms:orderSetting:index', 'edit', '2', '2020-06-25 21:12:15.000', '2020-10-30 08:56:25.056', '1');
+INSERT INTO `sys_menu` VALUES ('13', '0', '商品管理', '13.00', 'pms', 'pms', '2', '2020-06-25 21:14:02.000', '2020-07-10 10:31:46.482', '1');
+INSERT INTO `sys_menu` VALUES ('14', '13', '商品分类', '1.00', 'pms:productCategory:index', 'cascader', '2', '2020-06-25 21:16:05.000', '2020-10-30 08:56:43.499', '1');
+INSERT INTO `sys_menu` VALUES ('15', '13', '商品列表', '2.00', 'pms:product:index', 'excel', '2', '2020-06-25 21:16:36.000', '2020-10-30 08:56:57.348', '1');
+INSERT INTO `sys_menu` VALUES ('16', '13', '品牌管理', '3.00', 'pms:brand:index', 'dashboard', '2', '2020-06-25 21:16:57.000', '2020-10-30 08:57:06.981', '1');
+INSERT INTO `sys_menu` VALUES ('17', '0', 'vhhg', '10.00', 'fgh', null, '2', '2020-07-04 09:18:45.220', '2020-09-04 22:25:26.491', '2');
+INSERT INTO `sys_menu` VALUES ('18', '17', 'test11', '10.00', 'test1111', null, '2', '2020-07-10 10:26:54.657', '2020-07-11 11:25:40.355', '2');
+INSERT INTO `sys_menu` VALUES ('19', '18', 'test111111', '10.00', 'test111111', null, '2', '2020-07-10 10:27:27.849', '2020-07-11 11:25:40.355', '2');
+INSERT INTO `sys_menu` VALUES ('20', '19', '666666666', '10.00', 'asfafd5555', null, '2', '2020-07-11 10:52:36.521', '2020-07-11 11:25:40.355', '2');
+INSERT INTO `sys_menu` VALUES ('21', '1', '日志管理', '5.00', 'sys:requestLog:index', 'log', '2', '2020-09-06 20:39:14.137', '2020-10-30 08:50:57.871', '1');
+INSERT INTO `sys_menu` VALUES ('22', '1', '部门管理', '10.00', 'sys:dept:index', 'tree', '2', '2020-10-21 16:15:22.926', '2020-10-30 08:51:31.096', '1');
+INSERT INTO `sys_menu` VALUES ('23', '1', '岗位管理', '10.00', 'sys:post:index', 'post', '2', '2020-10-21 17:23:12.122', '2020-10-30 08:51:45.195', '1');
+INSERT INTO `sys_menu` VALUES ('24', '1', '通知公告', '10.10', 'sys:notice:index', 'message', '2', '2020-10-27 20:41:46.632', '2020-10-30 08:52:52.775', '1');
+
+-- ----------------------------
+-- Table structure for sys_notice
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notice`;
+CREATE TABLE `sys_notice` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `title` varchar(100) DEFAULT NULL COMMENT '公告标题',
+  `type` int(6) unsigned DEFAULT '10' COMMENT '公告类型(10->通知|TZ,20->公告|GG)',
+  `content` longtext COMMENT '公告内容',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_notice
 -- ----------------------------
 
 -- ----------------------------
@@ -169,11 +219,15 @@ CREATE TABLE `sys_post` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='岗位';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='岗位';
 
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
+INSERT INTO `sys_post` VALUES ('1', '董事长', 'ceo', '10.00', '2', '2020-10-21 17:23:40.267', '2020-10-21 17:23:40.267', '1');
+INSERT INTO `sys_post` VALUES ('2', '项目经理', 'se', '10.00', '2', '2020-10-21 17:23:51.307', '2020-10-21 17:23:51.307', '1');
+INSERT INTO `sys_post` VALUES ('3', '人力资源', 'hr', '10.00', '2', '2020-10-21 17:24:11.484', '2020-10-21 17:24:11.484', '1');
+INSERT INTO `sys_post` VALUES ('4', '普通员工', 'user', '10.00', '2', '2020-10-21 17:25:01.004', '2020-10-21 17:25:01.004', '1');
 
 -- ----------------------------
 -- Table structure for sys_request_log
@@ -199,7 +253,7 @@ CREATE TABLE `sys_request_log` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='请求日志';
 
 -- ----------------------------
 -- Records of sys_request_log
@@ -208,24 +262,13 @@ INSERT INTO `sys_request_log` VALUES ('2', '369fc910-bc9b-4514-9152-1d1a645050f9
 INSERT INTO `sys_request_log` VALUES ('3', '05169859-7acf-4396-8673-cf8106b43d0d', '99', '/error', '', 'GET', null, '0:0:0:0:0:0:0:1', null, null, '0', '', '{\"code\":99990401,\"msg\":\"未授权\",\"data\":null}', '2020-10-21 09:06:15.160', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '2020-10-21 09:08:45.434', '1');
 INSERT INTO `sys_request_log` VALUES ('4', '2f3669e2-3a53-4aed-a772-51471a992c08', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzI1MzcwOCwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzI0NjUwOCwidXNlcklkIjoxfQ.NTvo-FUGWdvK2M_GiphPAWdtDginnQ72337nxpw6pXQ\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-21 10:15:08.257', '2020-10-21 10:15:09.114', '2020-10-21 10:15:09.115', '2020-10-21 10:15:09.115', '1');
 INSERT INTO `sys_request_log` VALUES ('5', '91180755-98bd-469c-9ea1-f0d21ea872df', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzMzNzAwNiwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzMyOTgwNiwidXNlcklkIjoxfQ.RuRZPD_KqHV60o9xtPD7H5k5_VBU9RsVZGHJu1za_us\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-22 09:23:26.095', '2020-10-22 09:23:26.854', '2020-10-22 09:23:26.855', '2020-10-22 09:23:26.855', '1');
-INSERT INTO `sys_request_log` VALUES ('6', '7d6d1ec5-ffac-4f88-89fe-f97bc8eb0c13', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"21f78109accb498088d54df9cd8cc910\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:50:11.362', '2020-10-23 11:50:12.800', '2020-10-23 11:50:12.801', '2020-10-23 11:50:12.801', '1');
-INSERT INTO `sys_request_log` VALUES ('7', '4d145037-eda3-4606-aa8a-e7f361cccaf5', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"7e9cd2f4b0a4448c8cca50ceda936996\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:52:29.380', '2020-10-23 11:52:29.398', '2020-10-23 11:52:29.398', '2020-10-23 11:52:29.398', '1');
-INSERT INTO `sys_request_log` VALUES ('8', '0498ee32-f1ae-4d3a-918f-b0e157ef64c9', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"682211a8a0fb4eae95fe6eede9cf6778\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:58:51.930', '2020-10-23 11:58:53.372', '2020-10-23 11:58:53.372', '2020-10-23 11:58:53.372', '1');
-INSERT INTO `sys_request_log` VALUES ('9', '3341b8e6-2fb0-4b41-ad95-7d0c5b04a31b', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"cb99d1169e3b4e7e8e278c77eba04503\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 11:59:21.224', '2020-10-23 11:59:22.654', '2020-10-23 11:59:22.655', '2020-10-23 11:59:22.655', '1');
-INSERT INTO `sys_request_log` VALUES ('10', '36ebddf9-86d3-4ac8-9cf8-d27bb075d1b4', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"fc84aac2d3ed4d56868104a81aad86bf\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 12:01:22.509', '2020-10-23 12:01:23.946', '2020-10-23 12:01:23.946', '2020-10-23 12:01:23.946', '1');
-INSERT INTO `sys_request_log` VALUES ('11', '7a2334e6-e270-4684-bbbd-2634de702c35', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"c9a5b84ed83d416c844523948043b3b0\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:02:05.823', '2020-10-23 15:02:07.252', '2020-10-23 15:02:07.252', '2020-10-23 15:02:07.252', '1');
-INSERT INTO `sys_request_log` VALUES ('12', '68ced801-ed0b-41ee-8384-efc5c944c6c4', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"980c5dad24864e078e5265f6c61b85a2\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:05:06.216', '2020-10-23 15:05:07.681', '2020-10-23 15:05:07.682', '2020-10-23 15:05:07.682', '1');
-INSERT INTO `sys_request_log` VALUES ('13', '3f1dc587-5ec5-40bc-baf8-581bdd8c86cd', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzQ0NDIyNiwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzQzNzAyNiwidXNlcklkIjoxfQ.dlZQJ8AAKrViLxvrBIZLK05LEhazKdcEjr4iogdmCBs\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:10:26.405', '2020-10-23 15:10:27.234', '2020-10-23 15:10:27.235', '2020-10-23 15:10:27.235', '1');
-INSERT INTO `sys_request_log` VALUES ('14', '12264fac-9ce3-4fac-910c-3e023370bc10', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":99999999,\"msg\":\"Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to localhost:6379\",\"data\":null}', '2020-10-23 15:14:20.970', '2020-10-23 15:14:24.434', '2020-10-23 15:14:24.434', '2020-10-23 15:14:24.434', '1');
-INSERT INTO `sys_request_log` VALUES ('15', 'd1c2a333-fdc7-427c-9da3-0f8c8412ce6f', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"f45485d2316b467a9d3009a7ba0a4570\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:15:55.608', '2020-10-23 15:15:57.121', '2020-10-23 15:15:57.121', '2020-10-23 15:15:57.121', '1');
-INSERT INTO `sys_request_log` VALUES ('16', 'f2d959dc-30d4-43ee-b120-78fcd4c3168d', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzQ0NjI5NiwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzQzOTA5NiwidXNlcklkIjoxfQ.bO6a7zDtVUdtsudZFKmP9Nk0QJxYqZCsB-nqXxZjoX4\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 15:44:56.534', '2020-10-23 15:44:57.344', '2020-10-23 15:44:57.345', '2020-10-23 15:44:57.345', '1');
-INSERT INTO `sys_request_log` VALUES ('17', 'c9b74293-7fcc-45ae-aa2f-a28f2d20dcfc', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-26 10:23:25.357', '2020-10-26 10:23:25.569', '2020-10-26 10:23:25.569', '2020-10-26 10:23:25.569', '1');
-INSERT INTO `sys_request_log` VALUES ('18', 'e74b3ad6-5913-4ac4-8d4e-df5a49579d1d', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990008,\"msg\":\"文件上传配置不存在\",\"data\":null}', '2020-10-26 10:23:50.732', '2020-10-26 10:23:50.744', '2020-10-26 10:23:50.744', '2020-10-26 10:23:50.744', '1');
-INSERT INTO `sys_request_log` VALUES ('19', 'f9560f4e-feca-4983-be05-02615cdc4f8b', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990006,\"msg\":\"文件后辍不允许\",\"data\":null}', '2020-10-26 10:24:36.277', '2020-10-26 10:24:36.287', '2020-10-26 10:24:36.287', '2020-10-26 10:24:36.287', '1');
-INSERT INTO `sys_request_log` VALUES ('20', '6c9e8935-2788-4bd2-ac37-b039d9e0a945', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990006,\"msg\":\"文件后辍不允许\",\"data\":null}', '2020-10-26 10:24:43.743', '2020-10-26 10:24:43.752', '2020-10-26 10:24:43.753', '2020-10-26 10:24:43.753', '1');
-INSERT INTO `sys_request_log` VALUES ('21', '3bd5ab99-ec23-4131-bcba-702174177cc9', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":99990006,\"msg\":\"文件后辍不允许\",\"data\":null}', '2020-10-26 10:26:15.894', '2020-10-26 10:28:55.310', '2020-10-26 10:28:55.310', '2020-10-26 10:28:55.310', '1');
-INSERT INTO `sys_request_log` VALUES ('22', '39d815a3-4023-45ca-8213-82f5f0b9e9f7', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":0,\"msg\":\"操作成功\",\"data\":{\"uploadRecordId\":1,\"bizId\":\"\",\"bizType\":\"\",\"baseUrl\":\"http://qiniu.mldong.com\",\"url\":\"common/7c003d02-9147-45bf-9563-b36a43435c3a.png\",\"fileSize\":806888,\"mimeType\":\"image/png\",\"fileName\":null,\"fileExt\":\".png\"}}', '2020-10-26 10:29:09.182', '2020-10-26 10:29:10.172', '2020-10-26 10:29:10.172', '2020-10-26 10:29:10.172', '1');
-INSERT INTO `sys_request_log` VALUES ('23', 'f71f2584-a015-406d-bb61-63d96114b34d', '99', '/sys/uploadRecord/file', '', 'POST', '上传文件', '0:0:0:0:0:0:0:1', null, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzY4NjIwNSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzY3OTAwNSwidXNlcklkIjoxfQ.KCiWg-39XA7PsQ52dFwwDKk51gjgGceCNYzYjly5sxo', '1', 'admin', '{\"code\":0,\"msg\":\"操作成功\",\"data\":{\"uploadRecordId\":2,\"bizId\":\"\",\"bizType\":\"\",\"baseUrl\":\"http://qiniu.mldong.com\",\"url\":\"2362a448-48bd-47fc-b09d-3ba7212a25a9.png\",\"fileSize\":806888,\"mimeType\":\"image/png\",\"fileName\":null,\"fileExt\":\".png\"}}', '2020-10-26 10:31:00.269', '2020-10-26 10:31:01.243', '2020-10-26 10:31:01.243', '2020-10-26 10:31:01.243', '1');
+INSERT INTO `sys_request_log` VALUES ('6', '6080c5a4-4f23-4331-abeb-0e1a82bf91d8', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzM3NTA3NSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzM2Nzg3NSwidXNlcklkIjoxfQ.qqJQjANA6kfBYd5YvC_M7LqWmeaNXGrlaGp2XIB-8Qw\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-22 19:57:55.626', '2020-10-22 19:57:55.684', '2020-10-22 19:57:55.684', '2020-10-22 19:57:55.684', '1');
+INSERT INTO `sys_request_log` VALUES ('7', '7e924c48-4a90-4a74-9520-6addf570903e', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzQ2OTQzMywidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzQ2MjIzMywidXNlcklkIjoxfQ.y-7H1jXOJuDEH02ezhozs35Yiyo61tImY9oxcxhPjS8\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-23 22:10:33.650', '2020-10-23 22:10:33.866', '2020-10-23 22:10:33.866', '2020-10-23 22:10:33.866', '1');
+INSERT INTO `sys_request_log` VALUES ('8', '10f09c9a-4490-4630-95d8-5d3bf3485b22', '99', '/error', '', 'GET', null, '0:0:0:0:0:0:0:1', null, '', null, null, '{\"code\":99990401,\"msg\":\"未授权\",\"data\":null}', '2020-10-24 20:54:43.529', '2020-10-24 20:55:30.032', '2020-10-24 20:55:30.033', '2020-10-24 20:55:30.033', '1');
+INSERT INTO `sys_request_log` VALUES ('9', '8fb296b7-408d-49ca-b919-c58291ebca64', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwMzk4NDg0OCwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwMzk3NzY0OCwidXNlcklkIjoxfQ.wArKQwG7HPAzhoGvk7-21TJ_Cs2oeJKhhIWS9Q9zBb0\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"蒙立东\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[]}}', '2020-10-29 21:20:48.590', '2020-10-29 21:20:48.807', '2020-10-29 21:20:48.808', '2020-10-29 21:20:48.808', '1');
+INSERT INTO `sys_request_log` VALUES ('10', '6daec947-1d4f-4e49-b18d-89babea934c8', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"123456\"\n}', null, null, null, '{\"code\":80009001,\"msg\":\"用户不存在\",\"data\":null}', '2020-11-01 23:07:10.942', '2020-11-01 23:07:11.101', '2020-11-01 23:07:11.101', '2020-11-01 23:07:11.101', '1');
+INSERT INTO `sys_request_log` VALUES ('11', '9470388d-5b1c-41e3-86c5-3c3952f91c39', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"mldong\"\n}', null, null, null, '{\"code\":80009001,\"msg\":\"用户不存在\",\"data\":null}', '2020-11-01 23:07:16.233', '2020-11-01 23:07:16.237', '2020-11-01 23:07:16.237', '2020-11-01 23:07:16.237', '1');
+INSERT INTO `sys_request_log` VALUES ('12', '6558496b-61d2-4c5e-8434-d036fc518f37', '99', '/sys/login', '', 'POST', '登录系统', '0:0:0:0:0:0:0:1', '{\n	\"password\": \"mldong@321\",\n	\"userName\": \"admin\"\n}', null, null, null, '{\"code\":0,\"msg\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHQiOiJ7fSIsImlzcyI6Im1sZG9uZyIsImV4cCI6MTYwNDI1MDQ0MSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTYwNDI0MzI0MSwidXNlcklkIjoxfQ.9Q-ZI4YnETcZ5LGNCD49Pxwlr1UQtSqYxLnH6Pg_SvM\",\"userId\":1,\"userName\":\"admin\",\"realName\":\"mldong\",\"avatar\":\"\",\"accessList\":[\"admin\"],\"menuList\":[{\"id\":2,\"parentId\":1,\"name\":\"菜单管理\",\"sort\":1.0,\"routeName\":\"sys:menu:index\",\"icon\":\"tree-table\",\"isShow\":2,\"createTime\":1593090394000,\"updateTime\":1604018947433,\"isDeleted\":1},{\"id\":14,\"parentId\":13,\"name\":\"商品分类\",\"sort\":1.0,\"routeName\":\"pms:productCategory:index\",\"icon\":\"cascader\",\"isShow\":2,\"createTime\":1593090965000,\"updateTime\":1604019403499,\"isDeleted\":1},{\"id\":11,\"parentId\":10,\"name\":\"订单列表\",\"sort\":1.0,\"routeName\":\"oms:order:index\",\"icon\":\"clipboard\",\"isShow\":2,\"createTime\":1593090715000,\"updateTime\":1604019349596,\"isDeleted\":1},{\"id\":7,\"parentId\":6,\"name\":\"栏目管理\",\"sort\":1.0,\"routeName\":\"cms:category:index\",\"icon\":\"table\",\"isShow\":2,\"createTime\":1593090576000,\"updateTime\":1604019234727,\"isDeleted\":1},{\"id\":8,\"parentId\":6,\"name\":\"模型管理\",\"sort\":2.0,\"routeName\":\"cms:model:index\",\"icon\":\"build\",\"isShow\":2,\"createTime\":1593090623000,\"updateTime\":1604019312253,\"isDeleted\":1},{\"id\":3,\"parentId\":1,\"name\":\"用户管理\",\"sort\":2.0,\"routeName\":\"sys:user:index\",\"icon\":\"user\",\"isShow\":2,\"createTime\":1593090425000,\"updateTime\":1604018980069,\"isDeleted\":1},{\"id\":12,\"parentId\":10,\"name\":\"订单设置\",\"sort\":2.0,\"routeName\":\"oms:orderSetting:index\",\"icon\":\"edit\",\"isShow\":2,\"createTime\":1593090735000,\"updateTime\":1604019385056,\"isDeleted\":1},{\"id\":15,\"parentId\":13,\"name\":\"商品列表\",\"sort\":2.0,\"routeName\":\"pms:product:index\",\"icon\":\"excel\",\"isShow\":2,\"createTime\":1593090996000,\"updateTime\":1604019417348,\"isDeleted\":1},{\"id\":4,\"parentId\":1,\"name\":\"角色管理\",\"sort\":3.0,\"routeName\":\"sys:role:index\",\"icon\":\"peoples\",\"isShow\":2,\"createTime\":1593090457000,\"updateTime\":1604019008941,\"isDeleted\":1},{\"id\":9,\"parentId\":6,\"name\":\"文章管理\",\"sort\":3.0,\"routeName\":\"cms:article:index\",\"icon\":\"documentation\",\"isShow\":2,\"createTime\":1593090650000,\"updateTime\":1604019319841,\"isDeleted\":1},{\"id\":16,\"parentId\":13,\"name\":\"品牌管理\",\"sort\":3.0,\"routeName\":\"pms:brand:index\",\"icon\":\"dashboard\",\"isShow\":2,\"createTime\":1593091017000,\"updateTime\":1604019426981,\"isDeleted\":1},{\"id\":5,\"parentId\":1,\"name\":\"字典管理\",\"sort\":4.0,\"routeName\":\"sys:dict:index\",\"icon\":\"dict\",\"isShow\":2,\"createTime\":1593090488000,\"updateTime\":1604019030754,\"isDeleted\":1},{\"id\":21,\"parentId\":1,\"name\":\"日志管理\",\"sort\":5.0,\"routeName\":\"sys:requestLog:index\",\"icon\":\"log\",\"isShow\":2,\"createTime\":1599395954137,\"updateTime\":1604019057871,\"isDeleted\":1},{\"id\":1,\"parentId\":0,\"name\":\"系统设置\",\"sort\":10.0,\"routeName\":\"sys\",\"icon\":\"sys\",\"isShow\":2,\"createTime\":1593090301000,\"updateTime\":1599550278640,\"isDeleted\":1},{\"id\":22,\"parentId\":1,\"name\":\"部门管理\",\"sort\":10.0,\"routeName\":\"sys:dept:index\",\"icon\":\"tree\",\"isShow\":2,\"createTime\":1603268122926,\"updateTime\":1604019091096,\"isDeleted\":1},{\"id\":23,\"parentId\":1,\"name\":\"岗位管理\",\"sort\":10.0,\"routeName\":\"sys:post:index\",\"icon\":\"post\",\"isShow\":2,\"createTime\":1603272192122,\"updateTime\":1604019105195,\"isDeleted\":1},{\"id\":24,\"parentId\":1,\"name\":\"通知公告\",\"sort\":10.1,\"routeName\":\"sys:notice:index\",\"icon\":\"message\",\"isShow\":2,\"createTime\":1603802506632,\"updateTime\":1604019172775,\"isDeleted\":1},{\"id\":6,\"parentId\":0,\"name\":\"内容管理\",\"sort\":11.0,\"routeName\":\"cms\",\"icon\":\"cms\",\"isShow\":2,\"createTime\":1593090545000,\"updateTime\":1593394318956,\"isDeleted\":1},{\"id\":10,\"parentId\":0,\"name\":\"订单管理\",\"sort\":12.0,\"routeName\":\"oms\",\"icon\":\"oms\",\"isShow\":2,\"createTime\":1593090689000,\"updateTime\":1593394318956,\"isDeleted\":1},{\"id\":13,\"parentId\":0,\"name\":\"商品管理\",\"sort\":13.0,\"routeName\":\"pms\",\"icon\":\"pms\",\"isShow\":2,\"createTime\":1593090842000,\"updateTime\":1594348306482,\"isDeleted\":1}]}}', '2020-11-01 23:07:21.503', '2020-11-01 23:07:21.577', '2020-11-01 23:07:21.578', '2020-11-01 23:07:21.578', '1');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -242,12 +285,15 @@ CREATE TABLE `sys_role` (
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', '普通管理员', 'NORMAL_MANAGE', '10', '1', '普通管理员', '2020-05-31 07:07:26.000', '2020-05-31 07:07:29.000', '2');
+INSERT INTO `sys_role` VALUES ('2', '超级管理员', 'SUPER_ADMIN', '10', '2', '超级管理员', '2020-06-27 07:20:01.638', '2020-07-14 16:54:49.631', '1');
+INSERT INTO `sys_role` VALUES ('3', '审批专员', 'approving_commissioner', '10', '2', '审批专员', '2020-06-27 07:23:38.401', '2020-07-03 16:34:27.677', '1');
+INSERT INTO `sys_role` VALUES ('4', '234', '412', '10', '2', '123', '2020-07-03 16:34:09.588', '2020-07-03 16:34:09.588', '1');
 
 -- ----------------------------
 -- Table structure for sys_role_access
@@ -262,11 +308,53 @@ CREATE TABLE `sys_role_access` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`),
   KEY `idx_sys_role_access` (`access`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限关系';
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限关系';
 
 -- ----------------------------
 -- Records of sys_role_access
 -- ----------------------------
+INSERT INTO `sys_role_access` VALUES ('1', '3', 'sys:uploadRecord:index', '2020-06-30 23:06:48.500', '2020-06-30 23:06:48.500', '2');
+INSERT INTO `sys_role_access` VALUES ('2', '3', 'sys:upload:createUploadToken', '2020-06-30 23:06:48.500', '2020-06-30 23:06:48.500', '2');
+INSERT INTO `sys_role_access` VALUES ('3', '3', 'sys:uploadRecord:remove', '2020-06-30 23:06:48.500', '2020-06-30 23:06:48.500', '2');
+INSERT INTO `sys_role_access` VALUES ('4', '3', 'sys:uploadRecord:get', '2020-06-30 23:06:48.500', '2020-06-30 23:06:48.500', '2');
+INSERT INTO `sys_role_access` VALUES ('5', '3', 'sys:uploadRecord:list', '2020-06-30 23:06:48.500', '2020-06-30 23:06:48.500', '2');
+INSERT INTO `sys_role_access` VALUES ('6', '3', 'sys:dictItem:index', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('7', '3', 'sys:dictItem:remove', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('8', '3', 'sys:dictItem:get', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('9', '3', 'sys:dictItem:update', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('10', '3', 'sys:dictItem:list', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('11', '3', 'sys:dictItem:save', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('12', '3', 'sys:dict:index', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('13', '3', 'sys:dict:listAllEnum', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('14', '3', 'sys:dict:getByDictKey', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('15', '3', 'sys:dict:remove', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('16', '3', 'sys:dict:get', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('17', '3', 'sys:dict:update', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('18', '3', 'sys:dict:list', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('19', '3', 'sys:dict:save', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('20', '3', 'sys:user:get', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('21', '3', 'sys:user:update', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('22', '3', 'sys:user:list', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('23', '3', 'sys:user:save', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('24', '3', 'sys:menu:index', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('25', '3', 'sys:menu:remove', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('26', '3', 'sys:menu:get', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('27', '3', 'sys:menu:update', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('28', '3', 'sys:menu:list', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('29', '3', 'sys:menu:save', '2020-07-01 21:50:57.094', '2020-07-01 21:50:57.094', '1');
+INSERT INTO `sys_role_access` VALUES ('30', '2', 'sys:role:remove', '2020-07-02 17:21:14.484', '2020-07-02 17:21:14.484', '1');
+INSERT INTO `sys_role_access` VALUES ('31', '2', 'sys:uploadConfig:index', '2020-07-07 09:16:39.508', '2020-07-07 09:16:39.508', '2');
+INSERT INTO `sys_role_access` VALUES ('32', '2', 'sys:uploadConfig:remove', '2020-07-07 09:16:39.508', '2020-07-07 09:16:39.508', '2');
+INSERT INTO `sys_role_access` VALUES ('33', '2', 'sys:uploadConfig:get', '2020-07-07 09:16:39.508', '2020-07-07 09:16:39.508', '2');
+INSERT INTO `sys_role_access` VALUES ('34', '2', 'sys:uploadConfig:update', '2020-07-07 09:16:39.508', '2020-07-07 09:16:39.508', '2');
+INSERT INTO `sys_role_access` VALUES ('35', '2', 'sys:uploadConfig:list', '2020-07-07 09:16:39.508', '2020-07-07 09:16:39.508', '2');
+INSERT INTO `sys_role_access` VALUES ('36', '2', 'sys:uploadConfig:save', '2020-07-07 09:16:39.508', '2020-07-07 09:16:39.508', '2');
+INSERT INTO `sys_role_access` VALUES ('37', '2', 'sys:user:index', '2020-07-19 02:31:43.325', '2020-07-19 02:31:43.325', '1');
+INSERT INTO `sys_role_access` VALUES ('38', '2', 'sys:user:remove', '2020-07-19 02:31:43.325', '2020-07-19 02:31:43.325', '1');
+INSERT INTO `sys_role_access` VALUES ('39', '2', 'sys:user:get', '2020-07-19 02:31:43.325', '2020-07-19 02:31:43.325', '1');
+INSERT INTO `sys_role_access` VALUES ('40', '2', 'sys:user:update', '2020-07-19 02:31:43.325', '2020-07-19 02:31:43.325', '1');
+INSERT INTO `sys_role_access` VALUES ('41', '2', 'sys:user:list', '2020-07-19 02:31:43.325', '2020-07-19 02:31:43.325', '1');
+INSERT INTO `sys_role_access` VALUES ('42', '2', 'sys:user:save', '2020-07-19 02:31:43.325', '2020-07-19 02:31:43.325', '1');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -280,11 +368,57 @@ CREATE TABLE `sys_role_menu` (
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色菜单关系';
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COMMENT='角色菜单关系';
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
+INSERT INTO `sys_role_menu` VALUES ('1', '2', '6', '2020-06-30 23:13:54.765', '2020-06-30 23:13:54.765', '2');
+INSERT INTO `sys_role_menu` VALUES ('2', '2', '7', '2020-06-30 23:13:54.765', '2020-06-30 23:13:54.765', '2');
+INSERT INTO `sys_role_menu` VALUES ('3', '2', '8', '2020-06-30 23:13:54.765', '2020-06-30 23:13:54.765', '2');
+INSERT INTO `sys_role_menu` VALUES ('4', '2', '9', '2020-06-30 23:13:54.765', '2020-06-30 23:13:54.765', '2');
+INSERT INTO `sys_role_menu` VALUES ('5', '3', '7', '2020-06-30 23:26:49.656', '2020-06-30 23:26:49.656', '2');
+INSERT INTO `sys_role_menu` VALUES ('6', '3', '8', '2020-06-30 23:26:49.656', '2020-06-30 23:26:49.656', '2');
+INSERT INTO `sys_role_menu` VALUES ('7', '3', '10', '2020-06-30 23:26:49.656', '2020-06-30 23:26:49.656', '2');
+INSERT INTO `sys_role_menu` VALUES ('8', '3', '11', '2020-06-30 23:26:49.656', '2020-06-30 23:26:49.656', '2');
+INSERT INTO `sys_role_menu` VALUES ('9', '3', '12', '2020-06-30 23:26:49.656', '2020-06-30 23:26:49.656', '2');
+INSERT INTO `sys_role_menu` VALUES ('10', '3', '1', '2020-07-01 21:51:20.294', '2020-07-01 21:51:20.294', '2');
+INSERT INTO `sys_role_menu` VALUES ('11', '3', '2', '2020-07-01 21:51:20.294', '2020-07-01 21:51:20.294', '1');
+INSERT INTO `sys_role_menu` VALUES ('12', '3', '3', '2020-07-01 21:51:20.294', '2020-07-01 21:51:20.294', '1');
+INSERT INTO `sys_role_menu` VALUES ('13', '3', '4', '2020-07-01 21:51:20.294', '2020-07-01 21:51:20.294', '2');
+INSERT INTO `sys_role_menu` VALUES ('14', '3', '5', '2020-07-01 21:51:20.294', '2020-07-01 21:51:20.294', '1');
+INSERT INTO `sys_role_menu` VALUES ('15', '3', '7', '2020-07-01 21:51:20.294', '2020-07-01 21:51:20.294', '1');
+INSERT INTO `sys_role_menu` VALUES ('16', '3', '9', '2020-07-01 21:51:20.294', '2020-07-01 21:51:20.294', '1');
+INSERT INTO `sys_role_menu` VALUES ('17', '2', '2', '2020-07-02 12:20:51.642', '2020-07-02 12:20:51.642', '2');
+INSERT INTO `sys_role_menu` VALUES ('18', '2', '3', '2020-07-02 12:20:51.642', '2020-07-02 12:20:51.642', '2');
+INSERT INTO `sys_role_menu` VALUES ('19', '2', '1', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('20', '2', '4', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('21', '2', '5', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('22', '2', '10', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('23', '2', '11', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('24', '2', '12', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '1');
+INSERT INTO `sys_role_menu` VALUES ('25', '2', '13', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('26', '2', '14', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('27', '2', '15', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('28', '2', '16', '2020-07-02 12:23:15.379', '2020-07-02 12:23:15.379', '2');
+INSERT INTO `sys_role_menu` VALUES ('29', '2', '10', '2020-07-02 13:48:35.866', '2020-07-02 13:48:35.866', '1');
+INSERT INTO `sys_role_menu` VALUES ('30', '2', '11', '2020-07-02 13:48:35.866', '2020-07-02 13:48:35.866', '1');
+INSERT INTO `sys_role_menu` VALUES ('31', '4', '3', '2020-07-15 09:15:50.925', '2020-07-15 09:15:50.925', '1');
+INSERT INTO `sys_role_menu` VALUES ('32', '4', '4', '2020-07-15 09:15:50.925', '2020-07-15 09:15:50.925', '1');
+INSERT INTO `sys_role_menu` VALUES ('33', '2', '1', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('34', '2', '2', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('35', '2', '3', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('36', '2', '4', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('37', '2', '5', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('38', '2', '6', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('39', '2', '7', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('40', '2', '8', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('41', '2', '9', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('42', '2', '13', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('43', '2', '14', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('44', '2', '15', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('45', '2', '16', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
+INSERT INTO `sys_role_menu` VALUES ('46', '2', '17', '2020-08-26 15:41:12.202', '2020-08-26 15:41:12.202', '1');
 
 -- ----------------------------
 -- Table structure for sys_upload_config
@@ -297,8 +431,7 @@ CREATE TABLE `sys_upload_config` (
   `file_size_min` bigint(20) unsigned DEFAULT '0' COMMENT '限定上传文件大小最小值，单位`byte`。（0为不限制）',
   `file_size_max` bigint(20) unsigned DEFAULT '0' COMMENT '限定上传文件大小最大值，单位`byte`。（0为不限制）',
   `file_ext` varchar(64) NOT NULL COMMENT '限定用户上传后辍(多个逗号分割)',
-  `upload_dir` varchar(100) DEFAULT '' COMMENT '上传目录',
-  `upload_sub_dir` varchar(255) DEFAULT '' COMMENT '上传子目录',
+  `upload_dir` varchar(100) DEFAULT NULL COMMENT '上传目录',
   `base_url` varchar(32) DEFAULT '' COMMENT '访问地址前辍',
   `callback_url` varchar(100) DEFAULT '' COMMENT '回调地址',
   `naming_strategy` varchar(32) NOT NULL COMMENT '命名策略',
@@ -308,13 +441,12 @@ CREATE TABLE `sys_upload_config` (
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='上传配置';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='上传配置';
 
 -- ----------------------------
 -- Records of sys_upload_config
 -- ----------------------------
-INSERT INTO `sys_upload_config` VALUES ('1', '通用', 'common', '0', '10485760', '.png,.gif,.jpng', 'D:/mldong/upload/common', '', 'http://qiniu.mldong.com', '', 'default', '1', '通用-10M', '2020-10-26 09:47:35.000', '2020-10-26 09:47:38.000', '1');
-INSERT INTO `sys_upload_config` VALUES ('2', '食谱大图', 'stms_recipe_cover', '0', '10485760', '.png,.gif,.jpeg', 'D:/mldong/upload/image', '', 'http://qiniu.mldong.com', '', 'default', '1', '食谱大图-10M', '2020-10-26 09:49:06.000', '2020-10-26 09:49:10.000', '1');
+INSERT INTO `sys_upload_config` VALUES ('1', '头像', 'avatar', '0', '2097152', '.png,.jpg,.jpeg', null, 'http://qiniu.mldong.com/', 'http://api.mldong.com/sys/uploadRecord/handleCallback', 'default', '1', '头像', '2020-06-14 12:07:03.024', '2020-06-14 12:07:03.024', '2');
 
 -- ----------------------------
 -- Table structure for sys_upload_record
@@ -333,13 +465,12 @@ CREATE TABLE `sys_upload_record` (
   `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='上传记录';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='上传记录';
 
 -- ----------------------------
 -- Records of sys_upload_record
 -- ----------------------------
-INSERT INTO `sys_upload_record` VALUES ('1', '', '', 'common/7c003d02-9147-45bf-9563-b36a43435c3a.png', '工作汇报20201015.png', '806888', 'image/png', '.png', '2020-10-26 10:29:09.962', '2020-10-26 10:29:09.962', '1');
-INSERT INTO `sys_upload_record` VALUES ('2', '', '', '2362a448-48bd-47fc-b09d-3ba7212a25a9.png', '工作汇报20201015.png', '806888', 'image/png', '.png', '2020-10-26 10:31:01.061', '2020-10-26 10:31:01.061', '1');
+INSERT INTO `sys_upload_record` VALUES ('4', 'avatar', '7f07a3cc-77ba-47b9-af74-88b2631f2bc4', 'avatar/202006/50d0f9e5-fa60-4551-a0d9-714923575637.png', 'qrcode.png', '497', 'image/png', '.png', '2020-06-14 13:10:30.102', '2020-06-14 13:10:30.102', '2');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -366,12 +497,23 @@ CREATE TABLE `sys_user` (
   PRIMARY KEY (`id`),
   KEY `real_name` (`real_name`),
   KEY `user_name` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '蒙立东', '', '', '18276163680', '', '52618c88aa68c63d37e50d6acd8b8456', 'v7hc7v69', '1', '1', null, null, null, '2020-06-09 21:47:33.417', '2020-06-09 21:47:33.417', '1');
+INSERT INTO `sys_user` VALUES ('1', 'admin', 'mldong', '', '', '18676163666', '', '52618c88aa68c63d37e50d6acd8b8456', 'v7hc7v69', '1', '1', '6', '4', null, '2020-06-09 21:47:33.417', '2020-10-22 08:47:53.307', '1');
+INSERT INTO `sys_user` VALUES ('5', 'demo666', '测试号', null, null, '18276163688', null, '835d2134b35fa1d9387e42f625331acb', 'kkv5dxxw', '1', '1', null, null, null, '2020-06-19 23:00:53.709', '2020-06-20 00:15:45.055', '2');
+INSERT INTO `sys_user` VALUES ('6', '小李子', '李白', null, '851321457@qq.com', '13669584561', null, 'ab55f269cbe23cc7f55dfbaf68bc3ac3', 'c2vntsr0', '2', '1', null, null, null, '2020-06-21 16:22:07.275', '2020-06-21 16:26:41.629', '2');
+INSERT INTO `sys_user` VALUES ('7', '123', '123', null, '123456789@qq.com', '13333333333', null, 'f74a8d6c25e272cab53c33fa44459e09', 'dm78rsew', '1', '1', null, null, null, '2020-06-22 09:54:38.859', '2020-06-22 10:04:55.848', '2');
+INSERT INTO `sys_user` VALUES ('8', '对方的发', '大的', null, '8551312@163.com', '13023123256', null, '810fe86875a5687287e84af1cef2ad54', 'g80fa065', '1', '1', null, null, null, '2020-06-22 10:00:08.934', '2020-06-22 10:04:51.947', '2');
+INSERT INTO `sys_user` VALUES ('9', 'ni', '大的', null, '8551312@163.com', '13023123256', null, 'c079872794690156289617a60a11c316', 'ztih3jzc', '2', '1', null, null, null, '2020-06-22 10:01:12.890', '2020-07-09 14:17:28.401', '2');
+INSERT INTO `sys_user` VALUES ('10', '地方v的', 'hghg', null, '13696452586@163.com', '13645607895', null, 'd9acbc2eef540ffc8ea6dd8fdacd37cc', 'jpqocubh', '2', '1', null, null, null, '2020-06-22 10:06:41.892', '2020-07-09 14:17:25.562', '2');
+INSERT INTO `sys_user` VALUES ('11', '孙狗', '孙笑川', null, null, '17444444444', null, '7941882c9fdcd4bb2a17b804d2b5c5ba', 'ewst066f', '1', '1', null, null, null, '2020-06-22 15:03:06.617', '2020-07-09 14:17:20.153', '2');
+INSERT INTO `sys_user` VALUES ('12', 'mldong', 'mldong', null, '', '18276162636', null, 'cc11af98f4e595d4ee99154fc212ec49', 's9x7qwnk', '1', '1', null, null, null, '2020-07-01 21:49:03.509', '2020-07-09 14:17:17.237', '2');
+INSERT INTO `sys_user` VALUES ('13', 'www', 'www', null, null, '13000000000', null, 'b2e5c56f0b93187d054a0be5c03e13c3', 'dwuiljkf', '1', '1', null, null, null, '2020-07-02 12:25:29.586', '2020-07-02 14:25:48.123', '2');
+INSERT INTO `sys_user` VALUES ('14', 'dsfdf', 'dfgdfg', null, '85513141@163.com', '13512345678', null, '5850c814ee651629fb437c01227e9abd', 't60qeu2p', '1', '1', null, null, null, '2020-07-09 14:18:02.937', '2020-07-11 11:16:00.501', '2');
+INSERT INTO `sys_user` VALUES ('15', '111111', '111111111', null, null, '13333333333', null, '6b58a2de83b205feed7d931f8eb639c1', 'vqmpxen7', '1', '1', '7', '4', null, '2020-07-15 09:16:17.159', '2020-10-22 08:48:57.973', '1');
 
 -- ----------------------------
 -- Table structure for sys_user_login_times
@@ -404,8 +546,20 @@ CREATE TABLE `sys_user_role` (
   `update_time` datetime(3) NOT NULL COMMENT '更新时间',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关系表';
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('1', '10', '2', '2020-07-01 21:24:36.859', '2020-07-01 21:24:36.859', '2');
+INSERT INTO `sys_user_role` VALUES ('2', '11', '2', '2020-07-01 21:24:36.859', '2020-07-01 21:24:36.859', '2');
+INSERT INTO `sys_user_role` VALUES ('3', '11', '2', '2020-07-01 21:34:35.573', '2020-07-01 21:34:35.573', '1');
+INSERT INTO `sys_user_role` VALUES ('4', '9', '2', '2020-07-01 21:35:27.229', '2020-07-01 21:35:27.229', '2');
+INSERT INTO `sys_user_role` VALUES ('5', '9', '2', '2020-07-01 21:36:31.589', '2020-07-01 21:36:31.589', '2');
+INSERT INTO `sys_user_role` VALUES ('6', '9', '2', '2020-07-01 21:40:58.618', '2020-07-01 21:40:58.618', '2');
+INSERT INTO `sys_user_role` VALUES ('7', '1', '2', '2020-07-01 21:46:19.510', '2020-07-01 21:46:19.510', '2');
+INSERT INTO `sys_user_role` VALUES ('8', '9', '2', '2020-07-01 21:47:30.524', '2020-07-01 21:47:30.524', '2');
+INSERT INTO `sys_user_role` VALUES ('9', '1', '2', '2020-07-01 21:47:49.724', '2020-07-01 21:47:49.724', '2');
+INSERT INTO `sys_user_role` VALUES ('10', '12', '3', '2020-07-01 21:50:12.448', '2020-07-01 21:50:12.448', '1');
+INSERT INTO `sys_user_role` VALUES ('11', '1', '2', '2020-07-02 12:21:17.749', '2020-07-02 12:21:17.749', '1');
+INSERT INTO `sys_user_role` VALUES ('12', '1', '4', '2020-07-15 09:15:32.158', '2020-07-15 09:15:32.158', '1');
