@@ -1,0 +1,19 @@
+server: 
+  port: 8080
+spring:
+  application:
+    name: mldong-api-gateway
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.1.7:8848
+      discovery:
+        server-addr: 192.168.1.7:8848
+    gateway:
+      routes:                           # 路由数组[路由 就是指定当请求满足什么条件的时候转到哪个微服务]
+        - id: blog                      # 当前路由的标识, 要求唯一
+          uri: https://www.mldong.com
+          predicates:
+            - Method=GET

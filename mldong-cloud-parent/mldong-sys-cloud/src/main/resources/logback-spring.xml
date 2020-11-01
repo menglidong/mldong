@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- 引入spring 默认的日志配置 -->
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <!-- 应用名称 -->
+	<springProperty scope="context" name="springAppName" source="spring.application.name" />
+    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="org.springboot.sample" level="TRACE" />
+
+
+    <property name="log.lever" value="debug" />
+    <property name="log.maxHistory" value="30" />
+    <property name="log.filePath" value="logs" />
+    <property name="log.pageName" value="${springAppName}" />
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n" />
+
+    <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.filePath}/${log.pageName}-debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.filePath}/debug/${log.pageName}-debug.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+            <MaxHistory>${log.maxHistory}</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.filePath}/${log.pageName}-info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.filePath}/info/${log.pageName}-info.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+            <MaxHistory>${log.maxHistory}</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.filePath}/${log.pageName}-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.filePath}/error/${log.pageName}-error.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+            <MaxHistory>${log.maxHistory}</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!-- 异步输出 -->
+    <appender name="infoAppenderAsync" class="ch.qos.logback.classic.AsyncAppender">
+    	<!-- 阀值 当队列大小低于这个将丢弃日志 为0的话不用丢弃 -->
+    	<discardingThreshold>0</discardingThreshold>
+    	<!-- 队列大小 -->
+    	<queueSize>1024</queueSize>
+    	<!-- 不设置neverBlock的话调用的是put方法是阻塞的，设置后调用offer方法是不阻塞的 -->
+    	<neverBlock>true</neverBlock>
+    	<appender-ref ref="infoAppender" />
+    </appender>
+    <!-- 异步输出 -->
+    <appender name="debugAppenderAsync" class="ch.qos.logback.classic.AsyncAppender">
+    	<!-- 阀值 当队列大小低于这个将丢弃日志 为0的话不用丢弃 -->
+    	<discardingThreshold>0</discardingThreshold>
+    	<!-- 队列大小 -->
+    	<queueSize>1024</queueSize>
+    	<!-- 不设置neverBlock的话调用的是put方法是阻塞的，设置后调用offer方法是不阻塞的 -->
+    	<neverBlock>true</neverBlock>
+    	<appender-ref ref="debugAppender" />
+    </appender>
+    <!-- 异步输出 -->
+    <appender name="errorAppenderAsync" class="ch.qos.logback.classic.AsyncAppender">
+    	<!-- 阀值 当队列大小低于这个将丢弃日志 为0的话不用丢弃 -->
+    	<discardingThreshold>0</discardingThreshold>
+    	<!-- 队列大小 -->
+    	<queueSize>1024</queueSize>
+    	<!-- 不设置neverBlock的话调用的是put方法是阻塞的，设置后调用offer方法是不阻塞的 -->
+    	<neverBlock>true</neverBlock>
+    	<appender-ref ref="errorAppender" />
+    </appender>
+	<springProfile name="test">
+    	<root level="debug">
+			<appender-ref ref="infoAppenderAsync" />
+			<appender-ref ref="debugAppenderAsync" />
+			<appender-ref ref="errorAppenderAsync" />
+		</root>
+        <logger name="org.springframework.web" level="ERROR"/>
+        <logger name="org.springboot.sample" level="ERROR" />
+        <logger name="org.apache" level="ERROR" />
+        <logger name="com.mldong" level="debug" />
+    </springProfile>
+
+    <springProfile name="prod">
+    	<root level="ERROR">
+			<appender-ref ref="infoAppenderAsync" />
+			<appender-ref ref="debugAppenderAsync" />
+			<appender-ref ref="errorAppenderAsync" />
+		</root>
+        <logger name="org.springframework.web" level="ERROR"/>
+        <logger name="org.springboot.sample" level="ERROR" />
+        <logger name="org.apache" level="ERROR" />
+        <logger name="com.mldong" level="ERROR" />
+    </springProfile>
+
+
+</configuration>
