@@ -3,11 +3,11 @@
 
 ## 目录结构
 ```lua
-├── mldong-admin  后台管理，只有启动类，通过maven模块依赖的方式聚合业务模块
-├── mldong-app  用户端接口，有控制层代码，通过maven模块依赖业务接口实现模块供控制层调用
+├── mldong-admin[18080]  后台管理，只有启动类，通过maven模块依赖的方式聚合业务模块
+├── mldong-app[18081]  用户端接口，有控制层代码，通过maven模块依赖业务接口实现模块供控制层调用
 ├── mldong-cms-parent  内容管理模块
 	├── mldong-cms-domain  entity/vo/dto/enum等实体类模块
-	├── mldong-cms-portal  控制层模块
+	├── mldong-cms-portal[18002]  控制层模块
 	├── mldong-cms-repository  持久层模块
 		└── modules
 			└──cms
@@ -18,7 +18,7 @@
 ├── mldong-generator  代码生成器
 └── mldong-sys-parent 系统管理模块
 	├── mldong-sys-domain  entity/vo/dto/enum等实体类模块
-	├── mldong-sys-portal  控制层模块
+	├── mldong-sys-portal[18001]  控制层模块
 	├── mldong-sys-repository  持久层模块
 		└── modules
 			└──sys
