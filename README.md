@@ -50,7 +50,7 @@
 
 订单状态`<oms_order_status>`
 
-==> `com.mldong.modules.oms.enums.OmsOrderStatus`
+==> `com.mldong.modules.oms.enums.OmsOrderStatusEnum`
 
 其他参考阿里巴巴java规范手册
 

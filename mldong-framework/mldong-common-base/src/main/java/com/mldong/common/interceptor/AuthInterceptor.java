@@ -33,6 +33,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
+		String uri = request.getRequestURI();
+		if(uri.equals("/error")) {
+			return true;
+		}
 		if(handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             // 在这里新增logger的记录
 			LoggerModel loggerModel = new LoggerModel();
@@ -40,7 +44,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 			loggerModel.setStartTime(System.currentTimeMillis());
 			String trackId = UUID.randomUUID().toString();
 			loggerModel.setTrackId(trackId);
-			String uri = request.getRequestURI();
 			loggerModel.setUri(uri);
 			String queryString = request.getQueryString();
 			loggerModel.setQueryString(null==queryString?"":queryString);

@@ -70,6 +70,11 @@
 			<artifactId>mldong-token-strategy-jwt</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.mldong</groupId>
+			<artifactId>mldong-captcha-service</artifactId>
+			<version>${parent.version}</version>
+		</dependency>
 	</dependencies>
 	 <build>
 		<resources>

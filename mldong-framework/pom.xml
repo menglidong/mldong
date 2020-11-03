@@ -18,5 +18,6 @@
         <module>mldong-token-strategy-redis</module>
         <module>mldong-admin-interceptor-service</module>
         <module>mldong-app-interceptor-service</module>
+        <module>mldong-captcha-service</module>
     </modules>
 </project>

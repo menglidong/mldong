@@ -109,3 +109,6 @@ pagehelper:
 # 启用自定义文档
 knife4j:
   markdowns: classpath:markdown/*
+
+captcha:
+  open: false

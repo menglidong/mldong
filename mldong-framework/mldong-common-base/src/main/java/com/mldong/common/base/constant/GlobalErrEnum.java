@@ -69,6 +69,14 @@ public enum GlobalErrEnum implements CommonError {
 	 * 审核不通过原因不能为空
 	 */
 	GL99990010(99990010, "审核不通过原因不能为空"),
+	/**
+	 * 图片验证码生成异常
+	 */
+	GL99990011(99990011, "图片验证码生成异常"),
+	/**
+	 * 图片验证码错误或不存在
+	 */
+	GL99990012(99990012, "图片验证码错误或不存在"),
 	;
 	
 	private GlobalErrEnum(int value, String name){

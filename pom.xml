@@ -26,6 +26,7 @@
 	<swagger-knife.version>2.0.3</swagger-knife.version>
 	  <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
 	  <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+	  <kaptcha.version>2.3.2</kaptcha.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -136,6 +137,12 @@
 			  <groupId>com.qiniu</groupId>
 			  <artifactId>qiniu-java-sdk</artifactId>
 			  <version>[7.2.0, 7.2.99]</version>
+			</dependency>
+			<!--验证码 -->
+			<dependency>
+				<groupId>com.github.penggle</groupId>
+				<artifactId>kaptcha</artifactId>
+				<version>${kaptcha.version}</version>
 			</dependency>
     </dependencies>
 </dependencyManagement>
