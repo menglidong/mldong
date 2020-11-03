@@ -66,7 +66,10 @@ public class GlobalRequestBodyAdvice implements RequestBodyAdvice{
 			Class<? extends HttpMessageConverter<?>> converterType) {
 		if(body != null) {
 			if(body instanceof PageParam) {
-				ConditionUtil.propertyConvertWhereParams((PageParam)body);
+				PageParam pageParam = (PageParam)body ;
+				if(pageParam.getWhereParams() == null || pageParam.getWhereParams().isEmpty()) {
+					ConditionUtil.propertyConvertWhereParams((PageParam)pageParam);
+				}
 			}
 		}
 		return body;
