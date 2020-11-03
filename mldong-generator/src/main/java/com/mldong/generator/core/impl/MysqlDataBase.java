@@ -200,10 +200,39 @@ public class MysqlDataBase implements DataBase{
 			} else {
 				if(StringUtil.isNotEmpty(column.getRemark())) {
 					// 不为空，判断是否为类型注解
-					column.setCodedTypes(remarkToCodedType(column.getRemark()));
+					// 注解类型需要去空格/换行符等
+					Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+					Matcher m = p.matcher(column.getRemark());
+					String dest = m.replaceAll("");
+					column.setCodedTypes(remarkToCodedType(dest));
 					if(!column.getCodedTypes().isEmpty()){
 						column.setJavaType(StringUtil.getCamelCaseString(columnName,
 							true)+"Enum");
+					} else {
+						// 非注解类型，判断是否为关联枚举类型
+						// 注释<sys_role.role_type> ==> sys.entity.SysRole.RoleType
+						Pattern pattern = Pattern.compile("<([a-zA-Z_0-9]+?)\\.([a-zA-Z_0-9]+?)>");
+						Matcher matcher = pattern.matcher(dest);
+						if(matcher.find()) {
+							String otherTableName = matcher.group(1);
+							String otherColumnName = matcher.group(2);
+							column.setJavaType(configModel.getBasePackage()+".modules."
+									+ otherTableName.split("_")[0] + ".entity."
+									+ StringUtil.getCamelCaseString(otherTableName, true)
+									+ "." + StringUtil.getCamelCaseString(otherColumnName, true)+"Enum");
+						} else {
+							// 自定义枚举类型
+							// 注释<oms_order_status> ==> oms.enums.OmsOrderStatusEnum
+							pattern = Pattern.compile("<([a-zA-Z_0-9]+?)>");
+							matcher = pattern.matcher(dest);
+							if(matcher.find()) {
+								String otherTableName = matcher.group(1);
+								column.setJavaType(configModel.getBasePackage()+".modules."
+										+ otherTableName.split("_")[0] + ".enums."
+										+ StringUtil.getCamelCaseString(otherTableName, true)
+										+ "Enum");
+							}
+						}
 					}
 				}
 			}

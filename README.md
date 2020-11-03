@@ -31,8 +31,26 @@
 ### 关于表名
 表名使用下划线。例：模块名_表名。主表中必要字段（`id/create_time/update_time/is_deleted`,如为父子关系表,新增字段(`parent_id/sort/name`)
 
-如要生成枚举类型，注释可这样写如：
+### 关于表字段
+
+**如要生成是否模型**
+
+以`is_`为字段前辍
+
+**如要生成枚举类型，注释可这样写如：**
 申请状态(10->初建|CREATE,15->摇号中|LOTING,20->已命中|HITED,25->已发送|SENDED,30->已核销|FINISHED,35->已废弃|OBSOLETE)
+
+**如要生成关联枚举类，注释可以这样写：**
+
+角色类型`<sys_role.role_type>`
+
+==> `com.mldong.modules.sys.entity.SysRole.RoleType`
+
+**如要生成自定义枚举类，注释可以这样写**
+
+订单状态`<oms_order_status>`
+
+==> `com.mldong.modules.oms.enums.OmsOrderStatus`
 
 其他参考阿里巴巴java规范手册
 
