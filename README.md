@@ -33,7 +33,7 @@
 
 ### 关于表字段
 
-**如要生成是否模型**
+**如要生成是否枚举**
 
 以`is_`为字段前辍
 
@@ -142,6 +142,8 @@ targetProject: "D:/mldong/couse-workspace/mldong/"
 moduleName: "sys"
 # 模块描述 
 moduleDesc: "系统管理"
+# 是否生成逻辑删除
+logicDelete: true
 tables:
   - tableName: "sys_role" # 直接模糊
 templates:

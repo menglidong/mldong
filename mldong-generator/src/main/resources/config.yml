@@ -20,7 +20,7 @@ moduleName: "sys"
 # 模块描述 
 moduleDesc: "系统管理"
 # 是否生成逻辑删除
-logicDelete: false
+logicDelete: true
 tables:
   - tableName: "sys_menu"
 templates:
