@@ -208,30 +208,33 @@ public class MysqlDataBase implements DataBase{
 					if(!column.getCodedTypes().isEmpty()){
 						column.setJavaType(StringUtil.getCamelCaseString(columnName,
 							true)+"Enum");
+					}
+					// 非注解类型，判断是否为关联枚举类型
+					// 注释<sys_role.role_type> ==> sys.entity.SysRole.RoleType
+					Pattern pattern = Pattern.compile("<([a-zA-Z_0-9]+?)\\.([a-zA-Z_0-9]+?)>");
+					Matcher matcher = pattern.matcher(dest);
+					if(matcher.find()) {
+						String otherTableName = matcher.group(1);
+						String otherColumnName = matcher.group(2);
+						// 覆盖枚举类型
+						column.setCodedTypes(null);
+						column.setJavaType(configModel.getBasePackage()+".modules."
+								+ otherTableName.split("_")[0] + ".entity."
+								+ StringUtil.getCamelCaseString(otherTableName, true)
+								+ "." + StringUtil.getCamelCaseString(otherColumnName, true)+"Enum");
 					} else {
-						// 非注解类型，判断是否为关联枚举类型
-						// 注释<sys_role.role_type> ==> sys.entity.SysRole.RoleType
-						Pattern pattern = Pattern.compile("<([a-zA-Z_0-9]+?)\\.([a-zA-Z_0-9]+?)>");
-						Matcher matcher = pattern.matcher(dest);
+						// 自定义枚举类型
+						// 注释<oms_order_status> ==> oms.enums.OmsOrderStatusEnum
+						pattern = Pattern.compile("<([a-zA-Z_0-9]+?)>");
+						matcher = pattern.matcher(dest);
 						if(matcher.find()) {
 							String otherTableName = matcher.group(1);
-							String otherColumnName = matcher.group(2);
+							// 覆盖枚举类型
+							column.setCodedTypes(null);
 							column.setJavaType(configModel.getBasePackage()+".modules."
-									+ otherTableName.split("_")[0] + ".entity."
+									+ otherTableName.split("_")[0] + ".enums."
 									+ StringUtil.getCamelCaseString(otherTableName, true)
-									+ "." + StringUtil.getCamelCaseString(otherColumnName, true)+"Enum");
-						} else {
-							// 自定义枚举类型
-							// 注释<oms_order_status> ==> oms.enums.OmsOrderStatusEnum
-							pattern = Pattern.compile("<([a-zA-Z_0-9]+?)>");
-							matcher = pattern.matcher(dest);
-							if(matcher.find()) {
-								String otherTableName = matcher.group(1);
-								column.setJavaType(configModel.getBasePackage()+".modules."
-										+ otherTableName.split("_")[0] + ".enums."
-										+ StringUtil.getCamelCaseString(otherTableName, true)
-										+ "Enum");
-							}
+									+ "Enum");
 						}
 					}
 				}
