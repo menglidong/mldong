@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50731
 File Encoding         : 65001
 
-Date: 2020-11-01 23:53:14
+Date: 2020-11-03 19:39:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,6 +63,27 @@ CREATE TABLE `cms_category` (
 
 -- ----------------------------
 -- Records of cms_category
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_config
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_config`;
+CREATE TABLE `sys_config` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `config_name` varchar(64) DEFAULT NULL COMMENT '参数名称',
+  `config_key` varchar(32) DEFAULT NULL COMMENT '参数键名',
+  `config_value` varchar(255) DEFAULT NULL COMMENT '参数键值',
+  `is_system` tinyint(1) unsigned DEFAULT '2' COMMENT '系统内置(1->否|NO,2->是|YES)',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '更新时间',
+  `is_deleted` tinyint(1) unsigned DEFAULT '1' COMMENT '是否删除(1->未删除|NO,2->已删除|YES)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='参数配置';
+
+-- ----------------------------
+-- Records of sys_config
 -- ----------------------------
 
 -- ----------------------------

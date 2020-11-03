@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 
+import com.mldong.common.base.PageParam;
+import com.mldong.common.tk.ConditionUtil;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
@@ -62,6 +64,11 @@ public class GlobalRequestBodyAdvice implements RequestBodyAdvice{
 	@Override
 	public Object afterBodyRead(Object body, HttpInputMessage inputMessage, MethodParameter parameter, Type targetType,
 			Class<? extends HttpMessageConverter<?>> converterType) {
+		if(body != null) {
+			if(body instanceof PageParam) {
+				ConditionUtil.propertyConvertWhereParams((PageParam)body);
+			}
+		}
 		return body;
 	}
 
