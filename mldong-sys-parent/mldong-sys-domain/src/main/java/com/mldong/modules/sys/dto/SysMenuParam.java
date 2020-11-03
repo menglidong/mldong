@@ -2,16 +2,15 @@ package com.mldong.modules.sys.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotNull;
-
-import com.mldong.common.base.YesNoEnum;
 import com.mldong.common.validator.Groups;
-
+import javax.validation.constraints.*;
+import com.mldong.common.base.YesNoEnum;
+// START###################
+// ###################END
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2020-06-07 09:45:41
+ * @since 2020-11-03 10:18:08
  */
 @ApiModel(description="菜单")
 public class SysMenuParam{
@@ -21,7 +20,8 @@ public class SysMenuParam{
     private Long id;
     @ApiModelProperty(value = "父菜单id",required=false)
     private Long parentId;
-    @ApiModelProperty(value = "菜单名称",required=false)
+    @ApiModelProperty(value = "菜单名称",required=true)
+    @NotBlank(message="菜单名称不能为空",groups={Groups.Save.class,Groups.Update.class})
     private String name;
     @ApiModelProperty(value = "排序",required=false)
     private Double sort;
@@ -31,6 +31,8 @@ public class SysMenuParam{
     private String icon;
     @ApiModelProperty(value = "是否显示(1->不显示|NO,2->显示|YES)",required=false)
     private YesNoEnum isShow;
+    // START###################
+    // ###################END
     /**
      * 获取主键
      *
@@ -136,4 +138,6 @@ public class SysMenuParam{
     public void setIsShow(YesNoEnum isShow){
         this.isShow = isShow;
     }
+    // START###################
+    // ###################END
 }
