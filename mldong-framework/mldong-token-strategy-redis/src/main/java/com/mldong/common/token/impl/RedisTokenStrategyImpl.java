@@ -19,7 +19,7 @@ public class RedisTokenStrategyImpl implements TokenStrategy {
     @Override
     public String generateToken(Long userId, String userName, Map<String, Object> map) {
         String token = UUID.randomUUID().toString().replaceAll("-","");
-        String key = userType + token;
+        String key = userType + ":" + token;
         RedisUser user = new RedisUser();
         user.setUserId(userId);
         user.setUserName(userName);
@@ -35,13 +35,13 @@ public class RedisTokenStrategyImpl implements TokenStrategy {
 
     @Override
     public boolean verifyToken(String token) {
-        String key = userType + token;
+        String key = userType + ":" + token;
         return redisTemplate.opsForValue().get(key) != null;
     }
 
     @Override
     public Long getUserId(String token) {
-        String key = userType + token;
+        String key = userType + ":" + token;
         RedisUser user = redisTemplate.opsForValue().get(key);
         if (user == null) {
             return null;
@@ -51,7 +51,7 @@ public class RedisTokenStrategyImpl implements TokenStrategy {
 
     @Override
     public String getUserName(String token) {
-        String key = userType + token;
+        String key = userType + ":" + token;
         RedisUser user = redisTemplate.opsForValue().get(key);
         if (user == null) {
             return null;
@@ -61,7 +61,8 @@ public class RedisTokenStrategyImpl implements TokenStrategy {
 
     @Override
     public Map<String, Object> getExt(String token) {
-        RedisUser user = redisTemplate.opsForValue().get(token);
+        String key = userType + ":" + token;
+        RedisUser user = redisTemplate.opsForValue().get(key);
         if (user == null) {
             return null;
         }
