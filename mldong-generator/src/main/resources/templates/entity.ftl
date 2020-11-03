@@ -10,8 +10,9 @@ import java.math.BigDecimal;
 </#if>
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+<#if logicDelete>
 import tk.mybatis.mapper.annotation.LogicDelete;
+</#if>
 <#if table.hasOtherCodedType>
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -46,7 +47,9 @@ public class ${table.className} implements Serializable{
     <#else>
     @ApiModelProperty(value = "${column.remark}")
     <#if column.javaProperty == "isDeleted">
+	<#if logicDelete>
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
+	</#if>
     private ${column.javaType} ${column.javaProperty};
     <#else>
     private ${column.javaType} ${column.javaProperty};

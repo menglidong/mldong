@@ -19,8 +19,10 @@ targetProject: "D:/mldong/back-workspace/mldong/"
 moduleName: "sys"
 # 模块描述 
 moduleDesc: "系统管理"
+# 是否生成逻辑删除
+logicDelete: false
 tables:
-  - tableName: "sys_upload_config"
+  - tableName: "sys_menu"
 templates:
     # 模板名称
   - name: "实体类"

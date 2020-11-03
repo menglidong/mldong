@@ -54,6 +54,7 @@ public class Generator {
 				model.put("basePackage", config.getConfigModel().getBasePackage());
 				model.put("moduleName", config.getConfigModel().getModuleName());
 				model.put("moduleDesc", config.getConfigModel().getModuleDesc());
+				model.put("logicDelete", config.getConfigModel().isLogicDelete());
 				model.put("table", table);
 				templateConfigModelList.forEach(templateConfigModel -> {
 					// 选中的才能生成代码

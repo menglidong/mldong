@@ -6,6 +6,7 @@ package com.mldong.generator.config.model;
  *
  */
 public class ConfigModel {
+
 	/**
 	 * 数据库配置模型
 	 */
@@ -34,6 +35,10 @@ public class ConfigModel {
 	 * 表配置
 	 */
 	private TableConfigModel [] tables;
+	/**
+	 * 是否生成逻辑删除
+	 */
+	private boolean logicDelete;
 	/**
 	 * 模板配置
 	 */
@@ -86,5 +91,12 @@ public class ConfigModel {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	
+
+	public boolean isLogicDelete() {
+		return logicDelete;
+	}
+
+	public void setLogicDelete(boolean logicDelete) {
+		this.logicDelete = logicDelete;
+	}
 }
