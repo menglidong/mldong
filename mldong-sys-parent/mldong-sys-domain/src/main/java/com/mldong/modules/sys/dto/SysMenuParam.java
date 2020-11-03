@@ -6,11 +6,12 @@ import com.mldong.common.validator.Groups;
 import javax.validation.constraints.*;
 import com.mldong.common.base.YesNoEnum;
 // START###################
+
 // ###################END
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2020-11-03 10:18:08
+ * @since 2020-11-03 10:19:46
  */
 @ApiModel(description="菜单")
 public class SysMenuParam{
@@ -32,6 +33,7 @@ public class SysMenuParam{
     @ApiModelProperty(value = "是否显示(1->不显示|NO,2->显示|YES)",required=false)
     private YesNoEnum isShow;
     // START###################
+
     // ###################END
     /**
      * 获取主键
@@ -139,5 +141,6 @@ public class SysMenuParam{
         this.isShow = isShow;
     }
     // START###################
+
     // ###################END
 }
