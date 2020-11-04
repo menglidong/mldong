@@ -153,7 +153,6 @@ public class ConditionUtil {
 			String tableAlias = null;
 			String operateType;
 			String propertyName;
-			Object propertyValue;
 			if(arr.length ==3) {
 				operateType = arr[1];
 				propertyName = arr[2];
@@ -163,6 +162,9 @@ public class ConditionUtil {
 				propertyName = arr[3];
 			} else {
 				continue;
+			}
+			if(!"m".equals(arr[0])) {
+				return res;
 			}
 			OperateTypeEnum ops [] = OperateTypeEnum.values();
 			// 默认等值
@@ -198,6 +200,8 @@ public class ConditionUtil {
 						throw new BizException(GlobalErrEnum.GL99990100);
 					}
 					whereParam.setPropertyValue(Arrays.asList(values));
+				} else {
+					whereParam.setPropertyValue(value);
 				}
 				res.add(whereParam);
 			}
