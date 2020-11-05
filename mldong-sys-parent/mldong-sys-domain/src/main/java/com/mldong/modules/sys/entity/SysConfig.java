@@ -10,11 +10,12 @@ import javax.persistence.Table;
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
 // START###################
+
 // ###################END
 /**
  * <p>实体类</p>
  * <p>Table: sys_config - 参数配置</p>
- * @since 2020-11-05 08:22:30
+ * @since 2020-11-05 10:15:38
  */
 @Table(name="sys_config")
 @ApiModel(description="参数配置")
@@ -44,6 +45,7 @@ public class SysConfig implements Serializable{
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 // START###################
+
 // ###################END
     /**
      * 获取编号
@@ -181,5 +183,6 @@ public class SysConfig implements Serializable{
         this.isDeleted = isDeleted;
     }
 // START###################
+		
 // ###################END
 }

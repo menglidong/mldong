@@ -12,8 +12,10 @@
 		<result column="update_time" property="updateTime" />  
 		<result column="is_deleted" property="isDeleted" />  
 		<!-- START###################-->
+
 		<!--###################END-->
 	</resultMap>
 	<!-- START###################-->
+
 	<!--###################END-->
 </mapper>

@@ -16,13 +16,6 @@ import ${basePackage}.modules.${moduleName}.entity.${table.className};
 <#if table.hasOtherYesNoEnum>
 import ${basePackage}.common.base.YesNoEnum;
 </#if>
-// START###################
-<#list addContent as item>
-<#if item_index==0>
-${item}
-</#if>
-</#list>
-// ###################END
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: ${table.tableName} - ${table.remark?replace("表","")}</p>
@@ -50,13 +43,7 @@ public class ${table.className}Param{
     </#if>
     </#if>
 </#list>
-    // START###################
-<#list addContent as item>
-<#if item_index==1>
-${item}
-</#if>
-</#list>
-    // ###################END
+
 <#list table.columns as column>
 <#if "isDeleted,createTime,updateTime"?contains(column.javaProperty)==false>
 <#if column.codedType>
@@ -94,11 +81,4 @@ ${item}
 </#if>
 </#if>
 </#list>
-    // START###################
-<#list addContent as item>
-<#if item_index==2>
-${item}
-</#if>
-</#list>
-    // ###################END
 }

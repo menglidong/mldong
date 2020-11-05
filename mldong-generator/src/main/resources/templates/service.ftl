@@ -6,13 +6,7 @@ import ${basePackage}.common.base.CommonPage;
 import ${basePackage}.modules.${moduleName}.dto.${table.className}Param;
 import ${basePackage}.modules.${moduleName}.dto.${table.className}PageParam;
 import ${basePackage}.modules.${moduleName}.entity.${table.className};
-// START###################
-<#list addContent as item>
-<#if item_index==0>
-${item}
-</#if>
-</#list>
-// ###################END
+
 /**
  * <p>业务接口层</p>
  * <p>${table.remark}</p>
@@ -50,11 +44,4 @@ public interface ${table.className}Service {
 	 * @return
 	 */
 	public CommonPage<${table.className}> list(${table.className}PageParam param);
-	// START###################
-<#list addContent as item>
-<#if item_index==1>
-${item}
-</#if>
-</#list>
-	// ###################END
 }

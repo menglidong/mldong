@@ -10,19 +10,5 @@
 		<result column="${column.columnName}" property="${column.javaProperty}" />  
 	    </#if>
 	</#list>
-		<!-- START###################-->
-<#list addContent as item>
-<#if item_index==0>
-${item}
-</#if>
-</#list>
-		<!--###################END-->
 	</resultMap>
-	<!-- START###################-->
-<#list addContent as item>
-<#if item_index==1>
-${item}
-</#if>
-</#list>
-	<!--###################END-->
 </mapper>

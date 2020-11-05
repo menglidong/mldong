@@ -20,13 +20,7 @@ import ${basePackage}.modules.${moduleName}.dto.${table.className}PageParam;
 import ${basePackage}.modules.${moduleName}.entity.${table.className};
 import ${basePackage}.modules.${moduleName}.mapper.${table.className}Mapper;
 import ${basePackage}.modules.${moduleName}.service.${table.className}Service;
-// START###################
-<#list addContent as item>
-<#if item_index==0>
-${item}
-</#if>
-</#list>
-// ###################END
+
 /**
  * <p>业务接口实现层</p>
  * <p>${table.remark}</p>
@@ -87,11 +81,4 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 			${table.tableCameName}Mapper.selectByCondition(ConditionUtil.buildCondition(${table.className}.class, whereParams));		}
 		return CommonPage.toPage(page);
 	}
-	// START###################
-<#list addContent as item>
-<#if item_index==1>
-${item}
-</#if>
-</#list>
-	// ###################END
 }

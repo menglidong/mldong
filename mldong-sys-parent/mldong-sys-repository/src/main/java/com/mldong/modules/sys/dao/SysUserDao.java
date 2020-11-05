@@ -10,7 +10,9 @@ import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysMenu;
 import com.mldong.modules.sys.entity.SysRoleAccess;
 import com.mldong.modules.sys.entity.SysUser;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysUserDao {
 	/**
 	 * 查询包含角色/部门/岗位名称的实体

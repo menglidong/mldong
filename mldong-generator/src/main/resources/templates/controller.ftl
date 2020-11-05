@@ -21,13 +21,7 @@ import ${basePackage}.modules.${moduleName}.dto.${table.className}Param;
 import ${basePackage}.modules.${moduleName}.dto.${table.className}PageParam;
 import ${basePackage}.modules.${moduleName}.entity.${table.className};
 import ${basePackage}.modules.${moduleName}.service.${table.className}Service;
-// START###################
-<#list addContent as item>
-<#if item_index==0>
-${item}
-</#if>
-</#list>
-// ###################END
+
 @RestController
 @RequestMapping("/${moduleName}/${table.tableCameName?replace(moduleName,"")?uncap_first}")
 @Api(tags="${moduleName}-${table.remark?replace("表","")}管理",authorizations={
@@ -38,13 +32,7 @@ ${item}
 public class ${table.className}Controller {
 	@Autowired
 	private ${table.className}Service ${table.tableCameName}Service;
-	// START###################
-<#list addContent as item>
-<#if item_index==1>
-${item}
-</#if>
-</#list>
-	// ###################END
+
 	@PostMapping("save")
 	@ApiOperation(value="添加${table.remark?replace("表","")}", notes="添加${table.remark?replace("表","")}",authorizations={
 		@Authorization(value="添加${table.remark?replace("表","")}",scopes={
@@ -109,11 +97,5 @@ ${item}
 	public CommonResult<CommonPage<${table.className}>> list(@RequestBody @Validated ${table.className}PageParam param) {
 		return CommonResult.success("查询${table.remark?replace("表","")}成功",${table.tableCameName}Service.list(param));
 	}
-	// START###################
-<#list addContent as item>
-<#if item_index==2>
-${item}
-</#if>
-</#list>
-	// ###################END
+
 }

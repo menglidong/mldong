@@ -15,7 +15,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2020-11-03 10:19:46
+ * @since 2020-11-05 10:15:38
  */
 @Table(name="sys_menu")
 @ApiModel(description="菜单")
@@ -200,6 +200,6 @@ public class SysMenu implements Serializable{
         this.isDeleted = isDeleted;
     }
 // START###################
-		
+				
 // ###################END
 }

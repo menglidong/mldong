@@ -7,13 +7,14 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
+// START###################
+// ###################END
 /**
  * <p>实体类</p>
  * <p>Table: sys_upload_config - 上传配置</p>
- * @since 2020-10-26 10:39:01
+ * @since 2020-11-05 10:15:38
  */
 @Table(name="sys_upload_config")
 @ApiModel(description="上传配置")
@@ -37,8 +38,6 @@ public class SysUploadConfig implements Serializable{
     private String fileExt;
     @ApiModelProperty(value = "上传目录")
     private String uploadDir;
-    @ApiModelProperty(value = "上传子目录")
-    private String uploadSubDir;
     @ApiModelProperty(value = "访问地址前辍")
     private String baseUrl;
     @ApiModelProperty(value = "回调地址")
@@ -56,6 +55,8 @@ public class SysUploadConfig implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
+// START###################
+// ###################END
     /**
      * 获取主键
      *
@@ -160,21 +161,6 @@ public class SysUploadConfig implements Serializable{
      */
     public void setUploadDir(String uploadDir){
         this.uploadDir = uploadDir;
-    }
-    /**
-     * 获取上传子目录
-     *
-     */
-    public String getUploadSubDir(){
-        return this.uploadSubDir;
-    }
-	 /**
-     * 设置上传子目录
-     *
-     * @param uploadSubDir
-     */
-    public void setUploadSubDir(String uploadSubDir){
-        this.uploadSubDir = uploadSubDir;
     }
     /**
      * 获取访问地址前辍
@@ -296,4 +282,6 @@ public class SysUploadConfig implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
+// START###################
+// ###################END
 }
