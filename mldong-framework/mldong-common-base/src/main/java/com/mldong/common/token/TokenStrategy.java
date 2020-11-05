@@ -37,4 +37,11 @@ public interface TokenStrategy {
 	 */
 	public Map<String,Object> getExt(String token);
 
+	/**
+	 * 删除token
+	 * @param token
+	 * @return
+	 */
+	public int removeToken(String token);
+
 }

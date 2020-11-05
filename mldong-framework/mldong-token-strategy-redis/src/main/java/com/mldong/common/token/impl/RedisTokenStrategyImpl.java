@@ -68,4 +68,11 @@ public class RedisTokenStrategyImpl implements TokenStrategy {
         }
         return user.getExt();
     }
+
+    @Override
+    public int removeToken(String token) {
+        String key = userType + ":" + token;
+        redisTemplate.delete(key);
+        return 1;
+    }
 }
