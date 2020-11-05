@@ -113,6 +113,70 @@ public class DateTool {
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 23, 59, 59);  
         calendar.set(Calendar.MILLISECOND, 999);  
         return new Timestamp(calendar.getTimeInMillis());  
-    }  
-  
+    }
+
+    /**
+     * 获取年
+     * @param date
+     * @return
+     */
+    public static String getYear(Date date) {
+        return dateToString(date).substring(0, 4);
+    }
+
+    /**
+     * 返回月份
+     * @param date
+     * @return
+     */
+    public static int getMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MONTH) + 1;
+    }
+
+    /**
+     * 返回日
+     * @param date
+     * @return
+     */
+    public static int getDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 返回小时
+     * @param date
+     * @return
+     */
+    public static int getHour(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * 返回分钟
+     * @param date
+     * @return
+     */
+    public static int getMinute(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    /**
+     * 返回秒
+     * @param date
+     * @return
+     */
+    public static int getSecond(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.SECOND);
+    }
+
 }
