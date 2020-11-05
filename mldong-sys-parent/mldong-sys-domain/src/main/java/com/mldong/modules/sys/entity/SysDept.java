@@ -9,12 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
-// START###################
-// ###################END
+
 /**
  * <p>实体类</p>
  * <p>Table: sys_dept - 部门</p>
- * @since 2020-11-05 10:15:38
+ * @since 2020-11-05 10:28:09
  */
 @Table(name="sys_dept")
 @ApiModel(description="部门")
@@ -53,8 +52,7 @@ public class SysDept implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
-// START###################
-// ###################END
+
     /**
      * 获取主键
      *
@@ -265,6 +263,5 @@ public class SysDept implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
-// START###################
-// ###################END
+
 }

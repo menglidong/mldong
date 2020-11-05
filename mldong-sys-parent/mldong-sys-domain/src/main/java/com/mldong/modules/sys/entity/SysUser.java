@@ -13,12 +13,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.mldong.common.annotation.DictEnum;
 import com.mldong.common.base.CodedEnum;
 import com.mldong.common.base.YesNoEnum;
-// START###################
-// ###################END
+
 /**
  * <p>实体类</p>
  * <p>Table: sys_user - 用户</p>
- * @since 2020-11-05 10:15:38
+ * @since 2020-11-05 10:28:09
  */
 @Table(name="sys_user")
 @ApiModel(description="用户")
@@ -63,8 +62,7 @@ public class SysUser implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
-// START###################
-// ###################END
+
     /**
      * 获取主键
      *
@@ -320,8 +318,7 @@ public class SysUser implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
-// START###################
-// ###################END
+
     @DictEnum(key="sys_user_sex",name="性别")
     public enum SexEnum implements CodedEnum {
 		/**
@@ -336,8 +333,7 @@ public class SysUser implements Serializable{
 		 * 未知
 		 */
 		UNKNOWN(3, "未知");
-		// START###################
-		// ###################END
+
 		private int value;
 		private String name;
 		@JsonCreator

@@ -13,12 +13,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.mldong.common.annotation.DictEnum;
 import com.mldong.common.base.CodedEnum;
 import com.mldong.common.base.YesNoEnum;
-// START###################
-// ###################END
+
 /**
  * <p>实体类</p>
  * <p>Table: sys_notice - </p>
- * @since 2020-11-05 10:15:38
+ * @since 2020-11-05 10:28:09
  */
 @Table(name="sys_notice")
 @ApiModel(description="")
@@ -43,8 +42,7 @@ public class SysNotice implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
-// START###################
-// ###################END
+
     /**
      * 获取编号
      *
@@ -150,8 +148,7 @@ public class SysNotice implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
-// START###################
-// ###################END
+
     @DictEnum(key="sys_notice_type",name="公告类型")
     public enum TypeEnum implements CodedEnum {
 		/**
@@ -162,8 +159,7 @@ public class SysNotice implements Serializable{
 		 * 公告
 		 */
 		GG(20, "公告");
-		// START###################
-		// ###################END
+
 		private int value;
 		private String name;
 		@JsonCreator
