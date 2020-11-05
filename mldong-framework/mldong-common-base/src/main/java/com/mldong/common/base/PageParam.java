@@ -1,11 +1,11 @@
 package com.mldong.common.base;
 
-import io.swagger.annotations.ApiModelProperty;
-
-import java.util.List;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 分页查询基类
@@ -74,5 +74,42 @@ public class PageParam<T> {
     	}
         return PageHelper.startPage(this.pageNum, this.pageSize, count);
     }
-    
+
+	/**
+	 * 新加条件
+	 * @param tableAlias
+	 * @param operateType
+	 * @param propertyName
+	 * @param propertyValue
+	 * @return
+	 */
+    public PageParam addCondition(String tableAlias,OperateTypeEnum operateType,String propertyName, Object propertyValue) {
+		if(this.whereParams == null || this.whereParams.isEmpty()) {
+			this.whereParams = new ArrayList<>();
+		}
+		WhereParam whereParam = this.whereParams.stream().filter(item->{return item.getPropertyName().equals(propertyName);}).findFirst().orElse(new WhereParam());
+		if(whereParam.getPropertyName() == null) {
+			whereParam.setTableAlias(tableAlias);
+			whereParam.setOperateType(operateType);
+			whereParam.setPropertyName(propertyName);
+			whereParam.setPropertyValue(propertyValue);
+			this.whereParams.add(whereParam);
+		} else {
+			whereParam.setTableAlias(tableAlias);
+			whereParam.setOperateType(operateType);
+			whereParam.setPropertyName(propertyName);
+			whereParam.setPropertyValue(propertyValue);
+		}
+		return this;
+	}
+
+	/**
+	 * 等值条件-目前只是为了覆盖前端值，如userId等情况
+	 * @param propertyName
+	 * @param propertyValue
+	 * @return
+	 */
+	public PageParam addEqualsTo(String propertyName, Object propertyValue) {
+    	return addCondition(null, OperateTypeEnum.EQ, propertyName, propertyValue);
+	}
 }
