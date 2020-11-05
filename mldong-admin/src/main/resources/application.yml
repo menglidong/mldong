@@ -1,4 +1,18 @@
-server: 
+# 日志配置
+logging:
+  level:
+    com.mldong: DEBUG
+    org.springframework: DEBUG
+    tk.mybatis: DEBUG
+    tk.ibatis: DEBUG
+    tk.ibatis.common.jdbc.SimpleDataSource: DEBUG
+    tk.ibatis.common.jdbc.ScriptRunner: DEBUG
+    tk.ibatis.sqlmap.engine.impl.SqlMapClientDelegate: DEBUG
+    java.sql.Connection: DEBUG
+    java.sql.Statement: DEBUG
+    java.sql.PreparedStatement: DEBUG
+    org.springframework.scheduling: INFO
+server:
   port: 18080
 spring:
   application:
@@ -12,18 +26,18 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      driver-class-name: ${jdbc.driver-class-name}
-      url: ${jdbc.url}
-      username: ${jdbc.username}
-      password: ${jdbc.password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.1.160:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+      username: u_mldong
+      password: 8Eli@gr#AUk
       # 初始化时建立物理连接的个数
-      initial-size: ${jdbc.initial-size?jdbc.initial-size:3}
+      initial-size: 3
       # 最大连接池数量
-      max-active: ${jdbc.max-active?jdbc.max-active:10}
+      max-active: 10
       # 最小连接池数量
-      min-idle: ${jdbc.min-idle?jdbc.min-idle:3}
+      min-idle: 3
       # 获取连接时最大等待时间
-      max-wait: ${jdbc.max-wait}
+      max-wait: 10000
       # 是否缓存preparedStatement，也就是PSCache。
       pool-prepared-statements: false
       # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。
@@ -49,8 +63,8 @@ spring:
       stat-view-servlet:
         enable: true
         url-pattern: /druid/*
-        login-username: ${druid.username?druid.username:admin}
-        login-password: ${druid.username?druid.password:admin@321}
+        login-username: admin
+        login-password: admin@321
       # filter相关配置
       filter:
         stat:

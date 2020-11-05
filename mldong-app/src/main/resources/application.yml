@@ -1,4 +1,18 @@
-server: 
+# 日志配置
+logging:
+  level:
+    com.mldong: DEBUG
+    org.springframework: DEBUG
+    tk.mybatis: DEBUG
+    tk.ibatis: DEBUG
+    tk.ibatis.common.jdbc.SimpleDataSource: DEBUG
+    tk.ibatis.common.jdbc.ScriptRunner: DEBUG
+    tk.ibatis.sqlmap.engine.impl.SqlMapClientDelegate: DEBUG
+    java.sql.Connection: DEBUG
+    java.sql.Statement: DEBUG
+    java.sql.PreparedStatement: DEBUG
+    org.springframework.scheduling: INFO
+server:
   port: 18081
 spring:
   application:
