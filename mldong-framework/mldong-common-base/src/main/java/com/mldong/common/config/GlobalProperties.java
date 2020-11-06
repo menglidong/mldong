@@ -33,6 +33,10 @@ public class GlobalProperties {
 	 * 七牛云空间名称
 	 */
 	private String qiniuBucket = "";
+	/**
+	 * 图片基础路径
+	 */
+	private String baseImgUrl="http://qiniu.mldong.com/";
 	public Long getSuperAdminId() {
 		return superAdminId;
 	}
@@ -88,5 +92,12 @@ public class GlobalProperties {
 	public void setQiniuBucket(String qiniuBucket) {
 		this.qiniuBucket = qiniuBucket;
 	}
-	
+
+	public String getBaseImgUrl() {
+		return baseImgUrl;
+	}
+
+	public void setBaseImgUrl(String baseImgUrl) {
+		this.baseImgUrl = baseImgUrl;
+	}
 }
