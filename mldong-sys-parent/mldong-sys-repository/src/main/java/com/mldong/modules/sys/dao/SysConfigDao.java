@@ -3,7 +3,9 @@ package com.mldong.modules.sys.dao;
 import com.mldong.modules.sys.entity.SysConfig;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysConfigDao {
     /**
      * 通过key查询

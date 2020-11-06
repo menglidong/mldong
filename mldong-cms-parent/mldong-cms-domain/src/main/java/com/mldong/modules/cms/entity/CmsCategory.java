@@ -5,16 +5,16 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
+// START###################
+// ###################END
 /**
  * <p>实体类</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2020-10-22 11:30:30
+ * @since 2020-11-05 10:16:19
  */
 @Table(name="cms_category")
 @ApiModel(description="栏目")
@@ -49,6 +49,8 @@ public class CmsCategory implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
+// START###################
+// ###################END
     /**
      * 获取主键
      *
@@ -229,4 +231,6 @@ public class CmsCategory implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
+// START###################
+// ###################END
 }

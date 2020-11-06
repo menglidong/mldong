@@ -5,16 +5,15 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
+
 /**
  * <p>实体类</p>
  * <p>Table: sys_upload_record - 上传记录</p>
- * @since 2020-06-14 10:16:54
+ * @since 2020-11-05 10:28:09
  */
 @Table(name="sys_upload_record")
 @ApiModel(description="上传记录")
@@ -47,6 +46,7 @@ public class SysUploadRecord implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
+
     /**
      * 获取主键
      *
@@ -212,4 +212,5 @@ public class SysUploadRecord implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
+
 }

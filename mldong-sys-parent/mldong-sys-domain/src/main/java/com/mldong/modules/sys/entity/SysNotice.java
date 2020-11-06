@@ -7,20 +7,20 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.mldong.common.annotation.DictEnum;
 import com.mldong.common.base.CodedEnum;
 import com.mldong.common.base.YesNoEnum;
+
 /**
  * <p>实体类</p>
- * <p>Table: sys_notice - 通知公告</p>
- * @since 2020-10-27 05:10:53
+ * <p>Table: sys_notice - </p>
+ * @since 2020-11-05 10:28:09
  */
 @Table(name="sys_notice")
-@ApiModel(description="通知公告")
+@ApiModel(description="")
 public class SysNotice implements Serializable{
 	/**
 	 * 
@@ -42,6 +42,7 @@ public class SysNotice implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
+
     /**
      * 获取编号
      *
@@ -147,6 +148,7 @@ public class SysNotice implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
+
     @DictEnum(key="sys_notice_type",name="公告类型")
     public enum TypeEnum implements CodedEnum {
 		/**
@@ -157,6 +159,7 @@ public class SysNotice implements Serializable{
 		 * 公告
 		 */
 		GG(20, "公告");
+
 		private int value;
 		private String name;
 		@JsonCreator

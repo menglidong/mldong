@@ -7,13 +7,13 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
+
 /**
  * <p>实体类</p>
  * <p>Table: sys_upload_config - 上传配置</p>
- * @since 2020-10-26 10:39:01
+ * @since 2020-11-05 10:28:09
  */
 @Table(name="sys_upload_config")
 @ApiModel(description="上传配置")
@@ -56,6 +56,7 @@ public class SysUploadConfig implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
+
     /**
      * 获取主键
      *
@@ -296,4 +297,5 @@ public class SysUploadConfig implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
+
 }

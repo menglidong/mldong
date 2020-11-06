@@ -1,17 +1,15 @@
 package com.mldong.modules.sys.mapper;
 import com.mldong.modules.sys.entity.SysMenu;
 import com.mldong.common.base.BaseMapper;
-// START###################
+import org.springframework.stereotype.Repository;
 
-// ###################END
 /**
  * <p>持久层</p>
  * <p>菜单</p>
  *
- * @since 2020-11-03 10:19:46
+ * @since 2020-11-05 10:28:09
  */
+@Repository
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
-    // START###################
 
-    // ###################END
 }

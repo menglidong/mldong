@@ -5,20 +5,19 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.mldong.common.annotation.DictEnum;
 import com.mldong.common.base.CodedEnum;
 import com.mldong.common.base.YesNoEnum;
+
 /**
  * <p>实体类</p>
  * <p>Table: sys_user - 用户</p>
- * @since 2020-10-21 09:45:22
+ * @since 2020-11-05 10:28:09
  */
 @Table(name="sys_user")
 @ApiModel(description="用户")
@@ -63,6 +62,7 @@ public class SysUser implements Serializable{
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
+
     /**
      * 获取主键
      *
@@ -318,6 +318,7 @@ public class SysUser implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
+
     @DictEnum(key="sys_user_sex",name="性别")
     public enum SexEnum implements CodedEnum {
 		/**
@@ -332,6 +333,7 @@ public class SysUser implements Serializable{
 		 * 未知
 		 */
 		UNKNOWN(3, "未知");
+
 		private int value;
 		private String name;
 		@JsonCreator

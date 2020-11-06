@@ -34,4 +34,9 @@ public class JwtTokenStrategyImpl implements TokenStrategy{
 	public Map<String, Object> getExt(String token) {
 		return jwtToken.getExt(token);
 	}
+
+	@Override
+	public int removeToken(String token) {
+		return 0;
+	}
 }

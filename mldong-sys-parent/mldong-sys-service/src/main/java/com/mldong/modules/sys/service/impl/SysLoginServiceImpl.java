@@ -89,6 +89,7 @@ public class SysLoginServiceImpl implements SysLoginService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int logout(String token) {
+		generateTokenStrategy.removeToken(token);
 		return 1;
 	}
 	/**
