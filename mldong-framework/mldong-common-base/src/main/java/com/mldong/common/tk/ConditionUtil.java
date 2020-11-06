@@ -215,6 +215,7 @@ public class ConditionUtil {
 					whereParam.setOperateType(operateTypeEnum);
 					whereParam.setPropertyName(propertyName);
 					whereParam.setPropertyValue(value);
+					res.add(whereParam);
 				}
 			}
 		}
