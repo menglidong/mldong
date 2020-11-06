@@ -1,17 +1,19 @@
 package com.mldong.common.tk;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
+import com.mldong.common.base.OperateTypeEnum;
 import com.mldong.common.base.PageParam;
+import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.exception.BizException;
 import com.mldong.common.tool.StringTool;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
-import com.mldong.common.base.OperateTypeEnum;
-import com.mldong.common.base.WhereParam;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * tk条件工具封装
@@ -179,31 +181,41 @@ public class ConditionUtil {
 			field.setAccessible(true);
 			//获取属性
 			String name = field.getName();
-			String value = null;
+			Object value = null;
 			//获取属性值
 			try {
-				value = (String)field.get(pageParam);
+				value = field.get(pageParam);
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			if(StringTool.isNotEmpty(value)) {
-				WhereParam whereParam = new WhereParam();
-				whereParam.setTableAlias(tableAlias);
-				whereParam.setOperateType(operateTypeEnum);
-				whereParam.setPropertyName(propertyName);
-				if(operateTypeEnum.equals(OperateTypeEnum.IN) || operateTypeEnum.equals(OperateTypeEnum.NIN)) {
-					String values [] = value.split(",");
-					whereParam.setPropertyValue(Arrays.asList(values));
-				} else if(operateTypeEnum.equals(OperateTypeEnum.BT) || operateTypeEnum.equals(OperateTypeEnum.NBT)) {
-					String values [] = value.split(",");
-					if(values.length !=2) {
-						throw new BizException(GlobalErrEnum.GL99990100);
+			if(value != null) {
+				if(value instanceof String) {
+					if (StringTool.isNotEmpty(value.toString())) {
+						WhereParam whereParam = new WhereParam();
+						whereParam.setTableAlias(tableAlias);
+						whereParam.setOperateType(operateTypeEnum);
+						whereParam.setPropertyName(propertyName);
+						if (operateTypeEnum.equals(OperateTypeEnum.IN) || operateTypeEnum.equals(OperateTypeEnum.NIN)) {
+							String values[] = value.toString().split(",");
+							whereParam.setPropertyValue(Arrays.asList(values));
+						} else if (operateTypeEnum.equals(OperateTypeEnum.BT) || operateTypeEnum.equals(OperateTypeEnum.NBT)) {
+							String values[] = value.toString().split(",");
+							if (values.length != 2) {
+								throw new BizException(GlobalErrEnum.GL99990100);
+							}
+							whereParam.setPropertyValue(Arrays.asList(values));
+						} else {
+							whereParam.setPropertyValue(value);
+						}
+						res.add(whereParam);
 					}
-					whereParam.setPropertyValue(Arrays.asList(values));
 				} else {
+					WhereParam whereParam = new WhereParam();
+					whereParam.setTableAlias(tableAlias);
+					whereParam.setOperateType(operateTypeEnum);
+					whereParam.setPropertyName(propertyName);
 					whereParam.setPropertyValue(value);
 				}
-				res.add(whereParam);
 			}
 		}
 		pageParam.setWhereParams(res);

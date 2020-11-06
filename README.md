@@ -113,6 +113,19 @@
 | IN     | in(值1,值2)             |array|
 | NIN    | not in(值1,值2)         |array|
 
+**另一种参数传递方式：**
+
+```json
+{
+	"pageNum": 1,
+	"pageSize": 15,
+    "m_LIKE_userName": "admin",
+    "m_BT_createTime": ["2020-01-01","2020-06-06"],
+    "m_EQ_isLocked": 2
+}
+```
+
+该种方式需要在XxpageParam实体类上加参数，主要目的其实是为了接口文档描述。
 
 ## 关于代码生成器
 
