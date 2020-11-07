@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,6 +24,7 @@ import com.mldong.common.logger.LoggerModel;
 import com.mldong.common.tool.StringTool;
 import com.mldong.common.web.RequestHolder;
 @Component
+@ConditionalOnBean(AuthInterceptorService.class)
 public class AuthInterceptor implements HandlerInterceptor {
 	@Autowired
 	private AuthInterceptorService authInterceptorService;

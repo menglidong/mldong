@@ -182,5 +182,6 @@
 	<module>mldong-framework</module>
 	<module>mldong-app</module>
 	<module>mldong-cloud-parent</module>
+    <module>mldong-data-service</module>
 </modules>
 </project>
