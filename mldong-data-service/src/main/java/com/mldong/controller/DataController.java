@@ -1,6 +1,7 @@
 package com.mldong.controller;
 
 import com.mldong.common.base.CommonResult;
+import com.mldong.common.tool.StringTool;
 import com.mldong.service.DataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,9 @@ public class DataController {
             Map.Entry<String,Object> entry = iterator.next();
             String key = entry.getKey();
             Object value = entry.getValue();
+            if(!StringTool.checkColumn(key)) {
+                continue;
+            }
             if(key.startsWith("pk_") && value!=null) {
                 String pkPropertyName = key.substring(3, key.length());
                 return CommonResult.success(dataService.get(tableName, pkPropertyName, value));
@@ -45,6 +49,9 @@ public class DataController {
             Map.Entry<String,Object> entry = iterator.next();
             String key = entry.getKey();
             Object value = entry.getValue();
+            if(!StringTool.checkColumn(key)) {
+                continue;
+            }
             if(key.startsWith("pk_") && value!=null) {
                 String pkPropertyName = key.substring(3, key.length());
                 CommonResult<?> res =CommonResult.success(dataService.get(dbName, tableName, pkPropertyName, value));
@@ -54,4 +61,5 @@ public class DataController {
         CommonResult<?> res =  CommonResult.success(dataService.list(dbName,tableName, map, pageNum, pageSize));
         return res;
     }
+
 }

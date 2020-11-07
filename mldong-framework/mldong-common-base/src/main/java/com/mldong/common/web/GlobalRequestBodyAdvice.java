@@ -4,9 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.Iterator;
 
 import com.mldong.common.base.PageParam;
+import com.mldong.common.base.WhereParam;
 import com.mldong.common.tk.ConditionUtil;
+import com.mldong.common.tool.StringTool;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
@@ -69,6 +72,15 @@ public class GlobalRequestBodyAdvice implements RequestBodyAdvice{
 				PageParam pageParam = (PageParam)body ;
 				if(pageParam.getWhereParams() == null || pageParam.getWhereParams().isEmpty()) {
 					ConditionUtil.propertyConvertWhereParams((PageParam)pageParam);
+				} else {
+					// 这里要过滤参数
+					Iterator<WhereParam> iterator = pageParam.getWhereParams().iterator();
+					while (iterator.hasNext()) {
+						WhereParam param = iterator.next();
+						if(!StringTool.checkColumn(param.getPropertyName())) {
+							iterator.remove();
+						}
+					}
 				}
 			}
 		}

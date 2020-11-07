@@ -121,5 +121,13 @@ public class StringTool {
 	public static String upperCase(String str) {
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
-
+	/**
+	 * 校验数据库列有效性
+	 * @param column 列名
+	 * @return
+	 */
+	public static boolean checkColumn(String column) {
+		String regExp = "(^_([a-zA-Z0-9]_?)*$)|(^[a-zA-Z](_?[a-zA-Z0-9])*_?$)";
+		return column.matches(regExp);
+	}
 }
