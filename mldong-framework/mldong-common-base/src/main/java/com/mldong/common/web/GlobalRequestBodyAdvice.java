@@ -73,12 +73,19 @@ public class GlobalRequestBodyAdvice implements RequestBodyAdvice{
 				if(pageParam.getWhereParams() == null || pageParam.getWhereParams().isEmpty()) {
 					ConditionUtil.propertyConvertWhereParams((PageParam)pageParam);
 				} else {
-					// 这里要过滤参数
+					// 这里要过滤 表别名与字段属性
 					Iterator<WhereParam> iterator = pageParam.getWhereParams().iterator();
 					while (iterator.hasNext()) {
 						WhereParam param = iterator.next();
 						if(!StringTool.checkColumn(param.getPropertyName())) {
 							iterator.remove();
+							continue;
+						}
+						if(StringTool.isNotEmpty(param.getTableAlias())) {
+							if(!StringTool.checkColumn(param.getTableAlias())) {
+								iterator.remove();
+								continue;
+							}
 						}
 					}
 				}
