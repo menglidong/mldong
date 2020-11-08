@@ -141,4 +141,13 @@ public class SysRbacController {
 	public CommonResult<List<RouterVo>> getRouters(@LoginUser Long userId) {
 		return CommonResult.success(sysRbacService.getRouters(userId));
 	}
+	/**
+	 * 获取当前用户接口清单
+	 * @return
+	 */
+	@PostMapping("listApiList")
+	@ApiOperation(value="获取当前用户接口清单", notes="获取当前用户接口清单")
+	public CommonResult<SysAccessTreeVo> listApiList(@LoginUser Long userId) {
+		return CommonResult.success(sysRbacService.listAccessTree(userId, null));
+	}
 }
