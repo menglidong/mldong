@@ -1,7 +1,10 @@
 package com.mldong.common.logger;
 
+import com.mldong.common.config.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,10 +13,20 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
+@Order(-1)
 public class DefaultLoggerStoreImpl implements ILoggerStore {
+	@Autowired
+	private GlobalProperties properties;
 	private final static Logger LOGGER = LoggerFactory.getLogger(DefaultLoggerStoreImpl.class);
 	@Override
 	public int save(LoggerModel model) {
+		if(properties.isOpenSensitive()) {
+			properties.getSensitiveKeys().forEach(key -> {
+				model.setBody(model.getBody().replaceAll("("+key+"=)([^&]+)", "$1*****"));
+				model.setBody(model.getBody().replaceAll("(\""+key+"\":\\s*\")([^\"]+)", "$1*****"));
+				model.setQueryString(model.getQueryString().replaceAll("("+key+"=)([^&]+)", "$1*****"));
+			});
+		}
 		LOGGER.info("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
 				model.getTrackId(),
 				model.getUri(),

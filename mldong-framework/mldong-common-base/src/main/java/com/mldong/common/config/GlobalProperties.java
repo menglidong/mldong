@@ -2,6 +2,10 @@ package com.mldong.common.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+
 @ConfigurationProperties(prefix = "g")
 public class GlobalProperties {
 	/**
@@ -37,6 +41,25 @@ public class GlobalProperties {
 	 * 图片基础路径
 	 */
 	private String baseImgUrl="http://qiniu.mldong.com/";
+	/**
+	 * 是否开启敏感词过滤
+	 */
+	private boolean openSensitive = true;
+	/**
+	 * 系在启key
+	 */
+	private List<String> sensitiveKeys = new ArrayList<>();
+	@PostConstruct
+	private void init() {
+		if(sensitiveKeys.isEmpty()) {
+			sensitiveKeys.add("password");
+			sensitiveKeys.add("realName");
+			sensitiveKeys.add("mobilePhone");
+			sensitiveKeys.add("cardNo");
+			sensitiveKeys.add("confirmPassword");
+			sensitiveKeys.add("oldPassword");
+		}
+	}
 	public Long getSuperAdminId() {
 		return superAdminId;
 	}
@@ -99,5 +122,21 @@ public class GlobalProperties {
 
 	public void setBaseImgUrl(String baseImgUrl) {
 		this.baseImgUrl = baseImgUrl;
+	}
+
+	public boolean isOpenSensitive() {
+		return openSensitive;
+	}
+
+	public void setOpenSensitive(boolean openSensitive) {
+		this.openSensitive = openSensitive;
+	}
+
+	public List<String> getSensitiveKeys() {
+		return sensitiveKeys;
+	}
+
+	public void setSensitiveKeys(List<String> sensitiveKeys) {
+		this.sensitiveKeys = sensitiveKeys;
 	}
 }
