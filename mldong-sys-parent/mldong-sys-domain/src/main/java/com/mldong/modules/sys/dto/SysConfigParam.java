@@ -5,12 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import com.mldong.common.validator.Groups;
 import javax.validation.constraints.*;
 import com.mldong.common.base.YesNoEnum;
-// START###################
-// ###################END
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: sys_config - 参数配置</p>
- * @since 2020-11-05 08:22:30
+ * @since 2020-11-09 04:37:10
  */
 @ApiModel(description="参数配置")
 public class SysConfigParam{
@@ -28,8 +26,7 @@ public class SysConfigParam{
     private YesNoEnum isSystem;
     @ApiModelProperty(value = "备注",required=false)
     private String remark;
-    // START###################
-    // ###################END
+
     /**
      * 获取编号
      *
@@ -120,6 +117,4 @@ public class SysConfigParam{
     public void setRemark(String remark){
         this.remark = remark;
     }
-    // START###################
-    // ###################END
 }

@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_config - 参数配置</p>
- * @since 2020-11-05 10:28:09
+ * @since 2020-11-09 04:37:10
  */
 @Table(name="sys_config")
 @ApiModel(description="参数配置")

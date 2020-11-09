@@ -1,6 +1,7 @@
 package com.mldong.common.logger;
 
 import com.mldong.common.config.GlobalProperties;
+import com.mldong.common.tool.StringTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,13 @@ public class DefaultLoggerStoreImpl implements ILoggerStore {
 	public int save(LoggerModel model) {
 		if(properties.isOpenSensitive()) {
 			properties.getSensitiveKeys().forEach(key -> {
-				model.setBody(model.getBody().replaceAll("("+key+"=)([^&]+)", "$1*****"));
-				model.setBody(model.getBody().replaceAll("(\""+key+"\":\\s*\")([^\"]+)", "$1*****"));
-				model.setQueryString(model.getQueryString().replaceAll("("+key+"=)([^&]+)", "$1*****"));
+				if(StringTool.isNotEmpty(model.getBody())) {
+					model.setBody(model.getBody().replaceAll("(" + key + "=)([^&]+)", "$1*****"));
+					model.setBody(model.getBody().replaceAll("(\""+key+"\":\\s*\")([^\"]+)", "$1*****"));
+				}
+				if(StringTool.isNotEmpty(model.getQueryString())) {
+					model.setQueryString(model.getQueryString().replaceAll("(" + key + "=)([^&]+)", "$1*****"));
+				}
 			});
 		}
 		LOGGER.info("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
