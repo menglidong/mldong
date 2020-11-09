@@ -54,6 +54,77 @@
 
 其他参考阿里巴巴java规范手册
 
+### 关于权限标识
+
+为了更方便前端构造树形列表展示，这里做了三级菜单分类，基于特定规范的注解。
+
+``` java
+@RestController
+@RequestMapping("/cms/category")
+@Api(tags="cms-栏目管理",authorizations={
+    @Authorization(value="cms|内容管理",scopes={
+    	@AuthorizationScope(description="栏目管理",scope="cms:category:index")
+    })
+})
+public class CmsCategoryController {
+    @PostMapping("save")
+	@ApiOperation(value="添加栏目", notes="cms:category:save")
+	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) CmsCategoryParam param) {
+		int count = cmsCategoryService.save(param);
+		if(count>0) {
+			return CommonResult.success("添加栏目成功", null);
+		} else {
+			return CommonResult.fail("添加栏目失败", null);
+		}
+	}
+}
+```
+
+* `value="cms|内容管理"`  这里是一级菜单，定义在value上，由模块权限标识|模块说明组成
+
+* `@AuthorizationScope(description="栏目管理",scope="cms:category:index")`
+
+  * `description` 为控制层权限标识说明
+  * `scope` 为控制层权限标识
+
+* `@ApiOperation(value="添加栏目", notes="cms:category:save")`
+
+  * `value` 为方法层权限标识说明
+  * `notes` 为方法层权限标识
+
+最终生成的json为：
+
+``` json
+{
+	"id": "cms",
+	"access": "cms",
+	"uri": "/cms",
+	"name": "内容管理",
+	"remark": "内容管理",
+	"sort": 0,
+	"children": [{
+		"id": "cms:article:index",
+		"access": "cms:article:index",
+		"uri": "/cms/article/index",
+		"name": "文章管理",
+		"remark": "文章管理",
+		"sort": 0,
+		"children": [
+			{
+				"id": "cms:article:save",
+				"access": "cms:article:save",
+				"uri": "/cms/article/save",
+				"name": "添加文章",
+				"remark": "添加文章",
+				"sort": 0
+			}
+		]
+	}]
+}
+```
+
+  
+
 ### 关于通用查询
 
 通用查询共两个模板接口
