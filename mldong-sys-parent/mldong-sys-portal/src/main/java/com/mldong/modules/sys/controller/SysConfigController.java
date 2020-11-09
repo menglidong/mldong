@@ -21,8 +21,7 @@ import com.mldong.modules.sys.dto.SysConfigParam;
 import com.mldong.modules.sys.dto.SysConfigPageParam;
 import com.mldong.modules.sys.entity.SysConfig;
 import com.mldong.modules.sys.service.SysConfigService;
-// START###################
-// ###################END
+
 @RestController
 @RequestMapping("/sys/config")
 @Api(tags="sys-参数配置管理",authorizations={
@@ -33,14 +32,9 @@ import com.mldong.modules.sys.service.SysConfigService;
 public class SysConfigController {
 	@Autowired
 	private SysConfigService sysConfigService;
-	// START###################
-	// ###################END
+
 	@PostMapping("save")
-	@ApiOperation(value="添加参数配置", notes="添加参数配置",authorizations={
-		@Authorization(value="添加参数配置",scopes={
-	    	@AuthorizationScope(description="添加参数配置",scope="sys:config:save")
-	    })
-	})
+	@ApiOperation(value="添加参数配置", notes="sys:config:save")
 	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) SysConfigParam param) {
 		int count = sysConfigService.save(param);
 		if(count>0) {
@@ -51,11 +45,7 @@ public class SysConfigController {
 	}
 
 	@PostMapping("update")
-	@ApiOperation(value="修改参数配置", notes="修改参数配置",authorizations={
-		@Authorization(value="修改参数配置",scopes={
-	    	@AuthorizationScope(description="修改参数配置",scope="sys:config:update")
-	    })
-	})
+	@ApiOperation(value="修改参数配置", notes="sys:config:update")
 	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) SysConfigParam param) {
 		int count = sysConfigService.update(param);
 		if(count>0) {
@@ -66,11 +56,7 @@ public class SysConfigController {
 	}
 
 	@PostMapping("remove")
-	@ApiOperation(value="删除参数配置", notes="删除参数配置",authorizations={
-		@Authorization(value="删除参数配置",scopes={
-	    	@AuthorizationScope(description="删除参数配置",scope="sys:config:remove")
-	    })
-	})
+	@ApiOperation(value="删除参数配置", notes="sys:config:remove")
 	public CommonResult<?> remove(@RequestBody IdsParam param) {
 		int count = sysConfigService.remove(param.getIds());
 		if(count>0) {
@@ -81,24 +67,15 @@ public class SysConfigController {
 	}
 
 	@PostMapping("get")
-	@ApiOperation(value="通过id获取参数配置", notes="通过id获取参数配置",authorizations={
-		@Authorization(value="通过id获取参数配置",scopes={
-	    	@AuthorizationScope(description="通过id获取参数配置",scope="sys:config:get")
-	    })
-	})
+	@ApiOperation(value="通过id获取参数配置", notes="sys:config:get")
 	public CommonResult<SysConfig> get(@RequestBody @Validated IdParam param) {
 		return CommonResult.success("获取参数配置成功",sysConfigService.get(param.getId()));
 	}
 
 	@PostMapping("list")
-	@ApiOperation(value="分页查询参数配置", notes="分页查询参数配置",authorizations={
-		@Authorization(value="分页查询参数配置",scopes={
-	    	@AuthorizationScope(description="分页查询参数配置",scope="sys:config:list")
-	    })
-	})
+	@ApiOperation(value="分页查询参数配置", notes="sys:config:list")
 	public CommonResult<CommonPage<SysConfig>> list(@RequestBody @Validated SysConfigPageParam param) {
 		return CommonResult.success("查询参数配置成功",sysConfigService.list(param));
 	}
-	// START###################
-	// ###################END
+
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
  * <p>持久层</p>
  * <p>参数配置</p>
  *
- * @since 2020-11-05 10:28:09
+ * @since 2020-11-09 04:37:10
  */
 @Repository
 public interface SysConfigMapper extends BaseMapper<SysConfig> {

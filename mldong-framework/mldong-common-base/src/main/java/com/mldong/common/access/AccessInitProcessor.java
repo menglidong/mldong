@@ -32,6 +32,10 @@ public class AccessInitProcessor implements BeanPostProcessor{
 	 * 模块权限
 	 */
 	private Map<String,SysAccessModel> moduleMap = new HashMap<>();
+	/**
+	 * 权限标识正则
+	 */
+	private final static String ACCESS_REGEX = "(^_([a-zA-Z0-9:]_?)*$)|(^[a-zA-Z:](_?[a-zA-Z0-9:])*_?$)";
 	@Override
 	public Object postProcessBeforeInitialization(Object bean,
 			String beanName) throws BeansException {
@@ -83,6 +87,18 @@ public class AccessInitProcessor implements BeanPostProcessor{
 								SysAccessModel methodAccess = handleAuthorizationScope(authorizationScope);
 								if(StringTool.isNotEmpty(methodAccess.getAccess())) {
 									controllerAccess.getChildren().add(methodAccess);
+								} else {
+									String value = apiOperation.value();
+									String notes = apiOperation.notes();
+									if(notes.matches(ACCESS_REGEX)) {
+										SysAccessModel accessModel = new SysAccessModel();
+										accessModel.setId(notes);
+										accessModel.setAccess(notes);
+										accessModel.setUri("/"+notes.replaceAll(":", "/"));
+										accessModel.setName(value);
+										accessModel.setRemark(value);
+										controllerAccess.getChildren().add(accessModel);
+									}
 								}
 							}
 						}

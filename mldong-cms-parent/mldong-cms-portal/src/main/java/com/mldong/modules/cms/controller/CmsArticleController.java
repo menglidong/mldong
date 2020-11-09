@@ -34,11 +34,7 @@ public class CmsArticleController {
 	private CmsArticleService cmsArticleService;
 
 	@PostMapping("save")
-	@ApiOperation(value="添加文章", notes="添加文章",authorizations={
-		@Authorization(value="添加文章",scopes={
-	    	@AuthorizationScope(description="添加文章",scope="cms:article:save")
-	    })
-	})
+	@ApiOperation(value="添加文章", notes = "cms:article:save")
 	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) CmsArticleParam param) {
 		int count = cmsArticleService.save(param);
 		if(count>0) {
@@ -49,11 +45,7 @@ public class CmsArticleController {
 	}
 
 	@PostMapping("update")
-	@ApiOperation(value="修改文章", notes="修改文章",authorizations={
-		@Authorization(value="修改文章",scopes={
-	    	@AuthorizationScope(description="修改文章",scope="cms:article:update")
-	    })
-	})
+	@ApiOperation(value="修改文章", notes = "cms:article:update")
 	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) CmsArticleParam param) {
 		int count = cmsArticleService.update(param);
 		if(count>0) {
@@ -64,11 +56,7 @@ public class CmsArticleController {
 	}
 
 	@PostMapping("remove")
-	@ApiOperation(value="删除文章", notes="删除文章",authorizations={
-		@Authorization(value="删除文章",scopes={
-	    	@AuthorizationScope(description="删除文章",scope="cms:article:remove")
-	    })
-	})
+	@ApiOperation(value="删除文章", notes = "cms:article:remove")
 	public CommonResult<?> remove(@RequestBody IdsParam param) {
 		int count = cmsArticleService.remove(param.getIds());
 		if(count>0) {
@@ -79,21 +67,13 @@ public class CmsArticleController {
 	}
 
 	@PostMapping("get")
-	@ApiOperation(value="通过id获取文章", notes="通过id获取文章",authorizations={
-		@Authorization(value="通过id获取文章",scopes={
-	    	@AuthorizationScope(description="通过id获取文章",scope="cms:article:get")
-	    })
-	})
+	@ApiOperation(value="通过id获取文章", notes = "cms:article:get")
 	public CommonResult<CmsArticle> get(@RequestBody @Validated IdParam param) {
 		return CommonResult.success("获取文章成功",cmsArticleService.get(param.getId()));
 	}
 
 	@PostMapping("list")
-	@ApiOperation(value="分页查询文章", notes="分页查询文章",authorizations={
-		@Authorization(value="分页查询文章",scopes={
-	    	@AuthorizationScope(description="分页查询文章",scope="cms:article:list")
-	    })
-	})
+	@ApiOperation(value="分页查询文章", notes = "cms:article:list")
 	public CommonResult<CommonPage<CmsArticle>> list(@RequestBody @Validated CmsArticlePageParam param) {
 		return CommonResult.success("查询文章成功",cmsArticleService.list(param));
 	}

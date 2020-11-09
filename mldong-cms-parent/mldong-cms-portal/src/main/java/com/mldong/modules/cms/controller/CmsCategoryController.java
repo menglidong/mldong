@@ -34,11 +34,7 @@ public class CmsCategoryController {
 	private CmsCategoryService cmsCategoryService;
 
 	@PostMapping("save")
-	@ApiOperation(value="添加栏目", notes="添加栏目",authorizations={
-		@Authorization(value="添加栏目",scopes={
-	    	@AuthorizationScope(description="添加栏目",scope="cms:category:save")
-	    })
-	})
+	@ApiOperation(value="添加栏目", notes="cms:category:save")
 	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) CmsCategoryParam param) {
 		int count = cmsCategoryService.save(param);
 		if(count>0) {
@@ -49,11 +45,7 @@ public class CmsCategoryController {
 	}
 
 	@PostMapping("update")
-	@ApiOperation(value="修改栏目", notes="修改栏目",authorizations={
-		@Authorization(value="修改栏目",scopes={
-	    	@AuthorizationScope(description="修改栏目",scope="cms:category:update")
-	    })
-	})
+	@ApiOperation(value="修改栏目", notes="cms:category:update")
 	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) CmsCategoryParam param) {
 		int count = cmsCategoryService.update(param);
 		if(count>0) {
@@ -64,11 +56,7 @@ public class CmsCategoryController {
 	}
 
 	@PostMapping("remove")
-	@ApiOperation(value="删除栏目", notes="删除栏目",authorizations={
-		@Authorization(value="删除栏目",scopes={
-	    	@AuthorizationScope(description="删除栏目",scope="cms:category:remove")
-	    })
-	})
+	@ApiOperation(value="删除栏目", notes="cms:category:remove")
 	public CommonResult<?> remove(@RequestBody IdsParam param) {
 		int count = cmsCategoryService.remove(param.getIds());
 		if(count>0) {
@@ -79,21 +67,13 @@ public class CmsCategoryController {
 	}
 
 	@PostMapping("get")
-	@ApiOperation(value="通过id获取栏目", notes="通过id获取栏目",authorizations={
-		@Authorization(value="通过id获取栏目",scopes={
-	    	@AuthorizationScope(description="通过id获取栏目",scope="cms:category:get")
-	    })
-	})
+	@ApiOperation(value="通过id获取栏目", notes = "cms:category:get")
 	public CommonResult<CmsCategory> get(@RequestBody @Validated IdParam param) {
 		return CommonResult.success("获取栏目成功",cmsCategoryService.get(param.getId()));
 	}
 
 	@PostMapping("list")
-	@ApiOperation(value="分页查询栏目", notes="分页查询栏目",authorizations={
-		@Authorization(value="分页查询栏目",scopes={
-	    	@AuthorizationScope(description="分页查询栏目",scope="cms:category:list")
-	    })
-	})
+	@ApiOperation(value="分页查询栏目", notes="cms:category:list")
 	public CommonResult<CommonPage<CmsCategory>> list(@RequestBody @Validated CmsCategoryPageParam param) {
 		return CommonResult.success("查询栏目成功",cmsCategoryService.list(param));
 	}
