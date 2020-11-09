@@ -7,8 +7,10 @@
 		<result column="name" property="name" />  
 		<result column="sort" property="sort" />  
 		<result column="route_name" property="routeName" />  
+		<result column="path" property="path" />  
 		<result column="icon" property="icon" />  
 		<result column="is_show" property="isShow" />  
+		<result column="remark" property="remark" />  
 		<result column="create_time" property="createTime" />  
 		<result column="update_time" property="updateTime" />  
 		<result column="is_deleted" property="isDeleted" />  

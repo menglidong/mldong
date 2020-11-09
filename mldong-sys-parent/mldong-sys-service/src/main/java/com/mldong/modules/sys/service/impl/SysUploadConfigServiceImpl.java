@@ -3,6 +3,7 @@ package com.mldong.modules.sys.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.mldong.common.validator.ValidatorTool;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class SysUploadConfigServiceImpl implements SysUploadConfigService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(SysUploadConfigParam param) {
+		ValidatorTool.checkUnique(sysUploadConfigMapper, SysUploadConfig.class, "bizType", param.getBizType());
 		Date now = new Date();
 		SysUploadConfig sysUploadConfig = new SysUploadConfig();
 		BeanUtils.copyProperties(param, sysUploadConfig);
@@ -44,6 +46,7 @@ public class SysUploadConfigServiceImpl implements SysUploadConfigService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(SysUploadConfigParam param) {
+		ValidatorTool.checkUniqueOnUpdate(sysUploadConfigMapper, SysUploadConfig.class, "bizType", param.getBizType(), param.getId());
 		Date now = new Date();
 		SysUploadConfig sysUploadConfig = new SysUploadConfig();
 		BeanUtils.copyProperties(param, sysUploadConfig);

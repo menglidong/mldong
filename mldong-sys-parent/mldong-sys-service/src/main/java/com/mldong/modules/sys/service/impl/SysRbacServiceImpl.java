@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 
 import com.mldong.common.base.PageParam;
+import com.mldong.common.tool.StringTool;
 import com.mldong.modules.sys.vo.MetaVo;
 import com.mldong.modules.sys.vo.RouterVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -273,7 +274,15 @@ public class SysRbacServiceImpl implements SysRbacService{
 				List<RouterVo> children = buildTree(menus, menu.getId());
 				RouterVo router = new RouterVo();
 				router.setAlwayShow(true);
-				router.setComponent(menu.getRouteName().replaceAll(":","/"));
+				if(StringTool.isEmpty(menu.getPath())) {
+					router.setComponent(menu.getRouteName().replaceAll(":","/"));
+				} else {
+					if(menu.getPath().startsWith("/")) {
+						router.setComponent(menu.getPath().replaceFirst("/",""));
+					} else {
+						router.setComponent(menu.getPath());
+					}
+				}
 				router.setHidden(false);
 				router.setName(menu.getRouteName());
 				router.setPath("/" + router.getComponent());
@@ -285,7 +294,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 				meta.setBreadcrumb(true);
 				meta.setIcon(menu.getIcon());
 				meta.setNoCache(true);
-				// meta.setTagName(menu.getName());
+				meta.setTagName(menu.getRemark());
 				meta.setTitle(menu.getName());
 				router.setMeta(meta);
 				if(children.size() > 0) {

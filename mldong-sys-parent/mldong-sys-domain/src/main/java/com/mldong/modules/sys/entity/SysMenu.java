@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2020-11-05 10:28:09
+ * @since 2020-11-09 09:14:26
  */
 @Table(name="sys_menu")
 @ApiModel(description="菜单")
@@ -33,10 +33,14 @@ public class SysMenu implements Serializable{
     private Double sort;
     @ApiModelProperty(value = "路由名称")
     private String routeName;
+    @ApiModelProperty(value = "路由地址")
+    private String path;
     @ApiModelProperty(value = "图标")
     private String icon;
     @ApiModelProperty(value = "是否显示(1->不显示|NO,2->显示|YES)")
     private YesNoEnum isShow;
+    @ApiModelProperty(value = "备注")
+    private String remark;
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
     @ApiModelProperty(value = "更新时间")
@@ -121,6 +125,21 @@ public class SysMenu implements Serializable{
         this.routeName = routeName;
     }
     /**
+     * 获取路由地址
+     *
+     */
+    public String getPath(){
+        return this.path;
+    }
+	 /**
+     * 设置路由地址
+     *
+     * @param path
+     */
+    public void setPath(String path){
+        this.path = path;
+    }
+    /**
      * 获取图标
      *
      */
@@ -149,6 +168,21 @@ public class SysMenu implements Serializable{
      */
     public void setIsShow(YesNoEnum isShow){
         this.isShow = isShow;
+    }
+    /**
+     * 获取备注
+     *
+     */
+    public String getRemark(){
+        return this.remark;
+    }
+	 /**
+     * 设置备注
+     *
+     * @param remark
+     */
+    public void setRemark(String remark){
+        this.remark = remark;
     }
     /**
      * 获取创建时间

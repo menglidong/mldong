@@ -3,6 +3,7 @@ package com.mldong.modules.sys.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.mldong.common.validator.ValidatorTool;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class SysMenuServiceImpl implements SysMenuService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(SysMenuParam param) {
+		ValidatorTool.checkUnique(sysMenuMapper, SysMenu.class,"routeName", param.getRouteName());
 		Date now = new Date();
 		SysMenu sysMenu = new SysMenu();
 		BeanUtils.copyProperties(param, sysMenu);
@@ -44,6 +46,7 @@ public class SysMenuServiceImpl implements SysMenuService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(SysMenuParam param) {
+		ValidatorTool.checkUniqueOnUpdate(sysMenuMapper, SysMenu.class, "routeName", param.getRouteName(), param.getId());
 		Date now = new Date();
 		SysMenu sysMenu = new SysMenu();
 		BeanUtils.copyProperties(param, sysMenu);

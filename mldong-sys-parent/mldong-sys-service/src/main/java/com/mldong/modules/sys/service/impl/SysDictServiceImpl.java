@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.mldong.common.validator.ValidatorTool;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -50,6 +51,7 @@ public class SysDictServiceImpl implements SysDictService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(SysDictParam param) {
+		ValidatorTool.checkUnique(sysDictMapper,SysDict.class, "dictKey", param.getDictKey());
 		Date now = new Date();
 		SysDict sysDict = new SysDict();
 		BeanUtils.copyProperties(param, sysDict);
@@ -64,6 +66,7 @@ public class SysDictServiceImpl implements SysDictService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(SysDictParam param) {
+		ValidatorTool.checkUniqueOnUpdate(sysDictMapper,SysDict.class, "dictKey", param.getDictKey(), param.getId());
 		Date now = new Date();
 		SysDict sysDict = new SysDict();
 		BeanUtils.copyProperties(param, sysDict);
