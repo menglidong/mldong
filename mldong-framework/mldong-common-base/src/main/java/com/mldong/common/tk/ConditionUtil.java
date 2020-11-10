@@ -139,6 +139,10 @@ public class ConditionUtil {
 				break;
 			}
 		}
+		if(condition.getOredCriteria().get(0).getCriteria().size() == 0) {
+			// 如果没有加入任何条件，需要置空
+			condition = null;
+		}
 		return condition;
 	}
 
