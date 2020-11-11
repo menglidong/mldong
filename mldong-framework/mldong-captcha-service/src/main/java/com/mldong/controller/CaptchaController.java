@@ -7,12 +7,10 @@ import com.mldong.common.base.constant.CommonConstants;
 import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.exception.BizException;
 import com.mldong.common.tool.Base64Tool;
-import com.mldong.config.CaptchaConfiguration;
 import com.mldong.vo.CaptchaVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Api(tags = "图片验证码")
 @RestController
-@ConditionalOnBean({CaptchaConfiguration.class, RedisTemplate.class})
+//@ConditionalOnBean({CaptchaConfiguration.class, RedisTemplate.class})
 public class CaptchaController {
     @Resource(name = "captchaProducer")
     private Producer captchaProducer;
