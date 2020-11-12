@@ -18,8 +18,11 @@ public class UploadMimeType {
 		map.put(".eps", "application/postscript");
 		map.put(".exe", "application/octet-stream");
 		map.put(".doc", "application/vnd.ms-word");
+		map.put(".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 		map.put(".xls", "application/vnd.ms-excel");
+		map.put(".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		map.put(".ppt", "application/vnd.ms-powerpoint");
+		map.put(".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
 		map.put(".pps", "application/vnd.ms-powerpoint");
 		map.put(".pdf", "application/pdf");
 		map.put(".xml", "application/xml");
