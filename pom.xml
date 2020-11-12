@@ -22,7 +22,7 @@
     <mybatis.spring.boot.starter.version>2.1.0</mybatis.spring.boot.starter.version>
     <mapper.spring.boot.starter.version>2.1.0</mapper.spring.boot.starter.version>
     <pagehelper.spring.boot.starter.version>1.2.12</pagehelper.spring.boot.starter.version>
-    <io.springfox-swagger2.version>2.7.0</io.springfox-swagger2.version>
+    <io.springfox-swagger2.version>2.9.2</io.springfox-swagger2.version>
 	<swagger-knife.version>2.0.3</swagger-knife.version>
 	  <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
 	  <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
