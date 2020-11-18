@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 
 import com.mldong.common.base.PageParam;
+import com.mldong.common.base.YesNoEnum;
 import com.mldong.common.tool.StringTool;
 import com.mldong.modules.sys.vo.MetaVo;
 import com.mldong.modules.sys.vo.RouterVo;
@@ -283,7 +284,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 						router.setComponent(menu.getPath());
 					}
 				}
-				router.setHidden(false);
+				router.setHidden(YesNoEnum.NO.equals(menu.getIsShow()));
 				router.setName(menu.getRouteName());
 				router.setPath("/" + router.getComponent());
 				router.setRedirect(null);
