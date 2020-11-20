@@ -188,7 +188,7 @@ public class StringTool {
 	 * @param idCardNo
 	 * @return
 	 */
-	public String idCardNoToAge(String idCardNo) {
+	public static  String idCardNoToAge(String idCardNo) {
 		String age="未知";
 		if(idCardNo == null || "".equals(idCardNo) ){
 			return age;
