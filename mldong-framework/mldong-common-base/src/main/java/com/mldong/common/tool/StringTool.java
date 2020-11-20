@@ -1,5 +1,6 @@
 package com.mldong.common.tool;
 
+import java.util.Calendar;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -180,5 +181,36 @@ public class StringTool {
 			}
 		}
 		return stringBuilder.toString();
+	}
+
+	/**
+	 * 身份证号读取年龄
+	 * @param idCardNo
+	 * @return
+	 */
+	public String idCardNoToAge(String idCardNo) {
+		String age="未知";
+		if(idCardNo == null || "".equals(idCardNo) ){
+			return age;
+		}
+
+		if (idCardNo.length() != 15 && idCardNo.length() != 18){
+			return age;
+		}
+		Calendar cal = Calendar.getInstance();
+		int yearNow = cal.get(Calendar.YEAR);
+		int monthNow = cal.get(Calendar.MONTH)+1;
+		int dayNow = cal.get(Calendar.DATE);
+
+		int year = Integer.valueOf(idCardNo.substring(6, 10));
+		int month = Integer.valueOf(idCardNo.substring(10,12));
+		int day = Integer.valueOf(idCardNo.substring(12,14));
+
+		if ((month < monthNow) || (month == monthNow && day<= dayNow) ){
+			age = String.valueOf(yearNow - year);
+		}else {
+			age = String.valueOf(yearNow - year-1);
+		}
+		return age;
 	}
 }
