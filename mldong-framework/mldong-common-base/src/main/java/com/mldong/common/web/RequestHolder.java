@@ -5,12 +5,16 @@ package com.mldong.common.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.mldong.common.token.TokenStrategy;
+import com.mldong.common.tool.CxtTool;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.mldong.common.base.constant.CommonConstants;
 import com.mldong.common.logger.LoggerModel;
+
+import java.util.Map;
 
 /**
  * @author mldong
@@ -86,5 +90,34 @@ public class RequestHolder {
 			token = "";
 		}
 		return token;
+	}
+
+	/**
+	 * 获取当前用户名
+	 * @return
+	 */
+	public static String getUsername() {
+    	String token = getToken();
+		TokenStrategy tokenStrategy = CxtTool.getBean(TokenStrategy.class);
+		return tokenStrategy.getUserName(token);
+	}
+
+	/**
+	 * 获取用户扩展信息
+	 * @return
+	 */
+	public  static Map<String,Object> getUserExt() {
+		String token = getToken();
+		TokenStrategy tokenStrategy = CxtTool.getBean(TokenStrategy.class);
+		return tokenStrategy.getExt(token);
+	}
+
+	/**
+	 * 获取token存储策略
+	 * @return
+	 */
+	public TokenStrategy getTokenStrategy() {
+		TokenStrategy tokenStrategy = CxtTool.getBean(TokenStrategy.class);
+		return tokenStrategy;
 	}
 }
