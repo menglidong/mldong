@@ -135,11 +135,12 @@ public class StringTool {
 	private static final String SYMBOL = "*";
 
 	/**
-	 * 脱敏显示
+	 * 隐藏长度
 	 * @param value
+	 * @param hiddenLen
 	 * @return
 	 */
-	public static String commonDisplay(String value) {
+	public static String commonDisplay(String value, int hiddenLen) {
 		if (null == value || "".equals(value)) {
 			return value;
 		}
@@ -160,13 +161,13 @@ public class StringTool {
 				stringBuilder.append(SYMBOL);
 				stringBuilder.append(value.substring(len - 1, len));
 
-			} else if (pamatwo >= SIZE / 2 && SIZE + 1 != len) {
-				int pamafive = (len - SIZE) / 2;
+			} else if (pamatwo >= hiddenLen / 2 && hiddenLen + 1 != len) {
+				int pamafive = (len - hiddenLen) / 2;
 				stringBuilder.append(value.substring(0, pamafive));
-				for (int i = 0; i < SIZE; i++) {
+				for (int i = 0; i < hiddenLen; i++) {
 					stringBuilder.append(SYMBOL);
 				}
-				if ((pamathree == 0 && SIZE / 2 == 0) || (pamathree != 0 && SIZE % 2 != 0)) {
+				if ((pamathree == 0 && hiddenLen / 2 == 0) || (pamathree != 0 && hiddenLen % 2 != 0)) {
 					stringBuilder.append(value.substring(len - pamafive, len));
 				} else {
 					stringBuilder.append(value.substring(len - (pamafive + 1), len));
@@ -181,6 +182,14 @@ public class StringTool {
 			}
 		}
 		return stringBuilder.toString();
+	}
+	/**
+	 * 脱敏显示
+	 * @param value
+	 * @return
+	 */
+	public static String commonDisplay(String value) {
+		return commonDisplay(value, SIZE);
 	}
 
 	/**
