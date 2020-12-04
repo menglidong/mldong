@@ -38,7 +38,7 @@ public class MysqlDataBase implements DataBase{
 	/**
 	 * 查询某个表的所有列
 	 */
-	private final String SELECT_TABLE_COLUMN_SQL = "SELECT t.table_schema,t.table_name,t.column_name,t.column_default, t.is_nullable,t.data_type,t.character_maximum_length,t.numeric_precision,t.numeric_scale,t.column_type,t.column_key, t.column_comment,t.extra FROM information_schema.columns t WHERE t.table_schema = ? AND t.table_name = ?";
+	private final String SELECT_TABLE_COLUMN_SQL = "SELECT t.table_schema,t.table_name,t.column_name,t.column_default, t.is_nullable,t.data_type,t.character_maximum_length,t.numeric_precision,t.numeric_scale,t.column_type,t.column_key, t.column_comment,t.extra FROM information_schema.columns t WHERE t.table_schema = ? AND t.table_name = ? order by t.ORDINAL_POSITION asc";
 	/**
 	 * 查询表注释
 	 */
