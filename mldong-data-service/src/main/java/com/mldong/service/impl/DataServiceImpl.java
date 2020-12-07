@@ -203,9 +203,9 @@ public class DataServiceImpl implements DataService {
                                 }
                             }
                             params.addAll(collection);
+                            i++;
                         }
                     }
-                    i++;
                     break;
             }
         }
