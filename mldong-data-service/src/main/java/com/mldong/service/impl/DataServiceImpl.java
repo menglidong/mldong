@@ -25,14 +25,23 @@ public class DataServiceImpl implements DataService {
     @Override
     public boolean isExsit(String tableName) {
         boolean flag = false;
+        Connection connection = null;
         try {
-            Connection connection = jdbcTemplate.getDataSource().getConnection();
+            connection = jdbcTemplate.getDataSource().getConnection();
             DatabaseMetaData meta = connection.getMetaData();
             String type[] = {"TABLE", "VIEW"};
             ResultSet rs = meta.getTables(null, null, tableName, type);
             flag = rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return flag;
     }
