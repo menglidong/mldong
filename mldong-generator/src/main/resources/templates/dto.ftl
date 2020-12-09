@@ -26,12 +26,12 @@ public class ${table.className}Param{
 
 <#list table.columns as column>
     <#if column.primaryKey>
-	@ApiModelProperty(value="${column.remark}-更新时必填")
+	@ApiModelProperty(value="${column.remark}-更新时必填", position = 1)
 	@NotNull(message="${column.remark}不能为空",groups={Groups.Update.class})
     private ${column.javaType} ${column.javaProperty};
     <#else>
     <#if "isDeleted,createTime,updateTime"?contains(column.javaProperty)==false>
-    @ApiModelProperty(value = "${column.remark}",required=${column.nullable?string("false","true")})
+    @ApiModelProperty(value = "${column.remark}",required=${column.nullable?string("false","true")}, position = ${(column_index+1)*5})
     <#if column.codedType>
     private ${table.className}.${column.javaType} ${column.javaProperty};
     <#else>

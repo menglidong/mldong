@@ -36,10 +36,10 @@ public class ${table.className} implements Serializable{
 <#list table.columns as column>
     <#if column.primaryKey>
 	@Id
-	@ApiModelProperty(value="${column.remark}")
+	@ApiModelProperty(value="${column.remark}", position = 1)
     private ${column.javaType} ${column.javaProperty};
     <#else>
-    @ApiModelProperty(value = "${column.remark}")
+    @ApiModelProperty(value = "${column.remark}", position = ${(column_index+1)*5})
     <#if column.javaProperty == "isDeleted">
 	<#if logicDelete>
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
