@@ -1,4 +1,8 @@
 # mldong快速开发平台
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=MDQJLx9yv6ZSJAXohWmLW-ALEFplhsdE&jump_from=webapi"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="mldong快速开发框架" title="mldong快速开发框架"></a>
+
+![1607593807004](http://qiniu.mldong.com/mldong-article/images/1607593807004.png)
+
 快速开发平台
 
 ## 目录结构
