@@ -155,6 +155,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 			if(count == 0) {
 				q.setCreateTime(now);
 				q.setUpdateTime(now);
+				q.setIsDeleted(YesNoEnum.NO);
 				insertRoleAccessList.add(q);
 			}
 		});
@@ -202,6 +203,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 			if(count == 0) {
 				q.setCreateTime(now);
 				q.setUpdateTime(now);
+				q.setIsDeleted(YesNoEnum.NO);
 				insertRoleMenuList.add(q);
 			}
 		});
