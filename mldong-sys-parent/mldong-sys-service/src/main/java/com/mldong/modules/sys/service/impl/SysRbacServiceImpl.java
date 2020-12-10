@@ -146,6 +146,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 	public int saveRoleAccess(IdAndIdsParam param) {
 		Date now = new Date();
 		Long roleId = Long.parseLong(param.getId());
+		List<SysRoleAccess> insertRoleAccessList = new ArrayList<>();
 		param.getIds().forEach(access->{
 			SysRoleAccess q = new SysRoleAccess();
 			q.setAccess(access);
@@ -154,9 +155,12 @@ public class SysRbacServiceImpl implements SysRbacService{
 			if(count == 0) {
 				q.setCreateTime(now);
 				q.setUpdateTime(now);
-				sysRoleAccessMapper.insertSelective(q);
+				insertRoleAccessList.add(q);
 			}
 		});
+		if(!insertRoleAccessList.isEmpty()){
+			sysRoleAccessMapper.insertList(insertRoleAccessList);
+		}
 		
 		Condition delConditin = new Condition(SysRoleAccess.class);
 		if(param.getIds().isEmpty()) {
@@ -188,6 +192,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 	public int saveRoleMenu(IdAndIdsParam param) {
 		Date now = new Date();
 		Long roleId = Long.parseLong(param.getId());
+		List<SysRoleMenu> insertRoleMenuList = new ArrayList<>();
 		param.getIds().forEach(id->{
 			Long menuId = Long.parseLong(id);
 			SysRoleMenu q = new SysRoleMenu();
@@ -197,9 +202,12 @@ public class SysRbacServiceImpl implements SysRbacService{
 			if(count == 0) {
 				q.setCreateTime(now);
 				q.setUpdateTime(now);
-				sysRoleMenuMapper.insertSelective(q);
+				insertRoleMenuList.add(q);
 			}
 		});
+		if(!insertRoleMenuList.isEmpty()) {
+			sysRoleMenuMapper.insertList(insertRoleMenuList);
+		}
 		Condition delConditin = new Condition(SysRoleMenu.class);
 		if(param.getIds().isEmpty()) {
 			delConditin.createCriteria().andEqualTo("roleId", roleId);

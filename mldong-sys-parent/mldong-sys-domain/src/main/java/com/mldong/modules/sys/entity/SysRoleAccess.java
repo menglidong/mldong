@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
 
 /**
@@ -34,7 +33,6 @@ public class SysRoleAccess implements Serializable{
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
     @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
-	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
     /**
