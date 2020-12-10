@@ -22,7 +22,7 @@ moduleDesc: "系统管理"
 # 是否生成逻辑删除
 logicDelete: true
 tables:
-  - tableName: "sys_menu"
+  - tableName: "sys_config"
 templates:
     # 模板名称
   - name: "实体类"
