@@ -40,7 +40,7 @@ public class SysRbacController {
 	@PostMapping("listAccessTree")
 	@ApiOperation(value="获取权限资源树", notes="获取权限资源树",authorizations={
 		@Authorization(value="获取权限资源树",scopes={
-	    	@AuthorizationScope(description="获取权限资源树",scope="sys:role:listAccessTree")
+	    	@AuthorizationScope(description="获取权限资源树",scope="sys:rbac:listAccessTree")
 	    })
 	})
 	public CommonResult<SysAccessTreeVo> listAccessTree(@RequestBody @Validated IdParam param, @LoginUser Long userId) {
@@ -49,7 +49,7 @@ public class SysRbacController {
 	@PostMapping("listMenuByRoleId")
 	@ApiOperation(value="通过角色id获取菜单", notes="通过角色id获取菜单",authorizations={
 		@Authorization(value="通过角色id获取菜单",scopes={
-	    	@AuthorizationScope(description="通过角色id获取菜单",scope="sys:role:listMenuByRoleId")
+	    	@AuthorizationScope(description="通过角色id获取菜单",scope="sys:rbac:listMenuByRoleId")
 	    })
 	})
 	public CommonResult<SysMenuTreeVo> listMenuByRoleId(@RequestBody @Validated IdParam param, @LoginUser Long userId) {
@@ -58,7 +58,7 @@ public class SysRbacController {
 	@PostMapping("listUserByRoleId")
 	@ApiOperation(value="角色成员列表", notes="角色成员列表",authorizations={
 		@Authorization(value="角色成员列表",scopes={
-	    	@AuthorizationScope(description="角色成员列表",scope="sys:role:listUserByRoleId")
+	    	@AuthorizationScope(description="角色成员列表",scope="sys:rbac:listUserByRoleId")
 	    })
 	})
 	public CommonResult<CommonPage<SysUser>> listUserByRoleId(@RequestBody @Validated SysUserWithRoleIdPageParam param) {
@@ -68,7 +68,7 @@ public class SysRbacController {
 	@PostMapping("listUserNoInRole")
 	@ApiOperation(value="查询未加入指定角色的用户列表", notes="查询未加入指定角色的用户列表",authorizations={
 		@Authorization(value="查询未加入指定角色的用户列表",scopes={
-	    	@AuthorizationScope(description="查询未加入指定角色的用户列表",scope="sys:role:listUserNoInRole")
+	    	@AuthorizationScope(description="查询未加入指定角色的用户列表",scope="sys:rbac:listUserNoInRole")
 	    })
 	})
 	public CommonResult<CommonPage<SysUser>> listUserNoInRole(@RequestBody @Validated SysUserWithRoleIdPageParam param) {
@@ -78,7 +78,7 @@ public class SysRbacController {
 	@PostMapping("saveUserRole")
 	@ApiOperation(value="保存用户角色关系", notes="保存用户角色关系",authorizations={
 		@Authorization(value="保存用户角色关系",scopes={
-	    	@AuthorizationScope(description="保存用户角色关系",scope="sys:role:saveUserRole")
+	    	@AuthorizationScope(description="保存用户角色关系",scope="sys:rbac:saveUserRole")
 	    })
 	})
 	public CommonResult<?> saveUserRole(@RequestBody @Validated IdAndIdsParam param) {
@@ -93,7 +93,7 @@ public class SysRbacController {
 	@PostMapping("deleteUserRole")
 	@ApiOperation(value="从角色中移除用户", notes="从角色中移除用户",authorizations={
 		@Authorization(value="从角色中移除用户",scopes={
-	    	@AuthorizationScope(description="从角色中移除用户",scope="sys:role:deleteUserRole")
+	    	@AuthorizationScope(description="从角色中移除用户",scope="sys:rbac:deleteUserRole")
 	    })
 	})
 	public CommonResult<?> deleteUserRole(@RequestBody @Validated IdAndIdsParam param) {
@@ -107,7 +107,7 @@ public class SysRbacController {
 	@PostMapping("saveRoleAccess")
 	@ApiOperation(value="保存角色权限资源关系", notes="保存角色权限资源关系",authorizations={
 		@Authorization(value="保存角色权限资源关系",scopes={
-	    	@AuthorizationScope(description="保存角色权限资源关系",scope="sys:role:saveRoleAccess")
+	    	@AuthorizationScope(description="保存角色权限资源关系",scope="sys:rbac:saveRoleAccess")
 	    })
 	})
 	public CommonResult<?> saveRoleAccess(@RequestBody @Validated IdAndIdsParam param) {
@@ -121,7 +121,7 @@ public class SysRbacController {
 	@PostMapping("saveRoleMenu")
 	@ApiOperation(value="保存角色菜单关系", notes="保存角色菜单关系",authorizations={
 		@Authorization(value="保存角色菜单关系",scopes={
-	    	@AuthorizationScope(description="保存角色菜单关系",scope="sys:role:saveRoleMenu")
+	    	@AuthorizationScope(description="保存角色菜单关系",scope="sys:rbac:saveRoleMenu")
 	    })
 	})
 	public CommonResult<?> saveRoleMenu(@RequestBody @Validated IdAndIdsParam param) {
