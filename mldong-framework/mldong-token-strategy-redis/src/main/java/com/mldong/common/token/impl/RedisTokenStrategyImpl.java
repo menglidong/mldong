@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 public class RedisTokenStrategyImpl implements TokenStrategy {
     @Value("${g.userType:__ADMIN__}")
     private String userType;
+    @Value("${g.tokenExpireTimeout:24}")
+    private Long tokenExpireTimeout;
     @Resource
     private RedisTemplate<String,RedisUser> redisTemplate;
     @Override
@@ -29,7 +31,7 @@ public class RedisTokenStrategyImpl implements TokenStrategy {
             redisTemplate.opsForValue().set(key, user);
         }
         //设置token有效的时间 2*60*60s=2h
-        redisTemplate.expire(key, 2*60*60, TimeUnit.SECONDS);
+        redisTemplate.expire(key, tokenExpireTimeout, TimeUnit.HOURS);
         return token;
     }
 
