@@ -2,6 +2,7 @@ package com.mldong.common.base;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mldong.common.tool.StringTool;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class PageParam<T> {
 	}
 	@ApiModelProperty(value="关键字")
 	private String keyworks;
+	@ApiModelProperty(value="排序字段")
+	private String orderBy;
 	@ApiModelProperty(value="自定义查询参数集合")
 	private List<WhereParam> whereParams;
 	
@@ -72,7 +75,14 @@ public class PageParam<T> {
     	if(this.pageSize==0) {
     		this.pageSize=15;
     	}
-        return PageHelper.startPage(this.pageNum, this.pageSize, count);
+        Page<T> page = PageHelper.startPage(this.pageNum, this.pageSize, count);
+    	if(StringTool.isNotEmpty(orderBy)) {
+    		orderBy = StringTool.humpToLine(orderBy);
+    		if(StringTool.checkOrderBy(orderBy)) {
+				page.setOrderBy(orderBy);
+			}
+		}
+    	return page;
     }
 
 	/**
@@ -111,5 +121,13 @@ public class PageParam<T> {
 	 */
 	public PageParam addEqualsTo(String propertyName, Object propertyValue) {
     	return addCondition(null, OperateTypeEnum.EQ, propertyName, propertyValue);
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 }

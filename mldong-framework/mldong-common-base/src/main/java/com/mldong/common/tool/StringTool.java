@@ -131,6 +131,15 @@ public class StringTool {
 		String regExp = "(^_([a-zA-Z0-9]_?)*$)|(^[a-zA-Z](_?[a-zA-Z0-9])*_?$)";
 		return column.matches(regExp);
 	}
+	/**
+	 * 校验数据库orderby
+	 * @param orderBy
+	 * @return
+	 */
+	public static boolean checkOrderBy(String orderBy) {
+		String regExp = "(^_([a-zA-Z0-9\\s]_?)*$)|(^[a-zA-Z](_?[a-zA-Z0-9\\s])*_?$)";
+		return orderBy.matches(regExp);
+	}
 	private static final int SIZE = 6;
 	private static final String SYMBOL = "*";
 
