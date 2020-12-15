@@ -1,7 +1,8 @@
 package com.mldong.modules.sys.controller;
 
 import com.mldong.common.annotation.LoginUser;
-import com.mldong.modules.sys.dto.SysUserResult;
+import com.mldong.common.web.RequestHolder;
+import com.mldong.modules.sys.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -19,8 +20,6 @@ import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.IdParam;
 import com.mldong.common.base.IdsParam;
 import com.mldong.common.validator.Groups;
-import com.mldong.modules.sys.dto.SysUserPageParam;
-import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysUserService;
 import com.mldong.modules.sys.vo.SysUserVo;
@@ -142,5 +141,48 @@ public class SysUserController {
 	})
 	public CommonResult<CommonPage<SysUserResult>> listWithExt(@RequestBody @Validated SysUserPageParam param) {
 		return CommonResult.success("查询用户成功",sysUserService.listWithExt(param));
+	}
+
+	/**
+	 * 获取当前用户信息-用于更新
+	 * @return
+	 */
+	@PostMapping("getProfile")
+	@ApiOperation(value="获取当前用户信息-用于更新", notes="获取当前用户信息-用于更新")
+	public CommonResult<SysUserVo> getProfile(@LoginUser Long userId) {
+		return CommonResult.success(sysUserService.getProfile(userId));
+	}
+	/**
+	 * 更新当前用户密码
+	 * @return
+	 */
+	@PostMapping("updatePwd")
+	@ApiOperation(value="更新当前用户密码", notes="更新当前用户密码")
+	public CommonResult<?> updatePwd(@RequestBody @Validated SysUpdatePwdParam param) {
+		Long userId = RequestHolder.getUserId();
+		param.setUserId(userId);
+		return CommonResult.success(sysUserService.updatePwd(param));
+	}
+	/**
+	 * 更新当前用户头像
+	 * @return
+	 */
+	@PostMapping("uploadAvatar")
+	@ApiOperation(value="更新当前用户头像", notes="更新当前用户头像")
+	public CommonResult<?> uploadAvatar(@RequestBody @Validated SysAvatarParam param) {
+		Long userId = RequestHolder.getUserId();
+		param.setUserId(userId);
+		return CommonResult.success(sysUserService.uploadAvatar(param));
+	}
+	/**
+	 * 更新当前用户基本信息
+	 * @return
+	 */
+	@PostMapping("updateProfile")
+	@ApiOperation(value="更新当前用户基本信息", notes="更新当前用户基本信息")
+	public CommonResult<?> updateProfile(@RequestBody @Validated SysUpdateProfileParam param) {
+		Long userId = RequestHolder.getUserId();
+		param.setUserId(userId);
+		return CommonResult.success(sysUserService.updateProfile(param));
 	}
 }

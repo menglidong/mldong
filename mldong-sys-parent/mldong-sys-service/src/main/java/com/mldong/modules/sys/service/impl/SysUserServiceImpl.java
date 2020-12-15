@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.mldong.modules.sys.dao.SysUserDao;
-import com.mldong.modules.sys.dto.SysUserResult;
+import com.mldong.modules.sys.dto.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,6 @@ import com.mldong.common.exception.BizException;
 import com.mldong.common.tk.ConditionUtil;
 import com.mldong.common.tool.Md5Tool;
 import com.mldong.common.tool.StringTool;
-import com.mldong.modules.sys.dto.SysUserPageParam;
-import com.mldong.modules.sys.dto.SysUserParam;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.enums.SysErrEnum;
 import com.mldong.modules.sys.mapper.SysUserMapper;
@@ -170,5 +168,43 @@ public class SysUserServiceImpl implements SysUserService{
 		Page<SysUserResult> page =param.buildPage(true);
 		sysUserDao.selectWithExt(param);
 		return CommonPage.toPage(page);
+	}
+
+	@Override
+	public SysUserVo getProfile(Long userId) {
+		SysUser user = sysUserMapper.selectByPrimaryKey(userId);
+		if(null == userId) {
+			return null;
+		}
+		SysUserVo vo = new SysUserVo();
+		BeanUtils.copyProperties(user, vo);
+		return vo;
+	}
+
+	@Override
+	public int updatePwd(SysUpdatePwdParam param) {
+		SysUser user = new SysUser();
+		user.setId(param.getUserId());
+		String salt = StringTool.getRandomString(8);
+		String passwordEncry = Md5Tool.md5(user.getPassword(), salt);
+		user.setPassword(passwordEncry);
+		user.setSalt(salt);
+		return sysUserMapper.updateByPrimaryKeySelective(user);
+	}
+
+	@Override
+	public int uploadAvatar(SysAvatarParam param) {
+		SysUser user = new SysUser();
+		user.setId(param.getUserId());
+		user.setAvatar(param.getAvatar());
+		return sysUserMapper.updateByPrimaryKeySelective(user);
+	}
+
+	@Override
+	public int updateProfile(SysUpdateProfileParam param) {
+		SysUser user = new SysUser();
+		user.setId(param.getUserId());
+		BeanUtils.copyProperties(param, user);
+		return 1;
 	}
 }
