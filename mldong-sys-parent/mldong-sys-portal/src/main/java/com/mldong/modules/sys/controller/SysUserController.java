@@ -10,10 +10,7 @@ import io.swagger.annotations.AuthorizationScope;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
@@ -23,6 +20,7 @@ import com.mldong.common.validator.Groups;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.service.SysUserService;
 import com.mldong.modules.sys.vo.SysUserVo;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/sys/user")
@@ -169,9 +167,11 @@ public class SysUserController {
 	 */
 	@PostMapping("uploadAvatar")
 	@ApiOperation(value="更新当前用户头像", notes="更新当前用户头像")
-	public CommonResult<?> uploadAvatar(@RequestBody @Validated SysAvatarParam param) {
+	public CommonResult<?> uploadAvatar(@RequestParam("avatarfile") MultipartFile file) {
 		Long userId = RequestHolder.getUserId();
+		SysAvatarParam param = new SysAvatarParam();
 		param.setUserId(userId);
+		param.setAvatar("http://vueadmin/admin/static/img/logo-min.a1ced49f.jpg");
 		return CommonResult.success(sysUserService.uploadAvatar(param));
 	}
 	/**
