@@ -67,7 +67,7 @@ public interface SysUserService {
 	 * @param userId
 	 * @return
 	 */
-	public SysUserVo getProfile(Long userId);
+	public SysUser getProfile(Long userId);
 
 	/**
 	 * 更新密码

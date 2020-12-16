@@ -156,7 +156,7 @@ public class SysUserController {
 	 */
 	@PostMapping("getProfile")
 	@ApiOperation(value="获取当前用户信息-用于更新", notes="获取当前用户信息-用于更新")
-	public CommonResult<SysUserVo> getProfile(@LoginUser Long userId) {
+	public CommonResult<SysUser> getProfile(@LoginUser Long userId) {
 		return CommonResult.success(sysUserService.getProfile(userId));
 	}
 	/**

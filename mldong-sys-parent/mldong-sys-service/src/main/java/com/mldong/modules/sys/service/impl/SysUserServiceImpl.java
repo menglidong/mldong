@@ -171,14 +171,14 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 
 	@Override
-	public SysUserVo getProfile(Long userId) {
+	public SysUser getProfile(Long userId) {
 		SysUser user = sysUserMapper.selectByPrimaryKey(userId);
 		if(null == userId) {
 			return null;
 		}
-		SysUserVo vo = new SysUserVo();
-		BeanUtils.copyProperties(user, vo);
-		return vo;
+		user.setPassword(null);
+		user.setSalt(null);
+		return user;
 	}
 
 	@Override
