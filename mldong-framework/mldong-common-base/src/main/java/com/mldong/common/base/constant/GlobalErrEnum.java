@@ -77,6 +77,10 @@ public enum GlobalErrEnum implements CommonError {
 	 * 图片验证码错误或不存在
 	 */
 	GL99990012(99990012, "图片验证码错误或不存在"),
+	/**
+	 * 演示站无访问权限
+	 */
+	GL99990013(99990013, "演示站无访问权限"),
 	;
 	
 	private GlobalErrEnum(int value, String name){

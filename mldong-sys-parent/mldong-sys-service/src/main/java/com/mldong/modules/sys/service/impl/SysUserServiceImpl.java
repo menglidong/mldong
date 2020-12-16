@@ -9,6 +9,7 @@ import com.mldong.modules.sys.dto.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -181,9 +182,14 @@ public class SysUserServiceImpl implements SysUserService{
 		user.setSalt(null);
 		return user;
 	}
-
+	@Value("${spring.profiles.active}")
+	private String profiles;
 	@Override
 	public int updatePwd(SysUpdatePwdParam param) {
+		if(globalProperties.getSuperAdminId().equals(param.getUserId())&&"demo".equals(profiles)) {
+			// 演示站超级管理员不开放修改密码权限
+			throw new BizException(GlobalErrEnum.GL99990013);
+		}
 		SysUser user = sysUserMapper.selectByPrimaryKey(param.getUserId());
 		if(user == null) {
 			// 用户不存在

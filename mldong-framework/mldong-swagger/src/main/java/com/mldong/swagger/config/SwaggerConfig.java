@@ -28,7 +28,7 @@ import com.google.common.collect.Lists;
 @EnableSwagger2
 @EnableKnife4j
 @Import(BeanValidatorPluginsConfiguration.class)
-@Profile({"dev","test"}) // 只有开发环境和测试环境才会生效
+@Profile({"dev","test","demo"}) // 只有开发环境和测试环境才会生效
 public class SwaggerConfig implements WebMvcConfigurer {
 
 	@Override
