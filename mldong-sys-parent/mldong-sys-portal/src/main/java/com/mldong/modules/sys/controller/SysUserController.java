@@ -1,26 +1,33 @@
 package com.mldong.modules.sys.controller;
 
 import com.mldong.common.annotation.LoginUser;
-import com.mldong.common.web.RequestHolder;
-import com.mldong.modules.sys.dto.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
-import io.swagger.annotations.AuthorizationScope;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.IdParam;
 import com.mldong.common.base.IdsParam;
+import com.mldong.common.base.constant.GlobalErrEnum;
+import com.mldong.common.exception.BizException;
+import com.mldong.common.upload.UploadMimeType;
 import com.mldong.common.validator.Groups;
+import com.mldong.common.web.RequestHolder;
+import com.mldong.modules.sys.dto.*;
+import com.mldong.modules.sys.entity.SysUploadConfig;
 import com.mldong.modules.sys.entity.SysUser;
+import com.mldong.modules.sys.service.SysUploadConfigService;
 import com.mldong.modules.sys.service.SysUserService;
 import com.mldong.modules.sys.vo.SysUserVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.AuthorizationScope;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/sys/user")
@@ -32,6 +39,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
+	@Autowired
+	private SysUploadConfigService sysUploadConfigService;
 	/**
 	 * 添加用户
 	 * @param param
@@ -168,11 +177,40 @@ public class SysUserController {
 	@PostMapping("uploadAvatar")
 	@ApiOperation(value="更新当前用户头像", notes="更新当前用户头像")
 	public CommonResult<?> uploadAvatar(@RequestParam("avatarfile") MultipartFile file) {
+		if(file.isEmpty()) {
+			throw new BizException(GlobalErrEnum.GL99990007);
+		}
+		String bizType = "avatar";
+		SysUploadConfig config = sysUploadConfigService.getByBizType(bizType);
+		if(config == null) {
+			throw new BizException(GlobalErrEnum.GL99990008);
+		}
+		if(!UploadMimeType.getMimeType(config.getFileExt()).contains(file.getContentType())) {
+			throw new BizException(GlobalErrEnum.GL99990006);
+		}
+		if(file.getSize()>config.getFileSizeMax()) {
+			throw new BizException(GlobalErrEnum.GL99990009);
+		}
 		Long userId = RequestHolder.getUserId();
 		SysAvatarParam param = new SysAvatarParam();
 		param.setUserId(userId);
-		param.setAvatar("http://vueadmin/admin/static/img/logo-min.a1ced49f.jpg");
-		return CommonResult.success(sysUserService.uploadAvatar(param));
+		String fileName = file.getOriginalFilename();  // 文件名
+		String suffixName = fileName.substring(fileName.lastIndexOf("."));  // 后缀名
+		String filePath = config.getUploadDir() + config.getUploadSubDir();
+		fileName = UUID.randomUUID() + suffixName; // 新文件名
+		File dest = new File(filePath, fileName);
+		if (!dest.getParentFile().exists()) {
+			dest.getParentFile().mkdirs();
+		}
+		try {
+			file.transferTo(dest);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new BizException(GlobalErrEnum.GL99990007);
+		}
+		param.setAvatar(config.getUploadSubDir()+"/"+fileName);
+		sysUserService.uploadAvatar(param);
+		return CommonResult.success(param.getAvatar());
 	}
 	/**
 	 * 更新当前用户基本信息
