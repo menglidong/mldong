@@ -194,9 +194,11 @@ public class SysUserServiceImpl implements SysUserService{
 			throw new BizException(SysErrEnum.SYS80000006);
 		}
 		String salt = StringTool.getRandomString(8);
-		String passwordEncry = Md5Tool.md5(user.getPassword(), salt);
-		user.setPassword(passwordEncry);
-		user.setSalt(salt);
+		SysUser up = new SysUser();
+		up.setId(user.getId());
+		String passwordEncry = Md5Tool.md5(param.getPassword(), salt);
+		up.setPassword(passwordEncry);
+		up.setSalt(salt);
 		return sysUserMapper.updateByPrimaryKeySelective(user);
 	}
 
