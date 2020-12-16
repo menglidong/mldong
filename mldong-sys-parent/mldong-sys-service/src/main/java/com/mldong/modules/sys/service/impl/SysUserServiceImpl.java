@@ -199,7 +199,7 @@ public class SysUserServiceImpl implements SysUserService{
 		String passwordEncry = Md5Tool.md5(param.getPassword(), salt);
 		up.setPassword(passwordEncry);
 		up.setSalt(salt);
-		return sysUserMapper.updateByPrimaryKeySelective(user);
+		return sysUserMapper.updateByPrimaryKeySelective(up);
 	}
 
 	@Override
