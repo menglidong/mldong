@@ -33,42 +33,42 @@ public class SysUploadConfigController {
 	@Autowired
 	private SysUploadConfigService sysUploadConfigService;
 
-	@PostMapping("save")
-	@ApiOperation(value="添加上传配置", notes="添加上传配置",authorizations={
-		@Authorization(value="添加上传配置",scopes={
-	    	@AuthorizationScope(description="添加上传配置",scope="sys:uploadConfig:save")
-	    })
-	})
-	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) SysUploadConfigParam param) {
-		int count = sysUploadConfigService.save(param);
-		if(count>0) {
-			return CommonResult.success("添加上传配置成功", null);
-		} else {
-			return CommonResult.fail("添加上传配置失败", null);
-		}
-	}
-
-	@PostMapping("update")
-	@ApiOperation(value="修改上传配置", notes="修改上传配置",authorizations={
-		@Authorization(value="修改上传配置",scopes={
-	    	@AuthorizationScope(description="修改上传配置",scope="sys:uploadConfig:update")
-	    })
-	})
-	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) SysUploadConfigParam param) {
-		int count = sysUploadConfigService.update(param);
-		if(count>0) {
-			return CommonResult.success("修改上传配置成功", null);
-		} else {
-			return CommonResult.fail("修改上传配置失败", null);
-		}
-	}
-
-	@PostMapping("remove")
-	@ApiOperation(value="删除上传配置", notes="删除上传配置",authorizations={
-		@Authorization(value="删除上传配置",scopes={
-	    	@AuthorizationScope(description="删除上传配置",scope="sys:uploadConfig:remove")
-	    })
-	})
+//	@PostMapping("save")
+//	@ApiOperation(value="添加上传配置", notes="添加上传配置",authorizations={
+//		@Authorization(value="添加上传配置",scopes={
+//	    	@AuthorizationScope(description="添加上传配置",scope="sys:uploadConfig:save")
+//	    })
+//	})
+//	public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) SysUploadConfigParam param) {
+//		int count = sysUploadConfigService.save(param);
+//		if(count>0) {
+//			return CommonResult.success("添加上传配置成功", null);
+//		} else {
+//			return CommonResult.fail("添加上传配置失败", null);
+//		}
+//	}
+//
+//	@PostMapping("update")
+//	@ApiOperation(value="修改上传配置", notes="修改上传配置",authorizations={
+//		@Authorization(value="修改上传配置",scopes={
+//	    	@AuthorizationScope(description="修改上传配置",scope="sys:uploadConfig:update")
+//	    })
+//	})
+//	public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) SysUploadConfigParam param) {
+//		int count = sysUploadConfigService.update(param);
+//		if(count>0) {
+//			return CommonResult.success("修改上传配置成功", null);
+//		} else {
+//			return CommonResult.fail("修改上传配置失败", null);
+//		}
+//	}
+//
+//	@PostMapping("remove")
+//	@ApiOperation(value="删除上传配置", notes="删除上传配置",authorizations={
+//		@Authorization(value="删除上传配置",scopes={
+//	    	@AuthorizationScope(description="删除上传配置",scope="sys:uploadConfig:remove")
+//	    })
+//	})
 	public CommonResult<?> remove(@RequestBody IdsParam param) {
 		int count = sysUploadConfigService.remove(param.getIds());
 		if(count>0) {
