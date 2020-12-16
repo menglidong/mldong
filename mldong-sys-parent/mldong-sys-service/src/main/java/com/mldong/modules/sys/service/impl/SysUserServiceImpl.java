@@ -213,6 +213,6 @@ public class SysUserServiceImpl implements SysUserService{
 		SysUser user = new SysUser();
 		user.setId(param.getUserId());
 		BeanUtils.copyProperties(param, user);
-		return 1;
+		return sysUserMapper.updateByPrimaryKeySelective(user);
 	}
 }
