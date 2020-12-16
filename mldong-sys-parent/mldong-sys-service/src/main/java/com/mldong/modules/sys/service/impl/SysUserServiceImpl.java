@@ -3,6 +3,7 @@ package com.mldong.modules.sys.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.modules.sys.dao.SysUserDao;
 import com.mldong.modules.sys.dto.*;
 import org.apache.commons.lang3.StringUtils;
@@ -183,8 +184,15 @@ public class SysUserServiceImpl implements SysUserService{
 
 	@Override
 	public int updatePwd(SysUpdatePwdParam param) {
-		SysUser user = new SysUser();
-		user.setId(param.getUserId());
+		SysUser user = sysUserMapper.selectByPrimaryKey(param.getUserId());
+		if(user == null) {
+			// 用户不存在
+			throw new BizException(SysErrEnum.SYS80000001);
+		}
+		if(!Md5Tool.md5(param.getPassword(),user.getSalt()).equals(user.getPassword())) {
+			// 旧密码错误
+			throw new BizException(SysErrEnum.SYS80000006);
+		}
 		String salt = StringTool.getRandomString(8);
 		String passwordEncry = Md5Tool.md5(user.getPassword(), salt);
 		user.setPassword(passwordEncry);
