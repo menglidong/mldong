@@ -196,7 +196,7 @@ public class SysUserServiceImpl implements SysUserService{
 		String salt = StringTool.getRandomString(8);
 		SysUser up = new SysUser();
 		up.setId(user.getId());
-		String passwordEncry = Md5Tool.md5(param.getPassword(), salt);
+		String passwordEncry = Md5Tool.md5(param.getNewPassword(), salt);
 		up.setPassword(passwordEncry);
 		up.setSalt(salt);
 		return sysUserMapper.updateByPrimaryKeySelective(up);
