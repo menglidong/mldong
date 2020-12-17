@@ -74,6 +74,7 @@ public class SysRequestLogServiceImpl implements SysRequestLogService, IRequestL
 	@Override
 	public CommonPage<SysRequestLog> list(SysRequestLogPageParam param) {
 		Page<SysRequestLog> page =param.buildPage(true);
+		page.setOrderBy("create_time desc");
 		List<WhereParam> whereParams = param.getWhereParams();
 		if(null == whereParams || whereParams.isEmpty()) {
 			SysRequestLog sysRequestLog = new SysRequestLog();

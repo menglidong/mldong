@@ -7,6 +7,7 @@ import com.mldong.common.tool.StringTool;
 import com.mldong.config.CaptchaConfiguration;
 import com.mldong.config.CaptchaProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -21,9 +22,15 @@ public class CaptchaInterceptor implements HandlerInterceptor {
     private CaptchaProperties properties;
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
+    @Value("${spring.profiles.active}")
+    private String profiles;
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
+        if("dev".equals(profiles) || "test".equals(profiles)) {
+            // 开发环境与测试环境不校验验收码
+            return true;
+        }
         if(request.getRequestURI().contains("login") || request.getRequestURI().contains("Login") ) {
             String captcha = getCaptcha(request);
             if(StringTool.isEmpty(captcha)) {
