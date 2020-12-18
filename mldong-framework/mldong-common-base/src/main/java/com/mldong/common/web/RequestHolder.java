@@ -31,7 +31,15 @@ public class RequestHolder {
 		requestHolderUserId.set(userId);
 	}
 	public static Long getUserId() {
-		return requestHolderUserId.get();
+		Long userId = requestHolderUserId.get();
+		if(userId == null) {
+			try {
+				userId = getTokenStrategy().getUserId(getToken());
+			} catch (Exception e) {
+				userId = null;
+			}
+		}
+		return userId;
 	}
 	public static void removeUserId() {
 		requestHolderUserId.remove();
@@ -116,7 +124,7 @@ public class RequestHolder {
 	 * 获取token存储策略
 	 * @return
 	 */
-	public TokenStrategy getTokenStrategy() {
+	public static TokenStrategy getTokenStrategy() {
 		TokenStrategy tokenStrategy = CxtTool.getBean(TokenStrategy.class);
 		return tokenStrategy;
 	}
