@@ -165,6 +165,13 @@ public class AccessInitProcessor implements BeanPostProcessor{
 		if(authorizationScopes.length == 0) {
 			return null;
 		}
-		return authorizationScopes[0].scope();
+		String access = authorizationScopes[0].scope();
+		if(StringTool.isEmpty(access)) {
+			String notes = apiOperation.notes();
+			if(notes.matches(ACCESS_REGEX)) {
+				access = notes;
+			}
+		}
+		return access;
 	}
 }
