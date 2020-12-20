@@ -3,20 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>mldong-cloud-parent</artifactId>
+        <artifactId>mldong-sys-parent</artifactId>
         <groupId>com.mldong</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mldong-demo-cloud</artifactId>
-
+    <artifactId>mldong-sys-dubbo</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.mldong</groupId>
             <artifactId>mldong-sys-mapi</artifactId>
             <version>${parent.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.mldong</groupId>
@@ -85,7 +83,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!-- 指定主类 -->
                 <configuration>
-                    <mainClass>com.mldong.DemoCloudApplication</mainClass>
+                    <mainClass>com.mldong.SysDubboProviderApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
