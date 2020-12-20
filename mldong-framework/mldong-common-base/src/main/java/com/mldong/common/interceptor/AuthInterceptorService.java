@@ -16,11 +16,11 @@ public interface AuthInterceptorService {
 	public boolean verifyToken(String token);
 	/**
 	 * 用户是否有权限
-	 * @param token token
+	 * @param userId 用户ID
 	 * @param access 权限标识
 	 * @return
 	 */
-	public boolean hasAuth(String token,String access);
+	public boolean hasAuth(Long userId,String access);
 	/**
 	 * 通过token获取id
 	 * @param token

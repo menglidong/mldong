@@ -3,17 +3,15 @@
  */
 package com.mldong.common.web;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.mldong.common.base.constant.CommonConstants;
+import com.mldong.common.logger.LoggerModel;
 import com.mldong.common.token.TokenStrategy;
 import com.mldong.common.tool.CxtTool;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.mldong.common.base.constant.CommonConstants;
-import com.mldong.common.logger.LoggerModel;
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -93,6 +91,15 @@ public class RequestHolder {
 		token = request.getHeader(CommonConstants.TOKEN);
 		if(StringUtils.isEmpty(token)) {
 			token = request.getParameter(CommonConstants.TOKEN);
+		}
+		if(token == null) {
+			// 使用oauth2的方式获取
+			token = request.getHeader("Authentication");
+			if(token!=null) {
+				if(token.startsWith("Bearer ")) {
+					token = token.substring("Bearer ".length());
+				}
+			}
 		}
 		if(token == null) {
 			token = "";

@@ -18,7 +18,7 @@ public class AppAuthInterceptorServiceImpl implements AuthInterceptorService {
         return tokenStrategy.verifyToken(token);
     }
     @Override
-    public boolean hasAuth(String token, String access) {
+    public boolean hasAuth(Long userId, String access) {
 //        Long userId = tokenStrategy.getUserId(token);
 //        if(userId.equals(globalProperties.getSuperAdminId())) {
 //            return true;

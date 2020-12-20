@@ -19,5 +19,6 @@
         <module>mldong-admin-interceptor-service</module>
         <module>mldong-app-interceptor-service</module>
         <module>mldong-captcha-service</module>
+        <module>mldong-security</module>
     </modules>
 </project>
