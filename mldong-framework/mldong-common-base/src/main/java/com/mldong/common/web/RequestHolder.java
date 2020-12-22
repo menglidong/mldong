@@ -4,6 +4,7 @@
 package com.mldong.common.web;
 
 import com.mldong.common.base.constant.CommonConstants;
+import com.mldong.common.config.GlobalProperties;
 import com.mldong.common.logger.LoggerModel;
 import com.mldong.common.token.TokenStrategy;
 import com.mldong.common.tool.CxtTool;
@@ -134,5 +135,17 @@ public class RequestHolder {
 	public static TokenStrategy getTokenStrategy() {
 		TokenStrategy tokenStrategy = CxtTool.getBean(TokenStrategy.class);
 		return tokenStrategy;
+	}
+
+	/**
+	 * 是否超级管理员
+	 * @return
+	 */
+	public static boolean isSuperAdmin() {
+		Long userId = getUserId();
+		if(userId != null) {
+			return userId.equals(CxtTool.getBean(GlobalProperties.class).getSuperAdminId());
+		}
+		return false;
 	}
 }
