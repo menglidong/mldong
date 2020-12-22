@@ -2,36 +2,35 @@ package com.mldong.modules.sys.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import com.mldong.common.base.YesNoEnum;
 import com.mldong.common.validator.Groups;
+import javax.validation.constraints.*;
 import com.mldong.modules.sys.entity.SysRole;
-
+import com.mldong.common.base.YesNoEnum;
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: sys_role - 角色</p>
- * @since 2020-06-08 10:26:59
+ * @since 2020-12-22 11:35:02
  */
 @ApiModel(description="角色")
 public class SysRoleParam{
 
-	@ApiModelProperty(value="主键-更新时必填")
+	@ApiModelProperty(value="主键-更新时必填", position = 1)
 	@NotNull(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
-    @ApiModelProperty(value = "角色名称",required=true)
+    @ApiModelProperty(value = "角色名称",required=true, position = 10)
     @NotBlank(message="角色名称不能为空",groups={Groups.Save.class,Groups.Update.class})
     private String name;
-    @ApiModelProperty(value = "角色标识(唯一)",required=false)
+    @ApiModelProperty(value = "角色标识(唯一)",required=false, position = 15)
     private String roleKey;
-    @ApiModelProperty(value = "角色类型(10->管理员|ADMIN,20->流程审核员|WORKFLOW)",required=false)
+    @ApiModelProperty(value = "角色类型(10->管理员|ADMIN,20->流程审核员|WORKFLOW)",required=false, position = 20)
     private SysRole.RoleTypeEnum roleType;
-    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)",required=false)
+    @ApiModelProperty(value = "数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)",required=false, position = 25)
+    private SysRole.DataScopeEnum dataScope;
+    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)",required=false, position = 30)
     private YesNoEnum isEnabled;
-    @ApiModelProperty(value = "备注",required=false)
+    @ApiModelProperty(value = "备注",required=false, position = 35)
     private String remark;
+
     /**
      * 获取主键
      *
@@ -91,6 +90,21 @@ public class SysRoleParam{
      */
     public void setRoleType(SysRole.RoleTypeEnum roleType){
         this.roleType = roleType;
+    }
+    /**
+     * 获取数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     *
+     */
+    public SysRole.DataScopeEnum getDataScope(){
+        return this.dataScope;
+    }
+	 /**
+     * 设置数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     *
+     * @param dataScope
+     */
+    public void setDataScope(SysRole.DataScopeEnum dataScope){
+        this.dataScope = dataScope;
     }
     /**
      * 获取是否启用(1->禁用|NO,2->启用|YES)

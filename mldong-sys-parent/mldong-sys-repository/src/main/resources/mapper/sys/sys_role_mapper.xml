@@ -6,6 +6,7 @@
 		<result column="name" property="name" />  
 		<result column="role_key" property="roleKey" />  
 		<result column="role_type" property="roleType" />  
+		<result column="data_scope" property="dataScope" />  
 		<result column="is_enabled" property="isEnabled" />  
 		<result column="remark" property="remark" />  
 		<result column="create_time" property="createTime" />  

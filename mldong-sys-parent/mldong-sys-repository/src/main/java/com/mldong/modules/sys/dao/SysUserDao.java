@@ -1,16 +1,15 @@
 package com.mldong.modules.sys.dao;
 
-import java.util.List;
-
 import com.mldong.modules.sys.dto.SysUserPageParam;
-import org.apache.ibatis.annotations.Param;
-
 import com.mldong.modules.sys.dto.SysUserResult;
 import com.mldong.modules.sys.dto.SysUserWithRoleIdPageParam;
 import com.mldong.modules.sys.entity.SysMenu;
 import com.mldong.modules.sys.entity.SysRoleAccess;
 import com.mldong.modules.sys.entity.SysUser;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface SysUserDao {
@@ -43,4 +42,11 @@ public interface SysUserDao {
 	 * @return
 	 */
 	public List<SysMenu> selectUserMenu(@Param("userId")Long userId);
+
+	/**
+	 * 获取用户数据范围集合
+	 * @param userId
+	 * @return
+	 */
+	public List<String> selectUserDataScope(@Param("userId")Long userId);
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
  * <p>持久层</p>
  * <p>角色</p>
  *
- * @since 2020-11-05 10:28:09
+ * @since 2020-12-22 11:35:02
  */
 @Repository
 public interface SysRoleMapper extends BaseMapper<SysRole> {

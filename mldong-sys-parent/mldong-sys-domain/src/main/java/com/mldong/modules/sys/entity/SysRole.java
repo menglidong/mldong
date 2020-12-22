@@ -17,7 +17,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_role - 角色</p>
- * @since 2020-11-05 10:28:09
+ * @since 2020-12-22 11:35:02
  */
 @Table(name="sys_role")
 @ApiModel(description="角色")
@@ -27,23 +27,25 @@ public class SysRole implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "角色名称")
+    @ApiModelProperty(value = "角色名称", position = 10)
     private String name;
-    @ApiModelProperty(value = "角色标识(唯一)")
+    @ApiModelProperty(value = "角色标识(唯一)", position = 15)
     private String roleKey;
-    @ApiModelProperty(value = "角色类型(10->管理员|ADMIN,20->流程审核员|WORKFLOW)")
+    @ApiModelProperty(value = "角色类型(10->管理员|ADMIN,20->流程审核员|WORKFLOW)", position = 20)
     private RoleTypeEnum roleType;
-    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)")
+    @ApiModelProperty(value = "数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)", position = 25)
+    private DataScopeEnum dataScope;
+    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)", position = 30)
     private YesNoEnum isEnabled;
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty(value = "备注", position = 35)
     private String remark;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 40)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 45)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 50)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -106,6 +108,21 @@ public class SysRole implements Serializable{
      */
     public void setRoleType(RoleTypeEnum roleType){
         this.roleType = roleType;
+    }
+    /**
+     * 获取数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     *
+     */
+    public DataScopeEnum getDataScope(){
+        return this.dataScope;
+    }
+	 /**
+     * 设置数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     *
+     * @param dataScope
+     */
+    public void setDataScope(DataScopeEnum dataScope){
+        this.dataScope = dataScope;
     }
     /**
      * 获取是否启用(1->禁用|NO,2->启用|YES)
@@ -202,6 +219,45 @@ public class SysRole implements Serializable{
 
 	    }
 		RoleTypeEnum(int value, String name) {
+			this.value = value;
+			this.name = name;
+		}
+		@JsonValue
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	
+    }
+    @DictEnum(key="sys_role_data_scope",name="数据范围")
+    public enum DataScopeEnum implements CodedEnum {
+		/**
+		 * 所有数据权限
+		 */
+		ALL(10, "所有数据权限"),
+		/**
+		 * 部门数据权限
+		 */
+		DEPT(20, "部门数据权限"),
+		/**
+		 * 部门及以下数据权限
+		 */
+		DEPT_CHILD(30, "部门及以下数据权限"),
+		/**
+		 * 仅本人数据权限
+		 */
+		MYSELF(40, "仅本人数据权限");
+
+		private int value;
+		private String name;
+		@JsonCreator
+	    public static DataScopeEnum forValue(int value) {
+	        return CodedEnum.codeOf(DataScopeEnum.class, value).get();
+
+	    }
+		DataScopeEnum(int value, String name) {
 			this.value = value;
 			this.name = name;
 		}
