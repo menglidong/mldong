@@ -50,4 +50,18 @@
 			and rm.is_deleted=1
 			and ur.is_deleted=1
     </select>
+	<select id="selectUserDataScope" resultType="java.lang.String">
+		SELECT
+			r.data_scope
+		FROM
+			sys_role r
+		LEFT JOIN sys_user_role ur ON r.id = ur.role_id
+		LEFT JOIN sys_user u ON u.id = ur.user_id
+		WHERE
+			u.id = #{userId}
+		    AND ur.is_deleted=1
+		    AND u.is_deleted=1
+		    AND r.is_deleted=1
+		GROUP BY r.data_scope
+	</select>
 </mapper>

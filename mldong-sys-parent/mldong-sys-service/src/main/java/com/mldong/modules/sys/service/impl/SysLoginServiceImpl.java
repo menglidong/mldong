@@ -1,26 +1,31 @@
 package com.mldong.modules.sys.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mldong.common.base.YesNoEnum;
 import com.mldong.common.config.GlobalProperties;
 import com.mldong.common.exception.BizException;
 import com.mldong.common.token.TokenStrategy;
 import com.mldong.common.tool.Md5Tool;
+import com.mldong.common.web.RequestHolder;
+import com.mldong.modules.sys.dao.SysUserDao;
 import com.mldong.modules.sys.dto.SysLoginParam;
+import com.mldong.modules.sys.entity.SysDept;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.entity.SysUserLoginTimes;
+import com.mldong.modules.sys.entity.SysUserRole;
 import com.mldong.modules.sys.enums.SysErrEnum;
+import com.mldong.modules.sys.mapper.SysDeptMapper;
 import com.mldong.modules.sys.mapper.SysUserLoginTimesMapper;
 import com.mldong.modules.sys.mapper.SysUserMapper;
 import com.mldong.modules.sys.service.SysLoginService;
 import com.mldong.modules.sys.service.SysRbacService;
 import com.mldong.modules.sys.vo.SysLoginVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * 登录接口实现
  * @author mldong
@@ -38,6 +43,10 @@ public class SysLoginServiceImpl implements SysLoginService{
 	private TokenStrategy generateTokenStrategy;
 	@Autowired
 	private SysRbacService sysRbacService;
+	@Autowired
+	private SysUserDao sysUserDao;
+	@Autowired
+	private SysDeptMapper sysDeptMapper;
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public SysLoginVo login(SysLoginParam param) {
@@ -103,8 +112,21 @@ public class SysLoginServiceImpl implements SysLoginService{
 		String avatar = user.getAvatar();
 		String userName = user.getUserName();
 		String realName = user.getRealName();
+		Map<String,Object> ext = new HashMap<>();
+		ext.put("deptId", user.getDeptId() == null ? 0L : user.getDeptId());
+		ext.put("childDeptIds", "");
+		if(!RequestHolder.isSuperAdmin()) {
+			ext.put("dataScope", sysUserDao.selectUserDataScope(user.getId()));
+			if(user.getDeptId()!=null) {
+				List<SysDept> childDeptList = findChildDept(user.getDeptId());
+				List<String> childDeptIds = childDeptList.stream().map(item -> {
+					return item.getId().toString();
+				}).collect(Collectors.toList());
+				ext.put("childDeptIds", String.join(",", childDeptIds));
+			}
+		}
 		// 创建token
-		String token = generateTokenStrategy.generateToken(userId, userName, new HashMap<>());
+		String token = generateTokenStrategy.generateToken(userId, userName, ext);
 		vo.setAccessList(sysRbacService.loadUserAccessList(userId));
 		vo.setAvatar(avatar);
 		vo.setMenuList(sysRbacService.loadUserMenuList(userId));
@@ -113,5 +135,26 @@ public class SysLoginServiceImpl implements SysLoginService{
 		vo.setUserName(userName);
 		vo.setToken(token);
 		return vo;
+	}
+
+	/**
+	 * 获取所有子部门
+	 * @param parentId
+	 * @return
+	 */
+	private List<SysDept> findChildDept(Long parentId) {
+		List<SysDept> childDeptList = new ArrayList<>();
+		SysDept q = new SysDept();
+		q.setIsDeleted(YesNoEnum.NO);
+		q.setIsEnabled(YesNoEnum.YES);
+		q.setParentId(parentId);
+		List<SysDept> deptList= sysDeptMapper.select(q);
+		if(!deptList.isEmpty()) {
+			childDeptList.addAll(deptList);
+			deptList.forEach(item ->{
+				childDeptList.addAll(findChildDept(item.getId()));
+			});
+		}
+		return childDeptList;
 	}
 }
