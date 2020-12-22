@@ -9,12 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
-// START###################
-// ###################END
+
 /**
  * <p>实体类</p>
  * <p>Table: cms_article - 文章</p>
- * @since 2020-11-05 10:16:18
+ * @since 2020-12-22 05:56:37
  */
 @Table(name="cms_article")
 @ApiModel(description="文章")
@@ -24,37 +23,40 @@ public class CmsArticle implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "栏目id")
+    @ApiModelProperty(value = "栏目id", position = 10)
     private Long categoryId;
-    @ApiModelProperty(value = "标题")
+    @ApiModelProperty(value = "标题", position = 15)
     private String title;
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty(value = "描述", position = 20)
     private String description;
-    @ApiModelProperty(value = "大图")
+    @ApiModelProperty(value = "大图", position = 25)
     private String cover;
-    @ApiModelProperty(value = "作者")
+    @ApiModelProperty(value = "作者", position = 30)
     private String author;
-    @ApiModelProperty(value = "文章来源")
+    @ApiModelProperty(value = "文章来源", position = 35)
     private String source;
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序", position = 40)
     private Double sort;
-    @ApiModelProperty(value = "发布时间")
+    @ApiModelProperty(value = "发布时间", position = 45)
     private Date publishTime;
-    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)")
+    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)", position = 50)
     private YesNoEnum isPublish;
-    @ApiModelProperty(value = "文本内容")
+    @ApiModelProperty(value = "文本内容", position = 55)
     private String content;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "所属部门", position = 60)
+    private Long deptId;
+    @ApiModelProperty(value = "所属用户", position = 65)
+    private Long userId;
+    @ApiModelProperty(value = "创建时间", position = 70)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 75)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 80)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
-// START###################
-// ###################END
+
     /**
      * 获取主键
      *
@@ -221,6 +223,36 @@ public class CmsArticle implements Serializable{
         this.content = content;
     }
     /**
+     * 获取所属部门
+     *
+     */
+    public Long getDeptId(){
+        return this.deptId;
+    }
+	 /**
+     * 设置所属部门
+     *
+     * @param deptId
+     */
+    public void setDeptId(Long deptId){
+        this.deptId = deptId;
+    }
+    /**
+     * 获取所属用户
+     *
+     */
+    public Long getUserId(){
+        return this.userId;
+    }
+	 /**
+     * 设置所属用户
+     *
+     * @param userId
+     */
+    public void setUserId(Long userId){
+        this.userId = userId;
+    }
+    /**
      * 获取创建时间
      *
      */
@@ -265,6 +297,5 @@ public class CmsArticle implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
-// START###################
-// ###################END
+
 }

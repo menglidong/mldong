@@ -13,12 +13,10 @@
 		<result column="publish_time" property="publishTime" />  
 		<result column="is_publish" property="isPublish" />  
 		<result column="content" property="content" />  
+		<result column="dept_id" property="deptId" />  
+		<result column="user_id" property="userId" />  
 		<result column="create_time" property="createTime" />  
 		<result column="update_time" property="updateTime" />  
 		<result column="is_deleted" property="isDeleted" />  
-		<!-- START###################-->
-		<!--###################END-->
 	</resultMap>
-	<!-- START###################-->
-	<!--###################END-->
 </mapper>

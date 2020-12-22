@@ -6,39 +6,43 @@ import com.mldong.common.validator.Groups;
 import javax.validation.constraints.*;
 import java.util.Date;
 import com.mldong.common.base.YesNoEnum;
-
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: cms_article - 文章</p>
- * @since 2020-10-22 10:47:45
+ * @since 2020-12-22 05:56:37
  */
 @ApiModel(description="文章")
 public class CmsArticleParam{
 
-	@ApiModelProperty(value="主键-更新时必填")
+	@ApiModelProperty(value="主键-更新时必填", position = 1)
 	@NotNull(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
-    @ApiModelProperty(value = "栏目id",required=false)
+    @ApiModelProperty(value = "栏目id",required=false, position = 10)
     private Long categoryId;
-    @ApiModelProperty(value = "标题",required=true)
+    @ApiModelProperty(value = "标题",required=true, position = 15)
     @NotBlank(message="标题不能为空",groups={Groups.Save.class,Groups.Update.class})
     private String title;
-    @ApiModelProperty(value = "描述",required=false)
+    @ApiModelProperty(value = "描述",required=false, position = 20)
     private String description;
-    @ApiModelProperty(value = "大图",required=false)
+    @ApiModelProperty(value = "大图",required=false, position = 25)
     private String cover;
-    @ApiModelProperty(value = "作者",required=false)
+    @ApiModelProperty(value = "作者",required=false, position = 30)
     private String author;
-    @ApiModelProperty(value = "文章来源",required=false)
+    @ApiModelProperty(value = "文章来源",required=false, position = 35)
     private String source;
-    @ApiModelProperty(value = "排序",required=false)
+    @ApiModelProperty(value = "排序",required=false, position = 40)
     private Double sort;
-    @ApiModelProperty(value = "发布时间",required=false)
+    @ApiModelProperty(value = "发布时间",required=false, position = 45)
     private Date publishTime;
-    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)",required=false)
+    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)",required=false, position = 50)
     private YesNoEnum isPublish;
-    @ApiModelProperty(value = "文本内容",required=false)
+    @ApiModelProperty(value = "文本内容",required=false, position = 55)
     private String content;
+    @ApiModelProperty(value = "所属部门",required=false, position = 60)
+    private Long deptId;
+    @ApiModelProperty(value = "所属用户",required=false, position = 65)
+    private Long userId;
+
     /**
      * 获取主键
      *
@@ -203,5 +207,35 @@ public class CmsArticleParam{
      */
     public void setContent(String content){
         this.content = content;
+    }
+    /**
+     * 获取所属部门
+     *
+     */
+    public Long getDeptId(){
+        return this.deptId;
+    }
+	 /**
+     * 设置所属部门
+     *
+     * @param deptId
+     */
+    public void setDeptId(Long deptId){
+        this.deptId = deptId;
+    }
+    /**
+     * 获取所属用户
+     *
+     */
+    public Long getUserId(){
+        return this.userId;
+    }
+	 /**
+     * 设置所属用户
+     *
+     * @param userId
+     */
+    public void setUserId(Long userId){
+        this.userId = userId;
     }
 }
