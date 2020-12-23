@@ -3,17 +3,13 @@ package com.mldong.common.dauth;
 import com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-@Configuration
-@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)
-@AutoConfigureBefore(PageHelperAutoConfiguration.class)
+// 后添加 先执行
+@AutoConfigureAfter(PageHelperAutoConfiguration.class)
 public class DataScopeConfig {
     @Autowired
     private List<SqlSessionFactory> sqlSessionFactoryList;

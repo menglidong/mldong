@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration,\
+com.mldong.common.dauth.DataScopeConfig
