@@ -4,6 +4,7 @@ import com.mldong.common.tool.StringTool;
 import com.mldong.common.web.RequestHolder;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -65,7 +66,11 @@ public class DataSopeAspect {
                         }
                     } else if(DATA_SCOPE_DEPT_AND_CHILD.toString().equals(item)) {
                         // 部门及以下数据权限
-                        sqlString.append(String.format(" OR {0}.dept_id IN (%s)", deptAlias, StringTool.isEmpty(childDeptIds) ? deptId : deptId+","+childDeptIds));
+                        if(StringTool.isEmpty(deptAlias)) {
+                            sqlString.append(String.format(" OR dept_id IN (%s)", StringTool.isEmpty(childDeptIds) ? deptId : deptId+","+childDeptIds));
+                        } else {
+                            sqlString.append(String.format(" OR %s.dept_id IN (%s)", deptAlias, StringTool.isEmpty(childDeptIds) ? deptId : deptId+","+childDeptIds));
+                        }
                     } else if(DATA_SCOPE_SELF.toString().equals(item)) {
                         // 仅本人数据权限
                         if (StringTool.isNotEmpty(userAlias)) {
@@ -82,6 +87,7 @@ public class DataSopeAspect {
         }
     }
     @After("@annotation(dataScope)")
+    @AfterThrowing("@annotation(dataScope)")
     public void dataScopeAfter(JoinPoint point, DataScope dataScope) throws Throwable {
         if(StringTool.isNotEmpty(DataScopeHelper.getLocalDataAuthSql())) {
             // 执行完成，要清除当前权限Sql
