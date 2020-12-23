@@ -104,7 +104,7 @@ public class CmsArticleServiceImpl implements CmsArticleService{
 		cmsArticleDao.selectOnDataScope(param);
 		return CommonPage.toPage(page);
 	}
-	@DataScope(deptAlias = "a", userAlias = "u")
+	@DataScope(deptAlias = "a", userAlias = "a")
 	@Override
 	public CommonPage<CmsArticleWithExt> listOnDataScope2(CmsArticlePageParam param) {
 		Page<CmsArticleWithExt> page =param.buildPage(true);
