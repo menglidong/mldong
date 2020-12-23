@@ -5,6 +5,7 @@ import java.util.List;
 import com.mldong.common.base.CommonPage;
 import com.mldong.modules.cms.dto.CmsArticleParam;
 import com.mldong.modules.cms.dto.CmsArticlePageParam;
+import com.mldong.modules.cms.dto.CmsArticleWithExt;
 import com.mldong.modules.cms.entity.CmsArticle;
 /**
  * <p>业务接口层</p>
@@ -44,4 +45,28 @@ public interface CmsArticleService {
 	 */
 	public CommonPage<CmsArticle> list(CmsArticlePageParam param);
 
+	/**
+	 * 查询文章列表-包含扩展信息
+	 * @param param
+	 * @return
+	 */
+	public CommonPage<CmsArticleWithExt> listWithExt(CmsArticlePageParam param);
+	/**
+	 * 通过id获取文章-包含扩展信息
+	 * @param id
+	 * @return
+	 */
+	public CmsArticleWithExt getWithExt(Long id);
+	/**
+	 * 查询文章列表-数据权限1
+	 * @param param
+	 * @return
+	 */
+	public CommonPage<CmsArticleWithExt> listOnDataScope(CmsArticlePageParam param);
+	/**
+	 * 查询文章列表-数据权限2
+	 * @param param
+	 * @return
+	 */
+	public CommonPage<CmsArticleWithExt> listOnDataScope2(CmsArticlePageParam param);
 }

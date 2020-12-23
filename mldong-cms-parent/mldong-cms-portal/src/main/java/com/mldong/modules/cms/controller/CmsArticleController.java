@@ -1,5 +1,6 @@
 package com.mldong.modules.cms.controller;
 
+import com.mldong.modules.cms.dto.CmsArticleWithExt;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -76,5 +77,25 @@ public class CmsArticleController {
 	@ApiOperation(value="分页查询文章", notes = "cms:article:list")
 	public CommonResult<CommonPage<CmsArticle>> list(@RequestBody @Validated CmsArticlePageParam param) {
 		return CommonResult.success("查询文章成功",cmsArticleService.list(param));
+	}
+	@PostMapping("listWithExt")
+	@ApiOperation(value="分页查询文章-包含扩展信息", notes = "cms:article:listWithExt")
+	public CommonResult<CommonPage<CmsArticleWithExt>> listWithExt(@RequestBody @Validated CmsArticlePageParam param) {
+		return CommonResult.success("查询文章成功",cmsArticleService.listWithExt(param));
+	}
+	@PostMapping("getWithExt")
+	@ApiOperation(value="通过id获取文章-包含扩展信息", notes = "cms:article:getWithExt")
+	public CommonResult<CmsArticleWithExt> getWithExt(@RequestBody @Validated IdParam param) {
+		return CommonResult.success("获取文章成功",cmsArticleService.getWithExt(param.getId()));
+	}
+	@PostMapping("listOnDataScope")
+	@ApiOperation(value="分页查询文章-数据权限1", notes = "cms:article:listOnDataScope")
+	public CommonResult<CommonPage<CmsArticleWithExt>> listOnDataScope(@RequestBody @Validated CmsArticlePageParam param) {
+		return CommonResult.success("查询文章成功",cmsArticleService.listOnDataScope(param));
+	}
+	@PostMapping("listOnDataScope2")
+	@ApiOperation(value="分页查询文章-数据权限2", notes = "cms:article:listOnDataScope2")
+	public CommonResult<CommonPage<CmsArticleWithExt>> listOnDataScope2(@RequestBody @Validated CmsArticlePageParam param) {
+		return CommonResult.success("查询文章成功",cmsArticleService.listOnDataScope2(param));
 	}
 }

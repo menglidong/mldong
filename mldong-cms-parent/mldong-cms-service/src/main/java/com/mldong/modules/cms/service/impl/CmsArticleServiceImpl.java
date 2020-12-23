@@ -3,6 +3,9 @@ package com.mldong.modules.cms.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.mldong.common.dauth.DataScope;
+import com.mldong.modules.cms.dao.CmsArticleDao;
+import com.mldong.modules.cms.dto.CmsArticleWithExt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,8 @@ import com.mldong.modules.cms.service.CmsArticleService;
 public class CmsArticleServiceImpl implements CmsArticleService{
 	@Autowired
 	private CmsArticleMapper cmsArticleMapper;
+	@Autowired
+	private CmsArticleDao cmsArticleDao;
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(CmsArticleParam param) {
@@ -78,6 +83,32 @@ public class CmsArticleServiceImpl implements CmsArticleService{
 			cmsArticleMapper.select(cmsArticle);
 		} else {
 			cmsArticleMapper.selectByCondition(ConditionUtil.buildCondition(CmsArticle.class, whereParams));		}
+		return CommonPage.toPage(page);
+	}
+
+	@Override
+	public CommonPage<CmsArticleWithExt> listWithExt(CmsArticlePageParam param) {
+		Page<CmsArticleWithExt> page =param.buildPage(true);
+		cmsArticleDao.selectWithExt(param);
+		return CommonPage.toPage(page);
+	}
+
+	@Override
+	public CmsArticleWithExt getWithExt(Long id) {
+		return cmsArticleDao.selectOneWithExt(id);
+	}
+
+	@Override
+	public CommonPage<CmsArticleWithExt> listOnDataScope(CmsArticlePageParam param) {
+		Page<CmsArticleWithExt> page =param.buildPage(true);
+		cmsArticleDao.selectOnDataScope(param);
+		return CommonPage.toPage(page);
+	}
+	@DataScope(deptAlias = "a", userAlias = "u")
+	@Override
+	public CommonPage<CmsArticleWithExt> listOnDataScope2(CmsArticlePageParam param) {
+		Page<CmsArticleWithExt> page =param.buildPage(true);
+		cmsArticleDao.selectWithExt(param);
 		return CommonPage.toPage(page);
 	}
 
