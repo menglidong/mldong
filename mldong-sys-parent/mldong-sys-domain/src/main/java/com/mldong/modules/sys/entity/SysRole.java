@@ -35,7 +35,7 @@ public class SysRole implements Serializable{
     private String roleKey;
     @ApiModelProperty(value = "角色类型(10->管理员|ADMIN,20->流程审核员|WORKFLOW)", position = 20)
     private RoleTypeEnum roleType;
-    @ApiModelProperty(value = "数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)", position = 25)
+    @ApiModelProperty(value = "数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF,50->自定义数据权限|CUSTOM)", position = 25)
     private DataScopeEnum dataScope;
     @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)", position = 30)
     private YesNoEnum isEnabled;
@@ -110,14 +110,14 @@ public class SysRole implements Serializable{
         this.roleType = roleType;
     }
     /**
-     * 获取数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     * 获取数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF,50->自定义数据权限|CUSTOM)
      *
      */
     public DataScopeEnum getDataScope(){
         return this.dataScope;
     }
 	 /**
-     * 设置数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     * 设置数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF,50->自定义数据权限|CUSTOM)
      *
      * @param dataScope
      */
@@ -248,8 +248,11 @@ public class SysRole implements Serializable{
 		/**
 		 * 仅本人数据权限
 		 */
-		MYSELF(40, "仅本人数据权限");
-
+		MYSELF(40, "仅本人数据权限"),
+        /**
+         * 自定义数据权限
+         */
+        CUSTOM(50, "自定义数据权限");
 		private int value;
 		private String name;
 		@JsonCreator

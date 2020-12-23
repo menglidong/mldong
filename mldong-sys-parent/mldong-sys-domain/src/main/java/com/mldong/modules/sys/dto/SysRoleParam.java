@@ -24,7 +24,7 @@ public class SysRoleParam{
     private String roleKey;
     @ApiModelProperty(value = "角色类型(10->管理员|ADMIN,20->流程审核员|WORKFLOW)",required=false, position = 20)
     private SysRole.RoleTypeEnum roleType;
-    @ApiModelProperty(value = "数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)",required=false, position = 25)
+    @ApiModelProperty(value = "数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF,50->自定义数据权限|CUSTOM)",required=false, position = 25)
     private SysRole.DataScopeEnum dataScope;
     @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)",required=false, position = 30)
     private YesNoEnum isEnabled;
@@ -92,14 +92,14 @@ public class SysRoleParam{
         this.roleType = roleType;
     }
     /**
-     * 获取数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     * 获取数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF,50->自定义数据权限|CUSTOM)
      *
      */
     public SysRole.DataScopeEnum getDataScope(){
         return this.dataScope;
     }
 	 /**
-     * 设置数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF)
+     * 设置数据范围(10->所有数据权限|ALL,20->部门数据权限|DEPT,30->部门及以下数据权限|DEPT_CHILD,40->仅本人数据权限|MYSELF,50->自定义数据权限|CUSTOM)
      *
      * @param dataScope
      */

@@ -34,6 +34,10 @@ public class DataSopeAspect {
      * 仅本人数据权限
      */
     public static final Integer DATA_SCOPE_SELF = 40;
+    /**
+     * 自定义数据权限
+     */
+    public static final Integer DATA_SCOPE_CUSTOM = 50;
     @Before("@annotation(dataScope)")
     public void dataScopeBefore(JoinPoint point, DataScope dataScope) throws Throwable {
         // 超级管理员，不处理
@@ -74,10 +78,17 @@ public class DataSopeAspect {
                     } else if(DATA_SCOPE_SELF.toString().equals(item)) {
                         // 仅本人数据权限
                         if (StringTool.isNotEmpty(userAlias)) {
-                            sqlString.append(String.format(" OR %s.user_id = %s ", userAlias, userId));
+                            sqlString.append(String.format(" OR %s.user_id = %s ", userAlias, userId.toString()));
                         } else {
                             // 数据权限为仅本人且没有userAlias别名不查询任何数据
                             sqlString.append(" OR 1=0 ");
+                        }
+                    } else if(DATA_SCOPE_CUSTOM.toString().equals(item)) {
+                        // 自定义数据权限
+                        if(StringTool.isEmpty(deptAlias)) {
+                            sqlString.append(String.format(" OR dept_id in(select dept_id from sys_role_dept rd left join sys_user_role ur on rd.role_id=ur.role_id where ur.user_id=%s group by dept_id)", userId.toString()));
+                        } else {
+                            sqlString.append(String.format(" OR %s.dept_id in(select dept_id from sys_role_dept rd left join sys_user_role ur on rd.role_id=ur.role_id where ur.user_id=%s group by dept_id)", deptAlias,userId.toString()));
                         }
                     }
                 }
