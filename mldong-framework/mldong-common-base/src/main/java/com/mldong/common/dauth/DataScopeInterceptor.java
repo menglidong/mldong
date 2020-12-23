@@ -32,14 +32,19 @@ public class DataScopeInterceptor implements Interceptor {
         // 不为空才处理
         if(StringTool.isNotEmpty(dataAuthSql)) {
             Object[] args = invocation.getArgs();
-            MappedStatement ms = (MappedStatement) args[0];
+            MappedStatement ms = (MappedStatement)args[0];
             Object parameter = args[1];
+            RowBounds rowBounds = (RowBounds)args[2];
+            ResultHandler resultHandler = (ResultHandler)args[3];
+            Executor executor = (Executor)invocation.getTarget();
+            CacheKey cacheKey;
             BoundSql boundSql;
-            logger.debug(ms.getId());
             if (args.length == 4) {
                 boundSql = ms.getBoundSql(parameter);
+                cacheKey = executor.createCacheKey(ms, parameter, rowBounds, boundSql);
             } else {
-                boundSql = (BoundSql) args[5];
+                cacheKey = (CacheKey)args[4];
+                boundSql = (BoundSql)args[5];
             }
             String newSql = boundSql.getSql() + dataAuthSql ;
             BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), newSql,
@@ -52,13 +57,7 @@ public class DataScopeInterceptor implements Interceptor {
                     newBoundSql.setAdditionalParameter(prop, boundSql.getAdditionalParameter(prop));
                 }
             }
-            Object[] queryArgs = invocation.getArgs();
-            queryArgs[0] = newMs;
-            logger.info("改写的SQL: {}", newSql);
-            Object obj = invocation.proceed();
-            // 执行完成-清除
-            DataScopeHelper.clearDataAuthSql();
-            return obj;
+            return executor.query(newMs, parameter, rowBounds, resultHandler, cacheKey, newBoundSql);
         } else {
             return invocation.proceed();
         }
