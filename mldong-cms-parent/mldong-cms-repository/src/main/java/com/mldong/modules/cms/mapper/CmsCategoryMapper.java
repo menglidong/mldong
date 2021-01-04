@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
  * <p>持久层</p>
  * <p>栏目</p>
  *
- * @since 2020-11-05 10:16:19
+ * @since 2021-01-04 10:05:01
  */
 @Repository
 public interface CmsCategoryMapper extends BaseMapper<CmsCategory> {

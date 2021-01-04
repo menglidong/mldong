@@ -9,12 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
-// START###################
-// ###################END
+
 /**
  * <p>实体类</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2020-11-05 10:16:19
+ * @since 2021-01-04 10:05:01
  */
 @Table(name="cms_category")
 @ApiModel(description="栏目")
@@ -24,33 +23,32 @@ public class CmsCategory implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "父栏目id")
+    @ApiModelProperty(value = "父栏目id", position = 10)
     private Long parentId;
-    @ApiModelProperty(value = "栏目名称")
+    @ApiModelProperty(value = "栏目名称", position = 15)
     private String name;
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序", position = 20)
     private Double sort;
-    @ApiModelProperty(value = "图标")
+    @ApiModelProperty(value = "图标", position = 25)
     private String icon;
-    @ApiModelProperty(value = "是否导航(1->否|NO,2->是|YES)")
+    @ApiModelProperty(value = "是否导航(1->否|NO,2->是|YES)", position = 30)
     private YesNoEnum isNav;
-    @ApiModelProperty(value = "是否显示(1->否|NO,2->是|YES)")
+    @ApiModelProperty(value = "是否显示(1->否|NO,2->是|YES)", position = 35)
     private YesNoEnum isShow;
-    @ApiModelProperty(value = "seo关键字")
+    @ApiModelProperty(value = "seo关键字", position = 40)
     private String seoKeyworks;
-    @ApiModelProperty(value = "seo描述")
+    @ApiModelProperty(value = "seo描述", position = 45)
     private String seoDescription;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 50)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 55)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 60)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
-// START###################
-// ###################END
+
     /**
      * 获取主键
      *
@@ -231,6 +229,5 @@ public class CmsCategory implements Serializable{
     public void setIsDeleted(YesNoEnum isDeleted){
         this.isDeleted = isDeleted;
     }
-// START###################
-// ###################END
+
 }

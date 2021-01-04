@@ -5,35 +5,35 @@ import io.swagger.annotations.ApiModelProperty;
 import com.mldong.common.validator.Groups;
 import javax.validation.constraints.*;
 import com.mldong.common.base.YesNoEnum;
-
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2020-10-22 10:47:45
+ * @since 2021-01-04 10:05:01
  */
 @ApiModel(description="栏目")
 public class CmsCategoryParam{
 
-	@ApiModelProperty(value="主键-更新时必填")
+	@ApiModelProperty(value="主键-更新时必填", position = 1)
 	@NotNull(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
-    @ApiModelProperty(value = "父栏目id",required=false)
+    @ApiModelProperty(value = "父栏目id",required=false, position = 10)
     private Long parentId;
-    @ApiModelProperty(value = "栏目名称",required=true)
+    @ApiModelProperty(value = "栏目名称",required=true, position = 15)
     @NotBlank(message="栏目名称不能为空",groups={Groups.Save.class,Groups.Update.class})
     private String name;
-    @ApiModelProperty(value = "排序",required=false)
+    @ApiModelProperty(value = "排序",required=false, position = 20)
     private Double sort;
-    @ApiModelProperty(value = "图标",required=false)
+    @ApiModelProperty(value = "图标",required=false, position = 25)
     private String icon;
-    @ApiModelProperty(value = "是否导航(1->否|NO,2->是|YES)",required=false)
+    @ApiModelProperty(value = "是否导航(1->否|NO,2->是|YES)",required=false, position = 30)
     private YesNoEnum isNav;
-    @ApiModelProperty(value = "是否显示(1->否|NO,2->是|YES)",required=false)
+    @ApiModelProperty(value = "是否显示(1->否|NO,2->是|YES)",required=false, position = 35)
     private YesNoEnum isShow;
-    @ApiModelProperty(value = "seo关键字",required=false)
+    @ApiModelProperty(value = "seo关键字",required=false, position = 40)
     private String seoKeyworks;
-    @ApiModelProperty(value = "seo描述",required=false)
+    @ApiModelProperty(value = "seo描述",required=false, position = 45)
     private String seoDescription;
+
     /**
      * 获取主键
      *
