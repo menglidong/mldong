@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2021-01-04 10:06:29
+ * @since 2021-01-04 10:29:40
  */
 @Table(name="cms_category")
 @ApiModel(description="栏目")
@@ -49,11 +49,17 @@ public class CmsCategory implements Serializable{
     private String seoKeyworks;
     @ApiModelProperty(value = "seo描述", position = 65)
     private String seoDescription;
-    @ApiModelProperty(value = "创建时间", position = 70)
+    @ApiModelProperty(value = "扩展的表单配置", position = 70)
+    private String extFormConfig;
+    @ApiModelProperty(value = "扩展表单值", position = 75)
+    private String extFormValue;
+    @ApiModelProperty(value = "富文本", position = 80)
+    private String content;
+    @ApiModelProperty(value = "创建时间", position = 85)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间", position = 75)
+    @ApiModelProperty(value = "更新时间", position = 90)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 80)
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 95)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -251,6 +257,51 @@ public class CmsCategory implements Serializable{
      */
     public void setSeoDescription(String seoDescription){
         this.seoDescription = seoDescription;
+    }
+    /**
+     * 获取扩展的表单配置
+     *
+     */
+    public String getExtFormConfig(){
+        return this.extFormConfig;
+    }
+	 /**
+     * 设置扩展的表单配置
+     *
+     * @param extFormConfig
+     */
+    public void setExtFormConfig(String extFormConfig){
+        this.extFormConfig = extFormConfig;
+    }
+    /**
+     * 获取扩展表单值
+     *
+     */
+    public String getExtFormValue(){
+        return this.extFormValue;
+    }
+	 /**
+     * 设置扩展表单值
+     *
+     * @param extFormValue
+     */
+    public void setExtFormValue(String extFormValue){
+        this.extFormValue = extFormValue;
+    }
+    /**
+     * 获取富文本
+     *
+     */
+    public String getContent(){
+        return this.content;
+    }
+	 /**
+     * 设置富文本
+     *
+     * @param content
+     */
+    public void setContent(String content){
+        this.content = content;
     }
     /**
      * 获取创建时间

@@ -8,7 +8,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2021-01-04 10:06:29
+ * @since 2021-01-04 10:29:40
  */
 @ApiModel(description="栏目")
 public class CmsCategoryParam{
@@ -41,6 +41,12 @@ public class CmsCategoryParam{
     private String seoKeyworks;
     @ApiModelProperty(value = "seo描述",required=false, position = 65)
     private String seoDescription;
+    @ApiModelProperty(value = "扩展的表单配置",required=false, position = 70)
+    private String extFormConfig;
+    @ApiModelProperty(value = "扩展表单值",required=false, position = 75)
+    private String extFormValue;
+    @ApiModelProperty(value = "富文本",required=false, position = 80)
+    private String content;
 
     /**
      * 获取主键
@@ -236,5 +242,50 @@ public class CmsCategoryParam{
      */
     public void setSeoDescription(String seoDescription){
         this.seoDescription = seoDescription;
+    }
+    /**
+     * 获取扩展的表单配置
+     *
+     */
+    public String getExtFormConfig(){
+        return this.extFormConfig;
+    }
+	 /**
+     * 设置扩展的表单配置
+     *
+     * @param extFormConfig
+     */
+    public void setExtFormConfig(String extFormConfig){
+        this.extFormConfig = extFormConfig;
+    }
+    /**
+     * 获取扩展表单值
+     *
+     */
+    public String getExtFormValue(){
+        return this.extFormValue;
+    }
+	 /**
+     * 设置扩展表单值
+     *
+     * @param extFormValue
+     */
+    public void setExtFormValue(String extFormValue){
+        this.extFormValue = extFormValue;
+    }
+    /**
+     * 获取富文本
+     *
+     */
+    public String getContent(){
+        return this.content;
+    }
+	 /**
+     * 设置富文本
+     *
+     * @param content
+     */
+    public void setContent(String content){
+        this.content = content;
     }
 }

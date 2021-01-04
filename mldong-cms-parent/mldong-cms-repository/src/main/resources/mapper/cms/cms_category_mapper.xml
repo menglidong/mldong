@@ -15,6 +15,9 @@
 		<result column="model_id" property="modelId" />  
 		<result column="seo_keyworks" property="seoKeyworks" />  
 		<result column="seo_description" property="seoDescription" />  
+		<result column="ext_form_config" property="extFormConfig" />  
+		<result column="ext_form_value" property="extFormValue" />  
+		<result column="content" property="content" />  
 		<result column="create_time" property="createTime" />  
 		<result column="update_time" property="updateTime" />  
 		<result column="is_deleted" property="isDeleted" />  
