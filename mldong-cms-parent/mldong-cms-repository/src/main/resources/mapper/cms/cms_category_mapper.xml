@@ -9,6 +9,10 @@
 		<result column="icon" property="icon" />  
 		<result column="is_nav" property="isNav" />  
 		<result column="is_show" property="isShow" />  
+		<result column="is_page" property="isPage" />  
+		<result column="dept_id" property="deptId" />  
+		<result column="user_id" property="userId" />  
+		<result column="model_id" property="modelId" />  
 		<result column="seo_keyworks" property="seoKeyworks" />  
 		<result column="seo_description" property="seoDescription" />  
 		<result column="create_time" property="createTime" />  

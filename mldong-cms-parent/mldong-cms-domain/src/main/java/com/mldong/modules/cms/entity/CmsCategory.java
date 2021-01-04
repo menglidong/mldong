@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2021-01-04 10:05:01
+ * @since 2021-01-04 10:06:29
  */
 @Table(name="cms_category")
 @ApiModel(description="栏目")
@@ -37,15 +37,23 @@ public class CmsCategory implements Serializable{
     private YesNoEnum isNav;
     @ApiModelProperty(value = "是否显示(1->否|NO,2->是|YES)", position = 35)
     private YesNoEnum isShow;
-    @ApiModelProperty(value = "seo关键字", position = 40)
+    @ApiModelProperty(value = "是否单页面(1->否|NO,2->是|YES)", position = 40)
+    private YesNoEnum isPage;
+    @ApiModelProperty(value = "所属部门", position = 45)
+    private Long deptId;
+    @ApiModelProperty(value = "所属用户", position = 50)
+    private Long userId;
+    @ApiModelProperty(value = "所属模型", position = 55)
+    private Long modelId;
+    @ApiModelProperty(value = "seo关键字", position = 60)
     private String seoKeyworks;
-    @ApiModelProperty(value = "seo描述", position = 45)
+    @ApiModelProperty(value = "seo描述", position = 65)
     private String seoDescription;
-    @ApiModelProperty(value = "创建时间", position = 50)
+    @ApiModelProperty(value = "创建时间", position = 70)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间", position = 55)
+    @ApiModelProperty(value = "更新时间", position = 75)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 60)
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 80)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -153,6 +161,66 @@ public class CmsCategory implements Serializable{
      */
     public void setIsShow(YesNoEnum isShow){
         this.isShow = isShow;
+    }
+    /**
+     * 获取是否单页面(1->否|NO,2->是|YES)
+     *
+     */
+    public YesNoEnum getIsPage(){
+        return this.isPage;
+    }
+	 /**
+     * 设置是否单页面(1->否|NO,2->是|YES)
+     *
+     * @param isPage
+     */
+    public void setIsPage(YesNoEnum isPage){
+        this.isPage = isPage;
+    }
+    /**
+     * 获取所属部门
+     *
+     */
+    public Long getDeptId(){
+        return this.deptId;
+    }
+	 /**
+     * 设置所属部门
+     *
+     * @param deptId
+     */
+    public void setDeptId(Long deptId){
+        this.deptId = deptId;
+    }
+    /**
+     * 获取所属用户
+     *
+     */
+    public Long getUserId(){
+        return this.userId;
+    }
+	 /**
+     * 设置所属用户
+     *
+     * @param userId
+     */
+    public void setUserId(Long userId){
+        this.userId = userId;
+    }
+    /**
+     * 获取所属模型
+     *
+     */
+    public Long getModelId(){
+        return this.modelId;
+    }
+	 /**
+     * 设置所属模型
+     *
+     * @param modelId
+     */
+    public void setModelId(Long modelId){
+        this.modelId = modelId;
     }
     /**
      * 获取seo关键字
