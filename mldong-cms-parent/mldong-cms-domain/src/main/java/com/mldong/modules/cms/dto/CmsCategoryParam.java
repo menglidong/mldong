@@ -8,7 +8,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2021-01-04 10:29:40
+ * @since 2021-01-05 09:05:15
  */
 @ApiModel(description="栏目")
 public class CmsCategoryParam{
@@ -45,7 +45,9 @@ public class CmsCategoryParam{
     private String extFormConfig;
     @ApiModelProperty(value = "扩展表单值",required=false, position = 75)
     private String extFormValue;
-    @ApiModelProperty(value = "富文本",required=false, position = 80)
+    @ApiModelProperty(value = "文章扩展字段配置",required=false, position = 80)
+    private String extArticleFormConfig;
+    @ApiModelProperty(value = "富文本",required=false, position = 85)
     private String content;
 
     /**
@@ -272,6 +274,21 @@ public class CmsCategoryParam{
      */
     public void setExtFormValue(String extFormValue){
         this.extFormValue = extFormValue;
+    }
+    /**
+     * 获取文章扩展字段配置
+     *
+     */
+    public String getExtArticleFormConfig(){
+        return this.extArticleFormConfig;
+    }
+	 /**
+     * 设置文章扩展字段配置
+     *
+     * @param extArticleFormConfig
+     */
+    public void setExtArticleFormConfig(String extArticleFormConfig){
+        this.extArticleFormConfig = extArticleFormConfig;
     }
     /**
      * 获取富文本

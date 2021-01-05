@@ -13,6 +13,7 @@
 		<result column="publish_time" property="publishTime" />  
 		<result column="is_publish" property="isPublish" />  
 		<result column="content" property="content" />  
+		<result column="ext_form_value" property="extFormValue" />  
 		<result column="dept_id" property="deptId" />  
 		<result column="user_id" property="userId" />  
 		<result column="create_time" property="createTime" />  

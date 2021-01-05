@@ -9,7 +9,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: cms_article - 文章</p>
- * @since 2020-12-22 05:56:37
+ * @since 2021-01-05 09:05:20
  */
 @ApiModel(description="文章")
 public class CmsArticleParam{
@@ -38,9 +38,11 @@ public class CmsArticleParam{
     private YesNoEnum isPublish;
     @ApiModelProperty(value = "文本内容",required=false, position = 55)
     private String content;
-    @ApiModelProperty(value = "所属部门",required=false, position = 60)
+    @ApiModelProperty(value = "扩展信息",required=false, position = 60)
+    private String extFormValue;
+    @ApiModelProperty(value = "所属部门",required=false, position = 65)
     private Long deptId;
-    @ApiModelProperty(value = "所属用户",required=false, position = 65)
+    @ApiModelProperty(value = "所属用户",required=false, position = 70)
     private Long userId;
 
     /**
@@ -207,6 +209,21 @@ public class CmsArticleParam{
      */
     public void setContent(String content){
         this.content = content;
+    }
+    /**
+     * 获取扩展信息
+     *
+     */
+    public String getExtFormValue(){
+        return this.extFormValue;
+    }
+	 /**
+     * 设置扩展信息
+     *
+     * @param extFormValue
+     */
+    public void setExtFormValue(String extFormValue){
+        this.extFormValue = extFormValue;
     }
     /**
      * 获取所属部门

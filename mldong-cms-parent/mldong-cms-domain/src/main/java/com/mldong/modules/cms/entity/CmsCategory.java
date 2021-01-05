@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: cms_category - 栏目</p>
- * @since 2021-01-04 10:29:40
+ * @since 2021-01-05 09:05:15
  */
 @Table(name="cms_category")
 @ApiModel(description="栏目")
@@ -53,13 +53,15 @@ public class CmsCategory implements Serializable{
     private String extFormConfig;
     @ApiModelProperty(value = "扩展表单值", position = 75)
     private String extFormValue;
-    @ApiModelProperty(value = "富文本", position = 80)
+    @ApiModelProperty(value = "文章扩展字段配置", position = 80)
+    private String extArticleFormConfig;
+    @ApiModelProperty(value = "富文本", position = 85)
     private String content;
-    @ApiModelProperty(value = "创建时间", position = 85)
+    @ApiModelProperty(value = "创建时间", position = 90)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间", position = 90)
+    @ApiModelProperty(value = "更新时间", position = 95)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 95)
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 100)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -287,6 +289,21 @@ public class CmsCategory implements Serializable{
      */
     public void setExtFormValue(String extFormValue){
         this.extFormValue = extFormValue;
+    }
+    /**
+     * 获取文章扩展字段配置
+     *
+     */
+    public String getExtArticleFormConfig(){
+        return this.extArticleFormConfig;
+    }
+	 /**
+     * 设置文章扩展字段配置
+     *
+     * @param extArticleFormConfig
+     */
+    public void setExtArticleFormConfig(String extArticleFormConfig){
+        this.extArticleFormConfig = extArticleFormConfig;
     }
     /**
      * 获取富文本

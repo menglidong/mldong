@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: cms_article - 文章</p>
- * @since 2020-12-22 05:56:37
+ * @since 2021-01-05 09:05:20
  */
 @Table(name="cms_article")
 @ApiModel(description="文章")
@@ -45,15 +45,17 @@ public class CmsArticle implements Serializable{
     private YesNoEnum isPublish;
     @ApiModelProperty(value = "文本内容", position = 55)
     private String content;
-    @ApiModelProperty(value = "所属部门", position = 60)
+    @ApiModelProperty(value = "扩展信息", position = 60)
+    private String extFormValue;
+    @ApiModelProperty(value = "所属部门", position = 65)
     private Long deptId;
-    @ApiModelProperty(value = "所属用户", position = 65)
+    @ApiModelProperty(value = "所属用户", position = 70)
     private Long userId;
-    @ApiModelProperty(value = "创建时间", position = 70)
+    @ApiModelProperty(value = "创建时间", position = 75)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间", position = 75)
+    @ApiModelProperty(value = "更新时间", position = 80)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 80)
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 85)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -221,6 +223,21 @@ public class CmsArticle implements Serializable{
      */
     public void setContent(String content){
         this.content = content;
+    }
+    /**
+     * 获取扩展信息
+     *
+     */
+    public String getExtFormValue(){
+        return this.extFormValue;
+    }
+	 /**
+     * 设置扩展信息
+     *
+     * @param extFormValue
+     */
+    public void setExtFormValue(String extFormValue){
+        this.extFormValue = extFormValue;
     }
     /**
      * 获取所属部门

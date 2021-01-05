@@ -6,7 +6,7 @@ import com.mldong.modules.cms.entity.CmsArticle;
 /**
  * <p>分页查询实体</p>
  * <p>Table: cms_article - 文章</p>
- * @since 2020-12-22 05:56:37
+ * @since 2021-01-05 09:05:20
  */
 public class CmsArticlePageParam extends PageParam<CmsArticle> {
 
