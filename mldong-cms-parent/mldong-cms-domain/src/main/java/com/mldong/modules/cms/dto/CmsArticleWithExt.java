@@ -8,6 +8,8 @@ public class CmsArticleWithExt extends CmsArticle {
     private String categoryName;
     @ApiModelProperty(value = "栏目图标")
     private String categoryIcon;
+    @ApiModelProperty(value = "文章扩展信息配置")
+    private String extArticleFormConfig;
     public String getCategoryName() {
         return categoryName;
     }
@@ -22,5 +24,13 @@ public class CmsArticleWithExt extends CmsArticle {
 
     public void setCategoryIcon(String categoryIcon) {
         this.categoryIcon = categoryIcon;
+    }
+
+    public String getExtArticleFormConfig() {
+        return extArticleFormConfig;
+    }
+
+    public void setExtArticleFormConfig(String extArticleFormConfig) {
+        this.extArticleFormConfig = extArticleFormConfig;
     }
 }

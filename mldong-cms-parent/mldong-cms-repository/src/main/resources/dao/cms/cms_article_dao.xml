@@ -5,6 +5,7 @@
                type="com.mldong.modules.cms.dto.CmsArticleWithExt">
         <result column="category_name" property="categoryName" />
         <result column="category_icon" property="categoryIcon" />
+        <result column="ext_article_form_config" property="extArticleFormConfig" />
     </resultMap>
     <!--查询文章列表-包含扩展信息-->
     <select id="selectWithExt" resultMap="BaseResultMap">
@@ -22,7 +23,8 @@
     <select id="selectOneWithExt" resultMap="BaseResultMap">
         SELECT
         a.*, c.`name` AS category_name,
-        c.icon AS category_icon
+        c.icon AS category_icon,
+        c.ext_article_form_config as extArticleFormConfig
         FROM
         cms_article a
         LEFT JOIN cms_category c ON a.category_id = c.id
