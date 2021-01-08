@@ -295,7 +295,8 @@ public class SysRbacServiceImpl implements SysRbacService{
 					}
 				}
 				router.setHidden(YesNoEnum.NO.equals(menu.getIsShow()));
-				router.setName(menu.getRouteName());
+				// 前端路由名称规范是大驼峰，转换一下
+				router.setName(StringTool.upperCase(StringTool.lineToHump(menu.getRouteName().replaceAll(":","_"))));
 				router.setPath("/" + router.getComponent());
 				router.setRedirect(null);
 				router.setChildren(children);
