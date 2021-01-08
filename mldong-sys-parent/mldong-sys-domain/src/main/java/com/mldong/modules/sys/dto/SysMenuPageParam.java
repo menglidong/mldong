@@ -6,7 +6,7 @@ import com.mldong.modules.sys.entity.SysMenu;
 /**
  * <p>分页查询实体</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2020-11-09 09:14:27
+ * @since 2021-01-08 05:33:28
  */
 public class SysMenuPageParam extends PageParam<SysMenu> {
 

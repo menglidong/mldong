@@ -8,30 +8,32 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>接收请求参数实体</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2020-11-09 09:14:27
+ * @since 2021-01-08 05:33:28
  */
 @ApiModel(description="菜单")
 public class SysMenuParam{
 
-	@ApiModelProperty(value="主键-更新时必填")
+	@ApiModelProperty(value="主键-更新时必填", position = 1)
 	@NotNull(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
-    @ApiModelProperty(value = "父菜单id",required=false)
+    @ApiModelProperty(value = "父菜单id",required=false, position = 10)
     private Long parentId;
-    @ApiModelProperty(value = "菜单名称",required=true)
+    @ApiModelProperty(value = "菜单名称",required=true, position = 15)
     @NotBlank(message="菜单名称不能为空",groups={Groups.Save.class,Groups.Update.class})
     private String name;
-    @ApiModelProperty(value = "排序",required=false)
+    @ApiModelProperty(value = "排序",required=false, position = 20)
     private Double sort;
-    @ApiModelProperty(value = "路由名称",required=false)
+    @ApiModelProperty(value = "路由名称",required=false, position = 25)
     private String routeName;
-    @ApiModelProperty(value = "路由地址",required=false)
+    @ApiModelProperty(value = "路由地址",required=false, position = 30)
     private String path;
-    @ApiModelProperty(value = "图标",required=false)
+    @ApiModelProperty(value = "图标",required=false, position = 35)
     private String icon;
-    @ApiModelProperty(value = "是否显示(1->不显示|NO,2->显示|YES)",required=false)
+    @ApiModelProperty(value = "是否显示(1->不显示|NO,2->显示|YES)",required=false, position = 40)
     private YesNoEnum isShow;
-    @ApiModelProperty(value = "备注",required=false)
+    @ApiModelProperty(value = "是否缓存(1->不缓存|NO,2->缓存|YES)",required=false, position = 45)
+    private YesNoEnum isCache;
+    @ApiModelProperty(value = "备注",required=false, position = 50)
     private String remark;
 
     /**
@@ -153,6 +155,21 @@ public class SysMenuParam{
      */
     public void setIsShow(YesNoEnum isShow){
         this.isShow = isShow;
+    }
+    /**
+     * 获取是否缓存(1->不缓存|NO,2->缓存|YES)
+     *
+     */
+    public YesNoEnum getIsCache(){
+        return this.isCache;
+    }
+	 /**
+     * 设置是否缓存(1->不缓存|NO,2->缓存|YES)
+     *
+     * @param isCache
+     */
+    public void setIsCache(YesNoEnum isCache){
+        this.isCache = isCache;
     }
     /**
      * 获取备注

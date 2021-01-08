@@ -10,6 +10,7 @@
 		<result column="path" property="path" />  
 		<result column="icon" property="icon" />  
 		<result column="is_show" property="isShow" />  
+		<result column="is_cache" property="isCache" />  
 		<result column="remark" property="remark" />  
 		<result column="create_time" property="createTime" />  
 		<result column="update_time" property="updateTime" />  

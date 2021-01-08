@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2020-11-09 09:14:26
+ * @since 2021-01-08 05:33:28
  */
 @Table(name="sys_menu")
 @ApiModel(description="菜单")
@@ -23,29 +23,31 @@ public class SysMenu implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "父菜单id")
+    @ApiModelProperty(value = "父菜单id", position = 10)
     private Long parentId;
-    @ApiModelProperty(value = "菜单名称")
+    @ApiModelProperty(value = "菜单名称", position = 15)
     private String name;
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序", position = 20)
     private Double sort;
-    @ApiModelProperty(value = "路由名称")
+    @ApiModelProperty(value = "路由名称", position = 25)
     private String routeName;
-    @ApiModelProperty(value = "路由地址")
+    @ApiModelProperty(value = "路由地址", position = 30)
     private String path;
-    @ApiModelProperty(value = "图标")
+    @ApiModelProperty(value = "图标", position = 35)
     private String icon;
-    @ApiModelProperty(value = "是否显示(1->不显示|NO,2->显示|YES)")
+    @ApiModelProperty(value = "是否显示(1->不显示|NO,2->显示|YES)", position = 40)
     private YesNoEnum isShow;
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty(value = "是否缓存(1->不缓存|NO,2->缓存|YES)", position = 45)
+    private YesNoEnum isCache;
+    @ApiModelProperty(value = "备注", position = 50)
     private String remark;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 55)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 60)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 65)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -168,6 +170,21 @@ public class SysMenu implements Serializable{
      */
     public void setIsShow(YesNoEnum isShow){
         this.isShow = isShow;
+    }
+    /**
+     * 获取是否缓存(1->不缓存|NO,2->缓存|YES)
+     *
+     */
+    public YesNoEnum getIsCache(){
+        return this.isCache;
+    }
+	 /**
+     * 设置是否缓存(1->不缓存|NO,2->缓存|YES)
+     *
+     * @param isCache
+     */
+    public void setIsCache(YesNoEnum isCache){
+        this.isCache = isCache;
     }
     /**
      * 获取备注
