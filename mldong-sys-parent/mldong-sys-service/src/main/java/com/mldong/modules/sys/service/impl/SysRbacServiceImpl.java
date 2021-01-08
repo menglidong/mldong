@@ -304,7 +304,7 @@ public class SysRbacServiceImpl implements SysRbacService{
 				meta.setAffix(false);
 				meta.setBreadcrumb(true);
 				meta.setIcon(menu.getIcon());
-				meta.setNoCache(true);
+				meta.setNoCache(YesNoEnum.NO.equals(menu.getIsCache()));
 				meta.setTagName(menu.getRemark());
 				meta.setTitle(menu.getName());
 				router.setMeta(meta);
