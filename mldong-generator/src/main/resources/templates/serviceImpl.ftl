@@ -78,7 +78,8 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 			${table.className} ${table.tableCameName} = new ${table.className}();
 			${table.tableCameName}Mapper.select(${table.tableCameName});
 		} else {
-			${table.tableCameName}Mapper.selectByCondition(ConditionUtil.buildCondition(${table.className}.class, whereParams));		}
+			${table.tableCameName}Mapper.selectByCondition(ConditionUtil.buildCondition(${table.className}.class, whereParams));
+        }
 		return CommonPage.toPage(page);
 	}
 }
