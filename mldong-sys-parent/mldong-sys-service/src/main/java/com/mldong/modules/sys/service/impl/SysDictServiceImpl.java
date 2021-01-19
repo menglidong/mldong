@@ -139,6 +139,7 @@ public class SysDictServiceImpl implements SysDictService{
 			DictItemModel item = new DictItemModel();
 			item.setName(dictItem.getName());
 			item.setDictItemValue(dictItem.getDictItemValue());
+			items.add(item);
 		});
 		return dictModel;
 	}
