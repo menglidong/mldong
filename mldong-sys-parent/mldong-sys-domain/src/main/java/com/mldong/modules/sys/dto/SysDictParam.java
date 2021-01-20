@@ -1,10 +1,12 @@
 package com.mldong.modules.sys.dto;
 
+import com.mldong.common.base.constant.CommonConstants;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.mldong.common.validator.Groups;
 
@@ -24,6 +26,7 @@ public class SysDictParam{
     private String name;
     @ApiModelProperty(value = "唯一编码",required=true)
     @NotBlank(message="唯一编码不能为空",groups={Groups.Save.class,Groups.Update.class})
+    @Pattern(regexp = CommonConstants.COLUMN_REG, message = "唯一编码只能是字母与下划线")
     private String dictKey;
     @ApiModelProperty(value = "备注",required=false)
     private String remark;
