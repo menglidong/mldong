@@ -1,28 +1,27 @@
 package com.mldong.modules.sys.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import com.mldong.common.base.constant.GlobalErrEnum;
-import com.mldong.common.exception.BizException;
-import com.mldong.modules.sys.enums.SysErrEnum;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import tk.mybatis.mapper.entity.Condition;
-
 import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.exception.BizException;
 import com.mldong.common.tk.ConditionUtil;
-import com.mldong.modules.sys.dto.SysDeptParam;
 import com.mldong.modules.sys.dto.SysDeptPageParam;
+import com.mldong.modules.sys.dto.SysDeptParam;
 import com.mldong.modules.sys.entity.SysDept;
+import com.mldong.modules.sys.entity.SysDictItem;
+import com.mldong.modules.sys.enums.SysErrEnum;
 import com.mldong.modules.sys.mapper.SysDeptMapper;
+import com.mldong.modules.sys.mapper.SysDictItemMapper;
 import com.mldong.modules.sys.service.SysDeptService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
+
+import java.util.Date;
+import java.util.List;
 /**
  * <p>业务接口实现层</p>
  * <p>部门</p>
@@ -33,6 +32,8 @@ import com.mldong.modules.sys.service.SysDeptService;
 public class SysDeptServiceImpl implements SysDeptService{
 	@Autowired
 	private SysDeptMapper sysDeptMapper;
+	@Autowired
+	private SysDictItemMapper sysDictItemMapper;
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int save(SysDeptParam param) {
@@ -70,9 +71,11 @@ public class SysDeptServiceImpl implements SysDeptService{
 		upSysDept.setUpdateTime(now);
 		Condition condition = new Condition(SysDept.class);
 		condition.createCriteria().andIn("id", ids);
-		// 更新时间
-		sysDeptMapper.updateByConditionSelective(upSysDept, condition);
-		// 逻辑删除
+		// 删除字典项
+		Condition itemCondition = new Condition(SysDictItem.class);
+		itemCondition.createCriteria().andIn("dictId", ids);
+		sysDictItemMapper.deleteByCondition(itemCondition);
+		// 删除字典
 		return sysDeptMapper.deleteByCondition(condition);
 	}
 
