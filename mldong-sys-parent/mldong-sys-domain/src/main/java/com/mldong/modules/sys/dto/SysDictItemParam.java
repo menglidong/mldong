@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -20,7 +19,7 @@ public class SysDictItemParam{
 	@NotNull(message="主键不能为空",groups={Groups.Update.class})
     private Long id;
     @ApiModelProperty(value = "字典id",required=true)
-    @NotEmpty(message="字典id不能为空",groups={Groups.Save.class,Groups.Update.class})
+    @NotNull(message="字典id不能为空",groups={Groups.Save.class,Groups.Update.class})
     private Long dictId;
     @ApiModelProperty(value = "名称",required=true)
     @NotBlank(message="名称不能为空",groups={Groups.Save.class,Groups.Update.class})

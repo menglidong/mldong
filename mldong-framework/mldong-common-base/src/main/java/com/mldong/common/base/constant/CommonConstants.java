@@ -17,5 +17,5 @@ public class CommonConstants {
 	/**
 	 * column正则
 	 */
-	public final static String COLUMN_REG = "(^_([a-zA-Z0-9]_?)*$)|(^[a-zA-Z](_?[a-zA-Z0-9])*_?$)";
+	public final static String COLUMN_REG = "(^_([a-zA-Z]_?)*$)|(^[a-zA-Z](_?[a-zA-Z0-9])*_?$)";
 }
