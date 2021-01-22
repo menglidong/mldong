@@ -14,6 +14,8 @@ public class DictItemModel implements Serializable {
 	private String name;
 	@ApiModelProperty("字典项值")
 	private int dictItemValue;
+	@ApiModelProperty("字典项键")
+	private String dictItemKey;
 	public String getName() {
 		return name;
 	}
@@ -26,5 +28,12 @@ public class DictItemModel implements Serializable {
 	public void setDictItemValue(int dictItemValue) {
 		this.dictItemValue = dictItemValue;
 	}
-	
+
+	public String getDictItemKey() {
+		return dictItemKey;
+	}
+
+	public void setDictItemKey(String dictItemKey) {
+		this.dictItemKey = dictItemKey;
+	}
 }

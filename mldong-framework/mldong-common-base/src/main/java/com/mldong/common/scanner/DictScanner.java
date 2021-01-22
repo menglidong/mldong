@@ -100,6 +100,7 @@ public class DictScanner implements ResourceLoaderAware{
 			DictItemModel dictItem = new DictItemModel();
 			CodedEnum codedEnum = (CodedEnum)item;
 			dictItem.setName(codedEnum.getName());
+			dictItem.setDictItemKey(codedEnum.toString());
 			dictItem.setDictItemValue(codedEnum.getValue());
 			items.add(dictItem);
 		});
