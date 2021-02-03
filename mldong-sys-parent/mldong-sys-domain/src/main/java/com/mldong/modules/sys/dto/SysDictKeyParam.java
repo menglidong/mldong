@@ -11,7 +11,7 @@ public class SysDictKeyParam {
 	@NotBlank(message="字典唯一编码不能为空")
 	private String dictKey;
 	@ApiModelProperty(value="类型不能为空",required=true)
-	@FlagValidator(values="enum,db",message="类型只能是enum或db",required=true)
+	@FlagValidator(values="enum,db,custom",message="类型只能是enum、db、custom",required=true)
 	private String type;
 	public String getDictKey() {
 		return dictKey;

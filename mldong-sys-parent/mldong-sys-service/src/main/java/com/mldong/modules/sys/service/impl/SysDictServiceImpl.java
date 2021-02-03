@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.mldong.common.scanner.CustomDictService;
 import com.mldong.common.validator.ValidatorTool;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class SysDictServiceImpl implements SysDictService{
 	private SysDictItemMapper sysDictItemMapper;
 	@Autowired
 	private DictScanner dictScanner;
+	@Autowired(required = false)
+	private List<CustomDictService> customDictServices;
 	@Caching(evict={
 			@CacheEvict(value="sys_dict_key")
 	})
@@ -112,6 +115,16 @@ public class SysDictServiceImpl implements SysDictService{
 		DictModel dictModel = null;
 		if("enum".equals(param.getType())) {
 			dictModel =  dictScanner.getDictMap().get(param.getDictKey());
+		} else if("custom".equals(param.getType())) {
+			// 这里是自定义范围，由业务模块实现
+			if(customDictServices != null) {
+				for(CustomDictService customDictService: customDictServices) {
+					dictModel = customDictService.getByDictKey(param.getDictKey());
+					if(dictModel!=null) {
+						return dictModel;
+					}
+				}
+			}
 		}
 		if(null != dictModel) {
 			return dictModel;
