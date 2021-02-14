@@ -117,7 +117,7 @@ mapper:
 pagehelper:
   helperDialect: mysql
   reasonable: false
-  supportMethodsArguments: true
+  supportMethodsArguments: false
   params: count=countSql
 
 # 启用自定义文档
