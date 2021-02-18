@@ -148,6 +148,79 @@ public class ConditionUtil {
 
 	/**
 	 * 将属性值转成whereParams对象
+	 * @param param
+	 * @return
+	 */
+	public static List<WhereParam> propertyConvertWhereParams(Map<String,Object> param) {
+		List<WhereParam> res = new ArrayList<>();
+		param.forEach((k,v) -> {
+			String [] arr = k.split("_");
+			String tableAlias = null;
+			String operateType;
+			String propertyName;
+			if(arr.length ==3) {
+				operateType = arr[1];
+				propertyName = arr[2];
+			} else if(arr.length == 4) {
+				tableAlias = arr[1];
+				operateType = arr[2];
+				propertyName = arr[3];
+			} else {
+				return;
+			}
+			if(!"m".equals(arr[0])) {
+				return;
+			}
+			OperateTypeEnum ops [] = OperateTypeEnum.values();
+			// 默认等值
+			OperateTypeEnum operateTypeEnum = OperateTypeEnum.EQ;
+			for(OperateTypeEnum item : ops) {
+				if(item.name().equals(operateType.toUpperCase())) {
+					operateTypeEnum = item;
+					break;
+				}
+			}
+			if(!StringTool.checkColumn(propertyName) || (StringTool.isNotEmpty(tableAlias) && !StringTool.checkColumn(tableAlias))) {
+				return;
+			}
+			Object value = null;
+			//获取属性值
+			value = v;
+			if(value != null) {
+				if(value instanceof String) {
+					if (StringTool.isNotEmpty(value.toString())) {
+						WhereParam whereParam = new WhereParam();
+						whereParam.setTableAlias(tableAlias);
+						whereParam.setOperateType(operateTypeEnum);
+						whereParam.setPropertyName(propertyName);
+						if (operateTypeEnum.equals(OperateTypeEnum.IN) || operateTypeEnum.equals(OperateTypeEnum.NIN)) {
+							String values[] = value.toString().split(",");
+							whereParam.setPropertyValue(Arrays.asList(values));
+						} else if (operateTypeEnum.equals(OperateTypeEnum.BT) || operateTypeEnum.equals(OperateTypeEnum.NBT)) {
+							String values[] = value.toString().split(",");
+							if (values.length != 2) {
+								throw new BizException(GlobalErrEnum.GL99990100);
+							}
+							whereParam.setPropertyValue(Arrays.asList(values));
+						} else {
+							whereParam.setPropertyValue(value);
+						}
+						res.add(whereParam);
+					}
+				} else {
+					WhereParam whereParam = new WhereParam();
+					whereParam.setTableAlias(tableAlias);
+					whereParam.setOperateType(operateTypeEnum);
+					whereParam.setPropertyName(propertyName);
+					whereParam.setPropertyValue(value);
+					res.add(whereParam);
+				}
+			}
+		});
+		return res;
+	}
+	/**
+	 * 将属性值转成whereParams对象
 	 * @param pageParam
 	 * @return
 	 */

@@ -1,15 +1,9 @@
 package com.mldong.common.web;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.util.Iterator;
-
 import com.mldong.common.base.PageParam;
-import com.mldong.common.base.WhereParam;
+import com.mldong.common.logger.LoggerModel;
 import com.mldong.common.tk.ConditionUtil;
-import com.mldong.common.tool.StringTool;
+import com.mldong.common.tool.JsonTool;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +13,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
-import com.mldong.common.logger.LoggerModel;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 /**
  * 全局的请求处理，可以在这里对原始的参数进行解密，或者请求参数日志记录
  * @author mldong
@@ -70,25 +67,27 @@ public class GlobalRequestBodyAdvice implements RequestBodyAdvice{
 		if(body != null) {
 			if(body instanceof PageParam) {
 				PageParam pageParam = (PageParam)body ;
-				if(pageParam.getWhereParams() == null || pageParam.getWhereParams().isEmpty()) {
-					ConditionUtil.propertyConvertWhereParams((PageParam)pageParam);
-				} else {
-					// 这里要过滤 表别名与字段属性
-					Iterator<WhereParam> iterator = pageParam.getWhereParams().iterator();
-					while (iterator.hasNext()) {
-						WhereParam param = iterator.next();
-						if(!StringTool.checkColumn(param.getPropertyName())) {
-							iterator.remove();
-							continue;
-						}
-						if(StringTool.isNotEmpty(param.getTableAlias())) {
-							if(!StringTool.checkColumn(param.getTableAlias())) {
-								iterator.remove();
-								continue;
-							}
-						}
-					}
-				}
+				LoggerModel loggerModel = RequestHolder.getLoggerModel();
+				pageParam.setWhereParams(ConditionUtil.propertyConvertWhereParams(JsonTool.jsonToMap(loggerModel.getBody())));
+//				if(pageParam.getWhereParams() == null || pageParam.getWhereParams().isEmpty()) {
+//					ConditionUtil.propertyConvertWhereParams((PageParam)pageParam);
+//				} else {
+//					// 这里要过滤 表别名与字段属性
+//					Iterator<WhereParam> iterator = pageParam.getWhereParams().iterator();
+//					while (iterator.hasNext()) {
+//						WhereParam param = iterator.next();
+//						if(!StringTool.checkColumn(param.getPropertyName())) {
+//							iterator.remove();
+//							continue;
+//						}
+//						if(StringTool.isNotEmpty(param.getTableAlias())) {
+//							if(!StringTool.checkColumn(param.getTableAlias())) {
+//								iterator.remove();
+//								continue;
+//							}
+//						}
+//					}
+//				}
 			}
 		}
 		return body;
