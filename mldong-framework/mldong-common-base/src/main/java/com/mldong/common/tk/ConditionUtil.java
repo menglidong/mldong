@@ -79,6 +79,7 @@ public class ConditionUtil {
 				if(!listObject.isEmpty()) {
 					criteria.andNotIn(model.getPropertyName(), listObject );
 				}
+				break;
 			case OR:
 				Map<String,Object> map = (Map<String, Object>) model.getPropertyValue();
 				WhereParam param = new WhereParam();
@@ -132,6 +133,7 @@ public class ConditionUtil {
 					if(!listObject.isEmpty()) {
 						criteria.orNotIn(param.getPropertyName(), listObject );
 					}
+					break;
 				default:
 					break;
 				}
