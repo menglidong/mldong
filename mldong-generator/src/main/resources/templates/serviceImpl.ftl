@@ -80,6 +80,18 @@ public class ${table.className}ServiceImpl implements ${table.className}Service{
 		} else {
 			${table.tableCameName}Mapper.selectByCondition(ConditionUtil.buildCondition(${table.className}.class, whereParams));
         }
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(${table.className}.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, ${table.tableCameName}Mapper.selectByCondition(condition));
+			}
+		}
 		return CommonPage.toPage(page);
 	}
 }
