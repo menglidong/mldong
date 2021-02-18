@@ -1,36 +1,34 @@
 package com.mldong.modules.sys.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import com.mldong.common.base.constant.GlobalErrEnum;
-import com.mldong.modules.sys.dao.SysUserDao;
-import com.mldong.modules.sys.dto.*;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import tk.mybatis.mapper.entity.Condition;
-
 import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.IdsParam;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.config.GlobalProperties;
 import com.mldong.common.exception.BizException;
 import com.mldong.common.tk.ConditionUtil;
 import com.mldong.common.tool.Md5Tool;
 import com.mldong.common.tool.StringTool;
+import com.mldong.modules.sys.dao.SysUserDao;
+import com.mldong.modules.sys.dto.*;
 import com.mldong.modules.sys.entity.SysUser;
 import com.mldong.modules.sys.enums.SysErrEnum;
 import com.mldong.modules.sys.mapper.SysUserMapper;
 import com.mldong.modules.sys.service.SysRbacService;
 import com.mldong.modules.sys.service.SysUserService;
 import com.mldong.modules.sys.vo.SysUserVo;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
+
+import java.util.Date;
+import java.util.List;
 /**
  * 用户管理业务
  * @author mldong
@@ -137,6 +135,18 @@ public class SysUserServiceImpl implements SysUserService{
 			sysUserMapper.select(user);
 		} else {
 			sysUserMapper.selectByCondition(ConditionUtil.buildCondition(SysUser.class, whereParams));
+		}
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(SysUser.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, sysUserMapper.selectByCondition(condition));
+			}
 		}
 		return CommonPage.toPage(page);
 	}

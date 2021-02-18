@@ -93,7 +93,20 @@ public class SysDeptServiceImpl implements SysDeptService{
 			SysDept sysDept = new SysDept();
 			sysDeptMapper.select(sysDept);
 		} else {
-			sysDeptMapper.selectByCondition(ConditionUtil.buildCondition(SysDept.class, whereParams));		}
+			sysDeptMapper.selectByCondition(ConditionUtil.buildCondition(SysDept.class, whereParams));
+		}
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(SysDept.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, sysDeptMapper.selectByCondition(condition));
+			}
+		}
 		return CommonPage.toPage(page);
 	}
 

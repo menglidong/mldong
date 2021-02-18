@@ -1,26 +1,24 @@
 package com.mldong.modules.sys.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import com.mldong.common.validator.ValidatorTool;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import tk.mybatis.mapper.entity.Condition;
-
 import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
 import com.mldong.common.tk.ConditionUtil;
-import com.mldong.modules.sys.dto.SysMenuParam;
+import com.mldong.common.validator.ValidatorTool;
 import com.mldong.modules.sys.dto.SysMenuPageParam;
+import com.mldong.modules.sys.dto.SysMenuParam;
 import com.mldong.modules.sys.entity.SysMenu;
 import com.mldong.modules.sys.mapper.SysMenuMapper;
 import com.mldong.modules.sys.service.SysMenuService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
+
+import java.util.Date;
+import java.util.List;
 /**
  * <p>业务接口实现层</p>
  * <p>菜单</p>
@@ -81,7 +79,20 @@ public class SysMenuServiceImpl implements SysMenuService{
 			SysMenu sysMenu = new SysMenu();
 			sysMenuMapper.select(sysMenu);
 		} else {
-			sysMenuMapper.selectByCondition(ConditionUtil.buildCondition(SysMenu.class, whereParams));		}
+			sysMenuMapper.selectByCondition(ConditionUtil.buildCondition(SysMenu.class, whereParams));
+		}
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(SysMenu.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, sysMenuMapper.selectByCondition(condition));
+			}
+		}
 		return CommonPage.toPage(page);
 	}
 

@@ -1,28 +1,26 @@
 package com.mldong.modules.cms.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import com.mldong.common.dauth.DataScope;
-import com.mldong.modules.cms.dao.CmsArticleDao;
-import com.mldong.modules.cms.dto.CmsArticleWithExt;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import tk.mybatis.mapper.entity.Condition;
-
 import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.dauth.DataScope;
 import com.mldong.common.tk.ConditionUtil;
-import com.mldong.modules.cms.dto.CmsArticleParam;
+import com.mldong.modules.cms.dao.CmsArticleDao;
 import com.mldong.modules.cms.dto.CmsArticlePageParam;
+import com.mldong.modules.cms.dto.CmsArticleParam;
+import com.mldong.modules.cms.dto.CmsArticleWithExt;
 import com.mldong.modules.cms.entity.CmsArticle;
 import com.mldong.modules.cms.mapper.CmsArticleMapper;
 import com.mldong.modules.cms.service.CmsArticleService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
+
+import java.util.Date;
+import java.util.List;
 /**
  * <p>业务接口实现层</p>
  * <p>文章</p>
@@ -82,7 +80,20 @@ public class CmsArticleServiceImpl implements CmsArticleService{
 			CmsArticle cmsArticle = new CmsArticle();
 			cmsArticleMapper.select(cmsArticle);
 		} else {
-			cmsArticleMapper.selectByCondition(ConditionUtil.buildCondition(CmsArticle.class, whereParams));		}
+			cmsArticleMapper.selectByCondition(ConditionUtil.buildCondition(CmsArticle.class, whereParams));
+		}
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(CmsArticle.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, cmsArticleMapper.selectByCondition(condition));
+			}
+		}
 		return CommonPage.toPage(page);
 	}
 

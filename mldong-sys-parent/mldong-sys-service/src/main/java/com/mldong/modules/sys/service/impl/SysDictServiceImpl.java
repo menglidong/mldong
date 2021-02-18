@@ -1,29 +1,15 @@
 package com.mldong.modules.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.mldong.common.scanner.CustomDictService;
-import com.mldong.common.validator.ValidatorTool;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import tk.mybatis.mapper.entity.Condition;
-
 import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.scanner.CustomDictService;
 import com.mldong.common.scanner.DictScanner;
 import com.mldong.common.scanner.model.DictItemModel;
 import com.mldong.common.scanner.model.DictModel;
 import com.mldong.common.tk.ConditionUtil;
+import com.mldong.common.validator.ValidatorTool;
 import com.mldong.modules.sys.dto.SysDictKeyParam;
 import com.mldong.modules.sys.dto.SysDictPageParam;
 import com.mldong.modules.sys.dto.SysDictParam;
@@ -32,6 +18,18 @@ import com.mldong.modules.sys.entity.SysDictItem;
 import com.mldong.modules.sys.mapper.SysDictItemMapper;
 import com.mldong.modules.sys.mapper.SysDictMapper;
 import com.mldong.modules.sys.service.SysDictService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 /**
  * <p>业务接口实现层</p>
  * <p>字典</p>
@@ -106,7 +104,20 @@ public class SysDictServiceImpl implements SysDictService{
 			SysDict sysDict = new SysDict();
 			sysDictMapper.select(sysDict);
 		} else {
-			sysDictMapper.selectByCondition(ConditionUtil.buildCondition(SysDict.class, whereParams));		}
+			sysDictMapper.selectByCondition(ConditionUtil.buildCondition(SysDict.class, whereParams));
+		}
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(SysDict.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, sysDictMapper.selectByCondition(condition));
+			}
+		}
 		return CommonPage.toPage(page);
 	}
 	@Cacheable(value = "sys_dict_key",key="#param.dictKey+'-'+#param.type")

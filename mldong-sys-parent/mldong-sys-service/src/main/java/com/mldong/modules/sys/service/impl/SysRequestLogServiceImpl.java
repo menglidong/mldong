@@ -1,27 +1,25 @@
 package com.mldong.modules.sys.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import com.mldong.common.logger.IRequestLogStore;
-import com.mldong.common.logger.LoggerModel;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import tk.mybatis.mapper.entity.Condition;
-
 import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.logger.IRequestLogStore;
+import com.mldong.common.logger.LoggerModel;
 import com.mldong.common.tk.ConditionUtil;
-import com.mldong.modules.sys.dto.SysRequestLogParam;
 import com.mldong.modules.sys.dto.SysRequestLogPageParam;
+import com.mldong.modules.sys.dto.SysRequestLogParam;
 import com.mldong.modules.sys.entity.SysRequestLog;
 import com.mldong.modules.sys.mapper.SysRequestLogMapper;
 import com.mldong.modules.sys.service.SysRequestLogService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
+
+import java.util.Date;
+import java.util.List;
 /**
  * <p>业务接口实现层</p>
  * <p>请求日志</p>
@@ -80,7 +78,20 @@ public class SysRequestLogServiceImpl implements SysRequestLogService, IRequestL
 			SysRequestLog sysRequestLog = new SysRequestLog();
 			sysRequestLogMapper.select(sysRequestLog);
 		} else {
-			sysRequestLogMapper.selectByCondition(ConditionUtil.buildCondition(SysRequestLog.class, whereParams));		}
+			sysRequestLogMapper.selectByCondition(ConditionUtil.buildCondition(SysRequestLog.class, whereParams));
+		}
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(SysRequestLog.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, sysRequestLogMapper.selectByCondition(condition));
+			}
+		}
 		return CommonPage.toPage(page);
 	}
 

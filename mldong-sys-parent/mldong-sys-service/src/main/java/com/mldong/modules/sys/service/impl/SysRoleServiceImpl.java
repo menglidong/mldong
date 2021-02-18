@@ -77,7 +77,20 @@ public class SysRoleServiceImpl implements SysRoleService{
 			SysRole sysRole = new SysRole();
 			sysRoleMapper.select(sysRole);
 		} else {
-			sysRoleMapper.selectByCondition(ConditionUtil.buildCondition(SysRole.class, whereParams));		}
+			sysRoleMapper.selectByCondition(ConditionUtil.buildCondition(SysRole.class, whereParams));
+		}
+		if(param.getIncludeIds()!=null && !param.getIncludeIds().isEmpty()) {
+			param.getIncludeIds().removeIf(id -> {
+				return page.getResult().stream().filter(item -> {
+					return item.getId().equals(id);
+				}).count() > 0;
+			});
+			if(!param.getIncludeIds().isEmpty()) {
+				Condition condition = new Condition(SysRole.class);
+				condition.createCriteria().andIn("id", param.getIncludeIds());
+				page.getResult().addAll(0, sysRoleMapper.selectByCondition(condition));
+			}
+		}
 		return CommonPage.toPage(page);
 	}
 
