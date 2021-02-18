@@ -1,5 +1,6 @@
 package com.mldong.common.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mldong.common.tool.StringTool;
@@ -32,7 +33,8 @@ public class PageParam<T> {
 	private String keyworks;
 	@ApiModelProperty(value="排序字段")
 	private String orderBy;
-	@ApiModelProperty(value="自定义查询参数集合")
+	@ApiModelProperty(value="自定义查询参数集合", hidden = true)
+	@JsonIgnoreProperties
 	private List<WhereParam> whereParams;
 	@ApiModelProperty(value="是否查询总条数")
 	private YesNoEnum isCount;
