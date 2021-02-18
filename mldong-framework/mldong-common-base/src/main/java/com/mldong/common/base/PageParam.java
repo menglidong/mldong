@@ -36,7 +36,8 @@ public class PageParam<T> {
 	private List<WhereParam> whereParams;
 	@ApiModelProperty(value="是否查询总条数")
 	private YesNoEnum isCount;
-	
+	@ApiModelProperty(value="或查询-下拉列表编辑模式专用")
+	private List<Long> includeIds;
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -209,5 +210,13 @@ public class PageParam<T> {
 
 	public void setIsCount(YesNoEnum isCount) {
 		this.isCount = isCount;
+	}
+
+	public List<Long> getIncludeIds() {
+		return includeIds;
+	}
+
+	public void setIncludeIds(List<Long> includeIds) {
+		this.includeIds = includeIds;
 	}
 }
