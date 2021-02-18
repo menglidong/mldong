@@ -68,7 +68,9 @@ public class GlobalRequestBodyAdvice implements RequestBodyAdvice{
 			if(body instanceof PageParam) {
 				PageParam pageParam = (PageParam)body ;
 				LoggerModel loggerModel = RequestHolder.getLoggerModel();
-				pageParam.setWhereParams(ConditionUtil.propertyConvertWhereParams(JsonTool.jsonToMap(loggerModel.getBody())));
+				if(pageParam.getWhereParams() == null || pageParam.getWhereParams().isEmpty()) {
+					pageParam.setWhereParams(ConditionUtil.propertyConvertWhereParams(JsonTool.jsonToMap(loggerModel.getBody())));
+				}
 //				if(pageParam.getWhereParams() == null || pageParam.getWhereParams().isEmpty()) {
 //					ConditionUtil.propertyConvertWhereParams((PageParam)pageParam);
 //				} else {
