@@ -38,7 +38,12 @@ public class RedisTokenStrategyImpl implements TokenStrategy {
     @Override
     public boolean verifyToken(String token) {
         String key = userType + ":" + token;
-        return redisTemplate.opsForValue().get(key) != null;
+        RedisUser redisUser =  redisTemplate.opsForValue().get(key);
+        if(redisUser !=null ) {
+            redisTemplate.expire(key, tokenExpireTimeout, TimeUnit.HOURS);
+            return  true;
+        }
+        return false;
     }
 
     @Override
