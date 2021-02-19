@@ -1,4 +1,4 @@
-package com.mldong.config;
+package com.m.config;
 
 import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
@@ -12,7 +12,6 @@ import java.util.Properties;
 
 @Configuration
 @EnableConfigurationProperties(CaptchaProperties.class)
-//@ConditionalOnProperty(prefix = "captcha", name = "open", havingValue = "true", matchIfMissing = false)
 public class CaptchaConfiguration {
     @Autowired
     private CaptchaProperties captchaProperties;

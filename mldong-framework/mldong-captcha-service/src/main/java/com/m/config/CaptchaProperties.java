@@ -1,9 +1,8 @@
-package com.mldong.config;
+package com.m.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "captcha")
-//@ConditionalOnProperty(prefix = "captcha", name = "open", havingValue = "true", matchIfMissing = false)
 public class CaptchaProperties {
     /**
      * 图片边框

@@ -1,4 +1,4 @@
-package com.mldong.vo;
+package com.m.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 

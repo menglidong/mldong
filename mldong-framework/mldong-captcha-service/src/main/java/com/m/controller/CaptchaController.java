@@ -1,4 +1,4 @@
-package com.mldong.controller;
+package com.m.controller;
 
 import com.google.code.kaptcha.Producer;
 import com.mldong.common.annotation.AuthIgnore;
@@ -7,13 +7,12 @@ import com.mldong.common.base.constant.CommonConstants;
 import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.exception.BizException;
 import com.mldong.common.tool.Base64Tool;
-import com.mldong.vo.CaptchaVo;
+import com.m.vo.CaptchaVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.FastByteArrayOutputStream;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 @Api(tags = "图片验证码")
 @RestController
-//@ConditionalOnBean({CaptchaConfiguration.class, RedisTemplate.class})
 public class CaptchaController {
     @Resource(name = "captchaProducer")
     private Producer captchaProducer;
@@ -35,7 +33,6 @@ public class CaptchaController {
     @PostMapping("captchaImage")
     @ApiOperation(value = "生成验证码", notes = "生成验证码")
     @AuthIgnore
-    @GetMapping("/captchaImage")
     public CommonResult<CaptchaVo> captchaImage() {
         String code = captchaProducer.createText();
         BufferedImage bufferedImage = captchaProducer.createImage(code);

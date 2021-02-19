@@ -1,5 +1,6 @@
 package com.mldong.modules.sys.controller;
 
+import com.mldong.common.annotation.VerifyCaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -28,6 +29,7 @@ public class SysLoginController {
 	 */
 	@PostMapping("/sys/login")
 	@AuthIgnore
+	@VerifyCaptcha
 	@ApiOperation(value="登录系统", notes="登录系统")
 	public CommonResult<SysLoginVo> login(@RequestBody @Validated SysLoginParam param) {
 		return CommonResult.success("登录成功", sysLoginService.login(param));
