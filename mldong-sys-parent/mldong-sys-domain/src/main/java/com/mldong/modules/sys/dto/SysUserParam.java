@@ -1,5 +1,7 @@
 package com.mldong.modules.sys.dto;
 
+import com.mldong.common.annotation.PasswordValidator;
+import com.mldong.common.annotation.UserNameValidator;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Email;
@@ -16,6 +18,7 @@ public class SysUserParam {
     private Long id;
 	@ApiModelProperty(name="用户名",required=true)
 	@NotBlank(message="用户名不能为空",groups={Groups.Save.class})
+	@UserNameValidator(groups={Groups.Save.class,Groups.Update.class})
 	private String userName;
 	@ApiModelProperty(name="姓名",required=true)
 	@NotBlank(message="姓名不能为空",groups={Groups.Save.class,Groups.Update.class})
@@ -31,6 +34,8 @@ public class SysUserParam {
 	@ApiModelProperty(name="联系电话",required=false)
 	private String telephone;
 	@ApiModelProperty(name="密码",required=false)
+	@PasswordValidator(groups = {Groups.Save.class,Groups.Update.class},required = false)
+	@NotBlank(groups = {Groups.Save.class}, message = "密码不能为空")
 	private String password;
 	@ApiModelProperty(name="确认密码",required=false)
 	private String confirmPassword;

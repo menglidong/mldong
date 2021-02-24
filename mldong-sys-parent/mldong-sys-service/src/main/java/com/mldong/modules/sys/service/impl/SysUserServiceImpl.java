@@ -1,10 +1,7 @@
 package com.mldong.modules.sys.service.impl;
 
 import com.github.pagehelper.Page;
-import com.mldong.common.base.CommonPage;
-import com.mldong.common.base.IdsParam;
-import com.mldong.common.base.WhereParam;
-import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.base.*;
 import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.config.GlobalProperties;
 import com.mldong.common.exception.BizException;
@@ -78,7 +75,19 @@ public class SysUserServiceImpl implements SysUserService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(SysUserParam param) {
-		
+		if(globalProperties.getSuperAdminId().equals(param.getId())) {
+			throw new BizException(new CommonError() {
+				@Override
+				public int getValue() {
+					return GlobalErrEnum.GL99990100.getValue();
+				}
+
+				@Override
+				public String getName() {
+					return "超级管理员账号密码不可修改";
+				}
+			});
+		}
 		Date now = new Date();
 		SysUser user = new SysUser();
 		BeanUtils.copyProperties(param, user);
@@ -92,7 +101,13 @@ public class SysUserServiceImpl implements SysUserService{
 				String passwordEncry = Md5Tool.md5(password, salt);
 				user.setSalt(salt);
 				user.setPassword(passwordEncry);
+			} else {
+				// 两密码不一致
+				throw new BizException(SysErrEnum.SYS80000005);
 			}
+		} else{
+			user.setPassword(null);
+			user.setSalt(null);
 		}
 		// 用户名不能修改
 		user.setUserName(null);
@@ -152,6 +167,19 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 	@Override
 	public int resetPassword(IdsParam param) {
+		if(param.getIds().contains(globalProperties.getSuperAdminId())) {
+			throw new BizException(new CommonError() {
+				@Override
+				public int getValue() {
+					return GlobalErrEnum.GL99990100.getValue();
+				}
+
+				@Override
+				public String getName() {
+					return "超级管理员账号密码不可重置";
+				}
+			});
+		}
 		String defaultPassword = globalProperties.getDefaultPassword();
 		SysUser user = new SysUser();
 		String salt = StringTool.getRandomString(8);

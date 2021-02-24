@@ -223,4 +223,13 @@ public class SysUserController {
 		param.setUserId(userId);
 		return CommonResult.success(sysUserService.updateProfile(param));
 	}
+	/**
+	 * 重置用户密码
+	 * @return
+	 */
+	@PostMapping("resetPassword")
+	@ApiOperation(value="重置用户密码", notes="sys:user:resetPassword")
+	public CommonResult<?> resetPassword(@RequestBody @Validated IdsParam param) {
+		return CommonResult.success(sysUserService.resetPassword(param));
+	}
 }

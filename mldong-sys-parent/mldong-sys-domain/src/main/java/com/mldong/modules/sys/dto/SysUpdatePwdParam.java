@@ -1,5 +1,6 @@
 package com.mldong.modules.sys.dto;
 
+import com.mldong.common.annotation.PasswordValidator;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,9 +13,11 @@ public class SysUpdatePwdParam {
     private String password;
     @ApiModelProperty(value = "新密码", required = true)
     @NotEmpty(message = "新密码不能为空")
+    @PasswordValidator
     private String newPassword;
     @ApiModelProperty(value = "确认密码", required = true)
     @NotEmpty(message = "确认密码不能为空")
+    @PasswordValidator
     private String confirmPassword;
 
     public Long getUserId() {
