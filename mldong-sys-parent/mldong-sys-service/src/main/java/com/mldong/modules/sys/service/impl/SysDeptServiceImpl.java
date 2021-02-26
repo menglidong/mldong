@@ -40,11 +40,13 @@ public class SysDeptServiceImpl implements SysDeptService{
 		if(null == param.getParentId()) {
 			param.setParentId(0L);
 		}
-		SysDept info = sysDeptMapper.selectByPrimaryKey(param.getParentId());
+		if(param.getParentId()!=0L){
+			SysDept info = sysDeptMapper.selectByPrimaryKey(param.getParentId());
 		// 如果父节点不为正常状态,则不允许新增子节点
-		if (YesNoEnum.NO.equals(param.getIsEnabled())) {
-			// 禁用
-			throw new BizException(SysErrEnum.SYS80000008);
+			if (info!=null && YesNoEnum.NO.equals(info.getIsEnabled())) {
+				// 禁用
+				throw new BizException(SysErrEnum.SYS80000008);
+			}
 		}
 		Date now = new Date();
 		SysDept sysDept = new SysDept();
