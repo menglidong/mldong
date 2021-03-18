@@ -2,6 +2,7 @@ package com.mldong.common.interceptor;
 
 import com.mldong.common.access.AccessInitProcessor;
 import com.mldong.common.annotation.AuthIgnore;
+import com.mldong.common.annotation.LogIgnore;
 import com.mldong.common.base.SsoUser;
 import com.mldong.common.base.constant.GlobalErrEnum;
 import com.mldong.common.exception.BizException;
@@ -116,9 +117,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 		LoggerModel loggerModel = RequestHolder.getLoggerModel();
 		if(null != loggerModel) {
 			loggerModel.setEndTime(System.currentTimeMillis());
-			loggerStore.save(loggerModel);
-			if(requestLogStore!=null) {
-				requestLogStore.saveRequestLog(loggerModel);
+			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			LogIgnore authIgnore = handlerMethod.getMethodAnnotation(LogIgnore.class);
+			if (null == authIgnore) {
+				loggerStore.save(loggerModel);
+				if(requestLogStore!=null) {
+					requestLogStore.saveRequestLog(loggerModel);
+				}
 			}
 		}
 		// 记得要移除！！！！！
