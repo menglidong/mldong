@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -17,7 +18,7 @@ import com.mldong.common.tool.JsonTool;
  */
 @ControllerAdvice
 public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object>{
-
+	AntPathMatcher antPathMatcher = new AntPathMatcher();
 	@Override
 	public boolean supports(MethodParameter returnType,
 			Class<? extends HttpMessageConverter<?>> converterType) {
@@ -32,7 +33,12 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object>{
 		LoggerModel loggerModel = RequestHolder.getLoggerModel();
 		if(null != loggerModel) {
 			// 设置返回结果，这里拿到的是controller方法的返回值
-			loggerModel.setReturnData(null==returnData?"":JsonTool.toJson(returnData));
+			String uri = loggerModel.getUri();
+			if(!(antPathMatcher.match("/**/list**",uri)
+                    ||antPathMatcher.match("/**/get**",uri)
+                    ||antPathMatcher.match("/**/info**",uri))) {
+				loggerModel.setReturnData(null==returnData?"":JsonTool.toJson(returnData));
+			}
 		}
 		return returnData;
 	}
