@@ -97,6 +97,11 @@ public class EasyPoiTool {
 			if("java.lang.Enum".equals(field.getType().getSuperclass().getName())){
 				Excel excel = field.getAnnotation(Excel.class);
 				dictFields.add(excel.name());
+			} else {
+				Excel excel = field.getAnnotation(Excel.class);
+				if(StringTool.isNotEmpty(excel.dict())) {
+					dictFields.add(excel.name());
+				}
 			}
 		}
 		return dictFields.toArray(new String[]{});
@@ -144,5 +149,40 @@ public class EasyPoiTool {
 			e.printStackTrace();
 		}
 		return res;
+	}
+
+	/**
+	 * 获取Field
+	 * @param obj
+	 * @param name
+	 * @return
+	 */
+	public static Field getField(Object obj,String name) {
+		Field[] fields = obj.getClass().getDeclaredFields();
+		for (int i = 0, len = fields.length; i < len; i++) {
+			Field field = fields[i];
+			Excel excel = field.getAnnotation(Excel.class);
+			if(excel.name().equals(name)) {
+				return field;
+			}
+		}
+		return null;
+	}
+	/**
+	 * 获取Field的dict
+	 * @param obj
+	 * @param name
+	 * @return
+	 */
+	public static String getFieldDict(Object obj,String name) {
+		Field[] fields = obj.getClass().getDeclaredFields();
+		for (int i = 0, len = fields.length; i < len; i++) {
+			Field field = fields[i];
+			Excel excel = field.getAnnotation(Excel.class);
+			if(excel.name().equals(name)) {
+				return excel.dict();
+			}
+		}
+		return "";
 	}
 }
