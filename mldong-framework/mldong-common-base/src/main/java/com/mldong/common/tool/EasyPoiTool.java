@@ -1,10 +1,13 @@
 package com.mldong.common.tool;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.mldong.common.base.CodedEnum;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class EasyPoiTool {
@@ -80,5 +83,66 @@ public class EasyPoiTool {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * 获取实体类中的字典项列
+	 * @param t
+	 * @return
+	 */
+	public static String [] getEnumFields(Class<?> t) {
+		List<String> dictFields = new ArrayList<>();
+		Field [] fields = t.getDeclaredFields();
+		for(Field field:fields) {
+			if("java.lang.Enum".equals(field.getType().getSuperclass().getName())){
+				Excel excel = field.getAnnotation(Excel.class);
+				dictFields.add(excel.name());
+			}
+		}
+		return dictFields.toArray(new String[]{});
+	}
+	/**
+	 * 导出枚举处理
+	 * @param obj
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static Object exportEnumHandler(Object obj, String name, Object value) {
+		if(value instanceof CodedEnum) {
+			CodedEnum codedEnum = (CodedEnum) value;
+			return codedEnum.getName();
+		}
+		return value;
+	}
+	/**
+	 * 导入枚举处理
+	 * @param obj
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static Object importEnumHandler(Object obj, String name, Object value) {
+		Object res = null;
+		try {
+			Field[] fields = obj.getClass().getDeclaredFields();
+			for (int i = 0, len = fields.length; i < len; i++) {
+				Field field = fields[i];
+				Excel excel = field.getAnnotation(Excel.class);
+				if (excel.name().equals(name)) {
+					CodedEnum[] values = (CodedEnum[]) field.getType().getMethod("values").invoke(new Object(), new Object[]{});
+					for(CodedEnum codedEnum:values) {
+						if(codedEnum.getName().equals(value.toString())) {
+							res =  codedEnum;
+							break;
+						}
+					}
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 }
