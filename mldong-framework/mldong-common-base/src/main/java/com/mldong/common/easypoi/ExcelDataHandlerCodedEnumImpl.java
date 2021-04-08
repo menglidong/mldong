@@ -1,12 +1,18 @@
 package com.mldong.common.easypoi;
 
-import cn.afterturn.easypoi.handler.impl.ExcelDataHandlerDefaultImpl;
+import cn.afterturn.easypoi.handler.inter.IExcelDataHandler;
 import com.mldong.common.tool.EasyPoiTool;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Hyperlink;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.util.Map;
 
-public class ExcelDataHandlerCodedEnumImpl<T> extends ExcelDataHandlerDefaultImpl<T> {
+public class ExcelDataHandlerCodedEnumImpl<T> implements IExcelDataHandler<T> {
+
+    private Class clazz;
+    public ExcelDataHandlerCodedEnumImpl(Class<?> clazz) {
+		this.clazz = clazz;
+    }
     @Override
     public Object exportHandler(T obj, String name, Object value) {
         return EasyPoiTool.exportEnumHandler(obj,name,value);
@@ -17,9 +23,22 @@ public class ExcelDataHandlerCodedEnumImpl<T> extends ExcelDataHandlerDefaultImp
     }
 
     @Override
+    public void setNeedHandlerFields(String[] strings) {
+
+    }
+
+    @Override
+    public void setMapValue(Map<String, Object> map, String s, Object o) {
+
+    }
+
+    @Override
+    public Hyperlink getHyperlink(CreationHelper creationHelper, T t, String s, Object o) {
+        return null;
+    }
+
+    @Override
     public String[] getNeedHandlerFields() {
-        Type type = getClass().getGenericSuperclass();
-        Type[] parameter = ((ParameterizedType) type).getActualTypeArguments();
-        return EasyPoiTool.getEnumFields((Class<?>)parameter[0]);
+        return EasyPoiTool.getEnumFields(this.clazz);
     }
 }
