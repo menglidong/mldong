@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 public class ExcelDataHandlerCodedEnumImpl<T> implements IExcelDataHandler<T> {
-    private List<ExcelPoiDict> excelPoiDicts;
+    private List<ExcelPoiDictService> excelPoiDicts;
     private Class clazz;
     public ExcelDataHandlerCodedEnumImpl(Class<?> clazz) {
 		this.clazz = clazz;
     }
-    public ExcelDataHandlerCodedEnumImpl(Class<?> clazz, List<ExcelPoiDict> excelPoiDicts) {
+    public ExcelDataHandlerCodedEnumImpl(Class<?> clazz, List<ExcelPoiDictService> excelPoiDicts) {
 		this.clazz = clazz;
 		this.excelPoiDicts = excelPoiDicts;
     }
@@ -23,7 +23,7 @@ public class ExcelDataHandlerCodedEnumImpl<T> implements IExcelDataHandler<T> {
     public Object exportHandler(T obj, String name, Object value) {
         String dictKey = EasyPoiTool.getFieldDict(obj,name);
         if(StringTool.isNotEmpty(dictKey)&&(excelPoiDicts!=null&&!excelPoiDicts.isEmpty())) {
-            for (ExcelPoiDict excelPoiDict: excelPoiDicts) {
+            for (ExcelPoiDictService excelPoiDict: excelPoiDicts) {
                 String eName = excelPoiDict.toName(dictKey,value);
                 if(eName!=null) {
                     return eName;
@@ -36,7 +36,7 @@ public class ExcelDataHandlerCodedEnumImpl<T> implements IExcelDataHandler<T> {
     public Object importHandler(T obj, String name, Object value) {
         String dictKey = EasyPoiTool.getFieldDict(obj,name);
         if(StringTool.isNotEmpty(dictKey)&&(excelPoiDicts!=null&&!excelPoiDicts.isEmpty())) {
-            for (ExcelPoiDict excelPoiDict: excelPoiDicts) {
+            for (ExcelPoiDictService excelPoiDict: excelPoiDicts) {
                 Object eValue = excelPoiDict.toValue(dictKey,value);
                 if(eValue!=null) {
                     return eValue;

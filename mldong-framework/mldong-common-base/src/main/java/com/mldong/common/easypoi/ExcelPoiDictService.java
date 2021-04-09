@@ -1,6 +1,6 @@
 package com.mldong.common.easypoi;
 
-public interface ExcelPoiDict {
+public interface ExcelPoiDictService {
     String toName(String dictKey,Object value);
     Object toValue(String dictKey,Object name);
 }
