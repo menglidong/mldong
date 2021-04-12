@@ -36,7 +36,7 @@ public class MinioUpload {
     public boolean uploadObject(String bucket,String fileName,InputStream inputStream) {
 
         MinioClient minioClient = getMinioClient();
-        PutObjectArgs putObjectArgs = PutObjectArgs.builder().bucket(bucket).object(fileName).stream(inputStream,0,-1).build();
+        PutObjectArgs putObjectArgs = PutObjectArgs.builder().bucket(bucket).object(fileName).stream(inputStream,-1,1024*1024*10).build();
         try {
             ObjectWriteResponse objectWriteResponse = minioClient.putObject(putObjectArgs);
         } catch (ErrorResponseException e) {
