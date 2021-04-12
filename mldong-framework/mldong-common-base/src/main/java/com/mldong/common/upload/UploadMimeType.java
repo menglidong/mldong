@@ -17,7 +17,7 @@ public class UploadMimeType {
 		map.put(".ai", "application/postscript");
 		map.put(".eps", "application/postscript");
 		map.put(".exe", "application/octet-stream");
-		map.put(".doc", "application/vnd.ms-word");
+		map.put(".doc", "application/msword");
 		map.put(".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 		map.put(".xls", "application/vnd.ms-excel");
 		map.put(".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
