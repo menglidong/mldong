@@ -2,10 +2,12 @@ package com.mldong.modules.sys.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
+
 /**
  * 路由meta实体
  */
-public class MetaVo {
+public class MetaVo implements Serializable {
     @ApiModelProperty(value = "设置该路由在侧边栏和面包屑中展示的名字")
     private String title;
     @ApiModelProperty(value = "设置该路由的图标，支持 svg-class，也支持 el-icon-x element-ui 的 icon")
