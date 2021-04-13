@@ -41,7 +41,11 @@ public enum SysErrEnum implements CommonError {
 	/**
 	 * 部门已禁用
 	 */
-	SYS80000008(80009008, "部门已禁用")
+	SYS80000008(80009008, "部门已禁用"),
+	/**
+	 * 不允许选自身为父节点
+	 */
+	SYS80000009(80009009, "不允许选自身为父节点")
 	;
 	public final int value;
 	public final String name;

@@ -59,6 +59,9 @@ public class SysDeptServiceImpl implements SysDeptService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(SysDeptParam param) {
+		if(param.getId().equals(param.getParentId())) {
+			throw new BizException(SysErrEnum.SYS80000009);
+		}
 		Date now = new Date();
 		SysDept sysDept = new SysDept();
 		BeanUtils.copyProperties(param, sysDept);

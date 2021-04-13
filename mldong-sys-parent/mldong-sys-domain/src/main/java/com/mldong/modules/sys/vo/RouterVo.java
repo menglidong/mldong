@@ -2,12 +2,13 @@ package com.mldong.modules.sys.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 前端路由对象
  */
-public class RouterVo {
+public class RouterVo implements Serializable {
     @ApiModelProperty(value = "当设置 true 的时候该路由不会在侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1")
     private boolean hidden;
     @ApiModelProperty(value = "当设置 noRedirect 的时候该路由在面包屑导航中不可被点击")
