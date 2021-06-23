@@ -4,11 +4,13 @@ import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
+import com.mldong.common.exception.BizException;
 import com.mldong.common.tk.ConditionUtil;
 import com.mldong.common.validator.ValidatorTool;
 import com.mldong.modules.sys.dto.SysMenuPageParam;
 import com.mldong.modules.sys.dto.SysMenuParam;
 import com.mldong.modules.sys.entity.SysMenu;
+import com.mldong.modules.sys.enums.SysErrEnum;
 import com.mldong.modules.sys.mapper.SysMenuMapper;
 import com.mldong.modules.sys.service.SysMenuService;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +46,9 @@ public class SysMenuServiceImpl implements SysMenuService{
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public int update(SysMenuParam param) {
+		if(param.getId().equals(param.getParentId())) {
+			throw new BizException(SysErrEnum.SYS80000009);
+		}
 		ValidatorTool.checkUniqueOnUpdate(sysMenuMapper, SysMenu.class, "routeName", param.getRouteName(), param.getId());
 		Date now = new Date();
 		SysMenu sysMenu = new SysMenu();
