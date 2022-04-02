@@ -27,7 +27,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://192.168.1.160:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://192.168.0.160:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
       username: u_mldong
       password: 8Eli@gr#AUk
       # 初始化时建立物理连接的个数
@@ -81,7 +81,7 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: 192.168.1.160
+    host: 192.168.0.160
     # 端口，默认为6379
     port: 6379
     # 密码
