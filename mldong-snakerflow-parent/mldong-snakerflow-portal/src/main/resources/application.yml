@@ -1,0 +1,87 @@
+server: 
+  port: 18003
+spring:
+  application:
+    name: mldong-snakerflow
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.0.160:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+      username: u_mldong
+      password: 8Eli@gr#AUk
+      # 初始化时建立物理连接的个数
+      initial-size: 3
+      # 最大连接池数量
+      max-active: 10
+      # 最小连接池数量
+      min-idle: 3
+      # 获取连接时最大等待时间
+      max-wait: 10000
+      # 是否缓存preparedStatement，也就是PSCache。
+      pool-prepared-statements: false
+      # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。
+      max-pool-prepared-statement-per-connection-size: -1
+      # 用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。
+      validation-query: SELECT 'x'
+      # 单位：秒，检测连接是否有效的超时时间。
+      validation-query-timeout: 1
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-borrow: false
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false
+      # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      # 有两个含义：1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
+      time-between-eviction-runs-millis: 6000
+      # 连接保持空闲而不被驱逐的最小时间
+      min-evictable-idle-time-millis: 1800000
+      # spring监控页面的配置
+      aop-patterns:
+        - com.mldong.modules.*.service.*
+      # 监控页面相关配置
+      stat-view-servlet:
+        enable: true
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: admin@321
+      # filter相关配置
+      filter:
+        stat:
+          slow-sql-millis: 1000
+          log-slow-sql: true
+          enabled: true
+  aop:
+    proxy-target-class: true
+    auto: true
+# mybatis配置
+mybatis:
+  type-aliases-package: com.mldong.modules.*.mapper.*,com.mldong.modules.*.dao.*,com.mldong.modules.*.repo.*
+  mapper-locations: classpath*:mapper/*/*.xml,classpath*:dao/*/*.xml,classpath*:repo/*/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: com.mldong.common.base.CodedEnumTypeHandler
+# mapper配置
+mapper:
+  mappers:
+    - com.mldong.common.base.BaseMapper
+  not-empty: false
+  identity: MYSQL
+  use-simple-type: true
+  enum-as-simple-type: true
+# 分页插件配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: false
+  params: count=countSql
+
+# 启用自定义文档
+knife4j:
+  markdowns: classpath:markdown/*

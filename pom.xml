@@ -203,5 +203,6 @@
 	<module>mldong-app</module>
 	<module>mldong-cloud-parent</module>
     <module>mldong-data-service</module>
+    <module>mldong-snakerflow-parent</module>
 </modules>
 </project>
