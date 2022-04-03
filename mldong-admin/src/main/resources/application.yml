@@ -12,6 +12,7 @@ logging:
     java.sql.Statement: DEBUG
     java.sql.PreparedStatement: DEBUG
     org.springframework.scheduling: INFO
+    org.snaker.engine: DEBUG
 server:
   port: 18080
 spring:

@@ -113,8 +113,10 @@ public class SysLoginServiceImpl implements SysLoginService{
 		String userName = user.getUserName();
 		String realName = user.getRealName();
 		Map<String,Object> ext = new HashMap<>();
+		ext.put("realName", realName);
 		ext.put("deptId", user.getDeptId() == null ? 0L : user.getDeptId());
 		ext.put("childDeptIds", "");
+		ext.put("roleKey", sysUserDao.selectUserRoleKey(userId));
 		if(!RequestHolder.isSuperAdmin()) {
 			ext.put("dataScope", sysUserDao.selectUserDataScope(user.getId()));
 			if(user.getDeptId()!=null) {
