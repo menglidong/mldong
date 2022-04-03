@@ -49,4 +49,18 @@ public interface SysUserDao {
 	 * @return
 	 */
 	public List<String> selectUserDataScope(@Param("userId")Long userId);
+
+	/**
+	 * 获取用户角色key
+	 * @param userId
+	 * @return
+	 */
+	public List<String> selectUserRoleKey(@Param("userId")Long userId);
+
+	/**
+	 * 获取某个角色key的所有用户id
+	 * @param roleKey
+	 * @return
+	 */
+	public List<Long> selectUserIdsByRoleKey(@Param("roleKey") String roleKey);
 }
