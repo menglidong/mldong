@@ -39,9 +39,9 @@ public class WfOrderController {
         @Autowired
         private SnakerEngine snakerEngine;
         @PostMapping("startAndExecute")
-        @ApiOperation(value="启动并执行第一个节点", notes = "wf:order:startAndExecute")
+        @ApiOperation(value="启动并执行第一个任务节点", notes = "wf:order:startAndExecute")
         @Transactional(rollbackFor = Exception.class)
-        public CommonResult<?> startAndExecute(@RequestBody @Validated WfOrderParam param){
+        public CommonResult<?> startAndExecute(@RequestBody @Validated({WfOrderParam.ProcessId.class}) WfOrderParam param){
                 // 设置业务ID
                 param.getArgs().put(SnakerEngine.ID, UUID.randomUUID().toString().replaceAll("-",""));
                 // 创建流程实例用户名
@@ -49,6 +49,25 @@ public class WfOrderController {
                 // 创建流程实例姓名
                 param.getArgs().put("operator.realName", RequestHolder.getUserExt().get("realName"));
                 Order order = snakerEngine.startInstanceById(param.getProcessId(), RequestHolder.getUserId().toString(), param.getArgs());
+                List<Task> tasks = snakerEngine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
+                List<Task> newTasks = new ArrayList<Task>();
+                if (tasks != null && tasks.size() > 0) {
+                        Task task = tasks.get(0);
+                        newTasks.addAll(snakerEngine.executeTask(task.getId(), SnakerEngine.AUTO, param.getArgs()));
+                }
+                return CommonResult.success();
+        }
+        @PostMapping("startAndExecuteByName")
+        @ApiOperation(value="启动并执行第一个任务节点(通过名称)", notes = "wf:order:startAndExecuteByName")
+        @Transactional(rollbackFor = Exception.class)
+        public CommonResult<?> startAndExecuteByName(@RequestBody @Validated({WfOrderParam.ProcessName.class}) WfOrderParam param){
+                // 设置业务ID
+                param.getArgs().put(SnakerEngine.ID, UUID.randomUUID().toString().replaceAll("-",""));
+                // 创建流程实例用户名
+                param.getArgs().put("operator.userName", RequestHolder.getUsername());
+                // 创建流程实例姓名
+                param.getArgs().put("operator.realName", RequestHolder.getUserExt().get("realName"));
+                Order order = snakerEngine.startInstanceByName(param.getProcessName(), null, RequestHolder.getUserId().toString(), param.getArgs());
                 List<Task> tasks = snakerEngine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
                 List<Task> newTasks = new ArrayList<Task>();
                 if (tasks != null && tasks.size() > 0) {
