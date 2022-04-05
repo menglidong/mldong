@@ -15,6 +15,7 @@ import io.swagger.annotations.AuthorizationScope;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
+import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.WorkItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,11 +101,26 @@ public class WfTaskController {
     @ApiOperation(value="执行任务", notes = "wf:task:execute")
     @Transactional(rollbackFor = Exception.class)
     public CommonResult<?> execute(@RequestBody @Validated WfTaskParam param) {
+        Task task = snakerEngine.query().getTask(param.getTaskId());
+        if(task == null) {
+            return CommonResult.error(GlobalErrEnum.GL99990003);
+        }
         // 任务执行人用户名
         param.getArgs().put("operator.userName", RequestHolder.getUsername());
         // 任务执行人姓名
         param.getArgs().put("operator.realName", RequestHolder.getUserExt().get("realName"));
-        snakerEngine.executeTask(param.getTaskId(),RequestHolder.getUserId().toString(), param.getArgs());
+        String operator = RequestHolder.getUserId().toString();
+        if(Integer.valueOf(1).equals(param.getArgs().get("approvalType"))
+        || "1".equals(param.getArgs().get("approvalType"))){
+            // 同意
+            snakerEngine.executeTask(param.getTaskId(), operator, param.getArgs());
+        } else {
+            // 不同意
+            // 追加意见信息
+            snakerEngine.order().addVariable(task.getOrderId(),param.getArgs());
+            // 中止流程
+            snakerEngine.order().terminate(task.getOrderId(), operator);
+        }
         return CommonResult.success();
     }
     @PostMapping("listHisByOrderId")

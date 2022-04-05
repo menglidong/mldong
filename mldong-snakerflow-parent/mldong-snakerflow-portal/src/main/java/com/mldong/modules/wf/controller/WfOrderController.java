@@ -8,6 +8,7 @@ import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.wf.dto.WfIdParam;
 import com.mldong.modules.wf.dto.WfOrderPageParam;
 import com.mldong.modules.wf.dto.WfOrderParam;
+import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import com.mldong.modules.wf.vo.WfHighlihtDataVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -113,6 +114,12 @@ public class WfOrderController {
         public CommonResult<HistoryOrder> list(@RequestBody WfIdParam param) {
                 return CommonResult.success(snakerEngine.query().getHistOrder(param.getId()));
         }
+        @PostMapping("cascadeRemove")
+        @ApiOperation(value="级联删除", notes = "wf:order:cascadeRemove")
+        public CommonResult<?> cascadeRemove(@RequestBody @Validated WfIdParam param) {
+                snakerEngine.order().cascadeRemove(param.getId());
+                return CommonResult.success();
+        }
         @PostMapping("highLightData")
         @ApiOperation(value="获取流程实例高亮数据", notes = "wf:order:highLightData")
         public CommonResult<WfHighlihtDataVO> highLightData(@RequestBody WfIdParam param) {
@@ -155,6 +162,11 @@ public class WfOrderController {
                         if(nodeModel instanceof EndModel) {
                                 vo.getHistoryNodeNames().add(nodeModel.getName());
                         }
+                        return;
+                }
+                if(WfOrderStateEnum.TERMINATE.getValue()==historyOrder.getOrderState()
+                && nodeModel.getName().equals(historyTasks.get(0).getTaskName())) {
+                        vo.getHistoryNodeNames().add(nodeModel.getName());
                         return;
                 }
                 if(!vo.getHistoryNodeNames().contains(nodeModel.getName())) {
