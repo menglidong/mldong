@@ -85,10 +85,20 @@ public class WfOrderController {
         @PostMapping("list")
         @ApiOperation(value="我发起的流程实例", notes = "wf:order:list")
         public CommonResult<CommonPage<HistoryOrder>> list(@RequestBody WfOrderPageParam param) {
+                param.buildPage();
                 Page<HistoryOrder> page = new Page<>();
                 page.setPageNo(param.getPageNum());
                 page.setPageSize(param.getPageSize());
                 QueryFilter queryFilter = new QueryFilter();
+                if(param.getOrderState()!=null) {
+                        queryFilter.setState(param.getOrderState());
+                }
+                if(StringTool.isNotEmpty(param.getDisplayName())) {
+                        queryFilter.setDisplayName(param.getDisplayName());
+                }
+                if(StringTool.isNotEmpty(param.getName())) {
+                        queryFilter.setNames(new String[]{param.getName()});
+                }
                 queryFilter.setOperators(new String[]{RequestHolder.getUserId().toString()});
                 List<HistoryOrder> historyOrders = snakerEngine.query().getHistoryOrders(page, queryFilter);
                 CommonPage<HistoryOrder> commonPage = new CommonPage<>();

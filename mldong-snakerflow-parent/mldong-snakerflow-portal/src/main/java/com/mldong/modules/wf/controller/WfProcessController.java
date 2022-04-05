@@ -55,6 +55,7 @@ public class WfProcessController {
     @PostMapping("list")
     @ApiOperation(value="流程定义列表", notes = "wf:process:list")
     public CommonResult<CommonPage<Process>> list(@RequestBody WfProcessPageParam param) {
+        param.buildPage();
         Page<Process> page = new Page<>();
         page.setPageNo(param.getPageNum());
         page.setPageSize(param.getPageSize());
