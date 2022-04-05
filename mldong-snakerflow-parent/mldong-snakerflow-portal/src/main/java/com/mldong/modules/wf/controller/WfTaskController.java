@@ -38,6 +38,7 @@ public class WfTaskController {
     @PostMapping("todolist")
     @ApiOperation(value="我的待办列表", notes = "wf:task:todolist")
     public CommonResult<CommonPage<WorkItem>> todolist(@RequestBody WfTaskPageParam param) {
+        param.buildPage();
         Page<WorkItem> page = new Page<>();
         page.setPageNo(param.getPageNum());
         page.setPageSize(param.getPageSize());
@@ -54,6 +55,7 @@ public class WfTaskController {
     @PostMapping("donelist")
     @ApiOperation(value="我的已办列表", notes = "wf:task:donelist")
     public CommonResult<CommonPage<WorkItem>> donelist(@RequestBody WfTaskPageParam param) {
+        param.buildPage();
         Page<WorkItem> page = new Page<>();
         page.setPageNo(param.getPageNum());
         page.setPageSize(param.getPageSize());
