@@ -8,6 +8,7 @@ import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.wf.dto.WfIdParam;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
 import com.mldong.modules.wf.dto.WfTaskParam;
+import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/wf/task")
@@ -115,10 +118,15 @@ public class WfTaskController {
             // 同意
             snakerEngine.executeTask(param.getTaskId(), operator, param.getArgs());
         } else {
-            // 不同意
-            // 追加意见信息
-            snakerEngine.order().addVariable(task.getOrderId(),param.getArgs());
-            // 中止流程
+            // 1.不同意
+            // 1.1 手动完成任务
+            snakerEngine.task().complete(param.getTaskId(), operator, param.getArgs());
+            // 1.2 给流程实例追加额外参数
+            Map<String,Object> addArgs = new HashMap<>();
+            addArgs.putAll(param.getArgs());
+            addArgs.put("orderStatus", WfOrderStateEnum.TERMINATE.getValue());
+            snakerEngine.order().addVariable(task.getOrderId(), addArgs);
+            // 1.3 中止流程
             snakerEngine.order().terminate(task.getOrderId(), operator);
         }
         return CommonResult.success();
@@ -136,7 +144,6 @@ public class WfTaskController {
         List<WorkItem> historyWorkItems = snakerEngine.query().getHistoryWorkItems(page, queryFilter);
         historyWorkItems.forEach(workItem -> {
             workItem.setTaskState(0);
-
         });
         return CommonResult.success(historyWorkItems);
     }
