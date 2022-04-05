@@ -2,22 +2,14 @@ package com.mldong.modules.wf.controller;
 
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
-import com.mldong.common.base.constant.GlobalErrEnum;
-import com.mldong.common.tool.StringTool;
-import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.wf.dto.WfIdParam;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
 import com.mldong.modules.wf.dto.WfTaskParam;
-import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import com.mldong.modules.wf.service.WfTaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import io.swagger.annotations.AuthorizationScope;
-import org.snaker.engine.SnakerEngine;
-import org.snaker.engine.access.Page;
-import org.snaker.engine.access.QueryFilter;
-import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.WorkItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/wf/task")

@@ -12,8 +12,12 @@ import com.mldong.modules.wf.service.WfTaskService;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
+import org.snaker.engine.core.Execution;
+import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.WorkItem;
+import org.snaker.engine.model.EndModel;
+import org.snaker.engine.model.ProcessModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +97,10 @@ public class WfTaskServiceImpl implements WfTaskService {
         if(task == null) {
             AssertTool.throwBiz(GlobalErrEnum.GL99990003);
         }
+        Order order = snakerEngine.query().getOrder(task.getOrderId());
+        if(order == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
         // 任务执行人用户名
         param.getArgs().put("operator.userName", RequestHolder.getUsername());
         // 任务执行人姓名
@@ -104,15 +112,14 @@ public class WfTaskServiceImpl implements WfTaskService {
             snakerEngine.executeTask(param.getTaskId(), operator, param.getArgs());
         } else {
             // 1.不同意
-            // 1.1 手动完成任务
-            snakerEngine.task().complete(param.getTaskId(), operator, param.getArgs());
-            // 1.2 给流程实例追加额外参数
+            // 1.1 给流程实例追加额外参数
             Map<String,Object> addArgs = new HashMap<>();
             addArgs.putAll(param.getArgs());
-            addArgs.put("orderStatus", WfOrderStateEnum.TERMINATE.getValue());
+            addArgs.put("orderStatus", WfOrderStateEnum.DISAGREE.getValue());
             snakerEngine.order().addVariable(task.getOrderId(), addArgs);
-            // 1.3 中止流程
-            snakerEngine.order().terminate(task.getOrderId(), operator);
+            // 1.2 直接跳到结束节点
+            ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();
+            snakerEngine.executeAndJumpTask(param.getTaskId(), operator, param.getArgs(), processModel.getModels(EndModel.class).get(0).getName());
         }
     }
 

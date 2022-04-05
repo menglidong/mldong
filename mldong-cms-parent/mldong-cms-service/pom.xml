@@ -17,5 +17,11 @@
             <artifactId>mldong-cms-repository</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.snakerflow</groupId>
+            <artifactId>snaker-core</artifactId>
+            <version>2.5.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

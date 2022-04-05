@@ -18,7 +18,11 @@ public enum WfOrderStateEnum implements CodedEnum {
     /**
      * 强制中止
      */
-    TERMINATE(2, "强制中止")
+    TERMINATE(2, "强制中止"),
+    /**
+     * 不同意(强制中止)
+     */
+    DISAGREE(3, "不同意(强制中止)"),
     ;
     private int value;
     private String name;
