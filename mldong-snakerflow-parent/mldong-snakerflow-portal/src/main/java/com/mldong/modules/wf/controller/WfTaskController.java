@@ -3,6 +3,7 @@ package com.mldong.modules.wf.controller;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.CommonResult;
 import com.mldong.common.base.constant.GlobalErrEnum;
+import com.mldong.common.tool.StringTool;
 import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.wf.dto.WfIdParam;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
@@ -43,12 +44,18 @@ public class WfTaskController {
         page.setPageNo(param.getPageNum());
         page.setPageSize(param.getPageSize());
         QueryFilter queryFilter = new QueryFilter();
+        if(StringTool.isNotEmpty(param.getDisplayName())) {
+            queryFilter.setDisplayName(param.getDisplayName());
+        }
         queryFilter.setOperators(new String[]{RequestHolder.getUserId().toString()});
-        List<WorkItem> historyOrders = snakerEngine.query().getWorkItems(page, queryFilter);
+        List<WorkItem> workItems = snakerEngine.query().getWorkItems(page, queryFilter);
+        workItems.forEach(workItem -> {
+            workItem.setTaskState(1);
+        });
         CommonPage<WorkItem> commonPage = new CommonPage<>();
         commonPage.setPageNum(param.getPageNum());
         commonPage.setPageSize(param.getPageSize());
-        commonPage.setRows(historyOrders);
+        commonPage.setRows(workItems);
         commonPage.setTotalPage(Long.valueOf(page.getTotalCount()).intValue());
         return CommonResult.success(commonPage);
     }
@@ -60,37 +67,61 @@ public class WfTaskController {
         page.setPageNo(param.getPageNum());
         page.setPageSize(param.getPageSize());
         QueryFilter queryFilter = new QueryFilter();
+        if(StringTool.isNotEmpty(param.getDisplayName())) {
+            queryFilter.setDisplayName(param.getDisplayName());
+        }
         queryFilter.setOperators(new String[]{RequestHolder.getUserId().toString()});
-        List<WorkItem> historyOrders = snakerEngine.query().getHistoryWorkItems(page, queryFilter);
+        List<WorkItem> historyWorkItems = snakerEngine.query().getHistoryWorkItems(page, queryFilter);
+        historyWorkItems.forEach(workItem -> {
+            workItem.setTaskState(0);
+        });
         CommonPage<WorkItem> commonPage = new CommonPage<>();
         commonPage.setPageNum(param.getPageNum());
         commonPage.setPageSize(param.getPageSize());
-        commonPage.setRows(historyOrders);
+        commonPage.setRows(historyWorkItems);
         commonPage.setTotalPage(Long.valueOf(page.getTotalCount()).intValue());
         return CommonResult.success(commonPage);
     }
     @PostMapping("get")
     @ApiOperation(value="任务详情", notes = "wf:task:get")
     public CommonResult<WorkItem> get(@RequestBody @Validated WfIdParam param) {
-        Page<WorkItem> page = new Page<>();
-        page.setPageNo(1);
-        page.setPageSize(1);
-        QueryFilter queryFilter = new QueryFilter();
-        queryFilter.setTaskId(param.getId());
-        List<WorkItem> workItems = snakerEngine.query().getWorkItems(page, queryFilter);
-        if(workItems.isEmpty()) {
-            workItems = snakerEngine.query().getHistoryWorkItems(page, queryFilter);
+        String sql = "select distinct o.process_Id, t.order_Id, t.id as id, t.id as task_Id, p.display_Name as process_Name, p.instance_Url, o.parent_Id, o.creator,  o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable as order_Variable,  t.display_Name as task_Name, t.task_Name as task_Key, t.task_Type, t.perform_Type, t.operator, t.action_Url,  t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time, t.variable as task_Variable  from wf_task t  left join wf_order o on t.order_id = o.id  left join wf_task_actor ta on ta.task_id=t.id  left join wf_process p on p.id = o.process_id  where t.id=?";
+        WorkItem workItem = snakerEngine.query().nativeQueryObject(WorkItem.class, sql, param.getId());
+        if(workItem==null) {
+            sql = "select distinct o.process_Id, t.order_Id, t.id as id, t.id as task_Id, p.display_Name as process_Name, p.instance_Url, o.parent_Id, o.creator,  o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable as order_Variable,  t.display_Name as task_Name, t.task_Name as task_Key, t.task_Type, t.perform_Type,t.operator, t.action_Url,  t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time, t.variable as task_Variable  from wf_hist_task t  left join wf_hist_order o on t.order_id = o.id  left join wf_hist_task_actor ta on ta.task_id=t.id  left join wf_process p on p.id = o.process_id  where t.id=?";
+            workItem = snakerEngine.query().nativeQueryObject(WorkItem.class, sql, param.getId());
         }
-        if(workItems.isEmpty()) {
+        if(workItem == null) {
             return CommonResult.error(GlobalErrEnum.GL99990003);
         }
-        return CommonResult.success(workItems.get(0));
+        return CommonResult.success(workItem);
     }
     @PostMapping("execute")
     @ApiOperation(value="执行任务", notes = "wf:task:execute")
     @Transactional(rollbackFor = Exception.class)
     public CommonResult<?> execute(@RequestBody @Validated WfTaskParam param) {
+        // 任务执行人用户名
+        param.getArgs().put("operator.userName", RequestHolder.getUsername());
+        // 任务执行人姓名
+        param.getArgs().put("operator.realName", RequestHolder.getUserExt().get("realName"));
         snakerEngine.executeTask(param.getTaskId(),RequestHolder.getUserId().toString(), param.getArgs());
         return CommonResult.success();
+    }
+    @PostMapping("listHisByOrderId")
+    @ApiOperation(value="通过流程实例ID获取任务列表", notes = "wf:task:listHisByOrderId")
+    public CommonResult<List<WorkItem>> listHisByOrderId(@RequestBody @Validated WfIdParam param) {
+        Page<WorkItem> page = new Page<>();
+        page.setPageNo(1);
+        page.setPageSize(1000);
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setOrder(QueryFilter.ASC);
+        queryFilter.setOrderBy("t.finish_Time");
+        queryFilter.setOrderId(param.getId());
+        List<WorkItem> historyWorkItems = snakerEngine.query().getHistoryWorkItems(page, queryFilter);
+        historyWorkItems.forEach(workItem -> {
+            workItem.setTaskState(0);
+
+        });
+        return CommonResult.success(historyWorkItems);
     }
 }
