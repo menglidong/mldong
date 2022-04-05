@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WfOrderServiceImpl implements WfOrderService {
@@ -176,7 +177,14 @@ public class WfOrderServiceImpl implements WfOrderService {
             }
             return;
         }
-        if(WfOrderStateEnum.TERMINATE.getValue()==historyOrder.getOrderState()
+        // 拿到非正常结束的流程实例状态值
+        List<Integer> orderStatusList = Arrays.stream(WfOrderStateEnum.values()).filter(item->{
+            return !item.equals(WfOrderStateEnum.DOING) && !item.equals(WfOrderStateEnum.FINISHED);
+        }).map(item->{
+            return item.getValue();
+        }).collect(Collectors.toList());
+        // 非正常结束，需要进行特殊处理
+        if(orderStatusList.contains(historyOrder.getVariableMap().get("orderStatus"))
                 && nodeModel.getName().equals(historyTasks.get(0).getTaskName())) {
             vo.getHistoryNodeNames().add(nodeModel.getName());
             return;
