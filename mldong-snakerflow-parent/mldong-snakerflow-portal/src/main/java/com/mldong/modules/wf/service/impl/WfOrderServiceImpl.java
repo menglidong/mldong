@@ -88,6 +88,9 @@ public class WfOrderServiceImpl implements WfOrderService {
         }
         queryFilter.setOperators(new String[]{RequestHolder.getUserId().toString()});
         List<HistoryOrder> historyOrders = snakerEngine.query().getHistoryOrders(page, queryFilter);
+        historyOrders.forEach(historyOrder -> {
+            handleOrderStatus(historyOrder);
+        });
         CommonPage<HistoryOrder> commonPage = new CommonPage<>();
         commonPage.setPageNum(param.getPageNum());
         commonPage.setPageSize(param.getPageSize());
@@ -96,9 +99,22 @@ public class WfOrderServiceImpl implements WfOrderService {
         return commonPage;
     }
 
+    /**
+     * 处理流程实例状态-优先使用变量中的状态
+     * @param historyOrder
+     * @return
+     */
+    private HistoryOrder handleOrderStatus(HistoryOrder historyOrder) {
+        if(historyOrder!=null && historyOrder.getVariableMap().get("orderStatus")!=null) {
+            historyOrder.setOrderState(Integer.valueOf(historyOrder.getVariableMap().get("orderStatus").toString()));
+        }
+        return historyOrder;
+    }
     @Override
     public HistoryOrder get(String id) {
-        return snakerEngine.query().getHistOrder(id);
+        HistoryOrder historyOrder = snakerEngine.query().getHistOrder(id);
+        handleOrderStatus(historyOrder);
+        return historyOrder;
     }
 
     @Override

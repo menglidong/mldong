@@ -355,7 +355,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * @param args 参数列表
 	 * @return Execution
 	 */
-	private Execution execute(String taskId, String operator, Map<String, Object> args) {
+	public Execution execute(String taskId, String operator, Map<String, Object> args) {
 		if(args == null) args = new HashMap<String, Object>();
 		Task task = task().complete(taskId, operator, args);
 		if(log.isDebugEnabled()) {
