@@ -51,7 +51,7 @@ public class WfOrderController {
         }
         @PostMapping("get")
         @ApiOperation(value="获取流程实例详情", notes = "wf:order:get")
-        public CommonResult<HistoryOrder> list(@RequestBody WfIdParam param) {
+        public CommonResult<HistoryOrder> get(@RequestBody WfIdParam param) {
                 return CommonResult.success(orderService.get(param.getId()));
         }
         @PostMapping("cascadeRemove")
