@@ -17,6 +17,7 @@ import org.snaker.engine.access.QueryFilter;
 import org.snaker.engine.entity.HistoryOrder;
 import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Order;
+import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.model.DecisionModel;
 import org.snaker.engine.model.EndModel;
@@ -37,6 +38,11 @@ public class WfOrderServiceImpl implements WfOrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void startAndExecute(WfOrderParam param) {
+        Process process = snakerEngine.process().getProcessById(param.getProcessId());
+        if(process == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        param.getArgs().put("instanceUrl", process.getInstanceUrl());
         // 设置业务ID
         param.getArgs().put(SnakerEngine.ID, UUID.randomUUID().toString().replaceAll("-",""));
         // 创建流程实例用户名
@@ -55,6 +61,11 @@ public class WfOrderServiceImpl implements WfOrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void startAndExecuteByName(WfOrderParam param) {
+        Process process = snakerEngine.process().getProcessByName(param.getProcessName());
+        if(process == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        param.getArgs().put("instanceUrl", process.getInstanceUrl());
         // 设置业务ID
         param.getArgs().put(SnakerEngine.ID, UUID.randomUUID().toString().replaceAll("-",""));
         // 创建流程实例用户名
