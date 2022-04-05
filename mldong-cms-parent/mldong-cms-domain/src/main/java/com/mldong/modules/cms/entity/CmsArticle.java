@@ -8,15 +8,19 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import tk.mybatis.mapper.annotation.LogicDelete;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.mldong.common.annotation.DictEnum;
+import com.mldong.common.base.CodedEnum;
 import com.mldong.common.base.YesNoEnum;
 
 /**
  * <p>实体类</p>
- * <p>Table: cms_article - 文章</p>
- * @since 2021-01-05 09:05:20
+ * <p>Table: cms_article - </p>
+ * @since 2022-04-05 07:49:01
  */
 @Table(name="cms_article")
-@ApiModel(description="文章")
+@ApiModel(description="")
 public class CmsArticle implements Serializable{
 	/**
 	 * 
@@ -39,23 +43,25 @@ public class CmsArticle implements Serializable{
     private String source;
     @ApiModelProperty(value = "排序", position = 40)
     private Double sort;
-    @ApiModelProperty(value = "发布时间", position = 45)
+    @ApiModelProperty(value = "状态(1->草稿|DRAFT,2->审核中|AUDITING,3->审批通过|PASS,4->审批不通过|NO_PASS)", position = 45)
+    private StatusEnum status;
+    @ApiModelProperty(value = "发布时间", position = 50)
     private Date publishTime;
-    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)", position = 50)
+    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)", position = 55)
     private YesNoEnum isPublish;
-    @ApiModelProperty(value = "文本内容", position = 55)
+    @ApiModelProperty(value = "文本内容", position = 60)
     private String content;
-    @ApiModelProperty(value = "扩展信息", position = 60)
+    @ApiModelProperty(value = "扩展信息", position = 65)
     private String extFormValue;
-    @ApiModelProperty(value = "所属部门", position = 65)
+    @ApiModelProperty(value = "所属部门", position = 70)
     private Long deptId;
-    @ApiModelProperty(value = "所属用户", position = 70)
+    @ApiModelProperty(value = "所属用户", position = 75)
     private Long userId;
-    @ApiModelProperty(value = "创建时间", position = 75)
+    @ApiModelProperty(value = "创建时间", position = 80)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间", position = 80)
+    @ApiModelProperty(value = "更新时间", position = 85)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 85)
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 90)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -178,6 +184,21 @@ public class CmsArticle implements Serializable{
      */
     public void setSort(Double sort){
         this.sort = sort;
+    }
+    /**
+     * 获取状态(1->草稿|DRAFT,2->审核中|AUDITING,3->审批通过|PASS,4->审批不通过|NO_PASS)
+     *
+     */
+    public StatusEnum getStatus(){
+        return this.status;
+    }
+	 /**
+     * 设置状态(1->草稿|DRAFT,2->审核中|AUDITING,3->审批通过|PASS,4->审批不通过|NO_PASS)
+     *
+     * @param status
+     */
+    public void setStatus(StatusEnum status){
+        this.status = status;
     }
     /**
      * 获取发布时间
@@ -315,4 +336,43 @@ public class CmsArticle implements Serializable{
         this.isDeleted = isDeleted;
     }
 
+    @DictEnum(key="cms_article_status",name="状态")
+    public enum StatusEnum implements CodedEnum {
+		/**
+		 * 草稿
+		 */
+		DRAFT(1, "草稿"),
+		/**
+		 * 审核中
+		 */
+		AUDITING(2, "审核中"),
+		/**
+		 * 审批通过
+		 */
+		PASS(3, "审批通过"),
+		/**
+		 * 审批不通过
+		 */
+		NO_PASS(4, "审批不通过");
+
+		private int value;
+		private String name;
+		@JsonCreator
+	    public static StatusEnum forValue(int value) {
+	        return CodedEnum.codeOf(StatusEnum.class, value).get();
+
+	    }
+		StatusEnum(int value, String name) {
+			this.value = value;
+			this.name = name;
+		}
+		@JsonValue
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	
+    }
 }
