@@ -17,7 +17,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: cms_article - </p>
- * @since 2022-04-05 07:49:01
+ * @since 2022-04-05 08:03:21
  */
 @Table(name="cms_article")
 @ApiModel(description="")
@@ -45,23 +45,25 @@ public class CmsArticle implements Serializable{
     private Double sort;
     @ApiModelProperty(value = "状态(1->草稿|DRAFT,2->审核中|AUDITING,3->审批通过|PASS,4->审批不通过|NO_PASS)", position = 45)
     private StatusEnum status;
-    @ApiModelProperty(value = "发布时间", position = 50)
+    @ApiModelProperty(value = "工作流业务编号", position = 50)
+    private String businessNo;
+    @ApiModelProperty(value = "发布时间", position = 55)
     private Date publishTime;
-    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)", position = 55)
+    @ApiModelProperty(value = "是否发布(1->否|NO,2->是|YES)", position = 60)
     private YesNoEnum isPublish;
-    @ApiModelProperty(value = "文本内容", position = 60)
+    @ApiModelProperty(value = "文本内容", position = 65)
     private String content;
-    @ApiModelProperty(value = "扩展信息", position = 65)
+    @ApiModelProperty(value = "扩展信息", position = 70)
     private String extFormValue;
-    @ApiModelProperty(value = "所属部门", position = 70)
+    @ApiModelProperty(value = "所属部门", position = 75)
     private Long deptId;
-    @ApiModelProperty(value = "所属用户", position = 75)
+    @ApiModelProperty(value = "所属用户", position = 80)
     private Long userId;
-    @ApiModelProperty(value = "创建时间", position = 80)
+    @ApiModelProperty(value = "创建时间", position = 85)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间", position = 85)
+    @ApiModelProperty(value = "更新时间", position = 90)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 90)
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 95)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
@@ -199,6 +201,21 @@ public class CmsArticle implements Serializable{
      */
     public void setStatus(StatusEnum status){
         this.status = status;
+    }
+    /**
+     * 获取工作流业务编号
+     *
+     */
+    public String getBusinessNo(){
+        return this.businessNo;
+    }
+	 /**
+     * 设置工作流业务编号
+     *
+     * @param businessNo
+     */
+    public void setBusinessNo(String businessNo){
+        this.businessNo = businessNo;
     }
     /**
      * 获取发布时间

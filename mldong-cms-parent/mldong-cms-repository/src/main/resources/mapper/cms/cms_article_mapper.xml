@@ -11,6 +11,7 @@
 		<result column="source" property="source" />  
 		<result column="sort" property="sort" />  
 		<result column="status" property="status" />  
+		<result column="business_no" property="businessNo" />  
 		<result column="publish_time" property="publishTime" />  
 		<result column="is_publish" property="isPublish" />  
 		<result column="content" property="content" />  
