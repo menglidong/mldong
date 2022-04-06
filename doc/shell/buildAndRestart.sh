@@ -38,7 +38,7 @@ echo "当前版本号:${git_version}"
 # 进入项目源码目录
 cd $parent_dir
 # 打包
-mvn clean package -B
+mvn clean package -B -Dmaven.test.skip=true
 # 这里需要判断打包是否成功
 if [ $? -ne 0 ]; then
   echo "打包失败"
