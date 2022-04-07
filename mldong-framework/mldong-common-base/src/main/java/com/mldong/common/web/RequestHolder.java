@@ -119,6 +119,17 @@ public class RequestHolder {
 	}
 
 	/**
+	 * 获取当前用户姓名
+	 * @return
+	 */
+	public static String getRealName() {
+		Object realName =  RequestHolder.getUserExt().get("realName");
+		if(realName == null || "".equals(realName)) {
+			return getUsername();
+		}
+		return realName.toString();
+	}
+	/**
 	 * 获取用户扩展信息
 	 * @return
 	 */
