@@ -40,4 +40,10 @@ public interface WfTaskService {
      * @return
      */
     public List<WorkItem> listHisByOrderId(String orderId);
+
+    /**
+     * 退回
+     * @param param
+     */
+    public void backOff(WfTaskParam param);
 }

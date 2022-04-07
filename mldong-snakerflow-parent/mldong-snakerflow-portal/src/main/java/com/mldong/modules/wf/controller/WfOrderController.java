@@ -63,8 +63,19 @@ public class WfOrderController {
         @PostMapping("highLightData")
         @ApiOperation(value="获取流程实例高亮数据", notes = "wf:order:highLightData")
         public CommonResult<WfHighlihtDataVO> highLightData(@RequestBody WfIdParam param) {
-
                 return CommonResult.success(orderService.highLightData(param.getId()));
+        }
+        @PostMapping("takeBack")
+        @ApiOperation(value="取回流程", notes = "wf:order:takeBack")
+        public CommonResult<?> takeBack(@RequestBody WfIdParam param) {
+                orderService.takeBack(param.getId());
+                return CommonResult.success();
+        }
+        @PostMapping("undo")
+        @ApiOperation(value="作废流程", notes = "wf:order:undo")
+        public CommonResult<?> undo(@RequestBody WfIdParam param) {
+                orderService.undo(param.getId());
+                return CommonResult.success();
         }
 
 }

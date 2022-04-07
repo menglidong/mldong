@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
+import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,6 +99,12 @@ public class WfProcessServiceImpl implements WfProcessService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void cascadeRemove(String id) {
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setProcessId(id);
+        List<Order> orders = snakerEngine.query().getActiveOrders(queryFilter);
+        if(!orders.isEmpty()) {
+            AssertTool.throwBiz(99999999, "存在未完成的流程实例，不允许删除");
+        }
         snakerEngine.process().cascadeRemove(id);
     }
 }

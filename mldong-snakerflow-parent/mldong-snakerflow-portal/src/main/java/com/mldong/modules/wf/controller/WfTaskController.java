@@ -48,14 +48,19 @@ public class WfTaskController {
     }
     @PostMapping("execute")
     @ApiOperation(value="执行任务", notes = "wf:task:execute")
-    @Transactional(rollbackFor = Exception.class)
     public CommonResult<?> execute(@RequestBody @Validated WfTaskParam param) {
         taskService.execute(param);
         return CommonResult.success();
     }
     @PostMapping("listHisByOrderId")
-    @ApiOperation(value="通过流程实例ID获取任务列表", notes = "wf:task:listHisByOrderId")
+    @ApiOperation(value="通过流程实例ID获取历史任务列表", notes = "wf:task:listHisByOrderId")
     public CommonResult<List<WorkItem>> listHisByOrderId(@RequestBody @Validated WfIdParam param) {
         return CommonResult.success(taskService.listHisByOrderId(param.getId()));
+    }
+    @PostMapping("backOff")
+    @ApiOperation(value="回退到指定节点", notes = "wf:task:backOff")
+    public CommonResult<?> backOff(@RequestBody @Validated WfTaskParam param) {
+        taskService.backOff(param);
+        return CommonResult.success();
     }
 }

@@ -7,6 +7,7 @@ import com.mldong.common.tool.StringTool;
 import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.wf.dto.WfOrderPageParam;
 import com.mldong.modules.wf.dto.WfOrderParam;
+import com.mldong.modules.wf.enums.WfConstants;
 import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import com.mldong.modules.wf.service.WfOrderService;
 import com.mldong.modules.wf.vo.WfHighlihtDataVO;
@@ -117,8 +118,8 @@ public class WfOrderServiceImpl implements WfOrderService {
      * @return
      */
     private HistoryOrder handleOrderStatus(HistoryOrder historyOrder) {
-        if(historyOrder!=null && historyOrder.getVariableMap().get("orderStatus")!=null) {
-            historyOrder.setOrderState(Integer.valueOf(historyOrder.getVariableMap().get("orderStatus").toString()));
+        if(historyOrder!=null && historyOrder.getVariableMap().get(WfConstants.ORDER_STATE_KEY)!=null) {
+            historyOrder.setOrderState(Integer.valueOf(historyOrder.getVariableMap().get(WfConstants.ORDER_STATE_KEY).toString()));
         }
         return historyOrder;
     }
@@ -132,6 +133,10 @@ public class WfOrderServiceImpl implements WfOrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void cascadeRemove(String id) {
+        Order order = snakerEngine.query().getOrder(id);
+        if(order!=null) {
+            AssertTool.throwBiz(99999999, "进行中的流程实例不能删除");
+        }
         snakerEngine.order().cascadeRemove(id);
     }
 
@@ -162,6 +167,59 @@ public class WfOrderServiceImpl implements WfOrderService {
         }
         return vo;
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void takeBack(String id) {
+        Order order = snakerEngine.query().getOrder(id);
+        if(order == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setOrderId(id);
+        List<Task> tasks = snakerEngine.query().getActiveTasks(queryFilter);
+        if(tasks.isEmpty()) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        // 拿到其中一个未完成的任务
+        Task task = tasks.get(0);
+        // 1.取回流程
+        // 1.1 给流程实例追加额外参数
+        Map<String,Object> addArgs = new HashMap<>();
+        addArgs.put(WfConstants.ORDER_STATE_KEY, WfOrderStateEnum.TAKE_BACK.getValue());
+        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getUserExt().get("realName")+"】取回流程");
+        snakerEngine.order().addVariable(order.getId(), addArgs);
+        // 1.2 直接跳到结束节点
+        ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();
+        snakerEngine.executeAndJumpTask(task.getId(), SnakerEngine.ADMIN, addArgs, processModel.getModels(EndModel.class).get(0).getName());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void undo(String id) {
+        Order order = snakerEngine.query().getOrder(id);
+        if(order == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setOrderId(id);
+        List<Task> tasks = snakerEngine.query().getActiveTasks(queryFilter);
+        if(tasks.isEmpty()) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        // 拿到其中一个未完成的任务
+        Task task = tasks.get(0);
+        // 1.作废流程
+        // 1.1 给流程实例追加额外参数
+        Map<String,Object> addArgs = new HashMap<>();
+        addArgs.put(WfConstants.ORDER_STATE_KEY, WfOrderStateEnum.CANCEL.getValue());
+        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getUserExt().get("realName")+"】作废流程");
+        snakerEngine.order().addVariable(order.getId(), addArgs);
+        // 1.2 直接跳到结束节点
+        ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();
+        snakerEngine.executeAndJumpTask(task.getId(), SnakerEngine.ADMIN, addArgs, processModel.getModels(EndModel.class).get(0).getName());
+    }
+
     /**
      * 递归模型处理历史节点与历史边
      * @param nodeModel 下一个节点
@@ -184,7 +242,7 @@ public class WfOrderServiceImpl implements WfOrderService {
             return item.getValue();
         }).collect(Collectors.toList());
         // 非正常结束，需要进行特殊处理
-        if(orderStatusList.contains(historyOrder.getVariableMap().get("orderStatus"))
+        if(orderStatusList.contains(historyOrder.getVariableMap().get(WfConstants.ORDER_STATE_KEY))
                 && nodeModel.getName().equals(historyTasks.get(0).getTaskName())) {
             vo.getHistoryNodeNames().add(nodeModel.getName());
             return;

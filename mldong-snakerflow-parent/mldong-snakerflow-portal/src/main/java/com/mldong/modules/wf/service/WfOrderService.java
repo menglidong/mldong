@@ -43,4 +43,15 @@ public interface WfOrderService {
      * @return
      */
     public WfHighlihtDataVO highLightData(String id);
+
+    /**
+     * 取回流程
+     * @param id
+     */
+    public void takeBack(String id);
+    /**
+     * 作废流程
+     * @param id
+     */
+    public void undo(String id);
 }
