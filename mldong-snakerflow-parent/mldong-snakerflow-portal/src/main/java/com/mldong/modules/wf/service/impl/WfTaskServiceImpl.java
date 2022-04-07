@@ -217,6 +217,7 @@ public class WfTaskServiceImpl implements WfTaskService {
         if(WfConstants.FIRST_TASK_NAME.equalsIgnoreCase(sourceNodeName)) {
             // 如果第一个节点为申请任务节点，也直接驳回流程
             rejectOrder(order.getProcessId(), order.getId(), task.getId());
+            return;
         }
         backOffOrder(task.getId(), sourceNodeName, param.getArgs());
     }
