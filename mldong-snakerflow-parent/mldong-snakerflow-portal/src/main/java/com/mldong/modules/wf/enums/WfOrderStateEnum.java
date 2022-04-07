@@ -7,6 +7,7 @@ import com.mldong.common.base.CodedEnum;
 
 @DictEnum(key="wf_order_state",name="流程实例状态")
 public enum WfOrderStateEnum implements CodedEnum {
+
     /**
      * 已完成
      */
@@ -23,6 +24,18 @@ public enum WfOrderStateEnum implements CodedEnum {
      * 不同意(强制中止)
      */
     DISAGREE(3, "不同意(强制中止)"),
+    /**
+     * 取回流程(强制中止)
+     */
+    TAKE_BACK(4, "取回流程(强制中止)"),
+    /**
+     * 作废流程(强制中止)
+     */
+    CANCEL(5, "作废流程(强制中止)"),
+    /**
+     * 驳回流程(强制中止)
+     */
+    REJECT(6, "驳回流程(强制中止)"),
     ;
     private int value;
     private String name;

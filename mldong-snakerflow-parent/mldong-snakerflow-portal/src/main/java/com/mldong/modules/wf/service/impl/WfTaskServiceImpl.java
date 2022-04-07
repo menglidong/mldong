@@ -7,12 +7,13 @@ import com.mldong.common.tool.StringTool;
 import com.mldong.common.web.RequestHolder;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
 import com.mldong.modules.wf.dto.WfTaskParam;
+import com.mldong.modules.wf.enums.WfConstants;
 import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import com.mldong.modules.wf.service.WfTaskService;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
-import org.snaker.engine.core.Execution;
+import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.WorkItem;
@@ -102,12 +103,12 @@ public class WfTaskServiceImpl implements WfTaskService {
             AssertTool.throwBiz(GlobalErrEnum.GL99990003);
         }
         // 任务执行人用户名
-        param.getArgs().put("operator.userName", RequestHolder.getUsername());
+        param.getArgs().put(WfConstants.ORDER_USER_NAME_KEY, RequestHolder.getUsername());
         // 任务执行人姓名
-        param.getArgs().put("operator.realName", RequestHolder.getUserExt().get("realName"));
+        param.getArgs().put(WfConstants.ORDER_USER_REAL_NAME_KEY, RequestHolder.getUserExt().get("realName"));
         String operator = RequestHolder.getUserId().toString();
-        if(Integer.valueOf(1).equals(param.getArgs().get("approvalType"))
-                || "1".equals(param.getArgs().get("approvalType"))){
+        if(Integer.valueOf(1).equals(param.getArgs().get(WfConstants.APPROVAL_TYPE))
+                || "1".equals(param.getArgs().get(WfConstants.APPROVAL_TYPE))){
             // 同意
             snakerEngine.executeTask(param.getTaskId(), operator, param.getArgs());
         } else {
@@ -115,7 +116,7 @@ public class WfTaskServiceImpl implements WfTaskService {
             // 1.1 给流程实例追加额外参数
             Map<String,Object> addArgs = new HashMap<>();
             addArgs.putAll(param.getArgs());
-            addArgs.put("orderStatus", WfOrderStateEnum.DISAGREE.getValue());
+            addArgs.put(WfConstants.ORDER_STATE_KEY, WfOrderStateEnum.DISAGREE.getValue());
             snakerEngine.order().addVariable(task.getOrderId(), addArgs);
             // 1.2 直接跳到结束节点
             ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();
@@ -137,5 +138,73 @@ public class WfTaskServiceImpl implements WfTaskService {
             workItem.setTaskState(0);
         });
         return historyWorkItems;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void backOff(WfTaskParam param) {
+        Task task = snakerEngine.query().getTask(param.getTaskId());
+        if(task == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        Order order = snakerEngine.query().getOrder(task.getOrderId());
+        if(task == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        String sourceNodeName = (String) param.getArgs().get(WfConstants.TARGET_NODE_NAME);
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setOrderId(task.getOrderId());
+        List<HistoryTask> historyTasks = snakerEngine.query().getHistoryTasks(queryFilter);
+
+        if(StringTool.isEmpty(sourceNodeName)) {
+            // 节点不存在，则使用上一个任务节点
+            if(historyTasks.isEmpty()) {
+                // 不存在历史任务，则直接驳回
+                rejectOrder(order.getProcessId(), order.getId(), task.getId());
+            } else if(WfConstants.FIRST_TASK_NAME.equalsIgnoreCase(historyTasks.get(0).getTaskName())) {
+                // 如果第一个节点为申请任务节点，也直接驳回流程
+                rejectOrder(order.getProcessId(), order.getId(), task.getId());
+            }
+            return;
+        }
+        HistoryTask historyTask = historyTasks.stream().filter(item->{
+            return item.getTaskName().equalsIgnoreCase(sourceNodeName);
+        }).findAny().orElse(null);
+        if(historyTask == null) {
+            // 找不到对应节点-直接驳回
+            rejectOrder(order.getProcessId(), order.getId(), task.getId());
+            return;
+        }
+        backOffOrder(task.getId(), sourceNodeName);
+    }
+
+    /**
+     * 驳回流程
+     * @param processId
+     * @param orderId
+     * @param taskId
+     */
+    private void rejectOrder(String processId, String orderId, String taskId) {
+        // 1.驳回流程
+        // 1.1 给流程实例追加额外参数
+        Map<String,Object> addArgs = new HashMap<>();
+        addArgs.put(WfConstants.ORDER_STATE_KEY, WfOrderStateEnum.REJECT.getValue());
+        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getUserExt().get("realName")+"】驳回流程");
+        snakerEngine.order().addVariable(orderId, addArgs);
+        // 1.2 直接跳到结束节点
+        ProcessModel processModel = snakerEngine.process().getProcessById(processId).getModel();
+        snakerEngine.executeAndJumpTask(taskId, SnakerEngine.ADMIN, addArgs, processModel.getModels(EndModel.class).get(0).getName());
+    }
+
+    /**
+     * 回退到指定节点
+     * @param taskId
+     * @param nodeName
+     */
+    private void backOffOrder(String taskId, String nodeName) {
+        // 1.回退流程
+        Map<String,Object> addArgs = new HashMap<>();
+        // 1.1 跳到指定节点
+        snakerEngine.executeAndJumpTask(taskId, SnakerEngine.ADMIN, addArgs, nodeName);
     }
 }
