@@ -214,7 +214,11 @@ public class WfTaskServiceImpl implements WfTaskService {
             rejectOrder(order.getProcessId(), order.getId(), task.getId());
             return;
         }
-        backOffOrder(task.getId(), sourceNodeName);
+        if(WfConstants.FIRST_TASK_NAME.equalsIgnoreCase(sourceNodeName)) {
+            // 如果第一个节点为申请任务节点，也直接驳回流程
+            rejectOrder(order.getProcessId(), order.getId(), task.getId());
+        }
+        backOffOrder(task.getId(), sourceNodeName, param.getArgs());
     }
 
     /**
@@ -240,10 +244,9 @@ public class WfTaskServiceImpl implements WfTaskService {
      * @param taskId
      * @param nodeName
      */
-    private void backOffOrder(String taskId, String nodeName) {
+    private void backOffOrder(String taskId, String nodeName, Map<String,Object> args) {
         // 1.回退流程
-        Map<String,Object> addArgs = new HashMap<>();
         // 1.1 跳到指定节点
-        snakerEngine.executeAndJumpTask(taskId, SnakerEngine.ADMIN, addArgs, nodeName);
+        snakerEngine.executeAndJumpTask(taskId, SnakerEngine.ADMIN, args, nodeName);
     }
 }
