@@ -3,6 +3,7 @@ package com.mldong.modules.wf.service;
 import com.mldong.common.base.CommonPage;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
 import com.mldong.modules.wf.dto.WfTaskParam;
+import com.mldong.modules.wf.vo.WfSelectBackNodeVO;
 import org.snaker.engine.entity.WorkItem;
 
 import java.util.List;
@@ -40,6 +41,13 @@ public interface WfTaskService {
      * @return
      */
     public List<WorkItem> listHisByOrderId(String orderId);
+
+    /**
+     * 获取当前流程可返回的节点
+     * @param taskId
+     * @return
+     */
+    public List<WfSelectBackNodeVO> listSelectBackNodeByTaskId(String taskId);
 
     /**
      * 退回

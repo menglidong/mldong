@@ -10,6 +10,7 @@ import com.mldong.modules.wf.dto.WfTaskParam;
 import com.mldong.modules.wf.enums.WfConstants;
 import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import com.mldong.modules.wf.service.WfTaskService;
+import com.mldong.modules.wf.vo.WfSelectBackNodeVO;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +140,43 @@ public class WfTaskServiceImpl implements WfTaskService {
             workItem.setTaskState(0);
         });
         return historyWorkItems;
+    }
+
+    @Override
+    public List<WfSelectBackNodeVO> listSelectBackNodeByTaskId(String taskId) {
+        List<WfSelectBackNodeVO> res = new ArrayList<>();
+        Task task = snakerEngine.query().getTask(taskId);
+        if(task == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        Page<WorkItem> page = new Page<>();
+        page.setPageNo(1);
+        page.setPageSize(1000);
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setOrder(QueryFilter.ASC);
+        queryFilter.setOrderBy("t.finish_Time");
+        queryFilter.setOrderId(task.getOrderId());
+        List<WorkItem> historyWorkItems = snakerEngine.query().getHistoryWorkItems(page, queryFilter);
+        historyWorkItems.forEach(item->{
+            long count = res.stream().filter(itemm->{
+                return item.getTaskKey().equals(itemm.getTaskKey());
+            }).count();
+            if(count==0) {
+                WfSelectBackNodeVO vo = new WfSelectBackNodeVO();
+                vo.setTaskName(item.getTaskName());
+                vo.setTaskKey(item.getTaskKey());
+                res.add(vo);
+            }
+        });
+        List<WfSelectBackNodeVO> ress = new ArrayList<>();
+        for(int i=0,len=res.size();i<len;i++) {
+            WfSelectBackNodeVO vo = res.get(i);
+            if(vo.getTaskKey().equals(task.getTaskName())) {
+                break;
+            }
+            ress.add(vo);
+        }
+        return ress;
     }
 
     @Override

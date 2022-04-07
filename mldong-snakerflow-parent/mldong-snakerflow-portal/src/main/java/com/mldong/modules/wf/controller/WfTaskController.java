@@ -6,6 +6,7 @@ import com.mldong.modules.wf.dto.WfIdParam;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
 import com.mldong.modules.wf.dto.WfTaskParam;
 import com.mldong.modules.wf.service.WfTaskService;
+import com.mldong.modules.wf.vo.WfSelectBackNodeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -56,6 +57,11 @@ public class WfTaskController {
     @ApiOperation(value="通过流程实例ID获取历史任务列表", notes = "wf:task:listHisByOrderId")
     public CommonResult<List<WorkItem>> listHisByOrderId(@RequestBody @Validated WfIdParam param) {
         return CommonResult.success(taskService.listHisByOrderId(param.getId()));
+    }
+    @PostMapping("listSelectBackNodeByTaskId")
+    @ApiOperation(value="获取当前流程可返回的节点", notes = "wf:task:listSelectBackNodeByTaskId")
+    public CommonResult<List<WfSelectBackNodeVO>> listSelectBackNodeByTaskId(@RequestBody @Validated WfIdParam param) {
+        return CommonResult.success(taskService.listSelectBackNodeByTaskId(param.getId()));
     }
     @PostMapping("backOff")
     @ApiOperation(value="回退到指定节点", notes = "wf:task:backOff")
