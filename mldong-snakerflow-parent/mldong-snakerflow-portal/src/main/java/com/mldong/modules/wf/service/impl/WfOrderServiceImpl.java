@@ -44,13 +44,13 @@ public class WfOrderServiceImpl implements WfOrderService {
         if(process == null) {
             AssertTool.throwBiz(GlobalErrEnum.GL99990003);
         }
-        param.getArgs().put("instanceUrl", process.getInstanceUrl());
+        param.getArgs().put(WfConstants.INSTANCE_URL, process.getInstanceUrl());
         // 设置业务ID
         param.getArgs().put(SnakerEngine.ID, UUID.randomUUID().toString().replaceAll("-",""));
         // 创建流程实例用户名
-        param.getArgs().put("operator.userName", RequestHolder.getUsername());
+        param.getArgs().put(WfConstants.ORDER_USER_NAME_KEY, RequestHolder.getUsername());
         // 创建流程实例姓名
-        param.getArgs().put("operator.realName", RequestHolder.getUserExt().get("realName"));
+        param.getArgs().put(WfConstants.ORDER_USER_REAL_NAME_KEY, RequestHolder.getRealName());
         Order order = snakerEngine.startInstanceById(param.getProcessId(), RequestHolder.getUserId().toString(), param.getArgs());
         List<Task> tasks = snakerEngine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
         List<Task> newTasks = new ArrayList<Task>();
@@ -67,13 +67,13 @@ public class WfOrderServiceImpl implements WfOrderService {
         if(process == null) {
             AssertTool.throwBiz(GlobalErrEnum.GL99990003);
         }
-        param.getArgs().put("instanceUrl", process.getInstanceUrl());
+        param.getArgs().put(WfConstants.INSTANCE_URL, process.getInstanceUrl());
         // 设置业务ID
         param.getArgs().put(SnakerEngine.ID, UUID.randomUUID().toString().replaceAll("-",""));
         // 创建流程实例用户名
-        param.getArgs().put("operator.userName", RequestHolder.getUsername());
+        param.getArgs().put(WfConstants.ORDER_USER_NAME_KEY, RequestHolder.getUsername());
         // 创建流程实例姓名
-        param.getArgs().put("operator.realName", RequestHolder.getUserExt().get("realName"));
+        param.getArgs().put(WfConstants.ORDER_USER_REAL_NAME_KEY, RequestHolder.getRealName());
         Order order = snakerEngine.startInstanceByName(param.getProcessName(), null, RequestHolder.getUserId().toString(), param.getArgs());
         List<Task> tasks = snakerEngine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
         List<Task> newTasks = new ArrayList<Task>();
@@ -187,7 +187,7 @@ public class WfOrderServiceImpl implements WfOrderService {
         // 1.1 给流程实例追加额外参数
         Map<String,Object> addArgs = new HashMap<>();
         addArgs.put(WfConstants.ORDER_STATE_KEY, WfOrderStateEnum.TAKE_BACK.getValue());
-        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getUserExt().get("realName")+"】取回流程");
+        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getRealName()+"】取回流程");
         snakerEngine.order().addVariable(order.getId(), addArgs);
         // 1.2 直接跳到结束节点
         ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();
@@ -213,7 +213,7 @@ public class WfOrderServiceImpl implements WfOrderService {
         // 1.1 给流程实例追加额外参数
         Map<String,Object> addArgs = new HashMap<>();
         addArgs.put(WfConstants.ORDER_STATE_KEY, WfOrderStateEnum.CANCEL.getValue());
-        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getUserExt().get("realName")+"】作废流程");
+        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getRealName()+"】作废流程");
         snakerEngine.order().addVariable(order.getId(), addArgs);
         // 1.2 直接跳到结束节点
         ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();

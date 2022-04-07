@@ -233,7 +233,7 @@ public class WfTaskServiceImpl implements WfTaskService {
         // 1.1 给流程实例追加额外参数
         Map<String,Object> addArgs = new HashMap<>();
         addArgs.put(WfConstants.ORDER_STATE_KEY, WfOrderStateEnum.REJECT.getValue());
-        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getUserExt().get("realName")+"】驳回流程");
+        addArgs.put(WfConstants.REMARK, "【"+ RequestHolder.getRealName()+"】驳回流程");
         snakerEngine.order().addVariable(orderId, addArgs);
         // 1.2 直接跳到结束节点
         ProcessModel processModel = snakerEngine.process().getProcessById(processId).getModel();

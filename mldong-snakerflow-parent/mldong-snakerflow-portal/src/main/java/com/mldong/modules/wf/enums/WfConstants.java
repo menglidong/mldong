@@ -12,5 +12,5 @@ public interface WfConstants {
     public final static String REMARK = "remark"; // 原因
     public final static String TARGET_NODE_NAME = "targetNodeName"; // 目地节点名称，用于退回到指定节点的
     public final static String FIRST_TASK_NAME = "apply";
-
+    public final static String INSTANCE_URL = "instanceUrl"; // 实例化地址-表单key
 }
