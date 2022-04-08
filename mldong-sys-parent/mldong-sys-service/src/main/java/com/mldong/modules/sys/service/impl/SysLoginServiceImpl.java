@@ -120,7 +120,7 @@ public class SysLoginServiceImpl implements SysLoginService{
 		if(!RequestHolder.isSuperAdmin()) {
 			ext.put("dataScope", sysUserDao.selectUserDataScope(user.getId()));
 			if(user.getDeptId()!=null) {
-				List<SysDept> childDeptList = findChildDept(user.getDeptId());
+				List<SysDept> childDeptList = findChildDept(user.getDeptId(), 0);
 				List<String> childDeptIds = childDeptList.stream().map(item -> {
 					return item.getId().toString();
 				}).collect(Collectors.toList());
@@ -144,8 +144,11 @@ public class SysLoginServiceImpl implements SysLoginService{
 	 * @param parentId
 	 * @return
 	 */
-	private List<SysDept> findChildDept(Long parentId) {
+	private List<SysDept> findChildDept(Long parentId, int level) {
 		List<SysDept> childDeptList = new ArrayList<>();
+		if(level==5){ //限制深度不能大于5 // 防止数据问题造成的死循环
+			return childDeptList;
+		}
 		SysDept q = new SysDept();
 		q.setIsDeleted(YesNoEnum.NO);
 		q.setIsEnabled(YesNoEnum.YES);
@@ -154,7 +157,7 @@ public class SysLoginServiceImpl implements SysLoginService{
 		if(!deptList.isEmpty()) {
 			childDeptList.addAll(deptList);
 			deptList.forEach(item ->{
-				childDeptList.addAll(findChildDept(item.getId()));
+				childDeptList.addAll(findChildDept(item.getId(), level+1));
 			});
 		}
 		return childDeptList;
