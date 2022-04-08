@@ -52,7 +52,8 @@ public class WfTaskServiceImpl implements WfTaskService {
         commonPage.setPageNum(param.getPageNum());
         commonPage.setPageSize(param.getPageSize());
         commonPage.setRows(workItems);
-        commonPage.setTotalPage(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setRecordCount(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setTotalPage(Long.valueOf(page.getTotalPages()).intValue());
         return commonPage;
     }
 
@@ -75,7 +76,8 @@ public class WfTaskServiceImpl implements WfTaskService {
         commonPage.setPageNum(param.getPageNum());
         commonPage.setPageSize(param.getPageSize());
         commonPage.setRows(historyWorkItems);
-        commonPage.setTotalPage(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setRecordCount(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setTotalPage(Long.valueOf(page.getTotalPages()).intValue());
         return commonPage;
     }
 

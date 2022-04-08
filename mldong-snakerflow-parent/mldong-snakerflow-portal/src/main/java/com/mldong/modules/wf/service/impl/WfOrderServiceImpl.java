@@ -108,7 +108,8 @@ public class WfOrderServiceImpl implements WfOrderService {
         commonPage.setPageNum(param.getPageNum());
         commonPage.setPageSize(param.getPageSize());
         commonPage.setRows(historyOrders);
-        commonPage.setTotalPage(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setRecordCount(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setTotalPage(Long.valueOf(page.getTotalPages()).intValue());
         return commonPage;
     }
 

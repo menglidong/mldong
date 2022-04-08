@@ -64,7 +64,8 @@ public class WfProcessServiceImpl implements WfProcessService {
         commonPage.setPageNum(param.getPageNum());
         commonPage.setPageSize(param.getPageSize());
         commonPage.setRows(processList);
-        commonPage.setTotalPage(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setRecordCount(Long.valueOf(page.getTotalCount()).intValue());
+        commonPage.setTotalPage(Long.valueOf(page.getTotalPages()).intValue());
         return commonPage;
     }
 
