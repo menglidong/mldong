@@ -3,6 +3,7 @@ package com.mldong.modules.wf.service;
 import com.mldong.common.base.CommonPage;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
 import com.mldong.modules.wf.dto.WfTaskParam;
+import com.mldong.modules.wf.vo.WfTaskModelVO;
 import com.mldong.modules.wf.vo.WfSelectBackNodeVO;
 import org.snaker.engine.entity.WorkItem;
 
@@ -54,4 +55,11 @@ public interface WfTaskService {
      * @param param
      */
     public void backOff(WfTaskParam param);
+
+    /**
+     * 通过当前任务id获取下一节点集合
+     * @param taskId
+     * @return
+     */
+    List<WfTaskModelVO> getNextNodes(String taskId);
 }

@@ -6,6 +6,7 @@ import com.mldong.modules.wf.dto.WfIdParam;
 import com.mldong.modules.wf.dto.WfTaskPageParam;
 import com.mldong.modules.wf.dto.WfTaskParam;
 import com.mldong.modules.wf.service.WfTaskService;
+import com.mldong.modules.wf.vo.WfTaskModelVO;
 import com.mldong.modules.wf.vo.WfSelectBackNodeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +14,6 @@ import io.swagger.annotations.Authorization;
 import io.swagger.annotations.AuthorizationScope;
 import org.snaker.engine.entity.WorkItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,5 +68,10 @@ public class WfTaskController {
     public CommonResult<?> backOff(@RequestBody @Validated WfTaskParam param) {
         taskService.backOff(param);
         return CommonResult.success();
+    }
+    @PostMapping("getNextNodes")
+    @ApiOperation(value="通过当前任务id获取下一节点集合", notes = "wf:task:getNextNodes")
+    public CommonResult<List<WfTaskModelVO>> getNextNodes(@RequestBody @Validated WfIdParam param) {
+        return CommonResult.success(taskService.getNextNodes(param.getId()));
     }
 }
