@@ -10,6 +10,7 @@ import com.mldong.modules.wf.dto.WfTaskParam;
 import com.mldong.modules.wf.enums.WfConstants;
 import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import com.mldong.modules.wf.service.WfTaskService;
+import com.mldong.modules.wf.vo.WfTaskModelVO;
 import com.mldong.modules.wf.vo.WfSelectBackNodeVO;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
@@ -19,7 +20,10 @@ import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.WorkItem;
 import org.snaker.engine.model.EndModel;
+import org.snaker.engine.model.NodeModel;
 import org.snaker.engine.model.ProcessModel;
+import org.snaker.engine.model.TaskModel;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -224,6 +228,46 @@ public class WfTaskServiceImpl implements WfTaskService {
         backOffOrder(task.getId(), sourceNodeName, param.getArgs());
     }
 
+    @Override
+    public List<WfTaskModelVO> getNextNodes(String taskId) {
+        List<WfTaskModelVO> list = new ArrayList<>();
+        Task task = snakerEngine.query().getTask(taskId);
+        if(task == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        Order order = snakerEngine.query().getOrder(task.getOrderId());
+        if(task == null) {
+            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
+        }
+        ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();
+        // 当前节点
+        NodeModel nodeModel = processModel.getNode(task.getTaskName());
+        recursionGetNextTaskNode(nodeModel, list);
+        return list;
+    }
+
+    /**
+     * 递归找到下一任务节点
+     * @param nodeModel
+     * @param list
+     */
+    private void recursionGetNextTaskNode(NodeModel nodeModel, List<WfTaskModelVO> list) {
+        if(nodeModel instanceof EndModel) {
+            return;
+        }
+        nodeModel.getOutputs().forEach(transitionModel -> {
+            // 下一个节点为任务节点
+            if(transitionModel.getTarget() instanceof TaskModel) {
+                WfTaskModelVO vo = new WfTaskModelVO();
+                BeanUtils.copyProperties(transitionModel.getTarget(), vo);
+                list.add(vo);
+            } else {
+                // 下一个节点为非任务节点
+                recursionGetNextTaskNode(transitionModel.getTarget(), list);
+            }
+        });
+
+    }
     /**
      * 驳回流程
      * @param processId

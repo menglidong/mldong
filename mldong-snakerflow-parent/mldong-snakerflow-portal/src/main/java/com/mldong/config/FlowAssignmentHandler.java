@@ -23,7 +23,7 @@ public class FlowAssignmentHandler extends Assignment {
             return "ext".equals(fm.getName());
         }).findAny().orElse(null);
         if(fieldModel!=null) {
-            Object roleKeyObj = fieldModel.getAttrMap().get("roleKey");
+            Object roleKeyObj = fieldModel.getAttrMap().get("groupKey");
             if(roleKeyObj!=null) {
                 roleKey = roleKeyObj.toString();
             }
