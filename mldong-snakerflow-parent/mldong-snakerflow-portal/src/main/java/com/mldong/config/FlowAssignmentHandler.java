@@ -10,6 +10,10 @@ import org.snaker.engine.model.TaskModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 自定义参与者类-基于角色标识获取
+ * @author mldong
+ */
 public class FlowAssignmentHandler extends Assignment {
     @Override
     public Object assign(TaskModel model, Execution execution) {
@@ -20,7 +24,7 @@ public class FlowAssignmentHandler extends Assignment {
         }).findAny().orElse(null);
         if(fieldModel!=null) {
             Object roleKeyObj = fieldModel.getAttrMap().get("roleKey");
-            if(toString()!=null) {
+            if(roleKeyObj!=null) {
                 roleKey = roleKeyObj.toString();
             }
         }
