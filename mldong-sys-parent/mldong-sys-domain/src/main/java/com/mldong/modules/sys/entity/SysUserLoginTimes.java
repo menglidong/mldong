@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_user_login_times - 用户登录次数</p>
- * @since 2020-11-05 10:28:09
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_user_login_times")
 @ApiModel(description="用户登录次数")
@@ -23,19 +23,19 @@ public class SysUserLoginTimes implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "用户id", position = 10)
     private Long userId;
-    @ApiModelProperty(value = "登录ip")
+    @ApiModelProperty(value = "登录ip", position = 15)
     private String loginIp;
-    @ApiModelProperty(value = "登录次数")
+    @ApiModelProperty(value = "登录次数", position = 20)
     private Integer times;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 25)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 30)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 35)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 

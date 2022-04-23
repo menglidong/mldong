@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mldong.modules.sys.dao.SysUserRoleDao">
+	<resultMap id="BaseResultMap"
+			   extends="com.mldong.modules.sys.mapper.SysUserRoleMapper.BaseResultMap"
+			   type="com.mldong.modules.sys.entity.SysUserRole">
+	</resultMap>
+</mapper>

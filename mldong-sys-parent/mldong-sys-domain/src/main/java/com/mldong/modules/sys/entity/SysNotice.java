@@ -16,30 +16,30 @@ import com.mldong.common.base.YesNoEnum;
 
 /**
  * <p>实体类</p>
- * <p>Table: sys_notice - </p>
- * @since 2020-11-05 10:28:09
+ * <p>Table: sys_notice - 通知公告</p>
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_notice")
-@ApiModel(description="")
+@ApiModel(description="通知公告")
 public class SysNotice implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="编号")
+	@ApiModelProperty(value="编号", position = 1)
     private Long id;
-    @ApiModelProperty(value = "公告标题")
+    @ApiModelProperty(value = "公告标题", position = 10)
     private String title;
-    @ApiModelProperty(value = "公告类型(10->通知|TZ,20->公告|GG)")
+    @ApiModelProperty(value = "公告类型(10->通知|TZ,20->公告|GG)", position = 15)
     private TypeEnum type;
-    @ApiModelProperty(value = "公告内容")
+    @ApiModelProperty(value = "公告内容", position = 20)
     private String content;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 25)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 30)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 35)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 

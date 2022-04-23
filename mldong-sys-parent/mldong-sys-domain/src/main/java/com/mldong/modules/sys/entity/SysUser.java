@@ -17,7 +17,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_user - 用户</p>
- * @since 2020-11-05 10:28:09
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_user")
 @ApiModel(description="用户")
@@ -27,39 +27,39 @@ public class SysUser implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "用户名", position = 10)
     private String userName;
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "姓名", position = 15)
     private String realName;
-    @ApiModelProperty(value = "头像")
+    @ApiModelProperty(value = "头像", position = 20)
     private String avatar;
-    @ApiModelProperty(value = "邮箱")
+    @ApiModelProperty(value = "邮箱", position = 25)
     private String email;
-    @ApiModelProperty(value = "手机号")
+    @ApiModelProperty(value = "手机号", position = 30)
     private String mobilePhone;
-    @ApiModelProperty(value = "电话")
+    @ApiModelProperty(value = "电话", position = 35)
     private String telephone;
-    @ApiModelProperty(value = "密码")
+    @ApiModelProperty(value = "密码", position = 40)
     private String password;
-    @ApiModelProperty(value = "加盐")
+    @ApiModelProperty(value = "加盐", position = 45)
     private String salt;
-    @ApiModelProperty(value = "性别(1->男|MALE,2->女|FEMALE,3->未知|UNKNOWN)")
+    @ApiModelProperty(value = "性别(1->男|MALE,2->女|FEMALE,3->未知|UNKNOWN)", position = 50)
     private SexEnum sex;
-    @ApiModelProperty(value = "是否锁定(2->已锁定|YES,1->未锁定|NO)")
+    @ApiModelProperty(value = "是否锁定(2->已锁定|YES,1->未锁定|NO)", position = 55)
     private YesNoEnum isLocked;
-    @ApiModelProperty(value = "部门id")
+    @ApiModelProperty(value = "部门id", position = 60)
     private Long deptId;
-    @ApiModelProperty(value = "岗位id")
+    @ApiModelProperty(value = "岗位id", position = 65)
     private Long postId;
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty(value = "备注", position = 70)
     private String remark;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 75)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 80)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 85)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 

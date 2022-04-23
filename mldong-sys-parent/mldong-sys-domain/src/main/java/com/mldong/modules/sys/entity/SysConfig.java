@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_config - 参数配置</p>
- * @since 2020-11-09 04:37:10
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_config")
 @ApiModel(description="参数配置")
@@ -23,23 +23,23 @@ public class SysConfig implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="编号")
+	@ApiModelProperty(value="编号", position = 1)
     private Long id;
-    @ApiModelProperty(value = "参数名称")
+    @ApiModelProperty(value = "参数名称", position = 10)
     private String configName;
-    @ApiModelProperty(value = "参数键名")
+    @ApiModelProperty(value = "参数键名", position = 15)
     private String configKey;
-    @ApiModelProperty(value = "参数键值")
+    @ApiModelProperty(value = "参数键值", position = 20)
     private String configValue;
-    @ApiModelProperty(value = "系统内置(1->否|NO,2->是|YES)")
+    @ApiModelProperty(value = "系统内置(1->否|NO,2->是|YES)", position = 25)
     private YesNoEnum isSystem;
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty(value = "备注", position = 30)
     private String remark;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 35)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 40)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 45)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 

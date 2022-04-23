@@ -17,7 +17,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_request_log - 请求日志</p>
- * @since 2020-11-05 10:28:09
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_request_log")
 @ApiModel(description="请求日志")
@@ -27,41 +27,41 @@ public class SysRequestLog implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "请求唯一标识")
+    @ApiModelProperty(value = "请求唯一标识", position = 10)
     private String trackId;
-    @ApiModelProperty(value = "请求类型(10->添加|SAVE,20->修改|UPDATE,30->删除|REMOVE,40->导入|IMPORT,50->导出|EXPORT,99->其他|OTHER)")
+    @ApiModelProperty(value = "请求类型(10->添加|SAVE,20->修改|UPDATE,30->删除|REMOVE,40->导入|IMPORT,50->导出|EXPORT,99->其他|OTHER)", position = 15)
     private RequestTypeEnum requestType;
-    @ApiModelProperty(value = "请求路径")
+    @ApiModelProperty(value = "请求路径", position = 20)
     private String uri;
-    @ApiModelProperty(value = "请求url参数")
+    @ApiModelProperty(value = "请求url参数", position = 25)
     private String queryString;
-    @ApiModelProperty(value = "请求方式")
+    @ApiModelProperty(value = "请求方式", position = 30)
     private String method;
-    @ApiModelProperty(value = "操作说明")
+    @ApiModelProperty(value = "操作说明", position = 35)
     private String description;
-    @ApiModelProperty(value = "客户端ip")
+    @ApiModelProperty(value = "客户端ip", position = 40)
     private String ip;
-    @ApiModelProperty(value = "请求体")
+    @ApiModelProperty(value = "请求体", position = 45)
     private String body;
-    @ApiModelProperty(value = "请求token")
+    @ApiModelProperty(value = "请求token", position = 50)
     private String token;
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "用户id", position = 55)
     private Long userId;
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "用户名", position = 60)
     private String userName;
-    @ApiModelProperty(value = "返回参数")
+    @ApiModelProperty(value = "返回参数", position = 65)
     private String returnData;
-    @ApiModelProperty(value = "开始时间")
+    @ApiModelProperty(value = "开始时间", position = 70)
     private Date startTime;
-    @ApiModelProperty(value = "结束时间")
+    @ApiModelProperty(value = "结束时间", position = 75)
     private Date endTime;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 80)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 85)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 90)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
