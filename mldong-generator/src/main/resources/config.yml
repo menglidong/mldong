@@ -2,7 +2,7 @@ database:
   # jdbc驱动
   driverClass: "com.mysql.cj.jdbc.Driver"
   # 数据库地址
-  url: "jdbc:mysql://192.168.1.160:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai"
+  url: "jdbc:mysql://192.168.0.160:3306/mldong?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai"
   # 数据库名称
   dbName: "mldong"
   # 用户名
@@ -16,13 +16,13 @@ author: "mldong"
 # 生成代码目标目录
 targetProject: "D:/mldong/back-workspace/mldong/"
 # 模块名
-moduleName: "sys"
+moduleName: "cms"
 # 模块描述 
-moduleDesc: "系统管理"
+moduleDesc: "内容管理"
 # 是否生成逻辑删除
 logicDelete: true
 tables:
-  - tableName: "sys_config"
+  - tableName: "cms_%"
 templates:
     # 模板名称
   - name: "实体类"
@@ -53,9 +53,23 @@ templates:
     targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-repository/src/main/resources/mapper/${moduleName}"
     targetFileName: "${table.tableName}_mapper.xml"
     encoding: "utf-8"
+  - name: "持久层类-自定义层"
+    selected: true
+    covered: false
+    templateFile: "dao.ftl"
+    targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-repository/src/main/java/${basePackage}/modules/${moduleName}/dao/"
+    targetFileName: "${table.className}Dao.java"
+    encoding: "utf-8"
+  - name: "持久层xml-自定义层"
+    selected: true
+    covered: false
+    templateFile: "daoXml.ftl"
+    targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-repository/src/main/resources/dao/${moduleName}"
+    targetFileName: "${table.tableName}_dao.xml"
+    encoding: "utf-8"
   - name: "dto参数"
     selected: true
-    covered: true
+    covered: false
     templateFile: "dto.ftl"
     targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-domain/src/main/java/${basePackage}/modules/${moduleName}/dto/"
     targetFileName: "${table.className}Param.java"
@@ -83,7 +97,7 @@ templates:
     encoding: "utf-8"
   - name: "分页参数"
     selected: true
-    covered: true
+    covered: false
     templateFile: "pageParam.ftl"
     targetPath: "mldong-${moduleName}-parent/mldong-${moduleName}-domain/src/main/java/${basePackage}/modules/${moduleName}/dto/"
     targetFileName: "${table.className}PageParam.java"
