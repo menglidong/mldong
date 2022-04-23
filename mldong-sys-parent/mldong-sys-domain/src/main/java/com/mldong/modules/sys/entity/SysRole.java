@@ -17,7 +17,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_role - 角色</p>
- * @since 2020-12-22 11:35:02
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_role")
 @ApiModel(description="角色")
@@ -249,10 +249,11 @@ public class SysRole implements Serializable{
 		 * 仅本人数据权限
 		 */
 		MYSELF(40, "仅本人数据权限"),
-        /**
-         * 自定义数据权限
-         */
-        CUSTOM(50, "自定义数据权限");
+		/**
+		 * 自定义数据权限
+		 */
+		CUSTOM(50, "自定义数据权限");
+
 		private int value;
 		private String name;
 		@JsonCreator

@@ -12,44 +12,44 @@ import com.mldong.common.base.YesNoEnum;
 
 /**
  * <p>实体类</p>
- * <p>Table: sys_dept - 部门</p>
- * @since 2020-11-05 10:28:09
+ * <p>Table: sys_dept - </p>
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_dept")
-@ApiModel(description="部门")
+@ApiModel(description="")
 public class SysDept implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "父级id")
+    @ApiModelProperty(value = "父级id", position = 10)
     private Long parentId;
-    @ApiModelProperty(value = "部门名称")
+    @ApiModelProperty(value = "部门名称", position = 15)
     private String name;
-    @ApiModelProperty(value = "部门编码")
+    @ApiModelProperty(value = "部门编码", position = 20)
     private String code;
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序", position = 25)
     private Double sort;
-    @ApiModelProperty(value = "联系人")
+    @ApiModelProperty(value = "联系人", position = 30)
     private String contacts;
-    @ApiModelProperty(value = "联系人手机号")
+    @ApiModelProperty(value = "联系人手机号", position = 35)
     private String mobilePhone;
-    @ApiModelProperty(value = "电话")
+    @ApiModelProperty(value = "电话", position = 40)
     private String telephone;
-    @ApiModelProperty(value = "邮箱")
+    @ApiModelProperty(value = "邮箱", position = 45)
     private String email;
-    @ApiModelProperty(value = "地址")
+    @ApiModelProperty(value = "地址", position = 50)
     private String address;
-    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)")
+    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)", position = 55)
     private YesNoEnum isEnabled;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 60)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 65)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 70)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 

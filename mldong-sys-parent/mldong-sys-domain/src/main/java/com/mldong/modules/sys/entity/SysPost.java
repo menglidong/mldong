@@ -12,32 +12,32 @@ import com.mldong.common.base.YesNoEnum;
 
 /**
  * <p>实体类</p>
- * <p>Table: sys_post - 岗位</p>
- * @since 2020-11-05 10:28:09
+ * <p>Table: sys_post - </p>
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_post")
-@ApiModel(description="岗位")
+@ApiModel(description="")
 public class SysPost implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "岗位名称")
+    @ApiModelProperty(value = "岗位名称", position = 10)
     private String name;
-    @ApiModelProperty(value = "岗位编号")
+    @ApiModelProperty(value = "岗位编号", position = 15)
     private String code;
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序", position = 20)
     private Double sort;
-    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)")
+    @ApiModelProperty(value = "是否启用(1->禁用|NO,2->启用|YES)", position = 25)
     private YesNoEnum isEnabled;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 30)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 35)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 40)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 

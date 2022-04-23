@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  * <p>持久层</p>
- * <p>部门</p>
+ * <p></p>
  *
- * @since 2020-11-05 10:28:09
+ * @since 2022-04-23 05:26:04
  */
 @Repository
 public interface SysDeptMapper extends BaseMapper<SysDept> {

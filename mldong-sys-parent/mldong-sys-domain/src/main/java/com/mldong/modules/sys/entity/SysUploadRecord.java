@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_upload_record - 上传记录</p>
- * @since 2020-11-05 10:28:09
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_upload_record")
 @ApiModel(description="上传记录")
@@ -23,27 +23,27 @@ public class SysUploadRecord implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "业务类型")
+    @ApiModelProperty(value = "业务类型", position = 10)
     private String bizType;
-    @ApiModelProperty(value = "业务id")
+    @ApiModelProperty(value = "业务id", position = 15)
     private String bizId;
-    @ApiModelProperty(value = "文件保存的资源路径")
+    @ApiModelProperty(value = "文件保存的资源路径", position = 20)
     private String url;
-    @ApiModelProperty(value = "上传的原始文件名")
+    @ApiModelProperty(value = "上传的原始文件名", position = 25)
     private String fileName;
-    @ApiModelProperty(value = "资源大小，单位为字节")
+    @ApiModelProperty(value = "资源大小，单位为字节", position = 30)
     private Long fileSize;
-    @ApiModelProperty(value = "资源类型")
+    @ApiModelProperty(value = "资源类型", position = 35)
     private String mimeType;
-    @ApiModelProperty(value = "上传资源的后缀名")
+    @ApiModelProperty(value = "上传资源的后缀名", position = 40)
     private String fileExt;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 45)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 50)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 55)
 	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 

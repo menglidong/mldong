@@ -7,12 +7,13 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
 
 /**
  * <p>实体类</p>
  * <p>Table: sys_role_access - 角色权限关系</p>
- * @since 2020-11-05 10:28:09
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_role_access")
 @ApiModel(description="角色权限关系")
@@ -22,17 +23,18 @@ public class SysRoleAccess implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "角色id")
+    @ApiModelProperty(value = "角色id", position = 10)
     private Long roleId;
-    @ApiModelProperty(value = "权限标识")
+    @ApiModelProperty(value = "权限标识", position = 15)
     private String access;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 20)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 25)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 30)
+	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
     /**

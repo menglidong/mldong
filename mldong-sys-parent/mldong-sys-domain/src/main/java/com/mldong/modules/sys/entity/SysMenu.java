@@ -13,7 +13,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: sys_menu - 菜单</p>
- * @since 2021-01-08 05:33:28
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_menu")
 @ApiModel(description="菜单")

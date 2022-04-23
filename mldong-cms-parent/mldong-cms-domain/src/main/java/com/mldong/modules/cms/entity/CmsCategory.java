@@ -12,11 +12,11 @@ import com.mldong.common.base.YesNoEnum;
 
 /**
  * <p>实体类</p>
- * <p>Table: cms_category - 栏目</p>
- * @since 2021-01-05 09:05:15
+ * <p>Table: cms_category - </p>
+ * @since 2022-04-23 05:32:35
  */
 @Table(name="cms_category")
-@ApiModel(description="栏目")
+@ApiModel(description="")
 public class CmsCategory implements Serializable{
 	/**
 	 * 

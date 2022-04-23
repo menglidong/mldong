@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
  * <p>持久层</p>
  * <p>菜单</p>
  *
- * @since 2021-01-08 05:33:28
+ * @since 2022-04-23 05:26:04
  */
 @Repository
 public interface SysMenuMapper extends BaseMapper<SysMenu> {

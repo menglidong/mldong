@@ -7,12 +7,13 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import tk.mybatis.mapper.annotation.LogicDelete;
 import com.mldong.common.base.YesNoEnum;
 
 /**
  * <p>实体类</p>
  * <p>Table: sys_dict - 字典</p>
- * @since 2020-11-05 10:28:09
+ * @since 2022-04-23 05:26:04
  */
 @Table(name="sys_dict")
 @ApiModel(description="字典")
@@ -22,19 +23,20 @@ public class SysDict implements Serializable{
 	 */
 	private static final long serialVersionUID = -1L;
 	@Id
-	@ApiModelProperty(value="主键")
+	@ApiModelProperty(value="主键", position = 1)
     private Long id;
-    @ApiModelProperty(value = "名称")
+    @ApiModelProperty(value = "名称", position = 10)
     private String name;
-    @ApiModelProperty(value = "唯一编码")
+    @ApiModelProperty(value = "唯一编码", position = 15)
     private String dictKey;
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty(value = "备注", position = 20)
     private String remark;
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", position = 25)
     private Date createTime;
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", position = 30)
     private Date updateTime;
-    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)")
+    @ApiModelProperty(value = "是否删除(1->未删除|NO,2->已删除|YES)", position = 35)
+	@LogicDelete(isDeletedValue=YesNoEnum.Y,notDeletedValue=YesNoEnum.N)
     private YesNoEnum isDeleted;
 
     /**
