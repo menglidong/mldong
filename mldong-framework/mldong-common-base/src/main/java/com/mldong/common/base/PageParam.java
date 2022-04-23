@@ -29,7 +29,7 @@ public class PageParam<T> {
 		return pageNum;
 	}
 	@ApiModelProperty(value="关键字")
-	private String keyworks;
+	private String keywords;
 	@ApiModelProperty(value="排序字段")
 	private String orderBy;
 	@ApiModelProperty(value="自定义查询参数集合", hidden = true)
@@ -46,12 +46,12 @@ public class PageParam<T> {
 		this.pageSize = pageSize;
 	}
 
-	public String getKeyworks() {
-		return keyworks;
+	public String getKeywords() {
+		return keywords;
 	}
 
-	public void setKeyworks(String keyworks) {
-		this.keyworks = keyworks;
+	public void setKeywords(String keyworks) {
+		this.keywords = keyworks;
 	}
 
 	public List<WhereParam> getWhereParams() {
