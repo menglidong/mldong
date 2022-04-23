@@ -17,7 +17,7 @@ import com.mldong.common.base.YesNoEnum;
 /**
  * <p>实体类</p>
  * <p>Table: cms_article - </p>
- * @since 2022-04-05 08:03:21
+ * @since 2022-04-23 05:32:35
  */
 @Table(name="cms_article")
 @ApiModel(description="")
