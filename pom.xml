@@ -164,6 +164,12 @@
 				<artifactId>minio</artifactId>
 				<version>8.1.0</version>
 			</dependency>
+			<!--hutool工具集-->
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-all</artifactId>
+				<version>5.7.18</version>
+			</dependency>
     </dependencies>
 </dependencyManagement>
 <repositories>
