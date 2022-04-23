@@ -10,8 +10,8 @@ import com.mldong.modules.wf.dto.WfTaskParam;
 import com.mldong.modules.wf.enums.WfConstants;
 import com.mldong.modules.wf.enums.WfOrderStateEnum;
 import com.mldong.modules.wf.service.WfTaskService;
-import com.mldong.modules.wf.vo.WfTaskModelVO;
 import com.mldong.modules.wf.vo.WfSelectBackNodeVO;
+import com.mldong.modules.wf.vo.WfTaskModelVO;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
@@ -231,18 +231,12 @@ public class WfTaskServiceImpl implements WfTaskService {
     @Override
     public List<WfTaskModelVO> getNextNodes(String taskId) {
         List<WfTaskModelVO> list = new ArrayList<>();
-        Task task = snakerEngine.query().getTask(taskId);
-        if(task == null) {
+        try {
+            TaskModel taskModel = snakerEngine.task().getTaskModel(taskId);
+            recursionGetNextTaskNode(taskModel, list);
+        } catch (IllegalArgumentException e) {
             AssertTool.throwBiz(GlobalErrEnum.GL99990003);
         }
-        Order order = snakerEngine.query().getOrder(task.getOrderId());
-        if(task == null) {
-            AssertTool.throwBiz(GlobalErrEnum.GL99990003);
-        }
-        ProcessModel processModel = snakerEngine.process().getProcessById(order.getProcessId()).getModel();
-        // 当前节点
-        NodeModel nodeModel = processModel.getNode(task.getTaskName());
-        recursionGetNextTaskNode(nodeModel, list);
         return list;
     }
 
