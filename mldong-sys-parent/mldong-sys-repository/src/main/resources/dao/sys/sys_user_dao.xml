@@ -22,8 +22,8 @@
     <select id="selectUserNoInRole" resultMap="com.mldong.modules.sys.mapper.SysUserMapper.BaseResultMap">
 		SELECT u.* FROM sys_user u
 		<where>
-		<if test="null!=keyworks and ''!=keyworks">
-			<bind name="_search" value="keyworks+'%'" />
+		<if test="null!=keywords and ''!=keywords">
+			<bind name="_search" value="keywords+'%'" />
 			AND (u.real_name like #{_search} or u.user_name like #{_search} or u.mobile_phone like #{_search})
 		</if>
 		AND u.id NOT IN (SELECT ur.user_id FROM sys_user_role ur WHERE ur.is_deleted = 1 AND u.id = ur.user_id AND ur.role_id = #{roleId} and ur.is_deleted=1)
