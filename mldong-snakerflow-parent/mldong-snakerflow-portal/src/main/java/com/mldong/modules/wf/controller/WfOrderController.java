@@ -13,7 +13,6 @@ import io.swagger.annotations.Authorization;
 import io.swagger.annotations.AuthorizationScope;
 import org.snaker.engine.entity.HistoryOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,14 +31,12 @@ public class WfOrderController {
         private WfOrderService orderService;
         @PostMapping("startAndExecute")
         @ApiOperation(value="启动并执行第一个任务节点", notes = "wf:order:startAndExecute")
-        @Transactional(rollbackFor = Exception.class)
         public CommonResult<?> startAndExecute(@RequestBody @Validated({WfOrderParam.ProcessId.class}) WfOrderParam param){
                 orderService.startAndExecute(param);
                 return CommonResult.success();
         }
         @PostMapping("startAndExecuteByName")
         @ApiOperation(value="启动并执行第一个任务节点(通过名称)", notes = "wf:order:startAndExecuteByName")
-        @Transactional(rollbackFor = Exception.class)
         public CommonResult<?> startAndExecuteByName(@RequestBody @Validated({WfOrderParam.ProcessName.class}) WfOrderParam param){
                 orderService.startAndExecuteByName(param);
                 return CommonResult.success();
