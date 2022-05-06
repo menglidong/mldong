@@ -14,9 +14,6 @@
  */
 package org.snaker.engine.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snaker.engine.Action;
@@ -25,6 +22,11 @@ import org.snaker.engine.SnakerInterceptor;
 import org.snaker.engine.core.Execution;
 import org.snaker.engine.helper.ClassHelper;
 import org.snaker.engine.helper.StringHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 节点元素（存在输入输出的变迁）
@@ -139,18 +141,24 @@ public abstract class NodeModel extends BaseModel implements Action {
 
     public <T> List<T> getNextModels(Class<T> clazz) {
         List<T> models = new ArrayList<T>();
+        // 记录已递归项，防止死循环
+        Map<String,Object> temp = new HashMap();
         for(TransitionModel tm : this.getOutputs()) {
-            addNextModels(models, tm, clazz);
+            addNextModels(models, tm, clazz, temp);
         }
         return models;
     }
 
-    protected <T> void addNextModels(List<T> models, TransitionModel tm, Class<T> clazz) {
+    protected <T> void addNextModels(List<T> models, TransitionModel tm, Class<T> clazz,Map<String,Object> temp) {
+		if(temp.get(tm.getTo())!=null) {
+			return;
+		}
         if(clazz.isInstance(tm.getTarget())) {
             models.add((T)tm.getTarget());
         } else {
             for(TransitionModel tm2 : tm.getTarget().getOutputs()) {
-                addNextModels(models, tm2, clazz);
+            	temp.put(tm.getTo(), tm.getTarget());
+                addNextModels(models, tm2, clazz,temp);
             }
         }
     }

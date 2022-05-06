@@ -23,6 +23,7 @@ import org.snaker.engine.helper.StringHelper;
 import org.snaker.engine.scheduling.JobCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -249,7 +250,7 @@ public class TaskModel extends WorkModel {
     public List<TaskModel> getNextTaskModels() {
         List<TaskModel> models = new ArrayList<TaskModel>();
         for(TransitionModel tm : this.getOutputs()) {
-            addNextModels(models, tm, TaskModel.class);
+            addNextModels(models, tm, TaskModel.class, new HashMap<String, Object>());
         }
         return models;
     }
