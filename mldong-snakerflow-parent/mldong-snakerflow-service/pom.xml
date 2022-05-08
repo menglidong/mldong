@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mldong-snakerflow-parent</artifactId>
+        <groupId>com.mldong</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mldong-snakerflow-service</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mldong</groupId>
+            <artifactId>mldong-snakerflow-repository</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.snakerflow</groupId>
+            <artifactId>snaker-core</artifactId>
+            <version>2.5.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

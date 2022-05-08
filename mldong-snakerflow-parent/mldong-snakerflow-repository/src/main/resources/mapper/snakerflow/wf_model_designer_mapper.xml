@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mldong.modules.snakerflow.mapper.WfModelDesignerMapper">
+	<resultMap id="BaseResultMap" type="com.mldong.modules.snakerflow.entity.WfModelDesigner">
+		<id column="id" property="id" />
+		<result column="model_group_id" property="modelGroupId" />  
+		<result column="model_type" property="modelType" />  
+		<result column="model_name" property="modelName" />  
+		<result column="model_key" property="modelKey" />  
+		<result column="user_id" property="userId" />  
+		<result column="create_time" property="createTime" />  
+		<result column="update_time" property="updateTime" />  
+		<result column="is_deleted" property="isDeleted" />  
+	</resultMap>
+</mapper>
