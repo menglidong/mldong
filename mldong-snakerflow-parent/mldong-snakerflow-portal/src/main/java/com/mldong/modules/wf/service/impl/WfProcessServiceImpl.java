@@ -56,6 +56,8 @@ public class WfProcessServiceImpl implements WfProcessService {
         if(StringTool.isNotEmpty(param.getName())) {
             queryFilter.setName(param.getName());
         }
+        queryFilter.setOrder(QueryFilter.DESC);
+        queryFilter.setOrderBy("create_Time");
         List<Process> processList = snakerEngine.process().getProcesss(page, queryFilter);
         processList.forEach(process -> {
             process.setContent(null);
