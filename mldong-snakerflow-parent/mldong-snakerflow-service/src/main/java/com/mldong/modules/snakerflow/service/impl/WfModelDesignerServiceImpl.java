@@ -1,6 +1,7 @@
 package com.mldong.modules.snakerflow.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mldong.common.base.CommonPage;
@@ -121,6 +122,9 @@ public class WfModelDesignerServiceImpl implements WfModelDesignerService{
 	@Override
 	public CommonPage<WfModelDesigner> list(WfModelDesignerPageParam param) {
 		Page<WfModelDesigner> page =param.buildPage(true);
+		if(StrUtil.isEmpty(page.getOrderBy())) {
+			page.setOrderBy("update_time desc");
+		}
 		param.addEqualsToPre("userId", RequestHolder.getUserId());
 		List<WhereParam> whereParams = param.getWhereParams();
 		wfModelDesignerMapper.selectByCondition(ConditionUtil.buildCondition(WfModelDesigner.class, whereParams));

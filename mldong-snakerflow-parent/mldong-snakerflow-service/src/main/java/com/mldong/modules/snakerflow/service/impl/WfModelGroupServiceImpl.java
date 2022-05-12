@@ -1,5 +1,6 @@
 package com.mldong.modules.snakerflow.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
@@ -80,6 +81,9 @@ public class WfModelGroupServiceImpl implements WfModelGroupService{
 	@Override
 	public CommonPage<WfModelGroup> list(WfModelGroupPageParam param) {
 		Page<WfModelGroup> page =param.buildPage(true);
+		if(StrUtil.isEmpty(page.getOrderBy())) {
+			page.setOrderBy("update_time desc");
+		}
 		param.addEqualsToPre("userId", RequestHolder.getUserId());
 		List<WhereParam> whereParams = param.getWhereParams();
 		wfModelGroupMapper.selectByCondition(ConditionUtil.buildCondition(WfModelGroup.class, whereParams));
