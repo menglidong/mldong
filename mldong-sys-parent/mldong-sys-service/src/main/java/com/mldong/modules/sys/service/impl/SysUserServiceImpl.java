@@ -167,7 +167,7 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 	@Override
 	public int resetPassword(IdsParam param) {
-		if(param.getIds().contains(globalProperties.getSuperAdminId()) || param.getIds().contains(20)) {
+		if(param.getIds().contains(globalProperties.getSuperAdminId()) || param.getIds().contains(20L)) {
 			throw new BizException(new CommonError() {
 				@Override
 				public int getValue() {
