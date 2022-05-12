@@ -10,6 +10,7 @@ import com.mldong.modules.snakerflow.dto.WfModelDesignerPageParam;
 import com.mldong.modules.snakerflow.dto.WfModelDesignerParam;
 import com.mldong.modules.snakerflow.entity.WfModelDesigner;
 import com.mldong.modules.snakerflow.service.WfModelDesignerService;
+import com.mldong.modules.snakerflow.vo.WfModelDesignerVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -67,8 +68,8 @@ public class WfModelDesignerController {
 
 	@PostMapping("get")
 	@ApiOperation(value="通过id获取模型设计", notes="wf:modelDesigner:get")
-	public CommonResult<WfModelDesigner> get(@RequestBody @Validated IdParam param) {
-		return CommonResult.success("获取模型设计成功",wfModelDesignerService.get(param.getId()));
+	public CommonResult<WfModelDesignerVO> get(@RequestBody @Validated IdParam param) {
+		return CommonResult.success("获取模型设计成功",wfModelDesignerService.getWithExt(param.getId()));
 	}
 
 	@PostMapping("list")

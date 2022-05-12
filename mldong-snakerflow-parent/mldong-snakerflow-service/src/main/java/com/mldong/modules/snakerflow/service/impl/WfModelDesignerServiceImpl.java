@@ -1,6 +1,8 @@
 package com.mldong.modules.snakerflow.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mldong.common.base.CommonPage;
 import com.mldong.common.base.WhereParam;
 import com.mldong.common.base.YesNoEnum;
@@ -16,6 +18,7 @@ import com.mldong.modules.snakerflow.entity.WfModelDesignerHis;
 import com.mldong.modules.snakerflow.mapper.WfModelDesignerHisMapper;
 import com.mldong.modules.snakerflow.mapper.WfModelDesignerMapper;
 import com.mldong.modules.snakerflow.service.WfModelDesignerService;
+import com.mldong.modules.snakerflow.vo.WfModelDesignerVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,6 +91,34 @@ public class WfModelDesignerServiceImpl implements WfModelDesignerService{
 	}
 
 	@Override
+	public WfModelDesignerVO getWithExt(Long id) {
+		WfModelDesigner wfModelDesigner = wfModelDesignerMapper.selectByPrimaryKey(id);
+		if(wfModelDesigner!=null && !wfModelDesigner.getUserId().equals(RequestHolder.getUserId())) {
+			return null;
+		}
+		WfModelDesignerVO vo = new WfModelDesignerVO();
+		BeanUtil.copyProperties(wfModelDesigner, vo);
+		vo.setXml(getLatestXml(id));
+		return vo;
+	}
+
+	/**
+	 * 获取最新的xml
+	 * @param id
+	 * @return
+	 */
+	private String getLatestXml(Long id) {
+		PageHelper.startPage(1,1);
+		Condition condition = new Condition(WfModelDesignerHis.class);
+		condition.createCriteria().andEqualTo("modelDesignerId", id);
+		condition.orderBy("id").desc();
+		List<WfModelDesignerHis> list = wfModelDesignerHisMapper.selectByCondition(condition);
+		if(!list.isEmpty()) {
+			return new String(list.get(0).getContent());
+		}
+		return "";
+	}
+	@Override
 	public CommonPage<WfModelDesigner> list(WfModelDesignerPageParam param) {
 		Page<WfModelDesigner> page =param.buildPage(true);
 		param.addEqualsToPre("userId", RequestHolder.getUserId());
@@ -98,6 +129,11 @@ public class WfModelDesignerServiceImpl implements WfModelDesignerService{
 
 	@Override
 	public int saveDefine(WfModelDesignerDefineParam param) {
+		// 相等不需要保存
+		String latestXml = getLatestXml(param.getModelDesignerId());
+		if(latestXml.equals(param.getContent())) {
+			return 1;
+		}
 		Condition condition = new Condition(WfModelDesigner.class);
 		condition.createCriteria().andEqualTo("id", param.getModelDesignerId())
 		.andEqualTo("userId",RequestHolder.getUserId());
@@ -106,6 +142,12 @@ public class WfModelDesignerServiceImpl implements WfModelDesignerService{
 			AssertTool.throwBiz(GlobalErrEnum.GL99990100,"模型设计ID不存在或无权限访问");
 		}
 		Date now = new Date();
+		// 更新时间
+		WfModelDesigner upDate = new WfModelDesigner();
+		upDate.setUpdateTime(now);
+		upDate.setId(param.getModelDesignerId());
+		wfModelDesignerMapper.updateByPrimaryKey(upDate);
+		// 插入新版本
 		WfModelDesignerHis his = new WfModelDesignerHis();
 		his.setModelDesignerId(param.getModelDesignerId());
 		his.setCreateTime(now);

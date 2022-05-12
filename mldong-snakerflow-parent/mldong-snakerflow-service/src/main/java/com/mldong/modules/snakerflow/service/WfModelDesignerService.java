@@ -5,6 +5,7 @@ import com.mldong.modules.snakerflow.dto.WfModelDesignerDefineParam;
 import com.mldong.modules.snakerflow.dto.WfModelDesignerPageParam;
 import com.mldong.modules.snakerflow.dto.WfModelDesignerParam;
 import com.mldong.modules.snakerflow.entity.WfModelDesigner;
+import com.mldong.modules.snakerflow.vo.WfModelDesignerVO;
 
 import java.util.List;
 
@@ -39,6 +40,13 @@ public interface WfModelDesignerService {
 	 * @return
 	 */
 	public WfModelDesigner get(Long id);
+
+	/**
+	 * 查询模型-包含xml
+	 * @param id
+	 * @return
+	 */
+	public WfModelDesignerVO getWithExt(Long id);
 	/**
 	 * 分页查询模型设计列表
 	 * @param param	分页查询参数
