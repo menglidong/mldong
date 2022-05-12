@@ -224,7 +224,8 @@ public class SysUserServiceImpl implements SysUserService{
 	private String profiles;
 	@Override
 	public int updatePwd(SysUpdatePwdParam param) {
-		if(globalProperties.getSuperAdminId().equals(param.getUserId())&&"demo".equals(profiles)) {
+		// globalProperties.getSuperAdminId().equals(param.getUserId())&&
+		if("demo".equals(profiles)) {
 			// 演示站超级管理员不开放修改密码权限
 			throw new BizException(GlobalErrEnum.GL99990013);
 		}
