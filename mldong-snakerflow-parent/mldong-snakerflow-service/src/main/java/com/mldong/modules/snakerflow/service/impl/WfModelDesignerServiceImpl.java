@@ -146,7 +146,7 @@ public class WfModelDesignerServiceImpl implements WfModelDesignerService{
 		WfModelDesigner upDate = new WfModelDesigner();
 		upDate.setUpdateTime(now);
 		upDate.setId(param.getModelDesignerId());
-		wfModelDesignerMapper.updateByPrimaryKey(upDate);
+		wfModelDesignerMapper.updateByPrimaryKeySelective(upDate);
 		// 插入新版本
 		WfModelDesignerHis his = new WfModelDesignerHis();
 		his.setModelDesignerId(param.getModelDesignerId());
