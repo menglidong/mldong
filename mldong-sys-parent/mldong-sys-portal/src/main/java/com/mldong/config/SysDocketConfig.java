@@ -1,5 +1,7 @@
 package com.mldong.config;
 
+import cn.hutool.core.util.ArrayUtil;
+import com.mldong.swagger.config.SwaggerConfig;
 import com.mldong.swagger.config.SwaggerDocket;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,11 @@ import org.springframework.context.annotation.Configuration;
 public class SysDocketConfig {
     @Bean
     public SwaggerDocket systemSwaggerDocket() {
-        return new SwaggerDocket("01.系统管理", "com.mldong.modules.sys");
+        String basePackage = ArrayUtil.join(new String[]{
+                "com.mldong.modules.sys",
+                "com.mldong.controller",
+                "com.m.controller"
+        }, SwaggerConfig.SPLIT);
+        return new SwaggerDocket("01.系统管理", basePackage);
     }
 }
