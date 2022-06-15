@@ -198,6 +198,8 @@ public class WfTaskServiceImpl implements WfTaskService {
         }
         String sourceNodeName = (String) param.getArgs().get(WfConstants.TARGET_NODE_NAME);
         QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setOrder(QueryFilter.ASC);
+        queryFilter.setOrderBy("t.finish_Time");
         queryFilter.setOrderId(task.getOrderId());
         List<HistoryTask> historyTasks = snakerEngine.query().getHistoryTasks(queryFilter);
 
@@ -210,6 +212,22 @@ public class WfTaskServiceImpl implements WfTaskService {
                 // 如果第一个节点为申请任务节点，也直接驳回流程
                 rejectOrder(order.getProcessId(), order.getId(), task.getId());
             }
+            // 这里获取上一个完成节点======start
+            //hist taskName按完成时间排序->LinkedHashSet
+            //由后往前找，找不到，则使用最后一个taskName,
+            //如果找得到，则使用找到taskName的前一个taskName
+            List<String> hisTaskNameList = new ArrayList<>();
+            historyTasks.forEach(historyTask -> {
+                String hisTaskName = historyTask.getTaskName();
+                if(!hisTaskNameList.contains(hisTaskName)) {
+                    hisTaskNameList.add(hisTaskName);
+                }
+            });
+            int findIndex = hisTaskNameList.indexOf(task.getTaskName());
+            int laskIndex = hisTaskNameList.size()-1;
+            int index = findIndex == -1 ? laskIndex : findIndex-1;
+            backOffOrder(task.getId(), hisTaskNameList.get(index), param.getArgs());
+            // 这里获取上一个完成节点======end
             return;
         }
         HistoryTask historyTask = historyTasks.stream().filter(item->{
