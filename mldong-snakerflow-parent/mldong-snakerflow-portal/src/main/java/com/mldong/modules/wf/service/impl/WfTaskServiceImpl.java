@@ -223,7 +223,7 @@ public class WfTaskServiceImpl implements WfTaskService {
                     hisTaskNameList.add(hisTaskName);
                 }
             });
-            int findIndex = hisTaskNameList.indexOf(task.getTaskName());
+            int findIndex = hisTaskNameList.lastIndexOf(task.getTaskName());
             int laskIndex = hisTaskNameList.size()-1;
             int index = findIndex == -1 ? laskIndex : findIndex-1;
             backOffOrder(task.getId(), hisTaskNameList.get(index), param.getArgs());
