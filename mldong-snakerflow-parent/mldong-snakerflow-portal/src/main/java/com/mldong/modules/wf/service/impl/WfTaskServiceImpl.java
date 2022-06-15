@@ -224,8 +224,8 @@ public class WfTaskServiceImpl implements WfTaskService {
                 }
             });
             int findIndex = hisTaskNameList.lastIndexOf(task.getTaskName());
-            int laskIndex = hisTaskNameList.size()-1;
-            int index = findIndex == -1 ? laskIndex : findIndex-1;
+            int lastIndex = hisTaskNameList.size()-1;
+            int index = findIndex == -1 ? lastIndex : findIndex-1;
             backOffOrder(task.getId(), hisTaskNameList.get(index), param.getArgs());
             // 这里获取上一个完成节点======end
             return;
