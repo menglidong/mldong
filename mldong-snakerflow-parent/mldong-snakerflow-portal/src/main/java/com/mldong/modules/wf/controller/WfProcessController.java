@@ -11,6 +11,7 @@ import io.swagger.annotations.Authorization;
 import io.swagger.annotations.AuthorizationScope;
 import org.snaker.engine.entity.Process;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,8 +58,12 @@ public class WfProcessController {
     @PostMapping("getXml")
     @ApiOperation(value="流程定义xml", notes = "wf:process:getXml")
     public CommonResult<String> getXml(@RequestBody @Validated WfIdParam param) throws IOException {
-
         return CommonResult.success(processService.getXml(param.getId()));
+    }
+    @PostMapping(value = "/wf/process/getOnlyXml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ApiOperation(value="流程定义xml-仅返回xml", notes = "wf:process:getOnlyXml")
+    public String getOnlyXml(@RequestBody @Validated WfIdParam param) throws IOException {
+        return processService.getXml(param.getId());
     }
     @PostMapping("cascadeRemove")
     @ApiOperation(value="级联删除", notes = "wf:process:cascadeRemove")
