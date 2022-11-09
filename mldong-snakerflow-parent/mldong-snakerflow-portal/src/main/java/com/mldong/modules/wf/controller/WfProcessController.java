@@ -60,7 +60,7 @@ public class WfProcessController {
     public CommonResult<String> getXml(@RequestBody @Validated WfIdParam param) throws IOException {
         return CommonResult.success(processService.getXml(param.getId()));
     }
-    @PostMapping(value = "/wf/process/getOnlyXml", produces = MediaType.APPLICATION_XML_VALUE)
+    @PostMapping(value = "getOnlyXml", produces = MediaType.APPLICATION_XML_VALUE)
     @ApiOperation(value="流程定义xml-仅返回xml", notes = "wf:process:getOnlyXml")
     public String getOnlyXml(@RequestBody @Validated WfIdParam param) throws IOException {
         return processService.getXml(param.getId());
