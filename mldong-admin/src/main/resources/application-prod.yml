@@ -1,0 +1,11 @@
+# Mysql数据库
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:172.16.31.160}:${DB_PORT:3306}/${DB_NAME:mldong-plus}?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT&nullCatalogMeansCurrent=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:8Eli#gr#AUk}
+  redis:
+    host: ${REDIS_HOST:172.16.31.160}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:gEwjEHLM}

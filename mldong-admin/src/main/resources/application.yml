@@ -1,0 +1,84 @@
+#服务配置
+server:
+  port: 18080
+  max-http-header-size: 10240
+  # 默认为IMMEDIATE，表示立即关机；GRACEFUL表示优雅关机
+  shutdown: graceful
+#spring相关配置
+spring:
+  application:
+    name: mldong-admin
+  # 停机过程超时时长设置了30s，超过30s，直接停机
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  profiles:
+    active: @spring.active@
+  servlet:
+    multipart:
+      max-request-size: 1024MB
+      max-file-size: 1024MB
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    locale: zh_CN
+    serialization:
+      # 格式化输出
+      indent_output: false
+      # 忽略转换失败的值
+      FAIL_ON_EMPTY_BEANS: false
+# 管理配置
+management:
+  server:
+    port: 50008
+  # 开启shutdown endpoint
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        # 暴露shutdown endpoint
+        include: health,shutdown
+#mybaits相关配置
+mybatis-plus:
+  mapper-locations: classpath*:com/mldong/**/mapping/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    lazy-loading-enabled: true
+    multiple-result-sets-enabled: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    default-enum-type-handler: com.mldong.mp.CodedEnumTypeHandler
+  global-config:
+    banner: false
+    db-config:
+      id-type: assign_id
+      table-underline: true
+    enable-sql-runner: true
+  configuration-properties:
+    prefix:
+    #如果数据库为postgresql，则需要配置为blobType: BINARY
+    blobType: BLOB
+    #如果数据库为oracle或mssql，则需要配置为boolValue: 1
+    boolValue: true
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  # token前缀
+  token-prefix: Bearer
+  # token 名称（同时也是 cookie 名称）
+  token-name: Authorization
+  # jwt秘钥
+  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:4m2xehTqw9cqqOp8AfwrnkrjgLmOuv41l0kCO1DhDULchdxt5JPEivEEPAFwRSQU}
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true

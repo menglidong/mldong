@@ -1,0 +1,4 @@
+org.springframework.context.ApplicationListener=\
+com.mldong.listener.ConstantsInitListener,\
+com.mldong.listener.TimerTaskRunListener,\
+com.mldong.listener.RemoveQueryParamListener

@@ -1,0 +1,60 @@
+# 数据库配置
+db.url=jdbc:mysql://172.16.31.160:3306/mldong-plus?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimeZone=UTT
+db.username=root
+db.password=8Eli#gr#AUk
+
+# 作者
+author=mldong
+# 包名配置
+packageParent=com.mldong.modules
+# 基础包
+basePackage=com.mldong
+# 模块名
+moduleName=sys
+
+# 表名称
+# 1.模糊查询以%结尾；
+# 2.多张时使用英文逗号分割
+tableName=sys_user,sys_role,sys_user_role,sys_menu,sys_role_menu,sys_dept,sys_post,sys_config,sys_dict,sys_dict_item
+
+# 表前辍
+tablePrefix=sys_
+
+# 覆盖配置
+# entity是否可覆盖
+entityFileOverride=true
+# mapper是否可覆盖
+mapperFileOverride=false
+# service是否可覆盖
+serviceFileOverride=false
+# controller是否可覆盖
+controllerFileOverride=false
+# param是否可覆盖
+paramFileOverride=false
+# pageParam是否可覆盖
+pageParamFileOverride=false
+# vo文件是否覆盖
+voFileOverride=false
+
+# 输出目录配置
+# entity输出目录配置
+entityOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/entity
+# param输出目录配置
+paramOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/dto
+# pageParam输出目录配置
+pageParamOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/dto
+# vo输出目录配置
+voOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/vo
+# mapper输出目录配置
+mapperOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/mapper
+# mapperXml输出目录配置
+mapperXmlOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/mapper/mapping
+# service输出目录配置
+serviceOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/service
+# serviceImpl输出目录配置
+serviceImplOutPath=mldong-core/mldong-${moduleName}-core/src/main/java/com/mldong/modules/${moduleName}/service/impl
+# controller输出目录配置
+controllerOutPath=mldong-admin/src/main/java/com/mldong/modules/${moduleName}/controller
+
+# 默认字段-param中会忽略不生成
+defaultFields=createTime,createUser,updateTime,updateUser,isDeleted
