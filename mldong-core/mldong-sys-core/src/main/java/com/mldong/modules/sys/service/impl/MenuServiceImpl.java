@@ -95,25 +95,25 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         if(CollectionUtil.isNotEmpty(param)) {
             // 一级菜单
             param.forEach(route -> {
-                if (YesNoEnum.YES.equals(route.getIsSync())) {
+                if (YesNoEnum.YES.getCode().equals(route.getIsSync())) {
                     Long menuId = saveOrUpdateRoute(route, 0L);
                     menuIds.add(menuId);
                     if (CollectionUtil.isNotEmpty(route.getChildren())) {
                         // 二级菜单
                         route.getChildren().forEach(route2 -> {
-                            if(YesNoEnum.YES.equals(route2.getIsSync())) {
+                            if(YesNoEnum.YES.getCode().equals(route2.getIsSync())) {
                                 Long menuId2 = saveOrUpdateRoute(route2, menuId);
                                 menuIds.add(menuId2);
                                 // 三级菜单
                                 if (CollectionUtil.isNotEmpty(route2.getChildren())) {
                                     route2.getChildren().forEach(route3 -> {
-                                        if(YesNoEnum.YES.equals(route3.getIsSync())) {
+                                        if(YesNoEnum.YES.getCode().equals(route3.getIsSync())) {
                                             Long menuId3 = saveOrUpdateRoute(route3, menuId2);
                                             menuIds.add(menuId3);
                                             // 四级菜单--最多四级
                                             if (CollectionUtil.isNotEmpty(route3.getChildren())) {
                                                 route3.getChildren().forEach(route4 -> {
-                                                    if(YesNoEnum.YES.equals(route4.getIsSync())) {
+                                                    if(YesNoEnum.YES.getCode().equals(route4.getIsSync())) {
                                                         menuIds.add(saveOrUpdateRoute(route4, menuId3));
                                                     }
                                                 });

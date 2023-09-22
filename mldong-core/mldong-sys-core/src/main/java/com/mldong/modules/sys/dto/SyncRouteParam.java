@@ -18,7 +18,7 @@ public class SyncRouteParam {
     private String appCode;
 
     @ApiModelProperty(value = "是否同步",position = 85)
-    private YesNoEnum isSync;
+    private Integer isSync;
 
     @ApiModelProperty(value = "父ID集合",position = 20)
     private String pids;
@@ -30,7 +30,7 @@ public class SyncRouteParam {
     private String code;
 
     @ApiModelProperty(value = "菜单类型<sys_menu_type>",position = 25)
-    private MenuTypeEnum type;
+    private Integer type;
 
     @ApiModelProperty(value = "排序",position = 30)
     @TableField(fill = FieldFill.INSERT)
@@ -58,7 +58,7 @@ public class SyncRouteParam {
     private Integer enabled;
 
     @ApiModelProperty(value = "打开方式<sys_menu_open_type>",position = 70)
-    private MenuOpenTypeEnum openType;
+    private Integer openType;
 
     @ApiModelProperty(value = "是否缓存",position = 75)
     private Integer isCache;
