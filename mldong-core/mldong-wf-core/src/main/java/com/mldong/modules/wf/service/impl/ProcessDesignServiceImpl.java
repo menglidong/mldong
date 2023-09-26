@@ -16,6 +16,7 @@ import com.mldong.modules.wf.dto.ProcessDesignParam;
 import com.mldong.modules.wf.entity.ProcessDesign;
 import com.mldong.modules.wf.entity.ProcessDesignHis;
 import com.mldong.modules.wf.mapper.ProcessDesignMapper;
+import com.mldong.modules.wf.service.ProcessDefineService;
 import com.mldong.modules.wf.service.ProcessDesignHisService;
 import com.mldong.modules.wf.service.ProcessDesignService;
 import com.mldong.modules.wf.vo.ProcessDesignVO;
@@ -39,6 +40,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, ProcessDesign> implements ProcessDesignService {
     private final ProcessDesignHisService processDesignHisService;
+    private final ProcessDefineService processDefineService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(ProcessDesignParam param) {
@@ -121,6 +123,7 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
 
     @Override
     public void deploy(Long processDefineId) {
-
+        ProcessDesignVO processDesign = findById(processDefineId);
+        processDefineService.deploy(JSONUtil.toJsonStr(processDesign.getJsonObject()));
     }
 }
