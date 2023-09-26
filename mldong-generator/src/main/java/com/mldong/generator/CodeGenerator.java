@@ -2,29 +2,23 @@ package com.mldong.generator;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.setting.Setting;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.ITypeConvert;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.builder.Controller;
 import com.baomidou.mybatisplus.generator.config.builder.Entity;
 import com.baomidou.mybatisplus.generator.config.builder.Mapper;
 import com.baomidou.mybatisplus.generator.config.builder.Service;
-import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.fill.Property;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -148,6 +142,9 @@ public class CodeGenerator {
                             tableInfo.getFields().forEach(tableField->{
                                 if(CollectionUtil.newArrayList("Year","Boolean").contains(tableField.getPropertyType())) {
                                     tableField.setPropertyName(tableField.getPropertyName(), DbColumnType.INTEGER);
+                                }
+                                if(CollectionUtil.newArrayList("Blob").contains(tableField.getPropertyType())) {
+                                    tableField.setPropertyName(tableField.getPropertyName(), DbColumnType.BYTE_ARRAY);
                                 }
                             });
                         }
