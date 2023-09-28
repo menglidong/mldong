@@ -17,10 +17,12 @@ import lombok.Data;
 @Data
 @ApiModel(value = "ProcessInstanceVO对象", description = "流程实例VO")
 public class ProcessInstanceVO extends ProcessInstance {
-    @ApiModelProperty(value = "显示名称")
+    @ApiModelProperty(value = "定义名称")
     private String displayName;
     @ApiModelProperty(value = "唯一编码")
     private String name;
     @ApiModelProperty(value = "流程设计json对象")
     private JSONObject jsonObject;
+    @ApiModelProperty(value = "定义版本")
+    private Integer version;
 }
