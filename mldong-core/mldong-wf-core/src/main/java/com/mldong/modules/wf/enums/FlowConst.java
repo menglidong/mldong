@@ -12,4 +12,6 @@ public interface FlowConst {
     String ADMIN_ID = "flow.admin";
     // 自动执行ID
     String AUTO_ID = "flow.auto";
+    // 流程定义id，key
+    String PROCESS_DEFINE_ID_KEY = "processDefineId";
 }

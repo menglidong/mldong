@@ -1,12 +1,14 @@
 package com.mldong.modules.wf.service;
 
+import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.mldong.base.CommonPage;
+import com.mldong.base.UpAndDownParam;
 import com.mldong.modules.wf.dto.ProcessDefinePageParam;
 import com.mldong.modules.wf.dto.ProcessDefineParam;
 import com.mldong.modules.wf.engine.model.ProcessModel;
-import com.mldong.modules.wf.vo.ProcessDefineVO;
 import com.mldong.modules.wf.entity.ProcessDefine;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.mldong.modules.wf.vo.ProcessDefineVO;
 
 import java.io.InputStream;
 
@@ -92,8 +94,13 @@ public interface ProcessDefineService extends IService<ProcessDefine> {
      * 卸载流程
      * @param processDefineId
      */
-    public void unDeploy(Long processDefineId);
+    void unDeploy(Long processDefineId);
 
+    /**
+     * 回恢流程
+     * @param processDefineId
+     */
+    void reDeploy(Long processDefineId);
     /**
      * 只更新type
      * @param processDefineId
@@ -106,7 +113,7 @@ public interface ProcessDefineService extends IService<ProcessDefine> {
      * @param processDefineId
      * @return
      */
-    com.mldong.modules.wf.entity.ProcessDefine getById(Long processDefineId);
+    ProcessDefine getById(Long processDefineId);
 
     /**
      * 根据id获取流程模型
@@ -128,4 +135,17 @@ public interface ProcessDefineService extends IService<ProcessDefine> {
      * @return
      */
     String getDefineJsonStr(Long processDefineId);
+
+    /**
+     * 获取流程定义json对象
+     * @param processDefineId
+     * @return
+     */
+    JSONObject getDefineJsonObject(Long processDefineId);
+
+    /**
+     * 启用/禁用
+     * @param param
+     */
+    void upAndDown(UpAndDownParam param);
 }

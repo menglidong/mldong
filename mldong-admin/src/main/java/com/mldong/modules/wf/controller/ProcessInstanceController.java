@@ -1,19 +1,17 @@
 package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
 import com.mldong.base.IdParam;
-import com.mldong.base.IdsParam;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
-import com.mldong.modules.wf.dto.ProcessInstanceParam;
+import com.mldong.modules.wf.enums.FlowConst;
 import com.mldong.modules.wf.service.ProcessInstanceService;
 import com.mldong.modules.wf.vo.ProcessInstanceVO;
-import com.mldong.validation.Groups;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,39 +29,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProcessInstanceController {
     private final ProcessInstanceService processInstanceService;
     /**
-     * 添加流程实例
-     * @param param
+     * 启动流程实例
+     * @param args
      * @return
      */
-    @PostMapping("/wf/processInstance/save")
-    @ApiOperation(value = "添加流程实例")
-    @SaCheckPermission("wf:processInstance:save")
-    public CommonResult<?> save(@RequestBody @Validated({Groups.Save.class}) ProcessInstanceParam param) {
-        processInstanceService.save(param);
-        return CommonResult.ok();
-    }
-    /**
-     * 删除流程实例
-     * @param param
-     * @return
-     */
-    @PostMapping("/wf/processInstance/remove")
-    @ApiOperation(value = "删除流程实例")
-    @SaCheckPermission("wf:processInstance:remove")
-    public CommonResult<?> remove(@RequestBody IdsParam param) {
-        processInstanceService.removeBatchByIds(param.getIds());
-        return CommonResult.ok();
-    }
-    /**
-     * 修改流程实例
-     * @param param
-     * @return
-     */
-    @PostMapping("/wf/processInstance/update")
-    @ApiOperation(value = "修改流程实例")
-    @SaCheckPermission("wf:processInstance:update")
-    public CommonResult<?> update(@RequestBody @Validated({Groups.Update.class}) ProcessInstanceParam param) {
-        processInstanceService.update(param);
+    @PostMapping("/wf/processInstance/startAndExecute")
+    @ApiOperation(value = "启动流程实例")
+    @SaCheckPermission("wf:processInstance:startAndExecute")
+    public CommonResult<?> startAndExecute(@RequestBody Dict args) {
+        Long processDefineId = args.getLong(FlowConst.PROCESS_DEFINE_ID_KEY);
+        args.remove(FlowConst.PROCESS_DEFINE_ID_KEY);
+        processInstanceService.startAndExecute(processDefineId,args);
         return CommonResult.ok();
     }
     /**

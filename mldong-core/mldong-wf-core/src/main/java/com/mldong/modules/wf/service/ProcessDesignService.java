@@ -52,7 +52,7 @@ public interface ProcessDesignService extends IService<ProcessDesign> {
 
     /**
      * 流程定义部署
-     * @param processDefineId
+     * @param processDesignId
      */
-    void deploy(Long processDefineId);
+    void deploy(Long processDesignId);
 }

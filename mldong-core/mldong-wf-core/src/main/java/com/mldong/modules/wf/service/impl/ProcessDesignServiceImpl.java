@@ -116,14 +116,22 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
             param.setId(processDesignId);
             param.setName(name);
             param.setDisplayName(displayName);
+            param.setIsDeployed(YesNoEnum.NO.getCode());
             update(param);
         }
         return  success;
     }
 
     @Override
-    public void deploy(Long processDefineId) {
-        ProcessDesignVO processDesign = findById(processDefineId);
-        processDefineService.deploy(JSONUtil.toJsonStr(processDesign.getJsonObject()));
+    @Transactional(rollbackFor = Exception.class)
+    public void deploy(Long processDesignId) {
+        ProcessDesignVO processDesign = findById(processDesignId);
+        ProcessDesign up = new ProcessDesign();
+        up.setId(processDesignId);
+        up.setIsDeployed(YesNoEnum.YES.getCode());
+        if(updateById(up)) {
+            // 先更新状态，更新成功，再部署
+            processDefineService.deploy(JSONUtil.toJsonStr(processDesign.getJsonObject()));
+        }
     }
 }

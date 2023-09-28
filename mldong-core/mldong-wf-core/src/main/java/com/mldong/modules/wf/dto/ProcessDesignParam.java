@@ -40,6 +40,8 @@ public class ProcessDesignParam implements Serializable {
     @ApiModelProperty(value = "显示名称", required = true)
     @NotBlank(message = "显示名称不能为空")
     private String displayName;
+    @ApiModelProperty("是否已部署")
+    private Integer isDeployed;
     @ApiModelProperty("备注")
     private String remark;
 

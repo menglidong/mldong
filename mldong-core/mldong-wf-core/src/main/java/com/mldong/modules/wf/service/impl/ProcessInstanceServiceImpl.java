@@ -2,6 +2,7 @@ package com.mldong.modules.wf.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mldong.base.CommonPage;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
+import com.mldong.modules.wf.engine.FlowEngine;
 import com.mldong.modules.wf.enums.FlowConst;
 import com.mldong.modules.wf.enums.ProcessInstanceStateEnum;
 import com.mldong.modules.wf.enums.ProcessTaskStateEnum;
@@ -20,6 +22,7 @@ import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
 import com.mldong.modules.wf.service.ProcessInstanceService;
 import com.mldong.modules.wf.vo.ProcessInstanceVO;
+import com.mldong.web.LoginUserHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -222,5 +225,18 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
     @Override
     public ProcessInstance getById(Long id) {
         return baseMapper.selectById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void startAndExecute(Long processDefineId, Dict args) {
+        String operator = LoginUserHolder.getUserId().toString();
+        FlowEngine flowEngine = SpringUtil.getBean(FlowEngine.class);
+        ProcessInstance processInstance = flowEngine.startProcessInstanceById(processDefineId,operator,args);
+        List<ProcessTask> processTaskList = flowEngine.processTaskService().getDoingTaskList(processInstance.getId(),new String[]{});
+        // 取任务自动执行
+        processTaskList.forEach(processTask -> {
+            flowEngine.executeProcessTask(processTask.getId(),FlowConst.AUTO_ID,args);
+        });
     }
 }

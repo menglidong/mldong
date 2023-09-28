@@ -3,6 +3,7 @@ package com.mldong.mp;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.mldong.auth.LoginUser;
@@ -40,7 +41,11 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             if (metaObject.hasSetter(CREATE_USER)) {
                 Object createUser = metaObject.getValue(CREATE_USER);
                 if (ObjectUtil.isNull(createUser)) {
-                    setFieldValByName(CREATE_USER, this.getUserUniqueId(), metaObject);
+                    if(String.class.equals(metaObject.getGetterType(CREATE_USER))) {
+                        setFieldValByName(CREATE_USER, StrUtil.toString(this.getUserUniqueId()), metaObject);
+                    } else {
+                        setFieldValByName(CREATE_USER, this.getUserUniqueId(), metaObject);
+                    }
                 }
             }
             //为空则设置createTime（BaseEntity)
@@ -54,7 +59,11 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             if (metaObject.hasSetter(UPDATE_USER)) {
                 Object updateUser = metaObject.getValue(UPDATE_USER);
                 if (ObjectUtil.isNull(updateUser)) {
-                    setFieldValByName(UPDATE_USER, this.getUserUniqueId(), metaObject);
+                    if(String.class.equals(metaObject.getGetterType(UPDATE_USER))) {
+                        setFieldValByName(UPDATE_USER, StrUtil.toString(this.getUserUniqueId()), metaObject);
+                    } else {
+                        setFieldValByName(UPDATE_USER, this.getUserUniqueId(), metaObject);
+                    }
                 }
             }
 

@@ -118,4 +118,11 @@ public interface ProcessInstanceService extends IService<ProcessInstance> {
      * @return
      */
     ProcessInstance getById(Long id);
+
+    /**
+     * 启动且执行流程（自动执行第一个节点）
+     * @param processDefineId
+     * @param args
+     */
+    void startAndExecute(Long processDefineId,Dict args);
 }

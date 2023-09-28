@@ -1,27 +1,38 @@
 package com.mldong.modules.wf.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mldong.base.CommonPage;
+import com.mldong.base.UpAndDownParam;
+import com.mldong.base.YesNoEnum;
+import com.mldong.exception.ServiceException;
 import com.mldong.modules.wf.dto.ProcessDefinePageParam;
 import com.mldong.modules.wf.dto.ProcessDefineParam;
-import com.mldong.modules.wf.enums.ProcessDefineStateEnum;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.parser.ModelParser;
 import com.mldong.modules.wf.entity.ProcessDefine;
+import com.mldong.modules.wf.entity.ProcessInstance;
+import com.mldong.modules.wf.enums.ProcessDefineStateEnum;
+import com.mldong.modules.wf.enums.err.WfErrEnum;
 import com.mldong.modules.wf.mapper.ProcessDefineMapper;
+import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.service.ProcessDefineService;
 import com.mldong.modules.wf.vo.ProcessDefineVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 /**
@@ -33,7 +44,9 @@ import java.util.List;
  * @since 2023-09-26
  */
 @Service
+@RequiredArgsConstructor
 public class ProcessDefineServiceImpl extends ServiceImpl<ProcessDefineMapper, ProcessDefine> implements ProcessDefineService {
+    private final ProcessInstanceMapper processInstanceMapper;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(ProcessDefineParam param) {
@@ -51,16 +64,39 @@ public class ProcessDefineServiceImpl extends ServiceImpl<ProcessDefineMapper, P
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeBatchByIds(Collection<?> list) {
+        list.forEach(id->{
+           long count = processInstanceMapper.selectCount(Wrappers.lambdaQuery(ProcessInstance.class).eq(ProcessInstance::getProcessDefineId,id));
+           if(count>0) {
+               ServiceException.throwBiz(WfErrEnum.EXIST_UN_FINISH_INSTANCE);
+           }
+        });
+        return super.removeBatchByIds(list);
+    }
+
+    @Override
     public CommonPage<ProcessDefineVO> page(ProcessDefinePageParam param) {
         IPage<ProcessDefineVO> page = param.buildMpPage();
+        if(StrUtil.isEmpty(param.getOrderBy())) {
+            param.setOrderBy("t.id desc");
+        }
         QueryWrapper queryWrapper = param.buildQueryWrapper();
         List<ProcessDefineVO> list = baseMapper.selectCustom(page, queryWrapper);
+        list.forEach(processDefineVO -> {
+            processDefineVO.setContent(null);
+        });
         page.setRecords(list);
         return CommonPage.toPage(page);
     }
     @Override
     public ProcessDefineVO findById(Long id) {
-        return baseMapper.findById(id);
+        ProcessDefineVO vo =  baseMapper.findById(id);
+        if(vo!=null) {
+            vo.setContent(null);
+            vo.setJsonObject(getDefineJsonObject(id));
+        }
+        return vo;
     }
     @Override
     public Long deploy(InputStream inputStream) {
@@ -142,6 +178,14 @@ public class ProcessDefineServiceImpl extends ServiceImpl<ProcessDefineMapper, P
     }
 
     @Override
+    public void reDeploy(Long processDefineId) {
+        ProcessDefine processDefine = new ProcessDefine();
+        processDefine.setId(processDefineId);
+        processDefine.setState(ProcessDefineStateEnum.ENABLE.getCode());
+        baseMapper.updateById(processDefine);
+    }
+
+    @Override
     public void updateType(Long processDefineId, String type) {
         ProcessDefine processDefine = new ProcessDefine();
         processDefine.setId(processDefineId);
@@ -172,5 +216,24 @@ public class ProcessDefineServiceImpl extends ServiceImpl<ProcessDefineMapper, P
         ProcessDefine processDefine = getById(id);
         if(processDefine == null) return null;
         return StrUtil.str(processDefine.getContent(), Charset.defaultCharset());
+    }
+
+    @Override
+    public JSONObject getDefineJsonObject(Long processDefineId) {
+        return JSONUtil.parseObj(Convert.toStr(getDefineJsonStr(processDefineId),"{}"));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void upAndDown(UpAndDownParam param) {
+        if(YesNoEnum.YES.equals(param.getOpType())) {
+            param.getIds().forEach(id->{
+                reDeploy(Convert.toLong(id));
+            });
+        } else {
+            param.getIds().forEach(id->{
+                unDeploy(Convert.toLong(id));
+            });
+        }
     }
 }

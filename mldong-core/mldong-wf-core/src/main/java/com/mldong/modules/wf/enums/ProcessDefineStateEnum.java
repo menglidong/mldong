@@ -11,8 +11,8 @@ import com.mldong.base.CodedEnum;
  */
 @DictEnum(key = "wf_process_define_state", name = "流程定义状态")
 public enum ProcessDefineStateEnum implements CodedEnum {
-    DISABLE(0,"不可用"),
-    ENABLE(1, "可用"),
+    DISABLE(0,"禁用"),
+    ENABLE(1, "启用"),
     ;
     private final Integer code;
 

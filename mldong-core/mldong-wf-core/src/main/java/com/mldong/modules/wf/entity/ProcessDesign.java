@@ -18,7 +18,7 @@ import lombok.Setter;
  * </p>
  *
  * @author mldong
- * @since 2023-09-26
+ * @since 2023-09-27
  */
 @Getter
 @Setter
@@ -37,6 +37,9 @@ public class ProcessDesign implements Serializable  {
 
     @ApiModelProperty("显示名称")
     private String displayName;
+
+    @ApiModelProperty("是否已部署")
+    private Integer isDeployed;
 
     @ApiModelProperty("备注")
     private String remark;
