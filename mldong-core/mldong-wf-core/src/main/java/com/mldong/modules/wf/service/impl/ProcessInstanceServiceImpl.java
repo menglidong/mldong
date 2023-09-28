@@ -2,6 +2,7 @@ package com.mldong.modules.wf.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,6 +21,7 @@ import com.mldong.modules.wf.entity.ProcessInstance;
 import com.mldong.modules.wf.entity.ProcessTask;
 import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
+import com.mldong.modules.wf.service.ProcessDefineService;
 import com.mldong.modules.wf.service.ProcessInstanceService;
 import com.mldong.modules.wf.vo.ProcessInstanceVO;
 import com.mldong.web.LoginUserHolder;
@@ -59,15 +61,25 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
 
     @Override
     public CommonPage<ProcessInstanceVO> page(ProcessInstancePageParam param) {
+        if(StrUtil.isEmpty(param.getOrderBy())) {
+            // 按id即时间倒序
+            param.setOrderBy("t.id desc");
+        }
         IPage<ProcessInstanceVO> page = param.buildMpPage();
         QueryWrapper queryWrapper = param.buildQueryWrapper();
+        // 当前用户发起的流程
+        queryWrapper.eq("t.operator",LoginUserHolder.getUserId());
         List<ProcessInstanceVO> list = baseMapper.selectCustom(page, queryWrapper);
         page.setRecords(list);
         return CommonPage.toPage(page);
     }
     @Override
     public ProcessInstanceVO findById(Long id) {
-        return baseMapper.findById(id);
+        ProcessInstanceVO vo = baseMapper.findById(id);
+        if(vo!=null) {
+            vo.setJsonObject(SpringUtil.getBean(ProcessDefineService.class).getDefineJsonObject(vo.getProcessDefineId()));
+        }
+        return vo;
     }
     @Transactional(rollbackFor = Exception.class)
     @Override

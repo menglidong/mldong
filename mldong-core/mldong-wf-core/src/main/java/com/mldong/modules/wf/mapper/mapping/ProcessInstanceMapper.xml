@@ -3,9 +3,9 @@
 <mapper namespace="com.mldong.modules.wf.mapper.ProcessInstanceMapper">
 
     <select id="selectCustom" resultType="com.mldong.modules.wf.vo.ProcessInstanceVO">
-        select * from wf_process_instance t ${ew.customSqlSegment}
+        select pd.name,pd.display_name,t.* from wf_process_instance t left join wf_process_define pd on t.process_define_id=pd.id ${ew.customSqlSegment}
     </select>
     <select id="findById" resultType="com.mldong.modules.wf.vo.ProcessInstanceVO">
-        select * from wf_process_instance t where t.id = #{id}
+        select pd.name,pd.display_name,t.* from wf_process_instance t left join wf_process_define pd on t.process_define_id=pd.id where t.id = #{id}
     </select>
 </mapper>
