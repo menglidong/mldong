@@ -8,4 +8,32 @@
     <select id="findById" resultType="com.mldong.modules.wf.vo.ProcessTaskVO">
         select * from wf_process_task t where t.id = #{id}
     </select>
+    <select id="selectTodoList" resultType="com.mldong.modules.wf.vo.ProcessTaskVO">
+        SELECT
+            t.*,
+            pd.name as process_define_name,
+            pd.display_name as process_define_display_name,
+            pi.variable as instance_variable,
+            pi.create_time as instance_create_time
+        FROM
+            wf_process_task t
+                LEFT JOIN wf_process_instance pi on t.process_instance_id=pi.id
+                LEFT JOIN wf_process_define pd on pi.process_define_id=pd.id
+                LEFT JOIN wf_process_task_actor pta ON t.id = pta.process_task_id
+            ${ew.customSqlSegment}
+    </select>
+    <select id="selectDoneList" resultType="com.mldong.modules.wf.vo.ProcessTaskVO">
+        SELECT
+        t.*,
+        pd.name as process_define_name,
+        pd.display_name as process_define_display_name,
+        pi.variable as instance_variable,
+        pi.create_time as instance_create_time
+        FROM
+        wf_process_task t
+        LEFT JOIN wf_process_instance pi on t.process_instance_id=pi.id
+        LEFT JOIN wf_process_define pd on pi.process_define_id=pd.id
+        LEFT JOIN wf_process_task_actor pta ON t.id = pta.process_task_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

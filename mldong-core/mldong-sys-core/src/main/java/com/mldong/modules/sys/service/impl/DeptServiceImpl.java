@@ -66,4 +66,9 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         List<DeptVO> treeData = TreeTool.listToTree(BeanUtil.copyToList(list,DeptVO.class),0L,DeptVO.class);
         return treeData;
     }
+
+    @Override
+    public DeptVO getInCache(Long id) {
+        return findById(id);
+    }
 }

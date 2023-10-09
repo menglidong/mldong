@@ -48,4 +48,11 @@ public interface DeptService extends IService<Dept> {
     * @return
     */
     List<DeptVO> tree(DeptPageParam param);
+
+    /**
+     * 从缓存中获取
+     * @param id
+     * @return
+     */
+    DeptVO getInCache(Long id);
 }

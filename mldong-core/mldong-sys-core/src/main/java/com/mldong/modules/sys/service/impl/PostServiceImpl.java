@@ -58,4 +58,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public PostVO findById(Long id) {
         return baseMapper.findById(id);
     }
+
+    @Override
+    public PostVO getInCache(Long id) {
+        return findById(id);
+    }
 }

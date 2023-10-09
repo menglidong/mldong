@@ -1,9 +1,12 @@
 package com.mldong.modules.wf.service;
 
+import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonPage;
+import com.mldong.base.LabelValueVO;
 import com.mldong.modules.wf.dto.ProcessTaskPageParam;
 import com.mldong.modules.wf.dto.ProcessTaskParam;
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
 import com.mldong.modules.wf.vo.ProcessTaskVO;
 import com.mldong.modules.wf.entity.ProcessTask;
@@ -66,11 +69,19 @@ public interface ProcessTaskService extends IService<ProcessTask> {
      */
     List<ProcessTask> getDoingTaskList(Long processInstanceId, String[] taskNames);
     /**
+     * 根据流程实例ID获取已完成的任务
+     * @param processInstanceId 流程实例ID
+     * @param taskNames 任务名称
+     * @return
+     */
+    List<ProcessTask> getDoneTaskList(Long processInstanceId, String[] taskNames);
+    /**
      * 将流程任务修改为已完成
      * @param processTaskId
      * @param operator 任务处理人
+     * @param args
      */
-    void finishProcessTask(Long processTaskId, String operator);
+    void finishProcessTask(Long processTaskId, String operator, Dict args);
 
     /**
      * 根据任务模型和流程执行对象创建任务
@@ -113,4 +124,30 @@ public interface ProcessTaskService extends IService<ProcessTask> {
      * @return
      */
     List<String> getTaskActors(Long processTaskId);
+    /**
+     * 查询待办列表
+     * @param param
+     * @return
+     */
+    CommonPage<ProcessTaskVO> todoList(ProcessTaskPageParam param);
+    /**
+     * 查询已办列表
+     * @param param
+     * @return
+     */
+    CommonPage<ProcessTaskVO> doneList(ProcessTaskPageParam param);
+    /**
+     * 根据当前任务对象驳回至上一步处理
+     * @param model 流程定义模型，用以获取上一步模型对象
+     * @param currentTask 当前任务对象
+     * @return Task 任务对象
+     */
+    ProcessTask rejectTask(ProcessModel model, ProcessTask currentTask);
+
+    /**
+     * 获取可跳转的任务节点名称
+     * @param processInstanceId
+     * @return
+     */
+    List<LabelValueVO> jumpAbleTaskNameList(Long processInstanceId);
 }

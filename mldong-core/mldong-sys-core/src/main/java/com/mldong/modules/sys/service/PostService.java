@@ -42,4 +42,11 @@ public interface PostService extends IService<Post> {
   * @return
   */
   PostVO findById(Long id);
+
+  /**
+   * 从缓存中获取
+   * @param id
+   * @return
+   */
+  PostVO getInCache(Long id);
 }

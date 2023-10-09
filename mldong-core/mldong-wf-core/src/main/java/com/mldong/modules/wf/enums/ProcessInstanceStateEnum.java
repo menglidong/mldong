@@ -15,6 +15,7 @@ public enum ProcessInstanceStateEnum implements CodedEnum {
     FINISHED(20, "已完成"),
     WITHDRAW(30, "已撤回"),
     INTERRUPT(40, "强行终止"),
+    REJECT(45, "已拒绝"),
     PENDING(50,"挂起"),
     ABANDON(99,"已废弃")
     ;

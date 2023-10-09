@@ -26,10 +26,15 @@ import com.mldong.modules.sys.enums.AdminTypeEnum;
 import com.mldong.modules.sys.enums.SexEnum;
 import com.mldong.modules.sys.enums.err.SysErrEnum;
 import com.mldong.modules.sys.mapper.UserMapper;
+import com.mldong.modules.sys.service.DeptService;
+import com.mldong.modules.sys.service.PostService;
 import com.mldong.modules.sys.service.UserService;
+import com.mldong.modules.sys.vo.DeptVO;
+import com.mldong.modules.sys.vo.PostVO;
 import com.mldong.modules.sys.vo.UserVO;
 import com.mldong.util.LowCodeServiceUtil;
 import com.mldong.web.LoginUserHolder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +50,10 @@ import java.util.List;
  * @since 2023-09-20
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    private final DeptService deptService;
+    private final PostService postService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(UserParam param) {
@@ -92,7 +100,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
     @Override
     public UserVO findById(Long id) {
-        return baseMapper.findById(id);
+        UserVO vo = baseMapper.findById(id);
+        if(vo!=null) {
+            if(vo.getDeptId()!=null) {
+                DeptVO deptVO = deptService.getInCache(vo.getDeptId());
+                if (deptVO!=null){
+                    vo.setDeptName(deptVO.getName());
+                }
+            }
+            if(vo.getPostId()!=null) {
+                PostVO postVO = postService.getInCache(vo.getPostId());
+                if (postVO!=null){
+                    vo.setPostName(postVO.getName());
+                }
+            }
+        }
+        return vo;
     }
 
     /**

@@ -21,4 +21,20 @@ import java.util.List;
 public interface ProcessTaskMapper extends BaseMapper<ProcessTask> {
     List<ProcessTaskVO> selectCustom(IPage<ProcessTaskVO> page, @Param(Constants.WRAPPER) Wrapper<ProcessTask> wrapper);
     ProcessTaskVO findById(@Param("id") Long id);
+
+    /**
+     * 我的待办
+     * @param page
+     * @param wrapper
+     * @return
+     */
+    List<ProcessTaskVO> selectTodoList(IPage<ProcessTaskVO> page, @Param(Constants.WRAPPER) Wrapper<ProcessTask> wrapper);
+    /**
+     * 我的已办
+     * @param page
+     * @param wrapper
+     * @return
+     */
+    List<ProcessTaskVO> selectDoneList(IPage<ProcessTaskVO> page, @Param(Constants.WRAPPER) Wrapper<ProcessTask> wrapper);
+
 }

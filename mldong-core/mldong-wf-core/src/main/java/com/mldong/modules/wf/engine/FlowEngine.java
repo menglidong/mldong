@@ -59,4 +59,31 @@ public interface FlowEngine {
      */
     List<ProcessTask> executeProcessTask(Long processTaskId, String operator, Dict args);
 
+    /**
+     * 执行流程任务并跳转
+     * @param processTaskId
+     * @param operator
+     * @param args
+     * @param nodeName
+     * @return
+     */
+    List<ProcessTask> executeAndJumpTask(Long processTaskId, String operator, Dict args, String nodeName);
+
+    /**
+     * 执行流程任务并跳转到结束节点
+     * @param processTaskId
+     * @param operator
+     * @param args
+     * @return
+     */
+    List<ProcessTask> executeAndJumpToEnd(Long processTaskId, String operator, Dict args);
+    /**
+     * 执行流程任务并跳转到第一个任务节点
+     * @param processTaskId
+     * @param operator
+     * @param args
+     * @return
+     */
+    List<ProcessTask> executeAndJumpToFirstTaskNode(Long processTaskId, String operator, Dict args);
+
 }

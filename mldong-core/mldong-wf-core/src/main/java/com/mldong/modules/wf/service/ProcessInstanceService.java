@@ -5,9 +5,14 @@ import com.mldong.base.CommonPage;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
 import com.mldong.modules.wf.entity.ProcessDefine;
+import com.mldong.modules.wf.vo.HighLightVO;
 import com.mldong.modules.wf.vo.ProcessInstanceVO;
 import com.mldong.modules.wf.entity.ProcessInstance;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mldong.modules.wf.vo.ProcessTaskVO;
+
+import java.util.List;
+
 /**
  * <p>
  * 流程实例 服务类
@@ -125,4 +130,25 @@ public interface ProcessInstanceService extends IService<ProcessInstance> {
      * @param args
      */
     void startAndExecute(Long processDefineId,Dict args);
+
+    /**
+     * 获取流程实例高亮数据
+     * @param processInstanceId
+     * @return
+     */
+    HighLightVO highLight(Long processInstanceId);
+
+    /**
+     * 审批记录
+     * @param processInstanceId
+     * @return
+     */
+    List<ProcessTaskVO> approvalRecord(Long processInstanceId);
+
+    /**
+     * 撤回
+     * @param processInstanceId
+     * @param operator
+     */
+    void withdraw(Long processInstanceId,String operator);
 }

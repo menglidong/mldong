@@ -14,19 +14,25 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mldong.base.CommonPage;
+import com.mldong.base.LabelValueVO;
+import com.mldong.exception.ServiceException;
 import com.mldong.modules.wf.dto.ProcessTaskPageParam;
 import com.mldong.modules.wf.dto.ProcessTaskParam;
 import com.mldong.modules.wf.engine.AssignmentHandler;
 import com.mldong.modules.wf.engine.core.Execution;
-import com.mldong.modules.wf.enums.FlowConst;
-import com.mldong.modules.wf.enums.ProcessTaskStateEnum;
+import com.mldong.modules.wf.engine.model.NodeModel;
+import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
+import com.mldong.modules.wf.engine.util.FlowUtil;
 import com.mldong.modules.wf.entity.ProcessTask;
 import com.mldong.modules.wf.entity.ProcessTaskActor;
+import com.mldong.modules.wf.enums.FlowConst;
+import com.mldong.modules.wf.enums.ProcessTaskStateEnum;
 import com.mldong.modules.wf.mapper.ProcessTaskActorMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
 import com.mldong.modules.wf.service.ProcessTaskService;
 import com.mldong.modules.wf.vo.ProcessTaskVO;
+import com.mldong.web.LoginUserHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +79,11 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
     }
     @Override
     public ProcessTaskVO findById(Long id) {
-        return baseMapper.findById(id);
+        ProcessTaskVO vo = baseMapper.findById(id);
+        if(vo!=null) {
+
+        }
+        return vo;
     }
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -99,13 +109,36 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
     }
 
     @Override
-    public void finishProcessTask(Long processTaskId,String operator) {
+    public List<ProcessTask> getDoneTaskList(Long processInstanceId, String[] taskNames) {
+        LambdaQueryWrapper<ProcessTask> queryWrapper = Wrappers.lambdaQuery(ProcessTask.class)
+                .eq(ProcessTask::getProcessInstanceId,processInstanceId)
+                .ne(ProcessTask::getTaskState, ProcessTaskStateEnum.DOING.getCode());
+        if(ObjectUtil.isNotEmpty(taskNames)) {
+            queryWrapper.in(ProcessTask::getTaskName,taskNames);
+        }
+        List<ProcessTask> processTaskList = baseMapper.selectList(queryWrapper);
+        return processTaskList;
+    }
+
+    @Override
+    public void finishProcessTask(Long processTaskId,String operator,Dict args) {
+        ProcessTask his = baseMapper.selectById(processTaskId);
         ProcessTask processTask = new ProcessTask();
         processTask.setId(processTaskId);
         processTask.setTaskState(ProcessTaskStateEnum.FINISHED.getCode());
         processTask.setUpdateTime(new Date());
         processTask.setUpdateUser(operator);
         processTask.setOperator(operator);
+        processTask.setFinishTime(new Date());
+        Dict newArgs = Dict.create();
+        newArgs.putAll(FlowUtil.variableToDict(his.getVariable()));
+        newArgs.putAll(args);
+        if(FlowConst.AUTO_ID.equalsIgnoreCase(operator)) {
+            FlowUtil.addUserInfoToArgs(LoginUserHolder.getUserId().toString(), newArgs);
+        } else {
+            FlowUtil.addUserInfoToArgs(operator, newArgs);
+        }
+        processTask.setVariable(JSONUtil.toJsonStr(newArgs));
         baseMapper.updateById(processTask);
     }
 
@@ -119,6 +152,8 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         processTask.setDisplayName(taskModel.getDisplayName());
         processTask.setTaskState(ProcessTaskStateEnum.DOING.getCode());
         processTask.setProcessInstanceId(execution.getProcessInstanceId());
+        execution.getArgs().put(FlowConst.IS_FIRST_TASK_NODE,FlowUtil.isFistTaskName(execution.getProcessModel(),taskModel.getName()));
+        // 增加是否为第一个任务节点标识
         processTask.setVariable(JSONUtil.toJsonStr(execution.getArgs()));
         processTask.setCreateTime(now);
         processTask.setUpdateTime(now);
@@ -185,6 +220,84 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         return processTaskActorList.stream().map(item->{
             return item.getActorId();
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public CommonPage<ProcessTaskVO> todoList(ProcessTaskPageParam param) {
+        if(StrUtil.isEmpty(param.getOrderBy())) {
+            // 按id即时间倒序
+            param.setOrderBy("t.id desc");
+        }
+        IPage<ProcessTaskVO> page = param.buildMpPage();
+        QueryWrapper queryWrapper = param.buildQueryWrapper();
+        queryWrapper.eq("t.task_state",ProcessTaskStateEnum.DOING);
+        queryWrapper.eq("pta.actor_id",LoginUserHolder.getUserId());
+        List<ProcessTaskVO> list = baseMapper.selectTodoList(page, queryWrapper);
+        page.setRecords(list);
+        return CommonPage.toPage(page);
+    }
+
+    @Override
+    public CommonPage<ProcessTaskVO> doneList(ProcessTaskPageParam param) {
+        if(StrUtil.isEmpty(param.getOrderBy())) {
+            // 按id即时间倒序
+            param.setOrderBy("t.id desc");
+        }
+        IPage<ProcessTaskVO> page = param.buildMpPage();
+        QueryWrapper queryWrapper = param.buildQueryWrapper();
+        queryWrapper.notIn("t.task_state",ProcessTaskStateEnum.DOING,ProcessTaskStateEnum.WITHDRAW);
+        queryWrapper.eq("pta.actor_id",LoginUserHolder.getUserId());
+        List<ProcessTaskVO> list = baseMapper.selectDoneList(page, queryWrapper);
+        page.setRecords(list);
+        return CommonPage.toPage(page);
+    }
+
+    @Override
+    public ProcessTask rejectTask(ProcessModel model, ProcessTask currentTask) {
+        Long taskParentId = currentTask.getTaskParentId();
+        if(ObjectUtil.isEmpty(taskParentId) || taskParentId.equals(Long.valueOf(0))) {
+            ServiceException.throwBiz(99999999,"上一步任务ID为空，无法驳回至上一步处理");
+        }
+        NodeModel current = model.getNode(currentTask.getTaskName());
+        ProcessTask history = baseMapper.selectById(taskParentId);
+        NodeModel parent = model.getNode(history.getTaskName());
+        if(!NodeModel.canRejected(current, parent)) {
+            ServiceException.throwBiz(99999999,"无法驳回至上一步处理，请确认上一步骤并非fork、join、suprocess以及会签任务");
+        }
+        ProcessTask task = BeanUtil.toBean(history,ProcessTask.class);
+        task.setId(null);
+        task.setTaskState(ProcessTaskStateEnum.DOING.getCode());
+        task.setCreateTime(null);
+        task.setCreateUser(null);
+        task.setUpdateTime(null);
+        task.setUpdateUser(null);
+        task.setFinishTime(null);
+        String operator = history.getOperator();
+        Dict hisVariable = FlowUtil.variableToDict(history.getVariable());
+        if(hisVariable.get(FlowConst.IS_FIRST_TASK_NODE,false)){
+            // 第一个节点的操作人从任务变量中获取
+            operator = hisVariable.getStr(FlowConst.USER_USER_ID);
+        }
+        task.setVariable(JSONUtil.toJsonStr(hisVariable));
+        task.setOperator(operator);
+        saveProcessTask(task);
+        addTaskActor(task.getId(),CollectionUtil.newArrayList(task.getOperator()));
+        return task;
+    }
+
+    @Override
+    public List<LabelValueVO> jumpAbleTaskNameList(Long processInstanceId) {
+        List<String> taskNames = new ArrayList<>();
+        List<LabelValueVO> res = new ArrayList<>();
+        List<ProcessTask> processTaskList = getDoneTaskList(processInstanceId,new String[]{});
+        processTaskList.forEach(processTask -> {
+            String taskName = processTask.getTaskName();
+            if(!taskNames.contains(taskName)) {
+                taskNames.add(taskName);
+                res.add(LabelValueVO.builder().label(processTask.getDisplayName()).value(taskName).build());
+            }
+        });
+        return res;
     }
 
     /**

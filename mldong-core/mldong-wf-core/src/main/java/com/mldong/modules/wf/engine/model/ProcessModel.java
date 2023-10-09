@@ -128,4 +128,24 @@ public class ProcessModel extends BaseModel {
         // 去重
         return res.stream().distinct().collect(Collectors.toList());
     }
+    /**
+     * 根据指定的节点类型返回流程定义中所有模型对象
+     * @param clazz 节点类型
+     * @param <T> 泛型
+     * @return 节点列表
+     */
+    public <T> List<T> getModels(Class<T> clazz) {
+        List<T> models = new ArrayList<T>();
+        buildModels(models, getStart().getNextModels(clazz), clazz);
+        return models;
+    }
+
+    private <T> void buildModels(List<T> models, List<T> nextModels, Class<T> clazz) {
+        for(T nextModel : nextModels) {
+            if(!models.contains(nextModel)) {
+                models.add(nextModel);
+                buildModels(models, ((NodeModel)nextModel).getNextModels(clazz), clazz);
+            }
+        }
+    }
 }

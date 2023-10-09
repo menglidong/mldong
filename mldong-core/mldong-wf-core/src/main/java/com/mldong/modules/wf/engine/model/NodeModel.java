@@ -5,10 +5,13 @@ import cn.hutool.core.util.StrUtil;
 import com.mldong.modules.wf.engine.Action;
 import com.mldong.modules.wf.engine.FlowInterceptor;
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.enums.ProcessTaskPerformTypeEnum;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -89,6 +92,56 @@ public abstract class NodeModel extends BaseModel implements Action {
                 flowInterceptor.intercept(execution);
             }
         }
+    }
+    public <T> List<T> getNextModels(Class<T> clazz) {
+        List<T> models = new ArrayList<T>();
+        // 记录已递归项，防止死循环
+        Map<String,Object> temp = new HashMap();
+        for(TransitionModel tm : this.getOutputs()) {
+            addNextModels(models, tm, clazz, temp);
+        }
+        return models;
+    }
+
+    protected <T> void addNextModels(List<T> models, TransitionModel tm, Class<T> clazz,Map<String,Object> temp) {
+        if(temp.get(tm.getTo())!=null) {
+            return;
+        }
+        if(clazz.isInstance(tm.getTarget())) {
+            models.add((T)tm.getTarget());
+        } else {
+            for(TransitionModel tm2 : tm.getTarget().getOutputs()) {
+                temp.put(tm.getTo(), tm.getTarget());
+                addNextModels(models, tm2, clazz,temp);
+            }
+        }
+    }
+    /**
+     * 根据父节点模型、当前节点模型判断是否可退回。可退回条件：
+     * 1、满足中间无fork、join、subprocess模型
+     * 2、满足父节点模型如果为任务模型时，参与类型为any
+     * @param parent 父节点模型
+     * @return 是否可以退回
+     */
+    public static boolean canRejected(NodeModel current, NodeModel parent) {
+        if(parent instanceof TaskModel && !ProcessTaskPerformTypeEnum.NORMAL.equals(((TaskModel)parent).getPerformType())) {
+            return false;
+        }
+        boolean result = false;
+        for(TransitionModel tm : current.getInputs()) {
+            NodeModel source = tm.getSource();
+            if(source == parent) {
+                return true;
+            }
+            if(source instanceof ForkModel
+                    || source instanceof JoinModel
+                    //|| source instanceof SubProcessModel
+                    || source instanceof StartModel) {
+                continue;
+            }
+            result = result || canRejected(source, parent);
+        }
+        return result;
     }
     @Override
     public String toString() {
