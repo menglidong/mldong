@@ -15,6 +15,7 @@ import com.mldong.modules.wf.dto.ProcessDesignPageParam;
 import com.mldong.modules.wf.dto.ProcessDesignParam;
 import com.mldong.modules.wf.entity.ProcessDesign;
 import com.mldong.modules.wf.entity.ProcessDesignHis;
+import com.mldong.modules.wf.enums.FlowConst;
 import com.mldong.modules.wf.mapper.ProcessDesignMapper;
 import com.mldong.modules.wf.service.ProcessDefineService;
 import com.mldong.modules.wf.service.ProcessDesignHisService;
@@ -52,10 +53,19 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(ProcessDesignParam param) {
         LowCodeServiceUtil.checkUnique(baseMapper,"name",param.getName(),param.getId(),"唯一编码已存在，请检查name参数");
         ProcessDesign processDesign = new ProcessDesign();
         BeanUtil.copyProperties(param, processDesign);
+        ProcessDesignHis latestProcessDesign = processDesignHisService.getLatestByProcessDesignId(param.getId());
+        if(latestProcessDesign!=null) {
+            JSONObject jsonObject = JSONUtil.parseObj(latestProcessDesign.getContent());
+            jsonObject.set(FlowConst.PROCESS_NAME_KEY,processDesign.getName());
+            jsonObject.set(FlowConst.PROCESS_DISPLAY_NAME_KEY,processDesign.getDisplayName());
+            jsonObject.set(FlowConst.PROCESS_DESIGN_ID_KEY,processDesign.getId());
+            updateDefine(jsonObject);
+        }
         return super.updateById(processDesign);
     }
 
@@ -81,11 +91,11 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
                 jsonObject = new JSONObject();
                 vo.setJsonObject(jsonObject);
             }
-            if(!jsonObject.containsKey("name")) {
-                jsonObject.set("name",vo.getName());
+            if(!jsonObject.containsKey(FlowConst.PROCESS_NAME_KEY)) {
+                jsonObject.set(FlowConst.PROCESS_NAME_KEY,vo.getName());
             }
-            if(!jsonObject.containsKey("displayName")) {
-                jsonObject.set("displayName",vo.getDisplayName());
+            if(!jsonObject.containsKey(FlowConst.PROCESS_DISPLAY_NAME_KEY)) {
+                jsonObject.set(FlowConst.PROCESS_DISPLAY_NAME_KEY,vo.getDisplayName());
             }
         }
         return vo;
@@ -94,8 +104,8 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateDefine(JSONObject jsonObject) {
-        Long processDesignId = jsonObject.getLong("processDesignId");
-        jsonObject.remove("processDesignId");
+        Long processDesignId = jsonObject.getLong(FlowConst.PROCESS_DESIGN_ID_KEY);
+        jsonObject.remove(FlowConst.PROCESS_DESIGN_ID_KEY);
         ProcessDesignHis latestProcessDesign = processDesignHisService.getLatestByProcessDesignId(processDesignId);
         if(latestProcessDesign!=null) {
             JSONObject latestObject = JSONUtil.parseObj(Convert.toStr(StrUtil.str(latestProcessDesign.getContent(), Charset.defaultCharset()),"{"));
@@ -110,14 +120,14 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
         boolean success = processDesignHisService.save(processDesignHis);
         if(success) {
             // 更新显示name和displayName
-            String name = jsonObject.getStr("name");
-            String displayName = jsonObject.getStr("displayName");
-            ProcessDesignParam param = new ProcessDesignParam();
-            param.setId(processDesignId);
-            param.setName(name);
-            param.setDisplayName(displayName);
-            param.setIsDeployed(YesNoEnum.NO.getCode());
-            update(param);
+            String name = jsonObject.getStr(FlowConst.PROCESS_NAME_KEY);
+            String displayName = jsonObject.getStr(FlowConst.PROCESS_DISPLAY_NAME_KEY);
+            ProcessDesign processDesign = new ProcessDesign();
+            processDesign.setId(processDesignId);
+            processDesign.setName(name);
+            processDesign.setDisplayName(displayName);
+            processDesign.setIsDeployed(YesNoEnum.NO.getCode());
+            updateById(processDesign);
         }
         return  success;
     }

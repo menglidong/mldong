@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -21,6 +22,7 @@ import com.mldong.context.constant.ConstantContextHolder;
 import com.mldong.exception.ServiceException;
 import com.mldong.modules.sys.dto.UserPageParam;
 import com.mldong.modules.sys.dto.UserParam;
+import com.mldong.modules.sys.entity.Dept;
 import com.mldong.modules.sys.entity.User;
 import com.mldong.modules.sys.enums.AdminTypeEnum;
 import com.mldong.modules.sys.enums.SexEnum;
@@ -29,9 +31,12 @@ import com.mldong.modules.sys.mapper.UserMapper;
 import com.mldong.modules.sys.service.DeptService;
 import com.mldong.modules.sys.service.PostService;
 import com.mldong.modules.sys.service.UserService;
+import com.mldong.modules.sys.vo.DeptUserTreeVO;
 import com.mldong.modules.sys.vo.DeptVO;
 import com.mldong.modules.sys.vo.PostVO;
 import com.mldong.modules.sys.vo.UserVO;
+import com.mldong.tree.IRecursionTree;
+import com.mldong.tree.TreeTool;
 import com.mldong.util.LowCodeServiceUtil;
 import com.mldong.web.LoginUserHolder;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +44,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -237,6 +244,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         param.setSex(SexEnum.UN_KNOW.getCode());
         save(param);
         return baseMapper.selectById(param.getId());
+    }
+
+    @Override
+    public List<DeptUserTreeVO> getDeptUserTree() {
+        List<Dept> deptList = deptService.list();
+        List<Dept> deptTree = TreeTool.listToTree(deptList,0L,Dept.class);
+        List<DeptUserTreeVO> res = new ArrayList<>();
+        TreeTool.recursion(deptTree, new IRecursionTree<Dept, List<DeptUserTreeVO>>() {
+            @Override
+            public void rowHandleBefore(Dept dept, List<DeptUserTreeVO> res) {
+                    DeptUserTreeVO vo = new DeptUserTreeVO();
+                    vo.setLabel(dept.getName());
+                    vo.setValue(dept.getId());
+                    vo.setNodeType("1");
+                    // 部门不可选择
+                    vo.setDisabled(true);
+                    vo.setExt(Dict.create());
+                    // 追加部门用户
+                    vo.setChildren(listByDeptId(dept.getId()).stream().map(user->{
+                        DeptUserTreeVO uVo = new DeptUserTreeVO();
+                        uVo.setLabel(user.getRealName());
+                        uVo.setValue(user.getId());
+                        uVo.setNodeType("2");
+                        // 超级管理员不可选择
+                        // uVo.setDisabled(AdminTypeEnum.SUPER_ADMIN.getCode().equals(user.getAdminType()));
+                        uVo.setExt(Dict.create());
+                        return uVo;
+                    }).collect(Collectors.toList()));
+                    res.add(vo);
+
+            }
+
+            @Override
+            public void rowHandleAfter(Dept dept, List<DeptUserTreeVO> res) {
+
+            }
+        },res);
+        return res;
+    }
+
+    @Override
+    public List<User> listByDeptId(Long deptId) {
+        return baseMapper.selectList(Wrappers.lambdaQuery(User.class).eq(User::getDeptId,deptId));
     }
 
     /**

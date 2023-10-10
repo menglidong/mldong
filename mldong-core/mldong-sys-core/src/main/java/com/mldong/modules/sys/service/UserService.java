@@ -5,6 +5,7 @@ import com.mldong.base.CommonPage;
 import com.mldong.base.LabelValueVO;
 import com.mldong.modules.sys.dto.UserPageParam;
 import com.mldong.modules.sys.dto.UserParam;
+import com.mldong.modules.sys.vo.DeptUserTreeVO;
 import com.mldong.modules.sys.vo.UserVO;
 import com.mldong.modules.sys.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -93,4 +94,17 @@ public interface UserService extends IService<User> {
    * @return
    */
   User createUserByPhone(String phone);
+
+  /**
+   * 获取部门用户树
+   * @return
+   */
+  List<DeptUserTreeVO> getDeptUserTree();
+
+  /**
+   * 获取某个部门的用户
+   * @param deptId
+   * @return
+   */
+  List<User> listByDeptId(Long deptId);
 }

@@ -7,6 +7,7 @@ import com.mldong.base.*;
 import com.mldong.modules.sys.dto.UserPageParam;
 import com.mldong.modules.sys.dto.UserParam;
 import com.mldong.modules.sys.service.UserService;
+import com.mldong.modules.sys.vo.DeptUserTreeVO;
 import com.mldong.modules.sys.vo.UserVO;
 import com.mldong.validation.Groups;
 import com.mldong.web.LoginUserHolder;
@@ -142,5 +143,10 @@ public class UserController {
         } else {
             return CommonResult.fail("修改用户个人密码失败");
         }
+    }
+    @PostMapping("/sys/user/getDeptUserTree")
+    @ApiOperation(value="获取部门用户树", notes="sys:user:getDeptUserTree")
+    public CommonResult<List<DeptUserTreeVO>> getDeptUserTree() {
+        return CommonResult.data(userService.getDeptUserTree());
     }
 }
