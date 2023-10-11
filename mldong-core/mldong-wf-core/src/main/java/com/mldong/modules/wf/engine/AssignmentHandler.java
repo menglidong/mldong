@@ -19,4 +19,10 @@ public interface AssignmentHandler {
      * @return Object 参与者对象
      */
     List<String> assign(TaskModel model, Execution execution);
+    default String getMessage() {
+        return this.getClass().getSimpleName();
+    }
+    default int getOrder() {
+        return Integer.MIN_VALUE;
+    }
 }

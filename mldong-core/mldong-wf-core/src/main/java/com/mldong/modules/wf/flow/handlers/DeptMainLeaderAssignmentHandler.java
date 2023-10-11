@@ -32,4 +32,14 @@ public class DeptMainLeaderAssignmentHandler implements AssignmentHandler {
         }
         return ids;
     }
+
+    @Override
+    public String getMessage() {
+        return "当前用户所属部门分管领导";
+    }
+
+    @Override
+    public int getOrder() {
+        return 40;
+    }
 }
