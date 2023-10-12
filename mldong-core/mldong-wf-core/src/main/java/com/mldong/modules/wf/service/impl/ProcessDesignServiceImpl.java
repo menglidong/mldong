@@ -1,25 +1,33 @@
 package com.mldong.modules.wf.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mldong.base.CommonPage;
 import com.mldong.base.YesNoEnum;
+import com.mldong.consts.CommonConstant;
+import com.mldong.modules.sys.api.DictApi;
 import com.mldong.modules.wf.dto.ProcessDesignPageParam;
 import com.mldong.modules.wf.dto.ProcessDesignParam;
 import com.mldong.modules.wf.entity.ProcessDesign;
 import com.mldong.modules.wf.entity.ProcessDesignHis;
 import com.mldong.modules.wf.enums.FlowConst;
+import com.mldong.modules.wf.mapper.ProcessDefineMapper;
 import com.mldong.modules.wf.mapper.ProcessDesignMapper;
 import com.mldong.modules.wf.service.ProcessDefineService;
 import com.mldong.modules.wf.service.ProcessDesignHisService;
 import com.mldong.modules.wf.service.ProcessDesignService;
+import com.mldong.modules.wf.vo.ProcessDefineVO;
+import com.mldong.modules.wf.vo.ProcessDesignTypeVO;
 import com.mldong.modules.wf.vo.ProcessDesignVO;
 import com.mldong.util.LowCodeServiceUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * <p>
@@ -42,6 +51,8 @@ import java.util.List;
 public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, ProcessDesign> implements ProcessDesignService {
     private final ProcessDesignHisService processDesignHisService;
     private final ProcessDefineService processDefineService;
+    private final DictApi dictApi;
+    private final ProcessDefineMapper processDefineMapper;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(ProcessDesignParam param) {
@@ -63,6 +74,7 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
             JSONObject jsonObject = JSONUtil.parseObj(latestProcessDesign.getContent());
             jsonObject.set(FlowConst.PROCESS_NAME_KEY,processDesign.getName());
             jsonObject.set(FlowConst.PROCESS_DISPLAY_NAME_KEY,processDesign.getDisplayName());
+            jsonObject.set(FlowConst.PROCESS_TYPE,processDesign.getType());
             jsonObject.set(FlowConst.PROCESS_DESIGN_ID_KEY,processDesign.getId());
             updateDefine(jsonObject);
         }
@@ -122,11 +134,13 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
             // 更新显示name和displayName
             String name = jsonObject.getStr(FlowConst.PROCESS_NAME_KEY);
             String displayName = jsonObject.getStr(FlowConst.PROCESS_DISPLAY_NAME_KEY);
+            String type = jsonObject.getStr(FlowConst.PROCESS_TYPE);
             ProcessDesign processDesign = new ProcessDesign();
             processDesign.setId(processDesignId);
             processDesign.setName(name);
             processDesign.setDisplayName(displayName);
             processDesign.setIsDeployed(YesNoEnum.NO.getCode());
+            processDesign.setType(type);
             updateById(processDesign);
         }
         return  success;
@@ -143,5 +157,38 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
             // 先更新状态，更新成功，再部署
             processDefineService.deploy(JSONUtil.toJsonStr(processDesign.getJsonObject()));
         }
+    }
+
+    @Override
+    public List<ProcessDesignTypeVO> listByType() {
+        List<ProcessDesignTypeVO> res = new ArrayList<>();
+        // 先拿到分类
+        List<Dict> dictList = dictApi.getByDictType("wf_process_type");
+        if(CollectionUtil.isEmpty(dictList)) return res;
+        dictList.forEach(dict -> {
+            ProcessDesignTypeVO typeVO = new ProcessDesignTypeVO();
+            typeVO.setType(dict.getStr(CommonConstant.VALUE));
+            typeVO.setTitle(dict.getStr(CommonConstant.LABEL));
+            typeVO.setItems(new ArrayList<>());
+            // 根据分类查询流程设计
+            List<ProcessDesign> processDesignList = baseMapper.selectList(Wrappers.lambdaQuery(ProcessDesign.class).eq(ProcessDesign::getType,typeVO.getType()));
+            if(CollectionUtil.isNotEmpty(processDesignList)) {
+                processDesignList.forEach(processDesign->{
+                    // 要以已部署的为准，所以查询最新版的流程定义信息
+                    ProcessDefineVO processDefineVO = processDefineMapper.selectLastByName(processDesign.getName());
+                    if(processDefineVO!=null) {
+                        ProcessDesignVO processDesignVO = BeanUtil.toBean(processDesign,ProcessDesignVO.class);
+                        processDesignVO.setProcessDefineId(processDefineVO.getId());
+                        processDesignVO.setName(processDefineVO.getName());
+                        processDesignVO.setDisplayName(processDefineVO.getDisplayName());
+                        processDefineVO.setJsonObject(JSONUtil.parseObj(processDefineVO.getContent()));
+                        processDesignVO.setIcon(processDesign.getIcon());
+                        typeVO.getItems().add(processDesignVO);
+                    }
+                });
+            }
+            res.add(typeVO);
+        });
+        return res;
     }
 }

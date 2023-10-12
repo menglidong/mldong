@@ -1,6 +1,7 @@
 package com.mldong.modules.sys.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mldong.base.CommonPage;
@@ -47,6 +48,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public CommonPage<PostVO> page(PostPageParam param) {
+        if(ObjectUtil.isEmpty(param.getOrderBy())){
+            param.setOrderBy("t.sort asc");
+        }
         IPage<PostVO> page = param.buildMpPage();
         QueryWrapper queryWrapper = param.buildQueryWrapper();
         queryWrapper.eq("t.is_deleted",YesNoEnum.NO);

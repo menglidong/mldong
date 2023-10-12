@@ -32,14 +32,16 @@ public class ProcessDesignParam implements Serializable {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     @NotNull(message = "主键不能为空", groups = {Groups.Update.class})
     private Long id;
-
     @ApiModelProperty(value = "唯一编码", required = true)
     @NotBlank(message = "唯一编码不能为空")
     private String name;
-
     @ApiModelProperty(value = "显示名称", required = true)
     @NotBlank(message = "显示名称不能为空")
     private String displayName;
+    @ApiModelProperty("流程分类")
+    private String type;
+    @ApiModelProperty("图标")
+    private String icon;
     @ApiModelProperty("是否已部署")
     private Integer isDeployed;
     @ApiModelProperty("备注")

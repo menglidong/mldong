@@ -17,6 +17,8 @@ import lombok.Data;
 @Data
 @ApiModel(value = "ProcessDesignVO对象", description = "流程设计VO")
 public class ProcessDesignVO extends ProcessDesign {
+    @ApiModelProperty(value = "流程定义ID")
+    private Long processDefineId;
     @ApiModelProperty(value = "流程设计json对象")
     private JSONObject jsonObject;
 }

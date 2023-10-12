@@ -21,4 +21,11 @@ import java.util.List;
 public interface ProcessDefineMapper extends BaseMapper<ProcessDefine> {
     List<ProcessDefineVO> selectCustom(IPage<ProcessDefineVO> page, @Param(Constants.WRAPPER) Wrapper<ProcessDefine> wrapper);
     ProcessDefineVO findById(@Param("id") Long id);
+
+    /**
+     * 根据名称获取最新的流程定义
+     * @param name
+     * @return
+     */
+    ProcessDefineVO selectLastByName(@Param("name") String name);
 }

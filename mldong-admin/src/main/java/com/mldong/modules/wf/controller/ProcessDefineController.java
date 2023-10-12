@@ -1,6 +1,7 @@
 package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.core.lang.Dict;
 import com.mldong.base.*;
 import com.mldong.modules.wf.dto.ProcessDefinePageParam;
@@ -48,7 +49,7 @@ public class ProcessDefineController {
      */
     @PostMapping("/wf/processDefine/detail")
     @ApiOperation(value = "查询单个流程定义")
-    @SaCheckPermission("wf:processDefine:detail")
+    @SaCheckPermission(value = {"wf:processDefine:detail","wf:processDesign:listByType"},mode = SaMode.OR)
     public CommonResult<ProcessDefineVO> detail(@RequestBody IdParam param) {
         ProcessDefineVO processDefine = processDefineService.findById(param.getId());
         return CommonResult.data(processDefine);
@@ -83,7 +84,7 @@ public class ProcessDefineController {
      */
     @PostMapping("/wf/processDefine/startAndExecute")
     @ApiOperation(value = "启动流程实例")
-    @SaCheckPermission("wf:processDefine:startAndExecute")
+    @SaCheckPermission(value = {"wf:processDefine:startAndExecute","wf:processDesign:listByType"}, mode = SaMode.OR)
     public CommonResult<?> startAndExecute(@RequestBody Dict args) {
         Long processDefineId = args.getLong(FlowConst.PROCESS_DEFINE_ID_KEY);
         args.remove(FlowConst.PROCESS_DEFINE_ID_KEY);

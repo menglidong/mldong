@@ -1,6 +1,7 @@
 package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.json.JSONObject;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
@@ -9,6 +10,7 @@ import com.mldong.base.IdsParam;
 import com.mldong.modules.wf.dto.ProcessDesignPageParam;
 import com.mldong.modules.wf.dto.ProcessDesignParam;
 import com.mldong.modules.wf.service.ProcessDesignService;
+import com.mldong.modules.wf.vo.ProcessDesignTypeVO;
 import com.mldong.modules.wf.vo.ProcessDesignVO;
 import com.mldong.validation.Groups;
 import io.swagger.annotations.Api;
@@ -18,6 +20,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 /**
 * <p>
     * 流程设计 前端控制器
@@ -113,5 +118,15 @@ public class ProcessDesignController {
     public CommonResult<?> deploy(@RequestBody IdParam param) {
         processDesignService.deploy(param.getId());
         return CommonResult.ok();
+    }
+    /**
+     * 按流程分类给流程设计分组
+     * @return
+     */
+    @PostMapping("/wf/processDesign/listByType")
+    @ApiOperation(value = "按流程分类给流程设计分组")
+    @SaCheckPermission("wf:processDesign:listByType")
+    public CommonResult<List<ProcessDesignTypeVO>> listByType() {
+        return CommonResult.data(processDesignService.listByType());
     }
 }

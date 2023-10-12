@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonPage;
 import com.mldong.modules.sys.dto.DictItemPageParam;
 import com.mldong.modules.sys.dto.DictItemParam;
+import com.mldong.modules.sys.enums.DictDataType;
 import com.mldong.modules.sys.vo.DictItemVO;
 import com.mldong.modules.sys.entity.DictItem;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -47,8 +48,9 @@ public interface DictItemService extends IService<DictItem> {
   DictItemVO findById(Long id);
   /**
    * 获取字段下拉项
-   *
+   * @param dictId
+   * @param dictDataType
    * @return
    */
-  List<Dict> getDictItemListByDictId(Long dictId);
+  List<Dict> getDictItemListByDictId(Long dictId, DictDataType dictDataType);
 }

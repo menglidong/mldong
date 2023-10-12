@@ -6,7 +6,11 @@ import com.mldong.base.CommonPage;
 import com.mldong.modules.wf.dto.ProcessDesignPageParam;
 import com.mldong.modules.wf.dto.ProcessDesignParam;
 import com.mldong.modules.wf.entity.ProcessDesign;
+import com.mldong.modules.wf.vo.ProcessDesignTypeVO;
 import com.mldong.modules.wf.vo.ProcessDesignVO;
+
+import java.util.List;
+
 /**
  * <p>
  * 流程设计 服务类
@@ -55,4 +59,10 @@ public interface ProcessDesignService extends IService<ProcessDesign> {
      * @param processDesignId
      */
     void deploy(Long processDesignId);
+
+    /**
+     * 按流程分类给流程设计分组
+     * @return
+     */
+    List<ProcessDesignTypeVO> listByType();
 }

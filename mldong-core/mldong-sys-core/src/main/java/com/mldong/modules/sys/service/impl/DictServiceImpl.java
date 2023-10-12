@@ -7,24 +7,26 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.mldong.base.CodedEnum;
 import com.mldong.base.CommonPage;
 import com.mldong.base.YesNoEnum;
 import com.mldong.consts.CommonConstant;
 import com.mldong.dict.CustomDictService;
 import com.mldong.dict.DictScanner;
 import com.mldong.dict.model.DictModel;
+import com.mldong.modules.sys.cache.DictCache;
 import com.mldong.modules.sys.dto.DictPageParam;
 import com.mldong.modules.sys.dto.DictParam;
+import com.mldong.modules.sys.enums.DictDataType;
 import com.mldong.modules.sys.service.DictItemService;
 import com.mldong.modules.sys.vo.DictVO;
 import com.mldong.util.LowCodeServiceUtil;
+import com.mldong.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.*;
 
 import com.mldong.modules.sys.entity.Dict;
 import com.mldong.modules.sys.mapper.DictMapper;
@@ -45,6 +47,7 @@ import org.springframework.stereotype.Service;
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
     private final DictScanner dictScanner;
     private final DictItemService dictItemService;
+    private final DictCache dictCache;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(DictParam param) {
@@ -60,7 +63,17 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         LowCodeServiceUtil.checkUnique(baseMapper,"code",param.getCode(),param.getId(),"唯一编码已存在，请检查code参数");
         Dict dict = new Dict();
         BeanUtil.copyProperties(param, dict);
-        return super.updateById(dict);
+        return RedisUtil.delayedDoubleRemove(dictCache,(Dict object)->{
+            return super.updateById(object);
+        },dict,"code");
+    }
+
+    @Override
+    public boolean removeByIds(Collection<?> list) {
+        List<Dict> dictList = baseMapper.selectBatchIds((Collection<? extends Serializable>) list);
+        return RedisUtil.delayedDoubleRemove(dictCache,(List<Dict> objects)->{
+            return super.removeByIds(list);
+        },dictList,"code");
     }
 
     @Override
@@ -79,7 +92,10 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
 
     @Override
     public List<cn.hutool.core.lang.Dict> getByDictType(String dictType) {
+        DictModel res = dictCache.get(dictType);
+        if(ObjectUtil.isNotNull(res)) return dictModelToDictList(res);
         DictModel dictModel;
+        DictDataType dictDataType;
         Dict dict = this.getOne(Wrappers.lambdaQuery(Dict.class).eq(Dict::getCode, dictType));
         if (ObjectUtil.isNull(dict)) {
             // 空，则使用枚举类
@@ -101,9 +117,10 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
                 //抽取code和value封装到map返回
                 return dictModelToDictList(dictModel);
             }
-
+        } else {
+            dictDataType = CodedEnum.codeOf(DictDataType.class,dict.getDataType()).orElse(DictDataType.STRING);
         }
-        List<cn.hutool.core.lang.Dict> dicts = dictItemService.getDictItemListByDictId(dict.getId());
+        List<cn.hutool.core.lang.Dict> dicts = dictItemService.getDictItemListByDictId(dict.getId(), dictDataType);
 
         return dicts;
     }

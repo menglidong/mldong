@@ -8,4 +8,7 @@
     <select id="findById" resultType="com.mldong.modules.wf.vo.ProcessDefineVO">
         select * from wf_process_define t where t.id = #{id}
     </select>
+    <select id="selectLastByName" resultType="com.mldong.modules.wf.vo.ProcessDefineVO">
+        select * from wf_process_define t where t.name = #{name} and t.state=1 order by version desc limit 1
+    </select>
 </mapper>

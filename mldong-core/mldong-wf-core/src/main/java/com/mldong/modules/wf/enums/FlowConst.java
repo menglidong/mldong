@@ -14,6 +14,7 @@ public interface FlowConst {
     String AUTO_ID = "flow.auto";
     String PROCESS_NAME_KEY = "name";
     String PROCESS_DISPLAY_NAME_KEY = "displayName";
+    String PROCESS_TYPE = "type";
     // 流程定义id，key
     String PROCESS_DEFINE_ID_KEY = "processDefineId";
     // 流程设计id，key
