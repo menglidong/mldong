@@ -9,6 +9,7 @@ import com.mldong.modules.wf.dto.ProcessDefineParam;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.entity.ProcessDefine;
 import com.mldong.modules.wf.vo.ProcessDefineVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.io.InputStream;
 
@@ -148,4 +149,10 @@ public interface ProcessDefineService extends IService<ProcessDefine> {
      * @param param
      */
     void upAndDown(UpAndDownParam param);
+    /**
+     * 根据名称获取最新的流程定义
+     * @param name
+     * @return
+     */
+    ProcessDefineVO getLastByName(@Param("name") String name);
 }

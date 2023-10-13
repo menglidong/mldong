@@ -1,7 +1,6 @@
 package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.json.JSONObject;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
@@ -108,7 +107,7 @@ public class ProcessDesignController {
         return CommonResult.ok();
     }
     /**
-     * 更新流程设计定义
+     * 部署流程定义
      * @param param
      * @return
      */
@@ -117,6 +116,18 @@ public class ProcessDesignController {
     @SaCheckPermission("wf:processDesign:deploy")
     public CommonResult<?> deploy(@RequestBody IdParam param) {
         processDesignService.deploy(param.getId());
+        return CommonResult.ok();
+    }
+    /**
+     * 重新部署流程定义
+     * @param param
+     * @return
+     */
+    @PostMapping("/wf/processDesign/redeploy")
+    @ApiOperation(value = "重新部署流程定义")
+    @SaCheckPermission("wf:processDesign:redeploy")
+    public CommonResult<?> redeploy(@RequestBody IdParam param) {
+        processDesignService.redeploy(param.getId());
         return CommonResult.ok();
     }
     /**

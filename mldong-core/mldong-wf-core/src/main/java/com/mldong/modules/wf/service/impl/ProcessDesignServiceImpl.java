@@ -160,6 +160,20 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
     }
 
     @Override
+    public void redeploy(Long processDesignId) {
+        ProcessDesignVO processDesign = findById(processDesignId);
+        ProcessDesign up = new ProcessDesign();
+        up.setId(processDesignId);
+        up.setIsDeployed(YesNoEnum.YES.getCode());
+        if(updateById(up)) {
+            // 取最新流程定义
+            ProcessDefineVO processDefineVO = processDefineService.getLastByName(processDesign.getName());
+            // 直接替换
+            processDefineService.redeploy(processDefineVO.getId(),JSONUtil.toJsonStr(processDesign.getJsonObject()));
+        }
+    }
+
+    @Override
     public List<ProcessDesignTypeVO> listByType() {
         List<ProcessDesignTypeVO> res = new ArrayList<>();
         // 先拿到分类

@@ -236,4 +236,9 @@ public class ProcessDefineServiceImpl extends ServiceImpl<ProcessDefineMapper, P
             });
         }
     }
+
+    @Override
+    public ProcessDefineVO getLastByName(String name) {
+        return baseMapper.selectLastByName(name);
+    }
 }

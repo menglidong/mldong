@@ -61,6 +61,11 @@ public interface ProcessDesignService extends IService<ProcessDesign> {
     void deploy(Long processDesignId);
 
     /**
+     * 重新部署流程定义文件，覆盖最新版本（即不生成新版本）
+     * @param processDesignId
+     */
+    void redeploy(Long processDesignId);
+    /**
      * 按流程分类给流程设计分组
      * @return
      */
