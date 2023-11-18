@@ -1,14 +1,17 @@
 package com.mldong.modules.sys.dto;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
+import com.mldong.validation.Groups;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import javax.validation.constraints.*;
-import com.mldong.validation.Groups;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.List;
 /**
  * <p>
  * r_用户角色关系
@@ -31,12 +34,16 @@ public class UserRoleParam implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "用户ID", required = true)
-    @NotNull(message = "用户ID不能为空")
+    @NotNull(message = "用户ID不能为空",groups = {GrantRole.class})
     private Long userId;
 
     @ApiModelProperty(value = "角色ID", required = true)
     @NotNull(message = "角色ID不能为空")
     private Long roleId;
+    @ApiModelProperty(value = "角色ID集合", required = true)
+    @NotNull(message = "角色ID不能为空",groups = {GrantRole.class})
+    private List<Long> roleIdList;
+    public interface GrantRole{
 
-
+    }
 }

@@ -20,4 +20,6 @@ public class UserVO extends User {
     private String deptName;
     @ApiModelProperty(value = "岗位名称")
     private String postName;
+    @ApiModelProperty(value = "角色ID集合")
+    private String roleIds;
 }

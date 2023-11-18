@@ -24,12 +24,14 @@ import com.mldong.modules.sys.dto.UserPageParam;
 import com.mldong.modules.sys.dto.UserParam;
 import com.mldong.modules.sys.entity.Dept;
 import com.mldong.modules.sys.entity.User;
+import com.mldong.modules.sys.entity.UserRole;
 import com.mldong.modules.sys.enums.AdminTypeEnum;
 import com.mldong.modules.sys.enums.SexEnum;
 import com.mldong.modules.sys.enums.err.SysErrEnum;
 import com.mldong.modules.sys.mapper.UserMapper;
 import com.mldong.modules.sys.service.DeptService;
 import com.mldong.modules.sys.service.PostService;
+import com.mldong.modules.sys.service.UserRoleService;
 import com.mldong.modules.sys.service.UserService;
 import com.mldong.modules.sys.vo.DeptUserTreeVO;
 import com.mldong.modules.sys.vo.DeptVO;
@@ -61,6 +63,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     private final DeptService deptService;
     private final PostService postService;
+    private final UserRoleService userRoleService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(UserParam param) {
@@ -287,6 +290,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> listByDeptId(Long deptId) {
         return baseMapper.selectList(Wrappers.lambdaQuery(User.class).eq(User::getDeptId,deptId));
+    }
+
+    @Override
+    public void grantRole(Long userId, List<Long> roleIds) {
+        // 删除用户所有角色关系
+        userRoleService.remove(Wrappers.lambdaQuery(UserRole.class).eq(UserRole::getUserId,userId));
+        if(CollectionUtil.isEmpty(roleIds)) return;
+        List<UserRole> userRoleList = roleIds.stream().map(roleId->{
+            UserRole userRole = new UserRole();
+            userRole.setRoleId(roleId);
+            userRole.setUserId(userId);
+            return userRole;
+        }).collect(Collectors.toList());
+        // 重新插入关系
+        userRoleService.saveBatch(userRoleList);
     }
 
     /**

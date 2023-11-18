@@ -3,9 +3,13 @@
 <mapper namespace="com.mldong.modules.sys.mapper.UserMapper">
 
     <select id="selectCustom" resultType="com.mldong.modules.sys.vo.UserVO">
-        select * from sys_user t ${ew.customSqlSegment}
+        select t.*,
+        ( select group_concat( ur.role_id ) from sys_user_role ur where ur.user_id = t.id ) as role_ids
+        from sys_user t ${ew.customSqlSegment}
     </select>
     <select id="findById" resultType="com.mldong.modules.sys.vo.UserVO">
-        select * from sys_user t where t.id = #{id}
+        select t.*,
+        ( select group_concat( ur.role_id ) from sys_user_role ur where ur.user_id = t.id ) as role_ids
+        from sys_user t where t.id = #{id}
     </select>
 </mapper>

@@ -107,4 +107,11 @@ public interface UserService extends IService<User> {
    * @return
    */
   List<User> listByDeptId(Long deptId);
+
+  /**
+   * 给用户授权角色
+   * @param userId
+   * @param roleIds
+   */
+  void grantRole(Long userId,List<Long> roleIds);
 }
