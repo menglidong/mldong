@@ -1,6 +1,7 @@
 package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import com.mldong.base.CommonPage;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * <p>
@@ -114,5 +116,16 @@ public class ProcessTaskController {
     public CommonResult<List<LabelValueVO>> jumpAbleTaskNameList(@RequestBody Dict args) {
         Long processInstanceId = args.getLong(FlowConst.PROCESS_INSTANCE_ID_KEY);
         return CommonResult.data(processTaskService.jumpAbleTaskNameList(processInstanceId));
+    }
+    /**
+     * 获取执行候选人
+     * @param query
+     * @return
+     */
+    @PostMapping("/wf/processTask/candidatePage")
+    @ApiOperation(value = "获取执行候选人")
+    @SaCheckPermission(value = {"wf:processTask:execute","wf:processTask:candidatePage"},mode = SaMode.OR)
+    public CommonResult<CommonPage<Map<String,Object>>> candidatePage(@RequestBody Dict query) {
+        return CommonResult.data(processTaskService.candidatePage(query));
     }
 }

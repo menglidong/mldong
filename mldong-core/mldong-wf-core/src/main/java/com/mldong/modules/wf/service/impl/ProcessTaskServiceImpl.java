@@ -5,17 +5,22 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.PageUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mldong.base.CommonPage;
+import com.mldong.base.IRowHandler;
 import com.mldong.base.LabelValueVO;
 import com.mldong.exception.ServiceException;
+import com.mldong.modules.sys.api.UserApi;
 import com.mldong.modules.wf.dto.ProcessTaskPageParam;
 import com.mldong.modules.wf.dto.ProcessTaskParam;
 import com.mldong.modules.wf.engine.AssignmentHandler;
@@ -24,12 +29,13 @@ import com.mldong.modules.wf.engine.model.NodeModel;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
 import com.mldong.modules.wf.engine.util.FlowUtil;
-import com.mldong.modules.wf.entity.ProcessTask;
-import com.mldong.modules.wf.entity.ProcessTaskActor;
+import com.mldong.modules.wf.entity.*;
 import com.mldong.modules.wf.enums.FlowConst;
 import com.mldong.modules.wf.enums.ProcessTaskStateEnum;
+import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskActorMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
+import com.mldong.modules.wf.service.ProcessDefineService;
 import com.mldong.modules.wf.service.ProcessTaskService;
 import com.mldong.modules.wf.vo.ProcessTaskVO;
 import com.mldong.web.LoginUserHolder;
@@ -37,9 +43,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 /**
  * <p>
@@ -53,6 +57,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, ProcessTask> implements ProcessTaskService {
     private final ProcessTaskActorMapper processTaskActorMapper;
+    private final ProcessInstanceMapper processInstanceMapper;
+    private final UserApi userApi;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(ProcessTaskParam param) {
@@ -298,6 +304,42 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
             }
         });
         return res;
+    }
+
+    @Override
+    public CommonPage<Map<String,Object>> candidatePage(Dict query) {
+        Long processTaskId = Convert.toLong(query.get(FlowConst.PROCESS_TASK_ID_KEY,Convert.toLong(query.get("id"))));
+        ProcessTask processTask = null;
+        ProcessInstance processInstance = null;
+        ProcessModel processModel = null;
+        if(processTaskId!=null) {
+            processTask = baseMapper.selectById(processTaskId);
+        }
+        if(processTask!=null) {
+            processInstance = processInstanceMapper.selectById(processTask.getProcessInstanceId());
+        }
+        if(processInstance!=null) {
+            processModel = SpringUtil.getBean(ProcessDefineService.class).getProcessModel(processInstance.getProcessDefineId());
+        }
+        List<Candidate> candidateList = null;
+        if(processModel!=null) {
+            candidateList = processModel.getNextTaskModelCandidates(processTask.getTaskName());
+        }
+        if(CollectionUtil.isEmpty(candidateList)) {
+            Page<Map<String,Object>> page = new Page<>();
+            page.setCurrent(Convert.toLong(query.get("pageNum")));
+            page.setSize(Convert.toLong(query.get("pageSize")));
+            CommonPage<Map<String,Object>> userPage = userApi.page(page, query);
+            return userPage;
+        }
+        CommonPage<Map<String,Object>> commonPage = new CommonPage();
+        commonPage.setPageNum(1);
+        commonPage.setPageSize(10);
+        commonPage.setRows(candidateList.stream().map(item->{
+            Map<String,Object> map = userApi.findById(Convert.toLong(item.getUserId()));
+            return map;
+        }).collect(Collectors.toList()));
+        return commonPage;
     }
 
     /**
