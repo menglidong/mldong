@@ -1,6 +1,7 @@
 package com.mldong.modules.wf.service;
 
 import cn.hutool.core.lang.Dict;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.mldong.base.CommonPage;
 import com.mldong.base.LabelValueVO;
 import com.mldong.modules.wf.dto.ProcessTaskPageParam;
@@ -8,11 +9,12 @@ import com.mldong.modules.wf.dto.ProcessTaskParam;
 import com.mldong.modules.wf.engine.core.Execution;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
-import com.mldong.modules.wf.vo.ProcessTaskVO;
+import com.mldong.modules.wf.entity.Candidate;
 import com.mldong.modules.wf.entity.ProcessTask;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.mldong.modules.wf.vo.ProcessTaskVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -150,4 +152,11 @@ public interface ProcessTaskService extends IService<ProcessTask> {
      * @return
      */
     List<LabelValueVO> jumpAbleTaskNameList(Long processInstanceId);
+
+    /**
+     * 分页查询获取候选人
+     * @param query
+     * @return
+     */
+    CommonPage<Map<String,Object>> candidatePage(Dict query);
 }
