@@ -64,4 +64,11 @@ public interface UserApi {
      */
     CommonPage<Map<String,Object>> listExcludeUserIdsByKeywords(Integer pageNum, Integer pageSize, List<Long> userIds, String keywords);
 
+    /**
+     * 根据角色标识获取用户列表
+     * @param roleCode
+     * @return
+     */
+    List<Dict> selectUserListByRoleCode(String roleCode);
+
 }

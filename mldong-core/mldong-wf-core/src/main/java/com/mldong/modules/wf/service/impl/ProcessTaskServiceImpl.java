@@ -5,7 +5,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.PageUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -17,7 +16,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mldong.base.CommonPage;
-import com.mldong.base.IRowHandler;
 import com.mldong.base.LabelValueVO;
 import com.mldong.exception.ServiceException;
 import com.mldong.modules.sys.api.UserApi;
@@ -253,6 +251,7 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         QueryWrapper queryWrapper = param.buildQueryWrapper();
         queryWrapper.notIn("t.task_state",ProcessTaskStateEnum.DOING,ProcessTaskStateEnum.WITHDRAW);
         queryWrapper.eq("pta.actor_id",LoginUserHolder.getUserId());
+        queryWrapper.ne("t.operator",FlowConst.AUTO_ID);
         List<ProcessTaskVO> list = baseMapper.selectDoneList(page, queryWrapper);
         page.setRecords(list);
         return CommonPage.toPage(page);
@@ -349,6 +348,15 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
      * @return
      */
     private List<String> getTaskActors(TaskModel model, Execution execution) {
+        Object nextNodeOperator = execution.getArgs().get(FlowConst.NEXT_NODE_OPERATOR);
+        if(ObjectUtil.isNotEmpty(nextNodeOperator)) {
+            // 指定下一节点处理人的优先级最高
+            if(nextNodeOperator instanceof String) {
+                return CollectionUtil.newArrayList(((String) nextNodeOperator).split(","));
+            } else if(nextNodeOperator instanceof Collection) {
+                return CollectionUtil.newArrayList((Collection)nextNodeOperator);
+            }
+        }
         List<String> res = new ArrayList<>();
         Dict args = execution.getArgs();
         String assignee = model.getAssignee();

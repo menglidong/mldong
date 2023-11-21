@@ -31,6 +31,8 @@ public interface FlowConst {
     String APPROVAL_COMMENT = "tf_approvalComment";
     // 审批提交附件
     String APPROVAL_ATTACHMENT = "tf_approvalAttachment";
+    // 下一节点执行人
+    String NEXT_NODE_OPERATOR = "tf_nextNodeOperator";
     // 用户ID
     String USER_USER_ID = "u_userId";
     // 用户姓名

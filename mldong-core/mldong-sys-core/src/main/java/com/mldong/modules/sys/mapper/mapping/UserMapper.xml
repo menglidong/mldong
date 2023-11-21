@@ -12,4 +12,8 @@
         ( select group_concat( ur.role_id ) from sys_user_role ur where ur.user_id = t.id ) as role_ids
         from sys_user t where t.id = #{id}
     </select>
+    <select id="selectUserListByRoleCode" resultType="com.mldong.modules.sys.entity.User">
+        select * from sys_user u left join sys_user_role ur on u.id = ur.user_id
+        where ur.role_id in (select id from sys_role where code = #{roleCode} and is_deleted=0) and and u.is_deleted=0
+    </select>
 </mapper>

@@ -95,6 +95,13 @@ public class UserProvider implements UserApi {
         page = userMapper.selectMapsPage(page, lambdaQueryWrapper);
         return CommonPage.toPage(page, new MapToCamelCaseRowHandlerImpl());
     }
+
+    @Override
+    public List<Dict> selectUserListByRoleCode(String roleCode) {
+        List<User> userList = userMapper.selectUserListByRoleCode(roleCode);
+        return BeanUtil.copyToList(userList,Dict.class);
+    }
+
     /**
      * 处理搜索关键字
      * @param lambdaQueryWrapper

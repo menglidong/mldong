@@ -42,4 +42,11 @@ public interface UserMapper extends BaseMapper<User> {
         List<User> userList =  selectList(Wrappers.lambdaQuery(User.class).eq(User::getMobilePhone,mobilePhone));
         return CollectionUtil.isEmpty(userList) ? null : userList.get(0);
     }
+
+    /**
+     * 根据角色id查询用户列表
+     * @param roleCode
+     * @return
+     */
+    List<User> selectUserListByRoleCode(String roleCode);
 }

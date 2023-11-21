@@ -3,12 +3,12 @@ package com.mldong.modules.wf.engine.parser.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
-import com.mldong.modules.wf.enums.ProcessTaskPerformTypeEnum;
-import com.mldong.modules.wf.enums.ProcessTaskTypeEnum;
 import com.mldong.modules.wf.engine.model.NodeModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
 import com.mldong.modules.wf.engine.model.logicflow.LfNode;
 import com.mldong.modules.wf.engine.parser.AbstractNodeParser;
+import com.mldong.modules.wf.enums.ProcessTaskPerformTypeEnum;
+import com.mldong.modules.wf.enums.ProcessTaskTypeEnum;
 
 /**
  *
@@ -41,9 +41,9 @@ public class TaskParser extends AbstractNodeParser {
         if(field!=null) {
             Dict ext = Convert.convert(Dict.class, field);
             taskModel.setExt(ext);
-            taskModel.setCandidateUsers(ext.getStr(EXT_FIELD_CANDIDATE_USERS_KET));
-            taskModel.setCandidateGroups(ext.getStr(EXT_FIELD_CANDIDATE_GROUPS_KEY));
-            taskModel.setCandidateHandler(ext.getStr(EXT_FIELD_CANDIDATE_HANDLER_KEY));
+            taskModel.setCandidateUsers(properties.get(EXT_FIELD_CANDIDATE_USERS_KET,ext.getStr(EXT_FIELD_CANDIDATE_USERS_KET)));
+            taskModel.setCandidateGroups(properties.get(EXT_FIELD_CANDIDATE_GROUPS_KEY,ext.getStr(EXT_FIELD_CANDIDATE_GROUPS_KEY)));
+            taskModel.setCandidateHandler(properties.get(EXT_FIELD_CANDIDATE_HANDLER_KEY,ext.getStr(EXT_FIELD_CANDIDATE_HANDLER_KEY)));
         }
     }
 
