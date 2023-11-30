@@ -124,9 +124,6 @@ public abstract class NodeModel extends BaseModel implements Action {
      * @return 是否可以退回
      */
     public static boolean canRejected(NodeModel current, NodeModel parent) {
-        if(parent instanceof TaskModel && !ProcessTaskPerformTypeEnum.NORMAL.equals(((TaskModel)parent).getPerformType())) {
-            return false;
-        }
         boolean result = false;
         for(TransitionModel tm : current.getInputs()) {
             NodeModel source = tm.getSource();

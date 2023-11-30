@@ -2,8 +2,10 @@ package com.mldong.modules.wf.engine.model;
 
 import cn.hutool.core.lang.Dict;
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.handlers.impl.CountersignHandler;
 import com.mldong.modules.wf.enums.ProcessTaskPerformTypeEnum;
 import com.mldong.modules.wf.enums.ProcessTaskTypeEnum;
+import com.mldong.modules.wf.enums.CountersignTypeEnum;
 import lombok.Data;
 
 @Data
@@ -25,10 +27,29 @@ public class TaskModel extends NodeModel {
     private String candidateGroups; // ext.getStr("candidateGroups");
     // 候选用户处理类字符串
     private String candidateHandler; // ext.getStr("candidateHandler");
+    // 会签类型 PARALLEL表示并行会签，SEQUENTIAL表示串行会签
+    private CountersignTypeEnum countersignType;
+    // 会签完成条件
+    /**
+     * ● 全部完成：为空
+     * ● 按数量通过：#nrOfCompletedInstances==n，这里表示n人完成任务，会签结束。
+     * ● 按比例通过：#nrOfCompletedInstances/nrOfInstances==n，这里表示已完成会签数与总实例数达到一定比例时，会签结束
+     * ● 一票通过：#nrOfCompletedInstances==1，这里表示1人完成任务，会签结束。
+     * ● 一票否决：ONE_VOTE_VETO
+     */
+    private String countersignCompletionCondition;
     @Override
     public void exec(Execution execution) {
         // 执行任务节点自定义执行逻辑
         System.out.println(super.toString());
-        runOutTransition(execution);
+        if(ProcessTaskPerformTypeEnum.COUNTERSIGN.equals(performType)) {
+            // 会签任务处理
+            fire(new CountersignHandler(this),execution);
+            if(execution.isMerged()) {
+                runOutTransition(execution);
+            }
+        } else {
+            runOutTransition(execution);
+        }
     }
 }

@@ -17,10 +17,8 @@ import com.mldong.base.CommonPage;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
 import com.mldong.modules.wf.engine.FlowEngine;
-import com.mldong.modules.wf.engine.model.DecisionModel;
-import com.mldong.modules.wf.engine.model.EndModel;
-import com.mldong.modules.wf.engine.model.NodeModel;
-import com.mldong.modules.wf.engine.model.ProcessModel;
+import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.model.*;
 import com.mldong.modules.wf.engine.util.FlowUtil;
 import com.mldong.modules.wf.entity.ProcessDefine;
 import com.mldong.modules.wf.entity.ProcessInstance;
@@ -316,7 +314,7 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
         List<ProcessTask> processTaskList = processTaskMapper.selectList(
                 Wrappers.lambdaQuery(ProcessTask.class)
                 .eq(ProcessTask::getProcessInstanceId,processInstanceId)
-                .notIn(ProcessTask::getTaskState,ProcessTaskStateEnum.DOING,ProcessTaskStateEnum.WITHDRAW)
+                .notIn(ProcessTask::getTaskState,ProcessTaskStateEnum.DOING,ProcessTaskStateEnum.WITHDRAW,ProcessTaskStateEnum.ABANDON)
                 .orderByAsc(ProcessTask::getUpdateTime)
         );
         List<ProcessTaskVO> res = new ArrayList<>();
@@ -408,5 +406,30 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
                 }
             });
         }
+    }
+    @Override
+    public void updateCountersignVariable(TaskModel taskModel, Execution execution, List<String> taskActors) {
+        /**
+         * ● nrOfActivateInstances：当前活动的实例数量，即还没有完成的实例数量
+         * ● loopCounter ：循环计数器，办理人在列表中的索引
+         * ● nrOfInstances：会签中总共的实例数
+         * ● nrOfCompletedInstances：已经完成的实例数量
+         * ● operatorList：会签办理人列表
+         */
+        String taskName = taskModel.getName();
+        Long processInstanceId = execution.getProcessInstanceId();
+        // 会签任务变量，csv_{taskName}_为前辍
+        String prefix = FlowConst.COUNTERSIGN_VARIABLE_PREFIX +taskName+"_";
+        Dict addVariable = Dict.create();
+        // 更新会签总实例数，nrOfInstances
+        addVariable.put(prefix+FlowConst.NR_OF_INSTANCES,taskActors.size());
+        // 更新会签当前活动实例数，nrOfActivateInstances
+        addVariable.put(prefix+FlowConst.NR_OF_ACTIVATE_INSTANCES, execution.getDoingTaskList().size());
+        // 更新会签已完的实例数，nrOfCompletedInstances
+        addVariable.put(prefix + FlowConst.NR_OF_COMPLETED_INSTANCES, execution.getArgs().get(prefix+FlowConst.NR_OF_COMPLETED_INSTANCES));
+        // 更新会签操作人列表countersignOperatorList
+        addVariable.put(prefix+FlowConst.COUNTERSIGN_OPERATOR_LIST,taskActors);
+        ProcessInstanceService processInstanceService = SpringUtil.getBean(ProcessInstanceService.class);
+        processInstanceService.addVariable(processInstanceId, addVariable);
     }
 }

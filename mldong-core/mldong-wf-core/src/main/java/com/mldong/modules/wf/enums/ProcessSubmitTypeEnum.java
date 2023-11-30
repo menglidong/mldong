@@ -16,7 +16,8 @@ public enum ProcessSubmitTypeEnum  implements CodedEnum {
     ROLLBACK(3, "退回上一步"),
     JUMP(4, "跳转"),
     RE_APPLY(5, "重新提交"),
-    ROLLBACK_TO_OPERATOR(6, "退回发起人")
+    ROLLBACK_TO_OPERATOR(6, "退回发起人"),
+    COUNTERSIGN_DISAGREE(20, "拒绝申请")
     ;
     private final Integer code;
 

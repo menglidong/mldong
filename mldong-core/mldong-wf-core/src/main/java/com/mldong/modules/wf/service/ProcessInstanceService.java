@@ -4,6 +4,8 @@ import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonPage;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
+import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.model.TaskModel;
 import com.mldong.modules.wf.entity.ProcessDefine;
 import com.mldong.modules.wf.vo.HighLightVO;
 import com.mldong.modules.wf.vo.ProcessInstanceVO;
@@ -151,4 +153,11 @@ public interface ProcessInstanceService extends IService<ProcessInstance> {
      * @param operator
      */
     void withdraw(Long processInstanceId,String operator);
+    /**
+     * 更新会签变量
+     * @param taskModel
+     * @param execution
+     * @param taskActors
+     */
+    void updateCountersignVariable(TaskModel taskModel, Execution execution, List<String> taskActors);
 }

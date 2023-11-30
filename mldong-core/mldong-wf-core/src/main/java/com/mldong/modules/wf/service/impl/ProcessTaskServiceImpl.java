@@ -27,13 +27,19 @@ import com.mldong.modules.wf.engine.model.NodeModel;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
 import com.mldong.modules.wf.engine.util.FlowUtil;
-import com.mldong.modules.wf.entity.*;
+import com.mldong.modules.wf.entity.Candidate;
+import com.mldong.modules.wf.entity.ProcessInstance;
+import com.mldong.modules.wf.entity.ProcessTask;
+import com.mldong.modules.wf.entity.ProcessTaskActor;
+import com.mldong.modules.wf.enums.CountersignTypeEnum;
 import com.mldong.modules.wf.enums.FlowConst;
+import com.mldong.modules.wf.enums.ProcessTaskPerformTypeEnum;
 import com.mldong.modules.wf.enums.ProcessTaskStateEnum;
 import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskActorMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
 import com.mldong.modules.wf.service.ProcessDefineService;
+import com.mldong.modules.wf.service.ProcessInstanceService;
 import com.mldong.modules.wf.service.ProcessTaskService;
 import com.mldong.modules.wf.vo.ProcessTaskVO;
 import com.mldong.web.LoginUserHolder;
@@ -146,15 +152,39 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         baseMapper.updateById(processTask);
     }
 
+    @Override
+    public void abandonProcessTask(Long processTaskId, String operator, Dict args) {
+        ProcessTask his = baseMapper.selectById(processTaskId);
+        ProcessTask processTask = new ProcessTask();
+        processTask.setId(processTaskId);
+        processTask.setTaskState(ProcessTaskStateEnum.ABANDON.getCode());
+        processTask.setUpdateTime(new Date());
+        processTask.setUpdateUser(operator);
+        processTask.setOperator(operator);
+        processTask.setFinishTime(new Date());
+        Dict newArgs = Dict.create();
+        newArgs.putAll(FlowUtil.variableToDict(his.getVariable()));
+        newArgs.putAll(args);
+        if(FlowConst.AUTO_ID.equalsIgnoreCase(operator)) {
+            FlowUtil.addUserInfoToArgs(LoginUserHolder.getUserId().toString(), newArgs);
+        } else {
+            FlowUtil.addUserInfoToArgs(operator, newArgs);
+        }
+        processTask.setVariable(JSONUtil.toJsonStr(newArgs));
+        baseMapper.updateById(processTask);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public List<ProcessTask> createTask(TaskModel taskModel, Execution execution) {
         List<ProcessTask> processTaskList = new ArrayList<>();
         Date now = new Date();
         ProcessTask processTask = new ProcessTask();
+        processTask.setPerformType(ProcessTaskPerformTypeEnum.NORMAL.getCode());
         processTask.setTaskName(taskModel.getName());
         processTask.setDisplayName(taskModel.getDisplayName());
         processTask.setTaskState(ProcessTaskStateEnum.DOING.getCode());
+        processTask.setTaskType(taskModel.getTaskType().getCode());
         processTask.setProcessInstanceId(execution.getProcessInstanceId());
         execution.getArgs().put(FlowConst.IS_FIRST_TASK_NODE,FlowUtil.isFistTaskName(execution.getProcessModel(),taskModel.getName()));
         // 增加是否为第一个任务节点标识
@@ -295,7 +325,10 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         List<String> taskNames = new ArrayList<>();
         List<LabelValueVO> res = new ArrayList<>();
         List<ProcessTask> processTaskList = getDoneTaskList(processInstanceId,new String[]{});
-        processTaskList.forEach(processTask -> {
+        processTaskList.stream().filter(processTask -> {
+            // 不能跳转到会签节点
+            return !ProcessTaskPerformTypeEnum.COUNTERSIGN.getCode().equals(processTask.getPerformType());
+        }).forEach(processTask -> {
             String taskName = processTask.getTaskName();
             if(!taskNames.contains(taskName)) {
                 taskNames.add(taskName);
@@ -377,5 +410,52 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
             }
         }
         return res;
+    }
+    @Override
+    public List<ProcessTask> createCountersignTask(TaskModel taskModel, Execution execution) {
+        List<ProcessTask> processTaskList = new ArrayList<>();
+        List<String> taskActors = getTaskActors(taskModel,execution);
+        List<String> createTaskActors = new ArrayList<>();
+        if(CountersignTypeEnum.PARALLEL.equals(taskModel.getCountersignType())) {
+            // 并行：一个参与者一个任务，同时创建
+            createTaskActors.addAll(taskActors);
+            // 追加会签类型参数
+            execution.getArgs().put(FlowConst.COUNTERSIGN_VARIABLE_PREFIX+FlowConst.COUNTERSIGN_TYPE, CountersignTypeEnum.PARALLEL.toString());
+        } else {
+            // 串行：一个参与者一个任务，顺序创建，默认只创建第一个，其他等执行完一个后再创建
+            String prefix = FlowConst.COUNTERSIGN_VARIABLE_PREFIX +taskModel.getName()+"_";
+            // 获取循环计数器，默认值为-1
+            int loopCounter = execution.getArgs().get(prefix+FlowConst.LOOP_COUNTER,-1);
+            if(loopCounter == -1) {
+                createTaskActors.add(taskActors.get(0));
+            } else {
+                createTaskActors.add(taskActors.get(loopCounter+1));
+            }
+            // 追加会签类型参数
+            execution.getArgs().put(FlowConst.COUNTERSIGN_VARIABLE_PREFIX+FlowConst.COUNTERSIGN_TYPE, CountersignTypeEnum.SEQUENTIAL.toString());
+        }
+        createTaskActors.forEach(taskActor->{
+            Date now = new Date();
+            ProcessTask processTask = new ProcessTask();
+            processTask.setPerformType(ProcessTaskPerformTypeEnum.COUNTERSIGN.getCode());
+            processTask.setTaskName(taskModel.getName());
+            processTask.setDisplayName(taskModel.getDisplayName());
+            processTask.setTaskState(ProcessTaskStateEnum.DOING.getCode());
+            processTask.setTaskType(taskModel.getTaskType().getCode());
+            processTask.setProcessInstanceId(execution.getProcessInstanceId());
+            processTask.setVariable(JSONUtil.toJsonStr(execution.getArgs()));
+            processTask.setCreateTime(now);
+            processTask.setUpdateTime(now);
+            processTask.setTaskParentId(Convert.toLong(execution.getProcessTaskId(),0L));
+            baseMapper.insert(processTask);
+            execution.setProcessTask(processTask);
+            System.out.println("创建会签任务："+processTask.getTaskName()+","+processTask.getDisplayName());
+            processTaskList.add(processTask);
+            addTaskActor(processTask.getId(),CollectionUtil.newArrayList(taskActor));
+        });
+        ProcessInstanceService processInstanceService = SpringUtil.getBean(ProcessInstanceService.class);
+        // 更新会签变量到流程实例参数中
+        processInstanceService.updateCountersignVariable(taskModel,execution, taskActors);
+        return processTaskList;
     }
 }

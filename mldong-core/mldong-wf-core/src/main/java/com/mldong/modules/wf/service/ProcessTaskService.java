@@ -86,6 +86,14 @@ public interface ProcessTaskService extends IService<ProcessTask> {
     void finishProcessTask(Long processTaskId, String operator, Dict args);
 
     /**
+     * 废弃任务
+     * @param processTaskId
+     * @param operator
+     * @param args
+     */
+    void abandonProcessTask(Long processTaskId, String operator, Dict args);
+
+    /**
      * 根据任务模型和流程执行对象创建任务
      * @param taskModel
      * @param execution
@@ -159,4 +167,11 @@ public interface ProcessTaskService extends IService<ProcessTask> {
      * @return
      */
     CommonPage<Map<String,Object>> candidatePage(Dict query);
+    /**
+     * 创建会签任务
+     * @param taskModel
+     * @param execution
+     * @return
+     */
+    List<ProcessTask> createCountersignTask(TaskModel taskModel, Execution execution);
 }

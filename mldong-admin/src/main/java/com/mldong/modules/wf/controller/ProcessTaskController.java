@@ -99,6 +99,10 @@ public class ProcessTaskController {
         }  else if(ObjectUtil.equals(submitType,ProcessSubmitTypeEnum.ROLLBACK_TO_OPERATOR.getCode())){
             // 退回发起人
             flowEngine.executeAndJumpToFirstTaskNode(processTaskId,operator,args);
+        } else if(ObjectUtil.equals(submitType,ProcessSubmitTypeEnum.COUNTERSIGN_DISAGREE.getCode())) {
+            // 会签不同意，追加不同意标识
+            args.put(FlowConst.COUNTERSIGN_DISAGREE_FLAG,1);
+            flowEngine.executeProcessTask(processTaskId,operator,args);
         }  else {
             // 默认执行
             flowEngine.executeProcessTask(processTaskId,operator,args);

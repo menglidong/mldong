@@ -53,4 +53,20 @@ public interface FlowConst {
     String TASK_NAME = "taskName";
     // 是否第一个任务节点
     String IS_FIRST_TASK_NODE = "isFirstTaskNode";
+    // 会签变量前辍
+    String COUNTERSIGN_VARIABLE_PREFIX = "csv_";
+    // 活跃的会签操作人数
+    String NR_OF_ACTIVATE_INSTANCES = "nrOfActivateInstances";
+    // 循环计数器，办理人在列表中的索引
+    String LOOP_COUNTER = "loopCounter";
+    // 会签总实例数
+    String NR_OF_INSTANCES = "nrOfInstances";
+    // 会签已完成实例数
+    String NR_OF_COMPLETED_INSTANCES = "nrOfCompletedInstances";
+    // 会签操作人列表
+    String COUNTERSIGN_OPERATOR_LIST = "operatorList";
+    // 会签类型 PARALLEL表示并行会签，SEQUENTIAL表示串行会签
+    String COUNTERSIGN_TYPE = "countersignType";
+    // 会签不同意标识
+    String COUNTERSIGN_DISAGREE_FLAG = "countersignDisagreeFlag";
 }

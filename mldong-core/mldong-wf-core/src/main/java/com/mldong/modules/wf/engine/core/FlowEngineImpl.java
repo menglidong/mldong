@@ -204,6 +204,7 @@ public class FlowEngineImpl implements FlowEngine {
         execution.setProcessInstanceId(processInstance.getId());
         execution.setProcessTask(processTask);
         execution.setProcessTaskId(processTaskId);
+        execution.setOperator(operator);
         execution.setEngine(this);
         Dict processInstanceVariable = JSONUtil.toBean(processInstance.getVariable(),Dict.class);
         Dict newArgs = Dict.create();

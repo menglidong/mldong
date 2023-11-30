@@ -1,5 +1,6 @@
 package com.mldong.modules.wf.enums;
 
+import cn.hutool.core.convert.Convert;
 import com.mldong.annotation.DictEnum;
 import com.mldong.base.CodedEnum;
 
@@ -39,7 +40,11 @@ public enum ProcessTaskTypeEnum implements CodedEnum {
      * @param code
      * @return
      */
-    public static ProcessTaskTypeEnum codeOf(Integer code) {
-        return Arrays.stream(ProcessTaskTypeEnum.class.getEnumConstants()).filter(e -> e.getCode().equals(code)).findAny().orElse(MAJOR);
+    public static ProcessTaskTypeEnum codeOf(Object code) {
+        return Arrays.stream(ProcessTaskTypeEnum.class.getEnumConstants()).filter(e ->
+                e.getCode().equals(Convert.toInt(code))
+                        || e.name().equalsIgnoreCase(Convert.toStr(code))
+                        || e.getMessage().equalsIgnoreCase(Convert.toStr(code))
+        ).findAny().orElse(ProcessTaskTypeEnum.MAJOR);
     }
 }
