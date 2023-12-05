@@ -1,5 +1,6 @@
 package com.mldong.modules.wf.engine.util;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
@@ -80,5 +81,38 @@ public class FlowUtil {
             }
         });
         return atomicBoolean.get();
+    }
+
+    /**
+     * 解析日期
+     * @param expireTime
+     * @param args
+     * @return
+     */
+    public static Date processTime(String expireTime,Dict args) {
+        // 如果变量中存在，则使用变量中的时间
+        if(args.containsKey(expireTime)) {
+            Object obj = args.get(expireTime);
+            if(obj instanceof Date) {
+                return Convert.toDate(obj);
+            } else if(obj instanceof Long) {
+                return new Date(Convert.toLong(obj));
+            } else if(obj instanceof String) {
+                return DateUtil.parseDateTime(Convert.toStr(obj));
+            }
+        }
+        if(StrUtil.isNotBlank(expireTime)) {
+            if(expireTime.contains("s")){
+                return DateUtil.offsetSecond(new Date(),Convert.toInt(expireTime.substring(0,expireTime.length()-1)));
+            } else if(expireTime.contains("m")) {
+                return DateUtil.offsetMinute(new Date(),Convert.toInt(expireTime.substring(0,expireTime.length()-1)));
+            } else if(expireTime.contains("h")) {
+                return DateUtil.offsetHour(new Date(),Convert.toInt(expireTime.substring(0,expireTime.length()-1)));
+            } else if(expireTime.contains("d")) {
+                return DateUtil.offsetDay(new Date(),Convert.toInt(expireTime.substring(0,expireTime.length()-1)));
+            }
+            return DateUtil.parseDateTime(expireTime);
+        }
+        return null;
     }
 }

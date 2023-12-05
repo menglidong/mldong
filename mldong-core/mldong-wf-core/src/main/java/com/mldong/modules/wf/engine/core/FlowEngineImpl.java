@@ -70,7 +70,6 @@ public class FlowEngineImpl implements FlowEngine {
         if(processDefine==null) {
             throw new JFlowException(WfErrEnum.NOT_FOUND_PROCESS_DEFINE);
         }
-        Date now = new Date();
         // 2. 将流程定义文件转成流程模型
         ProcessModel processModel = processDefineService.processDefineToModel(processDefine);
         // 3. 根据流程定义对象创建流程实例

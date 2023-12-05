@@ -114,6 +114,11 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
         // 追加自动构造标题
         FlowUtil.addAutoGenTitle(processDefine.getDisplayName(),args);
         processInstance.setVariable(JSONUtil.toJsonStr(args));
+        ProcessModel processModel = SpringUtil.getBean(ProcessDefineService.class).processDefineToModel(processDefine);
+        String expireTime = processModel.getExpireTime();
+        if(StrUtil.isNotEmpty(expireTime)) {
+            processInstance.setExpireTime(FlowUtil.processTime(expireTime,args));
+        }
         saveProcessInstance(processInstance);
         return processInstance;
     }

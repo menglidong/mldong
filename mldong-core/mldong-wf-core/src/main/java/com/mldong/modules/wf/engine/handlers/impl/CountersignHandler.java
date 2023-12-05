@@ -10,7 +10,6 @@ import com.mldong.modules.wf.engine.model.TaskModel;
 import com.mldong.modules.wf.enums.CountersignTypeEnum;
 import com.mldong.modules.wf.enums.FlowConst;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

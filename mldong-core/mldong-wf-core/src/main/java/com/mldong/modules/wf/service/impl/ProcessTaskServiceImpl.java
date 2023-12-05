@@ -23,6 +23,8 @@ import com.mldong.modules.wf.dto.ProcessTaskPageParam;
 import com.mldong.modules.wf.dto.ProcessTaskParam;
 import com.mldong.modules.wf.engine.AssignmentHandler;
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.event.ProcessEvent;
+import com.mldong.modules.wf.engine.event.ProcessPublisher;
 import com.mldong.modules.wf.engine.model.NodeModel;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
@@ -31,10 +33,7 @@ import com.mldong.modules.wf.entity.Candidate;
 import com.mldong.modules.wf.entity.ProcessInstance;
 import com.mldong.modules.wf.entity.ProcessTask;
 import com.mldong.modules.wf.entity.ProcessTaskActor;
-import com.mldong.modules.wf.enums.CountersignTypeEnum;
-import com.mldong.modules.wf.enums.FlowConst;
-import com.mldong.modules.wf.enums.ProcessTaskPerformTypeEnum;
-import com.mldong.modules.wf.enums.ProcessTaskStateEnum;
+import com.mldong.modules.wf.enums.*;
 import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskActorMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
@@ -150,6 +149,8 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         }
         processTask.setVariable(JSONUtil.toJsonStr(newArgs));
         baseMapper.updateById(processTask);
+        // 发布流程任务结束事件
+        ProcessPublisher.notify(ProcessEvent.builder().eventType(ProcessEventTypeEnum.PROCESS_TASK_END).sourceId(processTaskId).build());
     }
 
     @Override
@@ -172,6 +173,8 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         }
         processTask.setVariable(JSONUtil.toJsonStr(newArgs));
         baseMapper.updateById(processTask);
+        // 发布流程任务结束事件
+        ProcessPublisher.notify(ProcessEvent.builder().eventType(ProcessEventTypeEnum.PROCESS_TASK_END).sourceId(processTaskId).build());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -192,6 +195,10 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         processTask.setCreateTime(now);
         processTask.setUpdateTime(now);
         processTask.setTaskParentId(Convert.toLong(execution.getProcessTaskId(),0L));
+        String expireTime = taskModel.getExpireTime();
+        if(StrUtil.isNotEmpty(expireTime)) {
+            processTask.setExpireTime(FlowUtil.processTime(expireTime,execution.getArgs()));
+        }
         baseMapper.insert(processTask);
         execution.setProcessTask(processTask);
         System.out.println("创建任务："+processTask.getTaskName()+","+processTask.getDisplayName());
@@ -315,6 +322,10 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         }
         task.setVariable(JSONUtil.toJsonStr(hisVariable));
         task.setOperator(operator);
+        String expireTime = ((TaskModel)current).getExpireTime();
+        if(StrUtil.isNotEmpty(expireTime)) {
+            task.setExpireTime(FlowUtil.processTime(expireTime,hisVariable));
+        }
         saveProcessTask(task);
         addTaskActor(task.getId(),CollectionUtil.newArrayList(task.getOperator()));
         return task;
@@ -447,6 +458,10 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
             processTask.setCreateTime(now);
             processTask.setUpdateTime(now);
             processTask.setTaskParentId(Convert.toLong(execution.getProcessTaskId(),0L));
+            String expireTime = taskModel.getExpireTime();
+            if(StrUtil.isNotEmpty(expireTime)) {
+                processTask.setExpireTime(FlowUtil.processTime(expireTime,execution.getArgs()));
+            }
             baseMapper.insert(processTask);
             execution.setProcessTask(processTask);
             System.out.println("创建会签任务："+processTask.getTaskName()+","+processTask.getDisplayName());
