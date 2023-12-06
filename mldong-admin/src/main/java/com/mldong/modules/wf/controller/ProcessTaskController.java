@@ -3,6 +3,7 @@ package com.mldong.modules.wf.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -147,5 +148,19 @@ public class ProcessTaskController {
     @SaCheckPermission(value = {"wf:processTask:execute","wf:processTask:candidatePage"},mode = SaMode.OR)
     public CommonResult<CommonPage<Map<String,Object>>> candidatePage(@RequestBody Dict query) {
         return CommonResult.data(processTaskService.candidatePage(query));
+    }
+    /**
+     * 委托
+     * @param args
+     * @return
+     */
+    @PostMapping("/wf/processTask/surrogate")
+    @ApiOperation(value = "委托")
+    @SaCheckPermission("wf:processTask:surrogate")
+    public CommonResult<?> surrogate(@RequestBody Dict args) {
+        Long processTaskId = args.getLong(FlowConst.PROCESS_TASK_ID_KEY);
+        List<String> actors = Convert.toList(String.class,args.get(FlowConst.ACTOR_IDS_KEY));
+        processTaskService.addTaskActor(processTaskId, actors);
+        return CommonResult.ok();
     }
 }

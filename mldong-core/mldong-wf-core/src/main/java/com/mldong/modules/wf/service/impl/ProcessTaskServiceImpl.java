@@ -216,7 +216,10 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
     @Override
     public void addTaskActor(Long processTaskId, List<String> actors) {
         if(CollectionUtil.isEmpty(actors)) return;
-        actors.forEach(actor->{
+        List<String> dbActors = getTaskActors(processTaskId);
+        actors.stream().filter(actor->{
+            return !dbActors.contains(actor);
+        }).forEach(actor->{
             ProcessTaskActor processTaskActor = new ProcessTaskActor();
             processTaskActor.setProcessTaskId(processTaskId);
             processTaskActor.setActorId(actor);
