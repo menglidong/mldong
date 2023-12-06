@@ -160,4 +160,24 @@ public interface ProcessInstanceService extends IService<ProcessInstance> {
      * @param taskActors
      */
     void updateCountersignVariable(TaskModel taskModel, Execution execution, List<String> taskActors);
+    /**
+     * 创建实例抄送
+     * @param processInstanceId
+     * @param creator
+     * @param actorIds
+     */
+    void createCCInstance(Long processInstanceId, String creator, String... actorIds);
+
+    /**
+     * 更新抄送状态
+     * @param processInstanceId
+     * @param actorId
+     */
+    void updateCCStatus(Long processInstanceId, String actorId);
+    /**
+     * 自定义分页查询我的抄送
+     * @param param
+     * @return
+     */
+    CommonPage<ProcessInstanceVO> ccInstancePage(ProcessInstancePageParam param);
 }

@@ -1,6 +1,7 @@
 package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
@@ -104,5 +105,45 @@ public class ProcessInstanceController {
             processInstanceService.withdraw(id, LoginUserHolder.getUserId().toString());
         });
         return CommonResult.ok();
+    }
+    /**
+     * 创建抄送实例
+     * @param param
+     * @return
+     */
+    @PostMapping("/wf/processInstance/createCCInstance")
+    @ApiOperation(value = "创建抄送实例")
+    @SaCheckPermission("wf:processInstance:createCCInstance")
+    public CommonResult<?> createCCInstance(@RequestBody Dict param) {
+        Long processInstanceId = Convert.toLong(param.get(FlowConst.PROCESS_INSTANCE_ID_KEY));
+        Long userId = LoginUserHolder.getUserId();
+        String[] actorIds = Convert.toStrArray(param.get(FlowConst.ACTOR_IDS_KEY));
+        processInstanceService.createCCInstance(processInstanceId,userId.toString(),actorIds);
+        return CommonResult.ok();
+    }
+    /**
+     * 更新抄送状态
+     * @param param
+     * @return
+     */
+    @PostMapping("/wf/processInstance/updateCCStatus")
+    @ApiOperation(value = "更新抄送状态")
+    @SaCheckPermission("wf:processInstance:updateCCStatus")
+    public CommonResult<?> updateCCStatus(@RequestBody Dict param) {
+        Long processInstanceId = Convert.toLong(param.get(FlowConst.PROCESS_INSTANCE_ID_KEY));
+        Long userId = LoginUserHolder.getUserId();
+        processInstanceService.updateCCStatus(processInstanceId,userId.toString());
+        return CommonResult.ok();
+    }
+    /**
+     *分页查询我的抄送列表
+     * @param param
+     * @return
+     */
+    @PostMapping("/wf/processInstance/ccList")
+    @ApiOperation(value = "分页查询我的抄送列表")
+    @SaCheckPermission("wf:processInstance:ccList")
+    public CommonResult<CommonPage<ProcessInstanceVO>> ccList(@RequestBody ProcessInstancePageParam param) {
+        return CommonResult.data(processInstanceService.ccInstancePage(param));
     }
 }

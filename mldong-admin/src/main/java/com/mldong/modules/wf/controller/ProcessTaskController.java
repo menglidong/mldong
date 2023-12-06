@@ -2,7 +2,9 @@ package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +109,19 @@ public class ProcessTaskController {
         }  else {
             // 默认执行
             flowEngine.executeProcessTask(processTaskId,operator,args);
+        }
+        // 存在抄送
+        Object ccUserIds = args.get(FlowConst.CC_ACTORS);
+        if(ObjectUtil.isNotEmpty(ccUserIds)) {
+            Long processInstanceId = args.getLong(FlowConst.PROCESS_INSTANCE_ID_KEY);
+            // 抄送人列表
+            if(ccUserIds instanceof String) {
+                flowEngine.processInstanceService().createCCInstance(processInstanceId,operator,
+                        ((String) ccUserIds).split(","));
+            } else if(ccUserIds instanceof Collection) {
+                flowEngine.processInstanceService().createCCInstance(processInstanceId,operator,
+                        ArrayUtil.toArray((Collection) ccUserIds,String.class));
+            }
         }
         return CommonResult.ok();
     }

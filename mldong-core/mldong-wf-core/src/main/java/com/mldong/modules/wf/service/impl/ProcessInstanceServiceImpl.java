@@ -14,12 +14,14 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.mldong.base.CommonPage;
+import com.mldong.base.YesNoEnum;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
 import com.mldong.modules.wf.engine.FlowEngine;
 import com.mldong.modules.wf.engine.core.Execution;
 import com.mldong.modules.wf.engine.model.*;
 import com.mldong.modules.wf.engine.util.FlowUtil;
+import com.mldong.modules.wf.entity.ProcessCcInstance;
 import com.mldong.modules.wf.entity.ProcessDefine;
 import com.mldong.modules.wf.entity.ProcessInstance;
 import com.mldong.modules.wf.entity.ProcessTask;
@@ -27,6 +29,7 @@ import com.mldong.modules.wf.enums.FlowConst;
 import com.mldong.modules.wf.enums.ProcessInstanceStateEnum;
 import com.mldong.modules.wf.enums.ProcessSubmitTypeEnum;
 import com.mldong.modules.wf.enums.ProcessTaskStateEnum;
+import com.mldong.modules.wf.mapper.ProcessCcInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
 import com.mldong.modules.wf.service.ProcessDefineService;
@@ -54,6 +57,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMapper, ProcessInstance> implements ProcessInstanceService {
     private final ProcessTaskMapper processTaskMapper;
+    private final ProcessCcInstanceMapper processCcInstanceMapper;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(ProcessInstanceParam param) {
@@ -78,8 +82,14 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
         }
         IPage<ProcessInstanceVO> page = param.buildMpPage();
         QueryWrapper queryWrapper = param.buildQueryWrapper();
-        // 当前用户发起的流程
-        queryWrapper.eq("t.operator",LoginUserHolder.getUserId());
+        Long userId = LoginUserHolder.getUserId();
+        if(YesNoEnum.YES.equals(param.getIsCC())) {
+            // 我的抄送实例
+            queryWrapper.exists("select * from wf_process_cc_instance cc where cc.process_instance_id=t.id and cc.actor_id="+userId);
+        } else {
+            // 当前用户发起的流程
+            queryWrapper.eq("t.operator", userId);
+        }
         List<ProcessInstanceVO> list = baseMapper.selectCustom(page, queryWrapper);
         page.setRecords(list);
         return CommonPage.toPage(page);
@@ -436,5 +446,47 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
         addVariable.put(prefix+FlowConst.COUNTERSIGN_OPERATOR_LIST,taskActors);
         ProcessInstanceService processInstanceService = SpringUtil.getBean(ProcessInstanceService.class);
         processInstanceService.addVariable(processInstanceId, addVariable);
+    }
+
+    @Override
+    public void createCCInstance(Long processInstanceId, String creator, String... actorIds) {
+        Date now = new Date();
+        Arrays.stream(actorIds).forEach(actorId->{
+            long count = processCcInstanceMapper.selectCount(
+                    Wrappers.lambdaQuery(ProcessCcInstance.class)
+                    .eq(ProcessCcInstance::getProcessInstanceId,processInstanceId)
+                    .eq(ProcessCcInstance::getActorId,actorId)
+            );
+            if(count==0) {
+                // 同一条流程实例下，同一个人，只允许有一条抄送
+                ProcessCcInstance processCcInstance = new ProcessCcInstance();
+                processCcInstance.setProcessInstanceId(processInstanceId);
+                processCcInstance.setActorId(actorId);
+                processCcInstance.setState(YesNoEnum.NO.getCode());
+                processCcInstance.setCreateUser(creator);
+                processCcInstance.setCreateTime(now);
+                processCcInstance.setUpdateUser(creator);
+                processCcInstance.setUpdateTime(now);
+                processCcInstanceMapper.insert(processCcInstance);
+            }
+        });
+
+    }
+
+    @Override
+    public void updateCCStatus(Long processInstanceId, String actorId) {
+        ProcessCcInstance processCcInstance = new ProcessCcInstance();
+        processCcInstance.setState(YesNoEnum.YES.getCode());
+        processCcInstance.setUpdateTime(new Date());
+        processCcInstance.setUpdateUser(actorId);
+        processCcInstanceMapper.update(processCcInstance, Wrappers.<ProcessCcInstance>lambdaQuery()
+                .eq(ProcessCcInstance::getProcessInstanceId,processInstanceId)
+                .eq(ProcessCcInstance::getActorId,actorId));
+    }
+
+    @Override
+    public CommonPage<ProcessInstanceVO> ccInstancePage(ProcessInstancePageParam param) {
+        param.setIsCC(YesNoEnum.YES);
+        return page(param);
     }
 }

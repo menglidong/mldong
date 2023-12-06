@@ -33,6 +33,8 @@ public interface FlowConst {
     String APPROVAL_ATTACHMENT = "tf_approvalAttachment";
     // 下一节点执行人
     String NEXT_NODE_OPERATOR = "tf_nextNodeOperator";
+    // 抄送人
+    String CC_ACTORS = "tf_ccActors";
     // 用户ID
     String USER_USER_ID = "u_userId";
     // 用户姓名
@@ -69,4 +71,5 @@ public interface FlowConst {
     String COUNTERSIGN_TYPE = "countersignType";
     // 会签不同意标识
     String COUNTERSIGN_DISAGREE_FLAG = "countersignDisagreeFlag";
+    String ACTOR_IDS_KEY = "actorIds";
 }
