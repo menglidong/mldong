@@ -16,6 +16,7 @@ import java.util.Arrays;
 public enum ProcessTaskTypeEnum implements CodedEnum {
     MAJOR(0,"主办"),
     SECONDARY(1, "协办"),
+    RECORD(2,"记录"),
     ;
     private final Integer code;
 

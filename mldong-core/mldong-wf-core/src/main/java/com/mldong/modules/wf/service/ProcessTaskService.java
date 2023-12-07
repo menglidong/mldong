@@ -7,9 +7,9 @@ import com.mldong.base.LabelValueVO;
 import com.mldong.modules.wf.dto.ProcessTaskPageParam;
 import com.mldong.modules.wf.dto.ProcessTaskParam;
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.model.CustomModel;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
-import com.mldong.modules.wf.entity.Candidate;
 import com.mldong.modules.wf.entity.ProcessTask;
 import com.mldong.modules.wf.vo.ProcessTaskVO;
 
@@ -174,4 +174,11 @@ public interface ProcessTaskService extends IService<ProcessTask> {
      * @return
      */
     List<ProcessTask> createCountersignTask(TaskModel taskModel, Execution execution);
+    /**
+     * 根据执行对象、自定义节点模型创建历史任务记录
+     * @param execution 执行对象
+     * @param model 自定义节点模型
+     * @return 历史任务
+     */
+    ProcessTask history(Execution execution, CustomModel model);
 }

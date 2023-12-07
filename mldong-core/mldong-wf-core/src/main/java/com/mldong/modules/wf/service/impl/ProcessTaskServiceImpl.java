@@ -25,6 +25,7 @@ import com.mldong.modules.wf.engine.AssignmentHandler;
 import com.mldong.modules.wf.engine.core.Execution;
 import com.mldong.modules.wf.engine.event.ProcessEvent;
 import com.mldong.modules.wf.engine.event.ProcessPublisher;
+import com.mldong.modules.wf.engine.model.CustomModel;
 import com.mldong.modules.wf.engine.model.NodeModel;
 import com.mldong.modules.wf.engine.model.ProcessModel;
 import com.mldong.modules.wf.engine.model.TaskModel;
@@ -475,5 +476,22 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
         // 更新会签变量到流程实例参数中
         processInstanceService.updateCountersignVariable(taskModel,execution, taskActors);
         return processTaskList;
+    }
+
+    @Override
+    public ProcessTask history(Execution execution, CustomModel model) {
+        ProcessTask processTask = new ProcessTask();
+        processTask.setProcessInstanceId(execution.getProcessInstanceId());
+        Date now = new Date();
+        processTask.setCreateTime(now);
+        processTask.setFinishTime(now);
+        processTask.setDisplayName(model.getDisplayName());
+        processTask.setTaskName(model.getName());
+        processTask.setTaskState(ProcessTaskStateEnum.FINISHED.getCode());
+        processTask.setTaskType(ProcessTaskTypeEnum.RECORD.getCode());
+        processTask.setTaskParentId(Convert.toLong(execution.getProcessTaskId(),0L));
+        processTask.setVariable(JSONUtil.toJsonStr(execution.getArgs()));
+        baseMapper.insert(processTask);
+        return processTask;
     }
 }

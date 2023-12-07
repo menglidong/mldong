@@ -11,4 +11,7 @@ import com.mldong.modules.wf.enums.err.WfErrEnum;
  */
 public class JFlowException extends RuntimeException {
     public JFlowException(WfErrEnum errEnum) {}
+    public JFlowException(String msg) {
+        super(msg);
+    }
 }

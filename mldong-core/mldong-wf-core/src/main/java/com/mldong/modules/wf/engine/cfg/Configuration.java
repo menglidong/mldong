@@ -25,6 +25,7 @@ public class Configuration {
         ServiceContext.put("join", JoinParser.class);
         ServiceContext.put("start", StartParser.class);
         ServiceContext.put("task", TaskParser.class);
+        ServiceContext.put("custom",CustomParser.class);
     }
 
 }

@@ -36,6 +36,10 @@ public interface NodeParser {
     String EXT_FIELD_CANDIDATE_HANDLER_KEY = "candidateHandler";
     String EXT_FIELD_COUNTERSIGN_TYPE_KEY = "countersignType"; // 会签类型
     String EXT_FIELD_COUNTERSIGN_COMPLETION_CONDITION_KEY = "countersignCompletionCondition"; // 会签完成条件
+    String CLASS_KEY = "clazz"; // 类路径
+    String METHOD_NAME_KEY = "methodName"; // 方法名
+    String ARGS_KEY = "args"; // 方法入参
+    String RETURN_VAL_KEY = "val"; // 返回变量名
     /**
      * 节点属性解析方法，由解析类完成解析
      * @param lfNode LogicFlow节点对象

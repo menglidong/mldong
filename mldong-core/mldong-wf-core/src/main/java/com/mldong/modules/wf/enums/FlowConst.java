@@ -72,4 +72,6 @@ public interface FlowConst {
     // 会签不同意标识
     String COUNTERSIGN_DISAGREE_FLAG = "countersignDisagreeFlag";
     String ACTOR_IDS_KEY = "actorIds";
+    // 自定义节点默认返回值变量
+    String CUSTOM_RETURN_VAL = "custom_return_val";
 }
