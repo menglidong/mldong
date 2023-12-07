@@ -26,6 +26,7 @@ public class Configuration {
         ServiceContext.put("start", StartParser.class);
         ServiceContext.put("task", TaskParser.class);
         ServiceContext.put("custom",CustomParser.class);
+        ServiceContext.put("wfSubProcess", WfSubProcessParser.class);
     }
 
 }

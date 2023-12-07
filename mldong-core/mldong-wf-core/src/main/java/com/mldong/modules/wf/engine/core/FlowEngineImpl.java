@@ -65,6 +65,11 @@ public class FlowEngineImpl implements FlowEngine {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProcessInstance startProcessInstanceById(Long id, String operator, Dict args) {
+        return startProcessInstanceById(id, operator, args, null, null);
+    }
+
+    @Override
+    public ProcessInstance startProcessInstanceById(Long id, String operator, Dict args, Long parentId, String parentNodeName) {
         // 1. 根据流程定义ID查询流程定义文件
         ProcessDefine processDefine = processDefineService.getById(id);
         if(processDefine==null) {
@@ -73,7 +78,7 @@ public class FlowEngineImpl implements FlowEngine {
         // 2. 将流程定义文件转成流程模型
         ProcessModel processModel = processDefineService.processDefineToModel(processDefine);
         // 3. 根据流程定义对象创建流程实例
-        ProcessInstance processInstance = processInstanceService.createProcessInstance(processDefine,operator, args);
+        ProcessInstance processInstance = processInstanceService.createProcessInstance(processDefine,operator, args, parentId, parentNodeName);
         // 4. 构建执行参数对象
         Execution execution = new Execution();
         execution.setProcessModel(processModel);

@@ -40,6 +40,7 @@ public interface NodeParser {
     String METHOD_NAME_KEY = "methodName"; // 方法名
     String ARGS_KEY = "args"; // 方法入参
     String RETURN_VAL_KEY = "val"; // 返回变量名
+    String VERSION_KEY = "version"; // 版本号
     /**
      * 节点属性解析方法，由解析类完成解析
      * @param lfNode LogicFlow节点对象

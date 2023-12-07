@@ -155,4 +155,11 @@ public interface ProcessDefineService extends IService<ProcessDefine> {
      * @return
      */
     ProcessDefineVO getLastByName(@Param("name") String name);
+    /**
+     * 通过流程定义名称和版本获取流程定义
+     * @param name
+     * @param version
+     * @return
+     */
+    ProcessDefine getProcessDefineByVersion(String name,Integer version);
 }

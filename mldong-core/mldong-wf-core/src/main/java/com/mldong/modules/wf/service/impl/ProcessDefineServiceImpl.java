@@ -6,6 +6,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -240,5 +241,19 @@ public class ProcessDefineServiceImpl extends ServiceImpl<ProcessDefineMapper, P
     @Override
     public ProcessDefineVO getLastByName(String name) {
         return baseMapper.selectLastByName(name);
+    }
+    @Override
+    public ProcessDefine getProcessDefineByVersion(String name, Integer version) {
+        LambdaQueryWrapper<ProcessDefine> queryWrapper = Wrappers.lambdaQuery(ProcessDefine.class);
+        queryWrapper.eq(ProcessDefine::getName,name);
+        if(version!=null) {
+            queryWrapper.eq(ProcessDefine::getVersion, version);
+        }
+        queryWrapper.orderByDesc(ProcessDefine::getId);
+        List<ProcessDefine> processDefineList = baseMapper.selectList(queryWrapper);
+        if(!processDefineList.isEmpty()) {
+            return processDefineList.get(0);
+        }
+        return null;
     }
 }

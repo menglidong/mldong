@@ -49,7 +49,16 @@ public interface FlowEngine {
      * @return ProcessInstance 流程实例
      */
     ProcessInstance startProcessInstanceById(Long id, String operator, Dict args);
-
+    /**
+     * 根据流程定义ID、操作人ID、启动流程参数启动流程实例
+     * @param id 流程定义ID
+     * @param operator 操作人ID
+     * @param args 启动流程参数
+     * @param parentId
+     * @param parentNodeName
+     * @return ProcessInstance 流程实例
+     */
+    ProcessInstance startProcessInstanceById(Long id, String operator, Dict args, Long parentId,String parentNodeName);
     /**
      * 执行流程任务
      * @param processTaskId

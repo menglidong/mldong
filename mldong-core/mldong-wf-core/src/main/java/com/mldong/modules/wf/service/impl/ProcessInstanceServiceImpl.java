@@ -113,7 +113,14 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
 
     @Override
     public ProcessInstance createProcessInstance(ProcessDefine processDefine, String operator, Dict args) {
+        return createProcessInstance(processDefine, operator, args, null, null);
+    }
+
+    @Override
+    public ProcessInstance createProcessInstance(ProcessDefine processDefine, String operator, Dict args, Long parentId, String parentNodeName) {
         ProcessInstance processInstance = new ProcessInstance();
+        processInstance.setParentId(parentId);
+        processInstance.setParentNodeName(parentNodeName);
         processInstance.setProcessDefineId(processDefine.getId());
         processInstance.setOperator(operator);
         processInstance.setState(ProcessInstanceStateEnum.DOING.getCode());

@@ -63,6 +63,16 @@ public interface ProcessInstanceService extends IService<ProcessInstance> {
      * @return ProcessInstance 活动流程实例对象
      */
     ProcessInstance createProcessInstance(ProcessDefine processDefine, String operator, Dict args);
+    /**
+     * 根据流程、操作人员、父流程实例ID创建流程实例
+     * @param processDefine 流程定义对象
+     * @param operator 操作人员ID
+     * @param args 参数列表
+     * @param parentId
+     * @param parentNodeName
+     * @return ProcessInstance 活动流程实例对象
+     */
+    ProcessInstance createProcessInstance(ProcessDefine processDefine, String operator, Dict args,Long parentId,String parentNodeName);
 
     /**
      * 向指定实例id添加全局变量数据

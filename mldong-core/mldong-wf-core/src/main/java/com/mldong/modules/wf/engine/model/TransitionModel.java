@@ -3,6 +3,7 @@ package com.mldong.modules.wf.engine.model;
 import com.mldong.modules.wf.engine.handlers.impl.CreateTaskHandler;
 import com.mldong.modules.wf.engine.Action;
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.handlers.impl.StartSubProcessHandler;
 import lombok.Data;
 /**
  *
@@ -24,6 +25,9 @@ public class TransitionModel extends BaseModel implements Action {
         if(target instanceof TaskModel) {
             // 创建阻塞任务
             fire(new CreateTaskHandler((TaskModel) target),execution);
+        } else if(target instanceof SubProcessModel){
+            // 如果为子流程，则启动子流程
+            fire(new StartSubProcessHandler((SubProcessModel) target), execution);
         } else {
             target.execute(execution);
         }
