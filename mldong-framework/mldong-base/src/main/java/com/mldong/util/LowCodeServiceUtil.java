@@ -381,6 +381,10 @@ public class LowCodeServiceUtil {
                 List<T> list=baseMapper.selectList(queryWrapper);
                 records.addAll(list);
             }
+        } else {
+            IPage<T> page = param.buildMpPage();
+            baseMapper.selectPage(page,queryWrapper);
+            records.addAll(page.getRecords());
         }
         records.forEach(item->{
             LabelValueVO vo = LabelValueVO.builder().label(Convert.toStr(ReflectUtil.getFieldValue(item,labelKey)))

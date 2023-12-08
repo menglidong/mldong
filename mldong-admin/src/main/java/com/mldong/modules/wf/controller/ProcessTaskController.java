@@ -2,7 +2,6 @@ package com.mldong.modules.wf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ArrayUtil;
@@ -161,6 +160,16 @@ public class ProcessTaskController {
         Long processTaskId = args.getLong(FlowConst.PROCESS_TASK_ID_KEY);
         List<String> actors = Convert.toList(String.class,args.get(FlowConst.ACTOR_IDS_KEY));
         processTaskService.addTaskActor(processTaskId, actors);
+        return CommonResult.ok();
+    }
+    /**
+     * 加签
+     * @param args
+     * @return
+     */
+    @PostMapping("/wf/processTask/addCandidate")
+    @ApiOperation(value = "加签")
+    public CommonResult<?> addCandidate(@RequestBody Dict args) {
         return CommonResult.ok();
     }
 }
