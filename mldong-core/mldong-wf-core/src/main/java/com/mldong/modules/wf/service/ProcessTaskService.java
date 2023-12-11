@@ -113,6 +113,12 @@ public interface ProcessTaskService extends IService<ProcessTask> {
      * @param actors 参与者
      */
     void addTaskActor(Long processTaskId, List<String> actors);
+    /**
+     * 向指定的任务id添加参与者
+     * @param processTaskId 流程任务id
+     * @param actors 参与者
+     */
+    void addCandidateActor(Long processTaskId, List<String> actors);
 
     /**
      * 向指定任务移除参与者

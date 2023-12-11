@@ -170,6 +170,9 @@ public class ProcessTaskController {
     @PostMapping("/wf/processTask/addCandidate")
     @ApiOperation(value = "加签")
     public CommonResult<?> addCandidate(@RequestBody Dict args) {
+        Long processTaskId = args.getLong(FlowConst.PROCESS_TASK_ID_KEY);
+        List<String> actors = Convert.toList(String.class,args.get(FlowConst.ACTOR_IDS_KEY));
+        processTaskService.addCandidateActor(processTaskId, actors);
         return CommonResult.ok();
     }
 }

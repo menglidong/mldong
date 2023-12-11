@@ -231,6 +231,33 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
     }
 
     @Override
+    public void addCandidateActor(Long processTaskId, List<String> actors) {
+        if(CollectionUtil.isEmpty(actors)) return;
+        ProcessTask processTask = baseMapper.selectById(processTaskId);
+        String prefix = FlowConst.COUNTERSIGN_VARIABLE_PREFIX +processTask.getTaskName()+"_";
+        // 主要调整流程变量中的参与者
+        ProcessInstance processInstance = processInstanceMapper.selectById(processTask.getProcessInstanceId());
+        if(processInstance!=null) {
+            Dict args = JSONUtil.toBean(processInstance.getVariable(),Dict.class);
+            // 会签办理人列表
+            List<String> operatorList = Convert.toList(String.class,args.get(prefix+FlowConst.COUNTERSIGN_OPERATOR_LIST));
+            if(args!=null) {
+                operatorList.addAll(actors);
+                operatorList = operatorList.stream().distinct().collect(Collectors.toList());
+                // 更新列表
+                args.put(prefix+FlowConst.COUNTERSIGN_OPERATOR_LIST,actors);
+                // 更新实例数
+                args.put(prefix+FlowConst.NR_OF_INSTANCES, operatorList.size());
+                ProcessInstance up = new ProcessInstance();
+                up.setId(processInstance.getId());
+                up.setVariable(JSONUtil.toJsonStr(args));
+                processInstanceMapper.updateById(up);
+            }
+        }
+
+    }
+
+    @Override
     public void removeTaskActor(Long processTaskId, List<String> actors) {
         processTaskActorMapper.delete(
                 Wrappers.lambdaQuery(ProcessTaskActor.class)
