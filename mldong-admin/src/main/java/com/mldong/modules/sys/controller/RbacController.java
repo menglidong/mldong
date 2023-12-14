@@ -2,6 +2,7 @@ package com.mldong.modules.sys.controller;
 
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
 import com.mldong.modules.sys.dto.RoleMenuPageParam;
@@ -48,7 +49,7 @@ public class RbacController {
     }
     @PostMapping("/sys/rbac/roleMenuIds")
     @ApiOperation(value="角色ID获取菜单ID集合")
-    @SaCheckPermission("sys:rbac:roleMenuIds")
+    @SaCheckPermission(value = {"sys:rbac:roleMenuIds","sys:rbac:saveRoleMenu"}, mode = SaMode.OR)
     public CommonResult<List<Long>> roleMenuIds(@RequestBody RoleMenuParam param){
         return  CommonResult.data(rbacService.roleMenuIds(param.getRoleId()));
     }
