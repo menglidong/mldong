@@ -9,3 +9,5 @@ spring:
     host: ${REDIS_HOST:172.16.31.160}
     port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD:gEwjEHLM}
+
+blacklist: /sys/**/save,/sys/**/update,/sys/**/remove,/sys/user/updatePwd,/wf/**/remove
