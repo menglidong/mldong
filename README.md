@@ -1,4 +1,16 @@
+## 加群可加作者微信：mldong_
 
+`微信号有下划线`
+
+## 交流圈子
+
+![纷传](doc/images/fenchuan.jpg)
+
+
+## 相关项目
+
+- [前端工程](https://gitee.com/mldong/mldong-vue)
+- [演示地址](http://flow.mldong.com/)
 ## 框架介绍
 
 ## 目录结构
