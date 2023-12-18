@@ -1,6 +1,11 @@
 package com.mldong.base;
 
-public interface SwaggerDocket {
-    String groupName();
-    String basePackage();
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class SwaggerDocket {
+    private String groupName;
+    private String basePackage;
 }
