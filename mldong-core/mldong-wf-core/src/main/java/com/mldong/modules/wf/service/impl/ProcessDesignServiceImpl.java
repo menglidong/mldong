@@ -135,13 +135,13 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
             String name = jsonObject.getStr(FlowConst.PROCESS_NAME_KEY);
             String displayName = jsonObject.getStr(FlowConst.PROCESS_DISPLAY_NAME_KEY);
             String type = jsonObject.getStr(FlowConst.PROCESS_TYPE);
-            ProcessDesign processDesign = new ProcessDesign();
+            ProcessDesignParam processDesign = new ProcessDesignParam();
             processDesign.setId(processDesignId);
             processDesign.setName(name);
             processDesign.setDisplayName(displayName);
             processDesign.setIsDeployed(YesNoEnum.NO.getCode());
             processDesign.setType(type);
-            updateById(processDesign);
+            update(processDesign);
         }
         return  success;
     }
