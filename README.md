@@ -1,12 +1,3 @@
-## 加群可加作者微信：mldong_
-
-`微信号有下划线`
-
-## 交流圈子
-
-![纷传](doc/images/fenchuan.jpg)
-
-
 ## 相关项目
 
 - [前端工程](https://gitee.com/mldong/mldong-vue)
