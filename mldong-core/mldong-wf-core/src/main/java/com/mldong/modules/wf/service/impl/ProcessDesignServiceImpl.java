@@ -83,6 +83,10 @@ public class ProcessDesignServiceImpl extends ServiceImpl<ProcessDesignMapper, P
 
     @Override
     public CommonPage<ProcessDesignVO> page(ProcessDesignPageParam param) {
+        // 按id倒序
+        if(StrUtil.isEmpty(param.getOrderBy())) {
+            param.setOrderBy("t.id desc");
+        }
         IPage<ProcessDesignVO> page = param.buildMpPage();
         QueryWrapper queryWrapper = param.buildQueryWrapper();
         queryWrapper.eq("t.is_deleted",YesNoEnum.NO);
