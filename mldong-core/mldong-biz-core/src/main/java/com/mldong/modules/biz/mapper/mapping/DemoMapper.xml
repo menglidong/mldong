@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mldong.modules.biz.mapper.DemoMapper">
+
+    <select id="selectCustom" resultType="com.mldong.modules.biz.vo.DemoVO">
+        select * from biz_demo t ${ew.customSqlSegment}
+    </select>
+    <select id="findById" resultType="com.mldong.modules.biz.vo.DemoVO">
+        select * from biz_demo t where t.id = #{id}
+    </select>
+</mapper>
