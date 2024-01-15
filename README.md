@@ -3,7 +3,9 @@
 - [前端工程](https://gitee.com/mldong/mldong-vue)
 - [演示地址](http://flow.mldong.com/) 
   
-账号密码：admin/123456
+演示环境账号密码：admin/123456
+
+本地环境账号密码：superAdmin/123456
 
 ## 框架介绍
 | 框架 | 版本 | 备注 | 
