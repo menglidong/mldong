@@ -36,6 +36,11 @@
             <artifactId>mldong-biz-core</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.mldong</groupId>
+            <artifactId>mldong-dev-core</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
     <build>
 <!--        <finalName>mldong-admin</finalName>-->
