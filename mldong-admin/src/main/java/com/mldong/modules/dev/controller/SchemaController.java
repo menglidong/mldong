@@ -1,6 +1,7 @@
 package com.mldong.modules.dev.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
 import com.mldong.base.IdParam;
@@ -14,9 +15,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 /**
 * <p>
     * 数据模型 前端控制器
@@ -88,5 +88,31 @@ public class SchemaController {
     @SaCheckPermission("dev:schema:page")
     public CommonResult<CommonPage<SchemaVO>> page(@RequestBody SchemaPageParam param) {
         return CommonResult.data(schemaService.page(param));
+    }
+    /**
+     * 获取数据库表
+     * @return
+     */
+    @PostMapping("/dev/schema/dbTable")
+    @ApiOperation(value = "获取数据库表")
+    @SaCheckPermission(value = {"dev:schema:dbTable","dev:schema:importTable"},mode = SaMode.OR)
+    public CommonResult<?> dbTable(@RequestBody SchemaPageParam param) {
+        return CommonResult.data(schemaService.dbTable(param.getKeywords()));
+    }
+    /**
+     * 导入数据表
+     * @return
+     */
+    @PostMapping("/dev/schema/importTable")
+    @ApiOperation(value = "导入数据表")
+    @SaCheckPermission("dev:schema:importTable")
+    public CommonResult<?> importTable(@RequestBody SchemaPageParam param) {
+        schemaService.importTable(param.getTableNames());
+        return CommonResult.ok();
+    }
+    @SaCheckPermission("dev:schema:getByTableName")
+    @GetMapping("/dev/schema/getByTableName")
+    public CommonResult<SchemaVO> getByTableName(@RequestParam(value = "tableName", required = true) String tableName) {
+        return CommonResult.data(schemaService.getByTableName(tableName));
     }
 }

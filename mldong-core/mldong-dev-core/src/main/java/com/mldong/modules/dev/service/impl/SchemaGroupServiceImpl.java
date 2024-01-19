@@ -8,6 +8,7 @@ import com.mldong.base.YesNoEnum;
 import com.mldong.modules.dev.dto.SchemaGroupPageParam;
 import com.mldong.modules.dev.dto.SchemaGroupParam;
 import com.mldong.modules.dev.vo.SchemaGroupVO;
+import com.mldong.util.LowCodeServiceUtil;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import com.mldong.modules.dev.entity.SchemaGroup;
@@ -29,6 +30,7 @@ public class SchemaGroupServiceImpl extends ServiceImpl<SchemaGroupMapper, Schem
     @Transactional(rollbackFor = Exception.class)
     public boolean save(SchemaGroupParam param) {
         param.setId(null);
+        LowCodeServiceUtil.checkUnique(baseMapper,"code",param.getCode(),null,"唯一编码已存在，请检查code参数");
         SchemaGroup schemaGroup = new SchemaGroup();
         BeanUtil.copyProperties(param, schemaGroup);
         return super.save(schemaGroup);
@@ -36,6 +38,7 @@ public class SchemaGroupServiceImpl extends ServiceImpl<SchemaGroupMapper, Schem
 
     @Override
     public boolean update(SchemaGroupParam param) {
+        LowCodeServiceUtil.checkUnique(baseMapper,"code",param.getCode(),param.getId(),"唯一编码已存在，请检查code参数");
         SchemaGroup schemaGroup = new SchemaGroup();
         BeanUtil.copyProperties(param, schemaGroup);
         return super.updateById(schemaGroup);

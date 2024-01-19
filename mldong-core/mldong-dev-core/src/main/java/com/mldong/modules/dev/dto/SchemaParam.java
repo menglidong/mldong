@@ -1,4 +1,6 @@
 package com.mldong.modules.dev.dto;
+import cn.hutool.core.lang.Dict;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -70,6 +72,6 @@ public class SchemaParam implements Serializable {
 
     @ApiModelProperty(value = "扩展属性JSON")
     private String variable;
-
-
+    @ApiModelProperty(value = "扩展属性JSON对象")
+    private Dict ext;
 }
