@@ -1,6 +1,7 @@
 package com.mldong.modules.dev.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mldong.base.CommonPage;
@@ -31,6 +32,7 @@ public class SchemaFieldServiceImpl extends ServiceImpl<SchemaFieldMapper, Schem
         param.setId(null);
         SchemaField schemaField = new SchemaField();
         BeanUtil.copyProperties(param, schemaField);
+        schemaField.setVariable(JSONUtil.toJsonStr(param.getExt()));
         return super.save(schemaField);
     }
 
@@ -38,6 +40,7 @@ public class SchemaFieldServiceImpl extends ServiceImpl<SchemaFieldMapper, Schem
     public boolean update(SchemaFieldParam param) {
         SchemaField schemaField = new SchemaField();
         BeanUtil.copyProperties(param, schemaField);
+        schemaField.setVariable(JSONUtil.toJsonStr(param.getExt()));
         return super.updateById(schemaField);
     }
 
