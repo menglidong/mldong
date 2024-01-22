@@ -30,17 +30,17 @@ public class AuthInterceptor extends SaInterceptor {
     private static final List<String> blacklist = environment.getProperty("blacklist",List.class);
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        LoginUser loginUser = LoginUserHolder.me();
+        if(loginUser!=null && loginUser.isSuperAdmin()) {
+            // 超级管理员直接放行
+            return true;
+        }
         if(ObjectUtil.equals(profileActive,"demo")) {
             // 演示环境，无权限操作
             String uri = request.getRequestURI();
             if(CollectionUtil.isNotEmpty(blacklist) && blacklist.stream().anyMatch(s -> antPathMatcher.match(s,uri))) {
                 ServiceException.throwBiz(AuthErrEnum.NO_RESOURCE_AUTH);
             }
-        }
-        LoginUser loginUser = LoginUserHolder.me();
-        if(loginUser!=null && loginUser.isSuperAdmin()) {
-            // 超级管理员直接放行
-            return true;
         }
         return super.preHandle(request, response, handler);
     }
