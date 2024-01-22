@@ -56,9 +56,10 @@ public interface SchemaService extends IService<Schema> {
 
     /**
      * 导入表
+     * @param schemaGroupId
      * @param tableNames
      */
-    void importTable(List<String> tableNames);
+    void importTable(Long schemaGroupId,List<String> tableNames);
     /**
      * 获取表元数据
      * @param tableName

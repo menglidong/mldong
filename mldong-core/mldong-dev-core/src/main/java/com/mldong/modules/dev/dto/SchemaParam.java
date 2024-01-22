@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -74,4 +76,10 @@ public class SchemaParam implements Serializable {
     private String variable;
     @ApiModelProperty(value = "扩展属性JSON对象")
     private Dict ext;
+
+    @ApiModelProperty(value = "表集合")
+    @NotEmpty(message = "表名称列表不能为空",groups = ImportSchema.class)
+    private List<String> tableNames;
+
+    public interface ImportSchema {}
 }

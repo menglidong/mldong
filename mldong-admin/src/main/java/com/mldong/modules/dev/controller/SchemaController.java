@@ -106,8 +106,8 @@ public class SchemaController {
     @PostMapping("/dev/schema/importTable")
     @ApiOperation(value = "导入数据表")
     @SaCheckPermission("dev:schema:importTable")
-    public CommonResult<?> importTable(@RequestBody SchemaPageParam param) {
-        schemaService.importTable(param.getTableNames());
+    public CommonResult<?> importTable(@RequestBody SchemaParam param) {
+        schemaService.importTable(param.getSchemaGroupId(),param.getTableNames());
         return CommonResult.ok();
     }
     @SaCheckPermission("dev:schema:getByTableName")

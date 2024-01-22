@@ -7,6 +7,7 @@ import com.mldong.base.IdParam;
 import com.mldong.base.IdsParam;
 import com.mldong.modules.dev.dto.SchemaFieldPageParam;
 import com.mldong.modules.dev.dto.SchemaFieldParam;
+import com.mldong.modules.dev.dto.UpdateSortParam;
 import com.mldong.modules.dev.service.SchemaFieldService;
 import com.mldong.modules.dev.vo.SchemaFieldVO;
 import com.mldong.validation.Groups;
@@ -88,5 +89,16 @@ public class SchemaFieldController {
     @SaCheckPermission("dev:schemaField:page")
     public CommonResult<CommonPage<SchemaFieldVO>> page(@RequestBody SchemaFieldPageParam param) {
         return CommonResult.data(schemaFieldService.page(param));
+    }
+    @PostMapping("/dev/schemaField/updateSort")
+    @ApiOperation(value = "更新排序")
+    @SaCheckPermission("dev:schemaField:updateSort")
+    public CommonResult<?> updateSort(@RequestBody UpdateSortParam param) {
+        boolean isSuccess = schemaFieldService.updateSort(param);
+        if (isSuccess) {
+            return CommonResult.ok("更新排序成功");
+        } else {
+            return CommonResult.fail("更新排序失败");
+        }
     }
 }

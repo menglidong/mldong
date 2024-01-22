@@ -106,7 +106,7 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
     }
 
     @Override
-    public void importTable(List<String> tableNames) {
+    public void importTable(Long schemaGroupId, List<String> tableNames) {
         List<TableInfo> tableInfoList = getTableInfoList(tableNames, null);
         if(CollUtil.isEmpty(tableInfoList)) return;
         List<Schema> hisSchemas = this.list(Wrappers.lambdaQuery(Schema.class).
@@ -123,7 +123,11 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
         for (TableInfo tableInfo : tableInfoList) {
             List<SchemaField> schemaFields = new ArrayList<>();
             Schema schema = new Schema();
-            schema.setSchemaGroupId(getSchemaGroupId(tableInfo.getName(),cacheMap));
+            if(schemaGroupId!=null) {
+                schema.setSchemaGroupId(schemaGroupId);
+            } else {
+                schema.setSchemaGroupId(getSchemaGroupId(tableInfo.getName(), cacheMap));
+            }
             schema.setId(IdWorker.getId());
             schema.setTableName(tableInfo.getName());
             schema.setTableType(SchemaTableTypeEnum.SINGLE_TABLE.getCode());//默认
@@ -168,7 +172,11 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
             ServiceException.throwBiz(9999, "数据模型不存在");
         }
         SchemaVO vo = BeanUtil.toBean(schema,SchemaVO.class);
-        List<SchemaField> schemaFieldList = schemaFieldService.list(Wrappers.lambdaQuery(SchemaField.class).eq(SchemaField::getSchemaId,schema.getId()));
+        List<SchemaField> schemaFieldList = schemaFieldService.list(
+                Wrappers.lambdaQuery(SchemaField.class).eq(SchemaField::getSchemaId,schema.getId())
+                .orderByAsc(SchemaField::getSort)
+                .orderByAsc(SchemaField::getId)
+        );
         vo.setColumns(BeanUtil.copyToList(schemaFieldList, SchemaFieldVO.class));
         return vo;
     }

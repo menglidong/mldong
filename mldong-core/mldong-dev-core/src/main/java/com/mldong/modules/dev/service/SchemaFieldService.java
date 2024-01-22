@@ -3,6 +3,7 @@ package com.mldong.modules.dev.service;
 import com.mldong.base.CommonPage;
 import com.mldong.modules.dev.dto.SchemaFieldPageParam;
 import com.mldong.modules.dev.dto.SchemaFieldParam;
+import com.mldong.modules.dev.dto.UpdateSortParam;
 import com.mldong.modules.dev.vo.SchemaFieldVO;
 import com.mldong.modules.dev.entity.SchemaField;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -41,4 +42,10 @@ public interface SchemaFieldService extends IService<SchemaField> {
     * @return
     */
     SchemaFieldVO findById(Long id);
+    /**
+     * 更新排序
+     * @param param
+     * @return
+     */
+    boolean updateSort(UpdateSortParam param);
 }

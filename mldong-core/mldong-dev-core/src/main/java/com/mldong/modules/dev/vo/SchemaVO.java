@@ -1,5 +1,6 @@
 package com.mldong.modules.dev.vo;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.mldong.modules.dev.entity.Schema;
@@ -23,6 +24,10 @@ import java.util.List;
 public class SchemaVO extends Schema {
     @ApiModelProperty(value = "模块名")
     private String moduleName;
+    @ApiModelProperty(value = "小驼峰")
+    private String tableCamelName;
+    @ApiModelProperty(value = "类名")
+    private String className;
     @ApiModelProperty("列信息")
     private List<SchemaFieldVO> columns;
     @ApiModelProperty("扩展属性")
@@ -38,5 +43,17 @@ public class SchemaVO extends Schema {
     public String getModuleName() {
         String tableName = getTableName();
         return tableName.substring(0,tableName.indexOf("_"));
+    }
+
+    public String getTableCamelName() {
+        String tableName = getTableName();
+        if(StrUtil.isEmpty(tableName)) return tableName;
+        String removePrefix = tableName.replace(getModuleName() + "_","");
+        return StrUtil.toCamelCase(removePrefix);
+    }
+
+    public String getClassName() {
+        String tableCamelName = getTableCamelName();
+        return StrUtil.upperFirst(tableCamelName);
     }
 }
