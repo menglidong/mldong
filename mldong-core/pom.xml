@@ -15,6 +15,7 @@
         <module>mldong-sys-core</module>
         <module>mldong-wf-core</module>
         <module>mldong-biz-core</module>
+        <module>mldong-dev-core</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
