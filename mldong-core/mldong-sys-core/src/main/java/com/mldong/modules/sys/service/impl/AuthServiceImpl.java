@@ -146,6 +146,11 @@ public class AuthServiceImpl implements AuthService, StpInterface {
         SaLoginModel loginModel = new SaLoginModel();
         // 被扮演的用户
         LoginUser loginUser = toLoginUser(user);
+        if(loginUser.isSuperAdmin()) {
+            if(!LoginUserHolder.me().isSuperAdmin()) {
+                throw new ServiceException(9999, "非超级管理员不能扮演超级管理员");
+            }
+        }
         // 追加扮演用户信息
         loginUser.getExt().put(CommonConstant.USER_EXT_PLAYER_TOKEN,StpUtil.getTokenValue());
         loginUser.getExt().put(CommonConstant.USER_EXT_PLAYER_USER_ID,currentUser.getId());
