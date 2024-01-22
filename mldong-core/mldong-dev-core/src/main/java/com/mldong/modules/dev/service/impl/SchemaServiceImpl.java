@@ -155,7 +155,7 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
             });
             schemaFields.addAll(subSchemaFields);
             //设置默认的列表字段集合
-            schema.setListKeys(subSchemaFields.stream().map(SchemaField::getFieldName).collect(Collectors.joining()));
+            schema.setListKeys(subSchemaFields.stream().map(SchemaField::getFieldName).collect(Collectors.joining(",")));
             Map<String, Object> variable = new HashMap<>();
             schema.setVariable(JSONUtil.toJsonStr(variable));
             // 插入数据模型
@@ -177,7 +177,20 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
                 .orderByAsc(SchemaField::getSort)
                 .orderByAsc(SchemaField::getId)
         );
-        vo.setColumns(BeanUtil.copyToList(schemaFieldList, SchemaFieldVO.class));
+        List<String> listKeys = new ArrayList<>();
+        if(StrUtil.isNotEmpty(schema.getListKeys())) {
+            listKeys.addAll(CollectionUtil.newArrayList(schema.getListKeys().split(",")));
+        }
+        List<String> searchFormKeys = new ArrayList<>();
+        if(StrUtil.isNotEmpty(schema.getSearchFormKeys())) {
+            searchFormKeys.addAll(CollectionUtil.newArrayList(schema.getSearchFormKeys().split(",")));
+        }
+        vo.setColumns(schemaFieldList.stream().map(item->{
+            SchemaFieldVO schemaFieldVO = BeanUtil.toBean(item,SchemaFieldVO.class);
+            schemaFieldVO.setListSort(listKeys.indexOf(item.getFieldName()));
+            schemaFieldVO.setSearchSort(searchFormKeys.indexOf(item.getFieldName()));
+            return schemaFieldVO;
+        }).collect(Collectors.toList()));
         return vo;
     }
 
