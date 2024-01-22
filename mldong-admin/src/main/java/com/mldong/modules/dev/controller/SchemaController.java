@@ -67,6 +67,30 @@ public class SchemaController {
         return CommonResult.ok();
     }
     /**
+     * 修改数据模型列表字段
+     * @param param
+     * @return
+     */
+    @PostMapping("/dev/schema/updateListKeys")
+    @ApiOperation(value = "修改数据模型列表字段")
+    @SaCheckPermission("dev:schema:updateListKeys")
+    public CommonResult<?> updateListKeys(@RequestBody @Validated({SchemaParam.UpdateListKeys.class}) SchemaParam param) {
+        schemaService.update(param);
+        return CommonResult.ok();
+    }
+    /**
+     * 修改数据模型搜索表单字段
+     * @param param
+     * @return
+     */
+    @PostMapping("/dev/schema/updateSearchFormKeys")
+    @ApiOperation(value = "修改数据模型搜索表单字段")
+    @SaCheckPermission("dev:schema:updateSearchFormKeys")
+    public CommonResult<?> updateSearchFormKeys(@RequestBody @Validated({SchemaParam.UpdateSearchFormKeys.class}) SchemaParam param) {
+        schemaService.update(param);
+        return CommonResult.ok();
+    }
+    /**
      * 查询单个数据模型
      * @param param
      * @return

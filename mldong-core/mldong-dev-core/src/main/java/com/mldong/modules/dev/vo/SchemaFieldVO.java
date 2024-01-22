@@ -23,7 +23,10 @@ public class SchemaFieldVO extends SchemaField {
     private String fieldCamelName;
     @ApiModelProperty("扩展属性")
     private JSONObject ext;
-
+    @ApiModelProperty(value = "列表字段排序")
+    private Integer listSort;
+    @ApiModelProperty(value = "搜索字段排序")
+    private Integer searchSort;
     public JSONObject getExt() {
         if(JSONUtil.isTypeJSON(getVariable())) {
             ext = JSONUtil.parseObj(getVariable());
