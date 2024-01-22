@@ -34,7 +34,7 @@ public class SchemaParam implements Serializable {
 
     @ApiModelProperty(value = "主键", required = true)
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    @NotNull(message = "主键不能为空", groups = {Groups.Update.class})
+    @NotNull(message = "主键不能为空", groups = {Groups.Update.class,UpdateListKeys.class,UpdateSearchFormKeys.class})
     private Long id;
 
     @ApiModelProperty(value = "所属分组")
@@ -82,4 +82,6 @@ public class SchemaParam implements Serializable {
     private List<String> tableNames;
 
     public interface ImportSchema {}
+    public interface UpdateListKeys {}
+    public interface UpdateSearchFormKeys {}
 }
