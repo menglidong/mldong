@@ -5,8 +5,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -33,6 +35,7 @@ import com.mldong.modules.dev.mapper.SchemaMapper;
 import com.mldong.modules.dev.service.SchemaFieldService;
 import com.mldong.modules.dev.service.SchemaService;
 import com.mldong.modules.dev.vo.SchemaFieldVO;
+import com.mldong.modules.dev.vo.SchemaGroupVO;
 import com.mldong.modules.dev.vo.SchemaVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -185,12 +188,38 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
         if(StrUtil.isNotEmpty(schema.getSearchFormKeys())) {
             searchFormKeys.addAll(CollectionUtil.newArrayList(schema.getSearchFormKeys().split(",")));
         }
+        // 设置列，并对列表字段、搜索字段进行排序
         vo.setColumns(schemaFieldList.stream().map(item->{
             SchemaFieldVO schemaFieldVO = BeanUtil.toBean(item,SchemaFieldVO.class);
             schemaFieldVO.setListSort(listKeys.indexOf(item.getFieldName()));
             schemaFieldVO.setSearchSort(searchFormKeys.indexOf(item.getFieldName()));
             return schemaFieldVO;
         }).collect(Collectors.toList()));
+        // 组装分组数据
+        SchemaGroup schemaGroup = null;
+        if (ObjectUtil.isNotNull(vo.getSchemaGroupId())) {
+            schemaGroup = schemaGroupMapper.selectById(vo.getSchemaGroupId());
+        }
+        SchemaGroupVO schemaGroupVO = new SchemaGroupVO();
+        if (ObjectUtil.isNull(schemaGroup)) {
+            // 找不到，使用自身构建分组
+            schemaGroupVO.setId(schema.getId() + 1);
+            schemaGroupVO.setName(schema.getRemark());
+            schemaGroupVO.setCode(vo.getTableCamelName());
+            SchemaVO schemaVO = new SchemaVO();
+            BeanUtil.copyProperties(schema, schemaVO);
+            schemaGroupVO.setSchemaList(CollectionUtil.newArrayList(schemaVO));
+        } else {
+            // 存在分组
+            BeanUtil.copyProperties(schemaGroup, schemaGroupVO);
+            LambdaQueryWrapper<Schema> schemaLambdaQueryWrapper = Wrappers.lambdaQuery();
+            schemaLambdaQueryWrapper.eq(Schema::getSchemaGroupId, schemaGroup.getId());
+            schemaLambdaQueryWrapper.orderByAsc(Schema::getSort);
+            List<Schema> schemaList = baseMapper.selectList(schemaLambdaQueryWrapper);
+            List<SchemaVO> schemaVOList = BeanUtil.copyToList(schemaList, SchemaVO.class);
+            schemaGroupVO.setSchemaList(schemaVOList);
+        }
+        vo.setSchemaGroup(schemaGroupVO);
         return vo;
     }
 
