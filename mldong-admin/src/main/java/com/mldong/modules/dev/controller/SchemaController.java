@@ -97,10 +97,10 @@ public class SchemaController {
      */
     @PostMapping("/dev/schema/detail")
     @ApiOperation(value = "查询单个数据模型")
-    @SaCheckPermission("dev:schema:detail")
+    @SaCheckPermission(value = {"dev:schema:detail","dev:schema:updateListKeys","dev:schema:updateSearchFormKeys"}, mode = SaMode.OR)
     public CommonResult<SchemaVO> detail(@RequestBody IdParam param) {
         SchemaVO schema = schemaService.findById(param.getId());
-        return CommonResult.data(schema);
+        return CommonResult.data(getByTableName(schema.getTableName()));
     }
     /**
      *分页查询数据模型列表
