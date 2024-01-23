@@ -32,7 +32,8 @@ public class SchemaVO extends Schema {
     private List<SchemaFieldVO> columns;
     @ApiModelProperty("扩展属性")
     private JSONObject ext;
-
+    @ApiModelProperty(value = "模型分组")
+    private SchemaGroupVO schemaGroup;
     public JSONObject getExt() {
         if(JSONUtil.isTypeJSON(getVariable())) {
             ext = JSONUtil.parseObj(getVariable());
