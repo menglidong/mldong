@@ -1,19 +1,28 @@
 package com.mldong.modules.dev.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.annotation.SaMode;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.extra.spring.SpringUtil;
+import com.mldong.auth.LoginUser;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
 import com.mldong.base.IdParam;
 import com.mldong.base.IdsParam;
+import com.mldong.context.constant.ConstantContextHolder;
 import com.mldong.modules.dev.dto.SchemaPageParam;
 import com.mldong.modules.dev.dto.SchemaParam;
+import com.mldong.modules.dev.enums.DevConst;
 import com.mldong.modules.dev.service.SchemaService;
 import com.mldong.modules.dev.vo.SchemaVO;
 import com.mldong.validation.Groups;
+import com.mldong.web.LoginUserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +38,8 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "数据模型管理")
 @RequiredArgsConstructor
 public class SchemaController {
+    private static final Environment environment = SpringUtil.getBean(Environment.class);
+    private static final String profileActive = environment.getProperty("spring.profiles.active",String.class);
     private final SchemaService schemaService;
     /**
      * 添加数据模型
@@ -100,7 +111,7 @@ public class SchemaController {
     @SaCheckPermission(value = {"dev:schema:detail","dev:schema:updateListKeys","dev:schema:updateSearchFormKeys"}, mode = SaMode.OR)
     public CommonResult<SchemaVO> detail(@RequestBody IdParam param) {
         SchemaVO schema = schemaService.findById(param.getId());
-        return CommonResult.data(getByTableName(schema.getTableName()));
+        return CommonResult.data(schemaService.getByTableName(schema.getTableName()));
     }
     /**
      *分页查询数据模型列表
@@ -134,9 +145,29 @@ public class SchemaController {
         schemaService.importTable(param.getSchemaGroupId(),param.getTableNames());
         return CommonResult.ok();
     }
-    @SaCheckPermission("dev:schema:getByTableName")
     @GetMapping("/dev/schema/getByTableName")
-    public CommonResult<SchemaVO> getByTableName(@RequestParam(value = "tableName", required = true) String tableName) {
+    @SaIgnore
+    public CommonResult<SchemaVO> getByTableName(@RequestParam(value = "tableName", required = true) String tableName,
+                                                 @RequestHeader(value = "appId", required = false) String appId,
+                                                 @RequestHeader(value = "appSecret", required = false)String appSecret) {
+        // 生产环境需要手动校验权限
+        if(ObjectUtil.equals(profileActive,"prod")) {
+            StpUtil.checkLogin();
+            if(!LoginUserHolder.me().isSuperAdmin()) {
+                StpUtil.checkPermission("dev:schema:getByTableName");
+            }
+        } else {
+            // 其他环境先校验请求头，appId,appSecret
+            String defalutAppId = ConstantContextHolder.getSysConfigWithDefault(DevConst.DEFAULT_SCHEMA_APP_ID,String.class, DevConst.DEFAULT_SCHEMA_APP_ID);
+            String defaultAppSecret = ConstantContextHolder.getSysConfigWithDefault(DevConst.DEFAULT_SCHEMA_APP_SECRET,String.class, DevConst.DEFAULT_SCHEMA_APP_SECRET);
+            if(!(ObjectUtil.equals(appId, defalutAppId) && ObjectUtil.equals(appSecret, defaultAppSecret))) {
+                // 密钥不正确，手动校验权限
+                StpUtil.checkLogin();
+                if(!LoginUserHolder.me().isSuperAdmin()) {
+                    StpUtil.checkPermission("dev:schema:getByTableName");
+                }
+            }
+        }
         return CommonResult.data(schemaService.getByTableName(tableName));
     }
 }
