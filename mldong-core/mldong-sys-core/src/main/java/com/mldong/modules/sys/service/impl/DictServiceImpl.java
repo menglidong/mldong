@@ -134,7 +134,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         List<cn.hutool.core.lang.Dict> dictList = CollectionUtil.newArrayList();
         dictModel.getItems().forEach(dictItemModel -> {
             cn.hutool.core.lang.Dict dict = cn.hutool.core.lang.Dict.create();
-            dict.put(CommonConstant.VALUE, dictItemModel.getDictItemValue().toString());
+            dict.put(CommonConstant.VALUE, dictItemModel.getDictItemValue());
             dict.put(CommonConstant.LABEL, dictItemModel.getName());
             dictList.add(dict);
         });
