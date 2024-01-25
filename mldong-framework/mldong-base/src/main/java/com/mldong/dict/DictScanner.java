@@ -1,6 +1,7 @@
 package com.mldong.dict;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.mldong.annotation.DictEnum;
 import com.mldong.base.CodedEnum;
 import com.mldong.consts.CommonConstant;
@@ -98,7 +99,11 @@ public class DictScanner implements ResourceLoaderAware {
 			CodedEnum codedEnum = (CodedEnum)item;
 			dictItem.setName(codedEnum.getMessage());
 			dictItem.setDictItemKey(codedEnum.toString());
-			dictItem.setDictItemValue(codedEnum.getCode());
+			if(codedEnum.getDataType().equals(String.class)) {
+				dictItem.setDictItemValue(StrUtil.toString(codedEnum.getCode()));
+			} else {
+				dictItem.setDictItemValue(codedEnum.getCode());
+			}
 			items.add(dictItem);
 		});
 		return model;

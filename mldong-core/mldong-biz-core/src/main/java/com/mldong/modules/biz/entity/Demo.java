@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -42,6 +44,7 @@ public class Demo implements Serializable  {
     private String autoComplete;
 
     @ApiModelProperty("开关")
+    @JsonProperty("mSwitch")
     private String mSwitch;
 
     @ApiModelProperty("分割线")
