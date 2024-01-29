@@ -91,4 +91,9 @@ public enum SchemaFieldDataTypeEnum implements CodedEnum {
     public String getPkg() {
         return this.pkg;
     }
+
+    @Override
+    public Class<?> getDataType() {
+        return String.class;
+    }
 }
