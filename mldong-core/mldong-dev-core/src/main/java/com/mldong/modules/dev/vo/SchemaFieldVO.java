@@ -1,5 +1,6 @@
 package com.mldong.modules.dev.vo;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -30,6 +31,9 @@ public class SchemaFieldVO extends SchemaField {
     public JSONObject getExt() {
         if(JSONUtil.isTypeJSON(getVariable())) {
             ext = JSONUtil.parseObj(getVariable());
+        }
+        if(ObjectUtil.isNull(ext)) {
+            ext = new JSONObject();
         }
         return ext;
     }
