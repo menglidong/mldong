@@ -154,6 +154,8 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
                 schemaField.setComponent("Input");//默认
                 schemaField.setRemark(Convert.toStr(tableField.getComment(),schemaField.getFieldName()));
                 schemaField.setDefaultValue(tableField.getMetaInfo().getDefaultValue());
+                Map<String, Object> variable = new HashMap<>();
+                schemaField.setVariable(JSONUtil.toJsonStr(variable));
                 subSchemaFields.add(schemaField);
             });
             schemaFields.addAll(subSchemaFields);
