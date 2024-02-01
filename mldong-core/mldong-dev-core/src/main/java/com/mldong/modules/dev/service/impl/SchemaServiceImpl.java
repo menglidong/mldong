@@ -162,6 +162,8 @@ public class SchemaServiceImpl extends ServiceImpl<SchemaMapper, Schema> impleme
             //设置默认的列表字段集合
             schema.setListKeys(subSchemaFields.stream().map(SchemaField::getFieldName).collect(Collectors.joining(",")));
             Map<String, Object> variable = new HashMap<>();
+            // 默认有列表、新增、删除、修改、详情权限，与后端接口相对应，后续可根据后端实现情况追加默认值
+            variable.put("defaultAuthTypeList", CollectionUtil.newArrayList("list", "save", "remove", "update", "detail"));
             schema.setVariable(JSONUtil.toJsonStr(variable));
             // 插入数据模型
             this.save(schema);
