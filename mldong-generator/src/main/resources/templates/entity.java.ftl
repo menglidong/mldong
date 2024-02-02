@@ -93,6 +93,11 @@ public class ${entity} {
     <#if field.versionField>
     @Version
     </#if>
+    <#--日期格式化-->
+    <#if field.type == 'date'>
+    @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd")
+    @com.fasterxml.jackson.annotation.JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    </#if>
     <#-- 逻辑删除注解 -->
     <#if field.logicDeleteField>
     @TableLogic
