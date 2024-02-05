@@ -1,6 +1,7 @@
 package com.mldong.modules.biz.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mldong.base.CommonPage;
@@ -52,6 +53,11 @@ public class DemoServiceImpl extends ServiceImpl<DemoMapper, Demo> implements De
     }
     @Override
     public DemoVO findById(Long id) {
-        return baseMapper.findById(id);
+        DemoVO vo = baseMapper.findById(id);
+        if(vo!=null) {
+            vo.$disabledKeyList = CollectionUtil.newArrayList("dict");
+            vo.$hideKeyList = CollectionUtil.newArrayList("upload");
+        }
+        return vo;
     }
 }
