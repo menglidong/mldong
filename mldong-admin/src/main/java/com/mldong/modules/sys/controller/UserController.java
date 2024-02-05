@@ -158,8 +158,33 @@ public class UserController {
     @PostMapping("/sys/user/grantRole")
     @ApiOperation(value = "授权角色")
     @SaCheckPermission("sys:user:grantRole")
-    public CommonResult<?> page(@RequestBody @Validated({UserRoleParam.GrantRole.class}) UserRoleParam param) {
+    public CommonResult<?> grantRole(@RequestBody @Validated({UserRoleParam.GrantRole.class}) UserRoleParam param) {
         userService.grantRole(param.getUserId(),param.getRoleIdList());
+        return CommonResult.ok();
+    }
+    /**
+     * 获取在线用户列表
+     * @param param
+     * @return
+     */
+    @PostMapping("/sys/user/onlineUserList")
+    @ApiOperation(value = "获取在线用户列表")
+    @SaCheckPermission("sys:user:onlineUserList")
+    public CommonResult<List<LoginUser>> onlineUserList(@RequestBody @Validated UserPageParam param) {
+        return CommonResult.data(userService.onlineUserList(param));
+    }
+    /**
+     * 强制退出
+     * @param param
+     * @return
+     */
+    @PostMapping("/sys/user/logoutByTokenValue")
+    @ApiOperation(value = "强制退出")
+    @SaCheckPermission("sys:user:logoutByTokenValue")
+    public CommonResult<?> logoutByTokenValue(@RequestBody IdsStrParam param) {
+        for (String str : param.getIds()) {
+            userService.logoutByTokenValue(str);
+        }
         return CommonResult.ok();
     }
 }

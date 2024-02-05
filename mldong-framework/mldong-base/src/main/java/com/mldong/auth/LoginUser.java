@@ -44,4 +44,10 @@ public class LoginUser {
     private String appCode;
     @ApiModelProperty(value = "是否超级管理员")
     private boolean superAdmin;
+    @ApiModelProperty(value = "登录时间戳")
+    private Long loginTimestamp;
+    @ApiModelProperty(value = "登录ip")
+    private String loginIp;
+    @ApiModelProperty(value = "登录浏览器")
+    private String loginBrowser;
 }
