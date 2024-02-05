@@ -1,14 +1,15 @@
 package com.mldong.modules.sys.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.mldong.auth.LoginUser;
 import com.mldong.base.CommonPage;
 import com.mldong.base.LabelValueVO;
 import com.mldong.modules.sys.dto.UserPageParam;
 import com.mldong.modules.sys.dto.UserParam;
-import com.mldong.modules.sys.vo.DeptUserTreeVO;
-import com.mldong.modules.sys.vo.UserVO;
 import com.mldong.modules.sys.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.mldong.modules.sys.vo.DeptUserTreeVO;
+import com.mldong.modules.sys.vo.OnlineUserVO;
+import com.mldong.modules.sys.vo.UserVO;
 
 import java.util.List;
 
@@ -114,4 +115,16 @@ public interface UserService extends IService<User> {
    * @param roleIds
    */
   void grantRole(Long userId,List<Long> roleIds);
+  /**
+   * 获取在线用户列表
+   * @param param
+   * @return
+   */
+  List<OnlineUserVO> onlineUserList(UserPageParam param);
+
+  /**
+   * 根据token值退出登录
+   * @param tokenValue
+   */
+  void logoutByTokenValue(String tokenValue);
 }

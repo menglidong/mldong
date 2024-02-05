@@ -1,5 +1,7 @@
 package com.mldong.modules.sys.service.impl;
 
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.session.TokenSign;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
@@ -18,6 +20,7 @@ import com.mldong.auth.LoginUser;
 import com.mldong.base.CommonPage;
 import com.mldong.base.LabelValueVO;
 import com.mldong.base.YesNoEnum;
+import com.mldong.consts.CommonConstant;
 import com.mldong.context.constant.ConstantContextHolder;
 import com.mldong.exception.ServiceException;
 import com.mldong.modules.sys.dto.UserPageParam;
@@ -33,10 +36,7 @@ import com.mldong.modules.sys.service.DeptService;
 import com.mldong.modules.sys.service.PostService;
 import com.mldong.modules.sys.service.UserRoleService;
 import com.mldong.modules.sys.service.UserService;
-import com.mldong.modules.sys.vo.DeptUserTreeVO;
-import com.mldong.modules.sys.vo.DeptVO;
-import com.mldong.modules.sys.vo.PostVO;
-import com.mldong.modules.sys.vo.UserVO;
+import com.mldong.modules.sys.vo.*;
 import com.mldong.tree.IRecursionTree;
 import com.mldong.tree.TreeTool;
 import com.mldong.util.LowCodeServiceUtil;
@@ -47,6 +47,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -305,6 +306,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }).collect(Collectors.toList());
         // 重新插入关系
         userRoleService.saveBatch(userRoleList);
+    }
+
+    @Override
+    public List<OnlineUserVO> onlineUserList(UserPageParam param) {
+        // 创建集合
+        List<OnlineUserVO> loginUserList = new ArrayList<>();
+        // 分页查询数据
+        List<String> sessionIdList = StpUtil.searchSessionId("", 0, -1, false);
+        for (String sessionId: sessionIdList) {
+            SaSession session = StpUtil.getSessionBySessionId(sessionId);
+            List<TokenSign> tokenSignList = session.getTokenSignList();
+            CollectionUtil.reverse(tokenSignList);
+            tokenSignList.forEach(tokenSign -> {
+                Object jsonObj = StpUtil.getExtra(tokenSign.getValue(), CommonConstant.LOGIN_USER_KEY);
+                OnlineUserVO onlineUser = BeanUtil.toBean(jsonObj,OnlineUserVO.class);
+                if(onlineUser.getLoginTimestamp()!=null) {
+                    onlineUser.setLoginTime(new Date(onlineUser.getLoginTimestamp()));
+                }
+                onlineUser.setTokenValue(tokenSign.getValue());
+                onlineUser.setIsCurrentUser(tokenSign.getValue().equals(StpUtil.getTokenValue()));
+                loginUserList.add(onlineUser);
+            });
+        }
+        return loginUserList;
+    }
+
+    @Override
+    public void logoutByTokenValue(String tokenValue) {
+        StpUtil.logoutByTokenValue(tokenValue);
     }
 
     /**

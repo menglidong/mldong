@@ -11,6 +11,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.mldong.auth.LoginToken;
 import com.mldong.auth.LoginUser;
@@ -97,6 +98,12 @@ public class AuthServiceImpl implements AuthService, StpInterface {
     @Override
     public LoginUser toLoginUser(User user) {
         LoginUser loginUser = new LoginUser();
+        // 设置登录时间戳
+        loginUser.setLoginTimestamp(System.currentTimeMillis());
+        // 设置登录ip
+        loginUser.setLoginIp(ServletUtil.getClientIP(HttpServletUtil.getRequest()));
+        // 设置登录浏览器信息
+        loginUser.setLoginBrowser(HttpServletUtil.getRequest().getHeader("User-Agent"));
         // 设置用户基本信息
         BeanUtil.copyProperties(user, loginUser);
         // 设置用户角色信息
