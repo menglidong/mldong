@@ -20,16 +20,15 @@ import com.mldong.consts.CommonConstant;
 import com.mldong.context.constant.ConstantContextHolder;
 import com.mldong.exception.ServiceException;
 import com.mldong.modules.sys.dto.LoginParam;
-import com.mldong.modules.sys.entity.Dept;
-import com.mldong.modules.sys.entity.Post;
-import com.mldong.modules.sys.entity.Role;
-import com.mldong.modules.sys.entity.User;
+import com.mldong.modules.sys.entity.*;
 import com.mldong.modules.sys.enums.AdminTypeEnum;
 import com.mldong.modules.sys.enums.MenuAppCodeEnum;
+import com.mldong.modules.sys.enums.VisTypeEnum;
 import com.mldong.modules.sys.enums.err.SysErrEnum;
 import com.mldong.modules.sys.mapper.*;
 import com.mldong.modules.sys.service.AuthService;
 import com.mldong.modules.sys.service.RbacService;
+import com.mldong.modules.sys.service.VisLogService;
 import com.mldong.util.HttpServletUtil;
 import com.mldong.web.LoginUserHolder;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +51,7 @@ public class AuthServiceImpl implements AuthService, StpInterface {
     private final RoleMapper roleMapper;
     private final DeptMapper deptMapper;
     private final PostMapper postMapper;
+    private final VisLogService visLogService;
     @Override
     public LoginToken login(LoginParam param) {
         String appCode = HttpServletUtil.getRequest().getHeader(CommonConstant.APP_CODE_KEY);
@@ -71,13 +71,16 @@ public class AuthServiceImpl implements AuthService, StpInterface {
             }
             if(user == null) {
                 // 用户不存在
+                visLogService.saveVisLog(VisTypeEnum.LOGIN, param.getUserName(), "N", "登录失败，用户名不存在");
                 throw new ServiceException(SysErrEnum.USER_NOT_EXIST);
             }
             if(ObjectUtil.equals(user.getIsLocked(), YesNoEnum.YES)) {
+                visLogService.saveVisLog(VisTypeEnum.LOGIN, param.getUserName(), "N", "登录失败，用户名已被锁定");
                 throw new ServiceException(SysErrEnum.USER_IS_LOCKED);
             }
             String md5Password  = SecureUtil.md5(param.getPassword() + user.getSalt());
             if(!md5Password.equals(user.getPassword())) {
+                visLogService.saveVisLog(VisTypeEnum.LOGIN, param.getUserName(), "N", "登录失败，密码错误");
                 // 密码不正确
                 throw new ServiceException(SysErrEnum.USER_NOT_EXIST);
             }
@@ -87,11 +90,13 @@ public class AuthServiceImpl implements AuthService, StpInterface {
         loginModel.setExtra(CommonConstant.LOGIN_USER_KEY,toLoginUser(user));
         StpUtil.login(user.getId(), loginModel);
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        visLogService.saveVisLog(VisTypeEnum.LOGIN, param.getUserName(), "Y", "登录成功");
         return LoginToken.builder().userId(user.getId()).token(tokenInfo.getTokenValue()).build();
     }
 
     @Override
     public void logout(String token) {
+        visLogService.saveVisLog(VisTypeEnum.LOGOUT, LoginUserHolder.getUserName(), "Y", "登出成功");
         StpUtil.logoutByTokenValue(token);
     }
 
@@ -103,7 +108,7 @@ public class AuthServiceImpl implements AuthService, StpInterface {
         // 设置登录ip
         loginUser.setLoginIp(ServletUtil.getClientIP(HttpServletUtil.getRequest()));
         // 设置登录浏览器信息
-        loginUser.setLoginBrowser(HttpServletUtil.getRequest().getHeader("User-Agent"));
+        loginUser.setLoginBrowser(HttpServletUtil.getRequest().getHeader(CommonConstant.USER_AGENT));
         // 设置用户基本信息
         BeanUtil.copyProperties(user, loginUser);
         // 设置用户角色信息

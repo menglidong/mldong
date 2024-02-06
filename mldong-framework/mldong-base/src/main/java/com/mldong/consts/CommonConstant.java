@@ -29,6 +29,10 @@ public interface CommonConstant {
      * 值
      */
     String VALUE = "value";
+    /**
+     * 用户代理
+     */
+    String USER_AGENT = "User-Agent";
     String USER_ID_KEY = "userId";
     String TOKEN_KEY = "token";
     String USER_EXT_PLAYER_TOKEN= "playerToken"; // 扮演者token
