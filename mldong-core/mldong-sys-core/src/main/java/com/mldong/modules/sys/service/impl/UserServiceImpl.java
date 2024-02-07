@@ -324,7 +324,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 if(onlineUser.getLoginTimestamp()!=null) {
                     onlineUser.setLoginTime(new Date(onlineUser.getLoginTimestamp()));
                 }
-                onlineUser.setTokenValue(tokenSign.getValue());
+                if(!onlineUser.isSuperAdmin()) {
+                    // 超级管理员不能暴露token值
+                    onlineUser.setTokenValue(tokenSign.getValue());
+                } else {
+                    onlineUser.setTokenValue("");
+                }
                 onlineUser.setIsCurrentUser(tokenSign.getValue().equals(StpUtil.getTokenValue()));
                 loginUserList.add(onlineUser);
             });

@@ -32,4 +32,6 @@ public class OnlineUserVO {
     private String loginIp;
     @ApiModelProperty(value = "登录浏览器")
     private String loginBrowser;
+    @ApiModelProperty(value = "是否超级管理员")
+    private boolean superAdmin;
 }
