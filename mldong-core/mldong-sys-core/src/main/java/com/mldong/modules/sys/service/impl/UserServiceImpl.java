@@ -322,7 +322,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             item.setTimeout(session.getTimeout());
             item.setIsCurrentUser(ObjectUtil.equals(session.getLoginId(), StpUtil.getLoginId()));
             item.setLoginTime(DateUtil.date(session.getCreateTime()));
-            item.setExpireTime(DateUtil.date().offset(DateField.MILLISECOND,Convert.toInt(session.getTimeout())));
+            item.setExpireTime(DateUtil.date().offset(DateField.SECOND,Convert.toInt(session.getTimeout())));
             List<TokenSign> tokenSignList = session.getTokenSignList();
             CollectionUtil.reverse(tokenSignList);
             // 创建集合
@@ -342,7 +342,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 } else {
                     onlineUser.setTokenValue("-");
                 }
-                onlineUser.setExpireTime(DateUtil.date(onlineUser.getLoginTimestamp()).offset(DateField.MILLISECOND,Convert.toInt(session.getTimeout())));
+                onlineUser.setExpireTime(DateUtil.date().offset(DateField.SECOND,Convert.toInt(session.getTimeout())));
                 onlineUser.setDevice(tokenSign.getDevice());
                 onlineUser.setIsCurrentUser(tokenSign.getValue().equals(StpUtil.getTokenValue()));
                 loginUserList.add(onlineUser);
