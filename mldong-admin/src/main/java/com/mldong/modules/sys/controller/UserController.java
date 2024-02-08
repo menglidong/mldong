@@ -174,16 +174,58 @@ public class UserController {
         return CommonResult.data(userService.onlineUserList(param));
     }
     /**
-     * 强制退出
+     * 根据token值强制注销
      * @param param
      * @return
      */
     @PostMapping("/sys/user/logoutByTokenValue")
-    @ApiOperation(value = "强制退出")
+    @ApiOperation(value = "根据token值强制注销")
     @SaCheckPermission("sys:user:logoutByTokenValue")
     public CommonResult<?> logoutByTokenValue(@RequestBody IdsStrParam param) {
         for (String str : param.getIds()) {
             userService.logoutByTokenValue(str);
+        }
+        return CommonResult.ok();
+    }
+    /**
+     * 根据token值踢下线
+     * @param param
+     * @return
+     */
+    @PostMapping("/sys/user/kickoutByTokenValue")
+    @ApiOperation(value = "根据token值踢下线")
+    @SaCheckPermission("sys:user:kickoutByTokenValue")
+    public CommonResult<?> kickoutByTokenValue(@RequestBody IdsStrParam param) {
+        for (String str : param.getIds()) {
+            userService.kickoutByTokenValue(str);
+        }
+        return CommonResult.ok();
+    }
+    /**
+     * 根据登录ID强制注销
+     * @param param
+     * @return
+     */
+    @PostMapping("/sys/user/logoutByLoginId")
+    @ApiOperation(value = "根据登录ID强制注销")
+    @SaCheckPermission("sys:user:logoutByLoginId")
+    public CommonResult<?> logoutByLoginId(@RequestBody IdsParam param) {
+        for (Long id : param.getIds()) {
+            userService.logoutByLoginId(id);
+        }
+        return CommonResult.ok();
+    }
+    /**
+     * 根据登录ID踢下线
+     * @param param
+     * @return
+     */
+    @PostMapping("/sys/user/kickoutByLoginId")
+    @ApiOperation(value = "根据登录ID踢下线")
+    @SaCheckPermission("sys:user:kickoutByLoginId")
+    public CommonResult<?> kickoutByLoginId(@RequestBody IdsParam param) {
+        for (Long id : param.getIds()) {
+            userService.kickoutByLoginId(id);
         }
         return CommonResult.ok();
     }
