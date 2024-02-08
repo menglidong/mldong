@@ -6,6 +6,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -310,17 +312,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<OnlineUserVO> onlineUserList(UserPageParam param) {
-        // 创建集合
-        List<OnlineUserVO> loginUserList = new ArrayList<>();
+        List<OnlineUserVO> res = new ArrayList<>();
         // 分页查询数据
-        List<String> sessionIdList = StpUtil.searchSessionId("", 0, -1, false);
+        List<String> sessionIdList = StpUtil.searchSessionId(Convert.toStr(param.getKeywords(),""), 0, -1, false);
         for (String sessionId: sessionIdList) {
             SaSession session = StpUtil.getSessionBySessionId(sessionId);
+            OnlineUserVO item = new OnlineUserVO();
+            item.setId(Convert.toLong(session.getLoginId()));
+            item.setTimeout(session.getTimeout());
+            item.setIsCurrentUser(ObjectUtil.equals(session.getLoginId(), StpUtil.getLoginId()));
+            item.setLoginTime(DateUtil.date(session.getCreateTime()));
+            item.setExpireTime(DateUtil.date().offset(DateField.MILLISECOND,Convert.toInt(session.getTimeout())));
             List<TokenSign> tokenSignList = session.getTokenSignList();
             CollectionUtil.reverse(tokenSignList);
+            // 创建集合
+            List<OnlineUserVO> loginUserList = new ArrayList<>();
             tokenSignList.forEach(tokenSign -> {
                 Object jsonObj = StpUtil.getExtra(tokenSign.getValue(), CommonConstant.LOGIN_USER_KEY);
                 OnlineUserVO onlineUser = BeanUtil.toBean(jsonObj,OnlineUserVO.class);
+                item.setUserName(onlineUser.getUserName());
+                item.setRealName(onlineUser.getRealName());
+                item.setSuperAdmin(onlineUser.isSuperAdmin());
                 if(onlineUser.getLoginTimestamp()!=null) {
                     onlineUser.setLoginTime(new Date(onlineUser.getLoginTimestamp()));
                 }
@@ -328,18 +340,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     // 超级管理员不能暴露token值
                     onlineUser.setTokenValue(tokenSign.getValue());
                 } else {
-                    onlineUser.setTokenValue("");
+                    onlineUser.setTokenValue("-");
                 }
+                onlineUser.setExpireTime(DateUtil.date(onlineUser.getLoginTimestamp()).offset(DateField.MILLISECOND,Convert.toInt(session.getTimeout())));
+                onlineUser.setDevice(tokenSign.getDevice());
                 onlineUser.setIsCurrentUser(tokenSign.getValue().equals(StpUtil.getTokenValue()));
                 loginUserList.add(onlineUser);
             });
+            item.setTokenList(loginUserList);
+            res.add(item);
         }
-        return loginUserList;
+        return res;
     }
 
     @Override
     public void logoutByTokenValue(String tokenValue) {
         StpUtil.logoutByTokenValue(tokenValue);
+    }
+
+    @Override
+    public void kickoutByTokenValue(String tokenValue) {
+        StpUtil.kickoutByTokenValue(tokenValue);
+    }
+
+    @Override
+    public void logoutByLoginId(Long loginId) {
+        StpUtil.logout(loginId);
+    }
+
+    @Override
+    public void kickoutByLoginId(Long loginId) {
+        StpUtil.kickout(loginId);
     }
 
     /**

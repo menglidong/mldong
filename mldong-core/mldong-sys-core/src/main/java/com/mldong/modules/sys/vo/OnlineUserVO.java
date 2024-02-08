@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 在线用户
@@ -34,4 +35,12 @@ public class OnlineUserVO {
     private String loginBrowser;
     @ApiModelProperty(value = "是否超级管理员")
     private boolean superAdmin;
+    @ApiModelProperty(value = "会话失效时长")
+    private Long timeout;
+    @ApiModelProperty(value = "会话失效时间")
+    private Date expireTime;
+    @ApiModelProperty(value = "登录设备")
+    private String device;
+    @ApiModelProperty(value = "token值列表")
+    private List<OnlineUserVO> tokenList;
 }

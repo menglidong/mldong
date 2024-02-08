@@ -123,8 +123,23 @@ public interface UserService extends IService<User> {
   List<OnlineUserVO> onlineUserList(UserPageParam param);
 
   /**
-   * 根据token值退出登录
+   * 根据token值强制注销
    * @param tokenValue
    */
   void logoutByTokenValue(String tokenValue);
+  /**
+   * 根据登录id踢下线
+   * @param tokenValue
+   */
+  void kickoutByTokenValue(String tokenValue);
+  /**
+   * 根据token值强制注销
+   * @param loginId
+   */
+  void logoutByLoginId(Long loginId);
+  /**
+   * 根据登录id踢下线
+   * @param loginId
+   */
+  void kickoutByLoginId(Long loginId);
 }
