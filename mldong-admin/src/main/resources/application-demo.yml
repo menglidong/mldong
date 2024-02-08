@@ -10,7 +10,23 @@ spring:
     port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD:gEwjEHLM}
 
-blacklist: /sys/**/save,/sys/**/update,/sys/**/remove,/sys/user/updatePwd,/wf/**/remove,/sys/rbac/saveRoleMenu,/sys/rbac/saveUserRole,/sys/rbac/removeUserRole,/sys/menu/syncRoute,/dev/**/save,/dev/**/update,/dev/**/remove,/dev/schema/importTable,/sys/user/logout**,/sys/user/kickout**
+g:
+  blacklist:
+    - /sys/**/save
+    - /sys/**/update
+    - /sys/**/remove
+    - /sys/user/updatePwd
+    - /wf/**/remove
+    - /sys/rbac/saveRoleMenu
+    - /sys/rbac/saveUserRole
+    - /sys/rbac/removeUserRole
+    - /sys/menu/syncRoute
+    - /dev/**/save
+    - /dev/**/update
+    - /dev/**/remove
+    - /dev/schema/importTable
+    - /sys/user/logout**
+    - /sys/user/kickout**
 
 sa-token:
   is-log: false

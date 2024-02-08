@@ -7,6 +7,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.mldong.auth.err.AuthErrEnum;
 import com.mldong.exception.ServiceException;
+import com.mldong.properties.GlobalProperties;
 import com.mldong.web.LoginUserHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.util.AntPathMatcher;
@@ -27,7 +28,7 @@ public class AuthInterceptor extends SaInterceptor {
     private static final Environment environment = SpringUtil.getBean(Environment.class);
     private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
     private static final String profileActive = environment.getProperty("spring.profiles.active",String.class);
-    private static final List<String> blacklist = environment.getProperty("blacklist",List.class);
+    private static final GlobalProperties globalProperties = SpringUtil.getBean(GlobalProperties.class);
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         LoginUser loginUser = LoginUserHolder.me();
@@ -36,6 +37,7 @@ public class AuthInterceptor extends SaInterceptor {
             return true;
         }
         if(ObjectUtil.equals(profileActive,"demo")) {
+            List<String> blacklist = globalProperties.getBlacklist();
             // 演示环境，无权限操作
             String uri = request.getRequestURI();
             if(CollectionUtil.isNotEmpty(blacklist) && blacklist.stream().anyMatch(s -> antPathMatcher.match(s,uri))) {
