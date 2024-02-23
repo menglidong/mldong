@@ -43,6 +43,13 @@ public class ConstantContextHolder {
         return getSysConfigWithDefault("M_DEFAULT_PASSWORD", String.class, CommonConstant.DEFAULT_PASSWORD);
     }
     /**
+     * 获取上传基本目录，一般配置为项目名
+     * @return
+     */
+    public static String getUploadBasePath() {
+        return getSysConfigWithDefault("UPLOAD_BASE_PATH",String.class,"");
+    }
+    /**
      * 获取图片服务器地址
      * @return
      */

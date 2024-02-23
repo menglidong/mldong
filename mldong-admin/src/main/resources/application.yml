@@ -26,6 +26,28 @@ spring:
       indent_output: false
       # 忽略转换失败的值
       FAIL_ON_EMPTY_BEANS: false
+  file-storage:
+    default-platform: ${FILE_STORAGE_DEfAULT_PLATFORM:local}
+    minio:
+      - platform: minio-1 # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: ${MINIO_USERNAME:admin}
+        secret-key: ${MINIO_PASSWORD:admin@2024}
+        end-point: http://${MINIO_HOST:localhost}:${MINIO_PORT:9000}
+        bucket-name: ${MINIO_BUCKET_NAME:mldong}
+    tencent-cos:
+      - platform: cos-1 # 存储平台标识
+        enable-storage: true  # 启用存储
+        secret-id: ${TENCENT_COS_SECRET_ID:''}
+        secret-key: ${TENCENT_COS_SECRET_KEY:''}
+        bucket-name: ${TENCENT_COS_BUCKET_NAME}
+        region: ${TENCENT_COS_REGION}
+        base-path: ${TENCENT_COS_BASE_PATH}
+    local:
+      - platform: local
+        enable-storage: true  # 启用存储
+        basePath: ${LOCAL_BASE_PATH:/upload/}
+        domain: ${LOCAL_DOMAIN:upload/}
 # 管理配置
 management:
   server:
