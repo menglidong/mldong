@@ -27,6 +27,7 @@ g:
     - /dev/schema/importTable
     - /sys/user/logout**
     - /sys/user/kickout**
+    - /sys/fileInfo/upload
 
 sa-token:
   is-log: false
