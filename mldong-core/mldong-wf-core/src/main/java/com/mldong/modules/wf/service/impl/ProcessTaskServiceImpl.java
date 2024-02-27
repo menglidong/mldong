@@ -231,6 +231,7 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addCandidateActor(Long processTaskId, List<String> actors) {
         if(CollectionUtil.isEmpty(actors)) return;
         ProcessTask processTask = baseMapper.selectById(processTaskId);
@@ -254,7 +255,22 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
                 processInstanceMapper.updateById(up);
             }
         }
+        Dict taskArgs = JSONUtil.toBean(processTask.getVariable(),Dict.class);
+        String countersignType = taskArgs.getStr(FlowConst.COUNTERSIGN_VARIABLE_PREFIX+FlowConst.COUNTERSIGN_TYPE);
+        if(CountersignTypeEnum.PARALLEL.toString().equalsIgnoreCase(countersignType)) {
+            // 并行会签，要直接创建会签任务
+            actors.forEach(actor->{
+                ProcessTask clone = BeanUtil.toBean(processTask,ProcessTask.class);
+                clone.setId(null);
+                clone.setCreateUser(null);
+                clone.setCreateTime(null);
+                clone.setUpdateTime(null);
+                clone.setUpdateUser(null);
+                baseMapper.insert(clone);
+                addTaskActor(clone.getId(),CollectionUtil.newArrayList(actor));
+            });
 
+        }
     }
 
     @Override
@@ -485,6 +501,7 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
             processTask.setTaskState(ProcessTaskStateEnum.DOING.getCode());
             processTask.setTaskType(taskModel.getTaskType().getCode());
             processTask.setProcessInstanceId(execution.getProcessInstanceId());
+            execution.getArgs().put(FlowConst.IS_FIRST_TASK_NODE,FlowUtil.isFistTaskName(execution.getProcessModel(),taskModel.getName()));
             processTask.setVariable(JSONUtil.toJsonStr(execution.getArgs()));
             processTask.setCreateTime(now);
             processTask.setUpdateTime(now);
