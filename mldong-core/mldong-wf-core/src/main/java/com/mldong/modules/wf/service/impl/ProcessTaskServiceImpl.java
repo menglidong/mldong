@@ -485,6 +485,7 @@ public class ProcessTaskServiceImpl extends ServiceImpl<ProcessTaskMapper, Proce
             processTask.setTaskState(ProcessTaskStateEnum.DOING.getCode());
             processTask.setTaskType(taskModel.getTaskType().getCode());
             processTask.setProcessInstanceId(execution.getProcessInstanceId());
+            execution.getArgs().put(FlowConst.IS_FIRST_TASK_NODE,FlowUtil.isFistTaskName(execution.getProcessModel(),taskModel.getName()));
             processTask.setVariable(JSONUtil.toJsonStr(execution.getArgs()));
             processTask.setCreateTime(now);
             processTask.setUpdateTime(now);
