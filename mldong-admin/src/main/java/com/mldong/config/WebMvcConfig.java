@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mldong.auth.AuthInterceptor;
 import com.mldong.properties.GlobalProperties;
 import com.mldong.web.MldongFilter;
+import com.mldong.xss.XssFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -54,6 +55,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean mldongFilterRegistrationBean () {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new MldongFilter());
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+    /**
+     * 自定义xss过滤器
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean xssFilterRegistrationBean () {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new XssFilter(globalProperties));
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }

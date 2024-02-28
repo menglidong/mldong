@@ -24,4 +24,8 @@ public class GlobalProperties {
      * 忽略权限的url
      */
     private List<String> ignoreUrlList = new ArrayList<>();
+    /**
+     * 获取放开xss过滤的接口
+     */
+    private List<String> ignoreXssFilterUrlList = new ArrayList<>();
 }
