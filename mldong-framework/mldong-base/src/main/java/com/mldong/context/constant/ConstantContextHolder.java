@@ -43,6 +43,18 @@ public class ConstantContextHolder {
         return getSysConfigWithDefault("M_DEFAULT_PASSWORD", String.class, CommonConstant.DEFAULT_PASSWORD);
     }
     /**
+     * 获取放开xss过滤的接口
+     * @return
+     */
+    public static List<String> getIgnoreXssFilterUrl() {
+        String moleIgnoreXssFilterUrl = getSysConfigWithDefault("MOLE_IGNORE_XSS_FILTER_URL", String.class, null);
+        if (ObjectUtil.isEmpty(moleIgnoreXssFilterUrl)) {
+            return CollectionUtil.newArrayList();
+        } else {
+            return CollectionUtil.toList(moleIgnoreXssFilterUrl.split(","));
+        }
+    }
+    /**
      * 获取上传基本目录，一般配置为项目名
      * @return
      */
