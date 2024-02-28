@@ -32,6 +32,7 @@
         <tlog.version>1.5.1</tlog.version>
         <xxl-job.version>2.4.0</xxl-job.version>
         <sa-token.version>1.35.0.RC</sa-token.version>
+        <easy-captcha.version>1.6.2</easy-captcha.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -109,6 +110,12 @@
                 <groupId>com.xuxueli</groupId>
                 <artifactId>xxl-job-core</artifactId>
                 <version>${xxl-job.version}</version>
+            </dependency>
+            <!--图片验证码-->
+            <dependency>
+                <groupId>com.github.whvcse</groupId>
+                <artifactId>easy-captcha</artifactId>
+                <version>${easy-captcha.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

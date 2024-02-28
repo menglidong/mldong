@@ -4,6 +4,8 @@ package com.mldong.modules.sys.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonResult;
+import com.mldong.captcha.CaptchaManager;
+import com.mldong.captcha.CaptchaParam;
 import com.mldong.modules.sys.dto.LoginParam;
 import com.mldong.modules.sys.service.AuthService;
 import io.swagger.annotations.Api;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final CaptchaManager captchaManager;
     @PostMapping("/sys/login")
     @ApiOperation(value="登录")
     public CommonResult<?> login(@RequestBody @Validated LoginParam param) {
@@ -51,5 +54,10 @@ public class AuthController {
     @ApiOperation(value="退出扮演用户")
     public CommonResult<?> unPlayUser() {
         return CommonResult.data(authService.unPlayUser());
+    }
+    @PostMapping("/sys/captcha")
+    @ApiOperation(value="图片验证码")
+    public CommonResult<?> captcha(@RequestBody CaptchaParam param) {
+        return CommonResult.data(captchaManager.create(param));
     }
 }

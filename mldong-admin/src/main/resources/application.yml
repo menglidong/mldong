@@ -109,6 +109,7 @@ g:
   ignoreUrlList:
     - /
     - /sys/login
+    - /sys/captcha
     - /favicon.ico
     - /doc.html
     - /webjars/**
