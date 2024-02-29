@@ -4,6 +4,7 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mldong.auth.AuthInterceptor;
+import com.mldong.captcha.CaptchaInterceptor;
 import com.mldong.properties.GlobalProperties;
 import com.mldong.web.MldongFilter;
 import com.mldong.xss.XssFilter;
@@ -29,6 +30,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> ignoreUrlList = globalProperties.getIgnoreUrlList();
+        // 校验图片验证码
+        registry.addInterceptor(new CaptchaInterceptor());
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
         registry.addInterceptor(new AuthInterceptor(handle -> {
             // 登录认证：除白名单路径外均需要登录认证

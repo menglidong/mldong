@@ -110,6 +110,7 @@ g:
     - /
     - /sys/login
     - /sys/captcha
+    - /sys/getCaptchaOpenFlag
     - /favicon.ico
     - /doc.html
     - /webjars/**

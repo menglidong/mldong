@@ -39,5 +39,7 @@ public interface CommonConstant {
     String USER_EXT_IS_PLAYER= "isPlayer"; // 是否扮演者
     String USER_EXT_PLAYER_USER_ID = "playerUserId"; // 扮演者用户ID
     String USER_EXT_PLAYER_ACCOUNT = "playUserAccount"; // 扮演者账号
+    String CAPTCHA_UUID_KEY = "uuid";
+    String CAPTCHA_CODE_KEY = "code";
 
 }

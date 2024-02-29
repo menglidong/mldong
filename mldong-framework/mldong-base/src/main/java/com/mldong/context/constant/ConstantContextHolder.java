@@ -55,6 +55,13 @@ public class ConstantContextHolder {
         }
     }
     /**
+     * 获取验证码 开关标识
+     * @return
+     */
+    public static Boolean getCaptchaOpenFlag() {
+        return getSysConfigWithDefault("MOLE_CAPTCHA_OPEN", Boolean.class, false);
+    }
+    /**
      * 获取上传基本目录，一般配置为项目名
      * @return
      */
