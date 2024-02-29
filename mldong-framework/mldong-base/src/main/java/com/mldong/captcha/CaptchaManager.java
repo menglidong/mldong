@@ -1,12 +1,16 @@
 package com.mldong.captcha;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.mldong.consts.CommonConstant;
+import com.mldong.web.QueryParamHolder;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -62,7 +66,6 @@ public class CaptchaManager {
     public CaptchaModel create(CaptchaParam param) {
         return create(param.getWidth(), param.getHeight(), param.getLen(), param.getCharType());
     }
-
     /**
      * 校验图片验证码
      * @param uuid
@@ -70,6 +73,43 @@ public class CaptchaManager {
      * @return
      */
     public boolean validate(String uuid, String code) {
-        return code.equalsIgnoreCase(captchaCache.get(uuid));
+        return validate(uuid, code, false);
+    }
+    /**
+     * 校验图片验证码
+     * @param uuid
+     * @param code
+     * @param isRemoveWhenSuccess 校验成功是否删除
+     * @return
+     */
+    public boolean validate(String uuid, String code, boolean isRemoveWhenSuccess) {
+        if(StrUtil.isEmpty(uuid) || StrUtil.isEmpty(code)) {
+            return false;
+        }
+        boolean flag = code.equalsIgnoreCase(captchaCache.get(uuid));
+        if(flag && isRemoveWhenSuccess) {
+            captchaCache.remove(uuid);
+        }
+        return flag;
+    }
+
+    /**
+     * 从请求正文中获取校验
+     * @param request
+     * @return
+     */
+    public boolean validate(HttpServletRequest request) {
+        // 从请求对象或请求头中获取
+        String uuid = Convert.toStr(request.getParameter(CommonConstant.CAPTCHA_UUID_KEY), request.getHeader(CommonConstant.CAPTCHA_UUID_KEY));
+        String code = Convert.toStr(request.getParameter(CommonConstant.CAPTCHA_CODE_KEY), request.getHeader(CommonConstant.CAPTCHA_CODE_KEY));
+        if(StrUtil.isEmpty(uuid) && ObjectUtil.isNotEmpty(QueryParamHolder.me())) {
+            // 从请求正文中获取
+            uuid = QueryParamHolder.me().getStr(CommonConstant.CAPTCHA_UUID_KEY);
+        }
+        if(StrUtil.isEmpty(code) && ObjectUtil.isNotEmpty(QueryParamHolder.me())) {
+            // 从请求正文中获取
+            code = QueryParamHolder.me().getStr(CommonConstant.CAPTCHA_CODE_KEY);
+        }
+        return validate(uuid, code, true);
     }
 }

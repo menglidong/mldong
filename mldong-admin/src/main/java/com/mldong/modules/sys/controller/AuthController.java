@@ -6,8 +6,11 @@ import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonResult;
 import com.mldong.captcha.CaptchaManager;
 import com.mldong.captcha.CaptchaParam;
+import com.mldong.context.constant.ConstantContextHolder;
 import com.mldong.modules.sys.dto.LoginParam;
+import com.mldong.modules.sys.enums.err.SysErrEnum;
 import com.mldong.modules.sys.service.AuthService;
+import com.mldong.util.HttpServletUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,11 @@ public class AuthController {
     @PostMapping("/sys/login")
     @ApiOperation(value="登录")
     public CommonResult<?> login(@RequestBody @Validated LoginParam param) {
+        if(ConstantContextHolder.getCaptchaOpenFlag()){
+            if(!captchaManager.validate(HttpServletUtil.getRequest())) {
+                return CommonResult.fail(SysErrEnum.CAPTCHA_ERROR);
+            }
+        }
         return CommonResult.data(authService.login(param));
     }
     @PostMapping("/sys/logout")
@@ -59,5 +67,12 @@ public class AuthController {
     @ApiOperation(value="图片验证码")
     public CommonResult<?> captcha(@RequestBody CaptchaParam param) {
         return CommonResult.data(captchaManager.create(param));
+    }
+    @PostMapping("/sys/getCaptchaOpenFlag")
+    @ApiOperation(value="获取登录图片验证码是否启用标识")
+    public CommonResult<?> getCaptchaOpenFlag() {
+        Dict dict = Dict.create();
+        dict.put("flag", ConstantContextHolder.getCaptchaOpenFlag());
+        return CommonResult.data(dict);
     }
 }
