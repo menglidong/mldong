@@ -99,7 +99,9 @@ public class ConstantContextHolder {
      * @param defaultValue 如果结果为空返回此默认值
      */
     public static <T> T getSysConfigWithDefault(String code, Class<T> clazz, T defaultValue) {
-        String configValue = ConstantContext.me().getStr(code);
+        Dict map = Dict.parse(System.getenv());
+        // 一些特殊的参数，优先中环境变量中获取
+        String configValue = map.get(code,ConstantContext.me().getStr(code));
         if (ObjectUtil.isEmpty(configValue)) {
             // 将默认值加入到缓存常量
             log.warn(">>> 系统配置sys_config表中存在空项，code为：{}，系统采用默认值：{}", code, defaultValue);
