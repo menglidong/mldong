@@ -13,7 +13,13 @@
         from sys_user t where t.id = #{id}
     </select>
     <select id="selectUserListByRoleCode" resultType="com.mldong.modules.sys.entity.User">
-        select * from sys_user u left join sys_user_role ur on u.id = ur.user_id
-        where ur.role_id in (select id from sys_role where code = #{roleCode} and is_deleted=0) and and u.is_deleted=0
+        SELECT
+            *
+        FROM
+            sys_user u
+                LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+        WHERE
+            EXISTS ( SELECT 1 FROM sys_role WHERE ur.role_id = sys_role.id AND sys_role.code = #{roleCode} AND sys_role.is_deleted = 0 )
+          AND u.is_deleted =0
     </select>
 </mapper>
