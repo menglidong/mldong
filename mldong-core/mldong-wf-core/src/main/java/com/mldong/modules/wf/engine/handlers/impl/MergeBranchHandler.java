@@ -2,8 +2,10 @@ package com.mldong.modules.wf.engine.handlers.impl;
 
 
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.core.ServiceContext;
 import com.mldong.modules.wf.engine.handlers.IHandler;
 import com.mldong.modules.wf.engine.model.*;
+import com.mldong.modules.wf.service.ProcessTaskService;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class MergeBranchHandler implements IHandler {
      * @param node
      * @param buffer
      */
-    private void findForkTaskNames(NodeModel node, StringBuilder buffer) {
+    public static void findForkTaskNames(NodeModel node, StringBuilder buffer) {
         if(node instanceof ForkModel) return;
         List<TransitionModel> inputs = node.getInputs();
         for(TransitionModel tm : inputs) {
@@ -50,5 +52,21 @@ public class MergeBranchHandler implements IHandler {
         findForkTaskNames(joinModel, buffer);
         String[] taskNames = buffer.toString().split(",");
         return taskNames;
+    }
+
+    /**
+     * 判断流程是否可合并
+     * @param processInstanceId
+     * @param nodeModel
+     * @return
+     */
+    public static boolean isMerged(Long processInstanceId, NodeModel nodeModel) {
+        // 合并节点
+        StringBuilder buffer = new StringBuilder(20);
+        MergeBranchHandler.findForkTaskNames(nodeModel, buffer);
+        String[] taskNames = buffer.toString().split(",");
+        ProcessTaskService processTaskService = ServiceContext.find(ProcessTaskService.class);
+        boolean isMerged = processTaskService.getDoingTaskList(processInstanceId,taskNames).isEmpty();
+        return isMerged;
     }
 }
