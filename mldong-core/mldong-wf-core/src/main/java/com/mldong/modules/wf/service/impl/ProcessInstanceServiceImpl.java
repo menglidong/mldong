@@ -19,6 +19,8 @@ import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
 import com.mldong.modules.wf.engine.FlowEngine;
 import com.mldong.modules.wf.engine.core.Execution;
+import com.mldong.modules.wf.engine.core.ServiceContext;
+import com.mldong.modules.wf.engine.handlers.impl.MergeBranchHandler;
 import com.mldong.modules.wf.engine.model.*;
 import com.mldong.modules.wf.engine.util.FlowUtil;
 import com.mldong.modules.wf.entity.ProcessCcInstance;
@@ -34,6 +36,7 @@ import com.mldong.modules.wf.mapper.ProcessInstanceMapper;
 import com.mldong.modules.wf.mapper.ProcessTaskMapper;
 import com.mldong.modules.wf.service.ProcessDefineService;
 import com.mldong.modules.wf.service.ProcessInstanceService;
+import com.mldong.modules.wf.service.ProcessTaskService;
 import com.mldong.modules.wf.vo.HighLightVO;
 import com.mldong.modules.wf.vo.ProcessInstanceVO;
 import com.mldong.modules.wf.vo.ProcessTaskVO;
@@ -419,6 +422,18 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
                         String nextNodeName = Convert.toStr(ExpressionUtil.eval(expr,JSONUtil.parseObj(historyTask.getVariable())));
                         return output.getTo().equals(nextNodeName);
                     }
+                }
+                if(nodeModel instanceof JoinModel) {
+                    // 合并节点
+                    boolean isMerged = MergeBranchHandler.isMerged(processInstance.getId(), nodeModel);
+                    if(!isMerged) {
+                        // 未能合并，要把已加入历史的节点和边删除
+                        vo.getHistoryNodeNames().remove(nodeModel.getName());
+                        nodeModel.getInputs().forEach(input->{
+                            vo.getHistoryEdgeNames().remove(input.getName());
+                        });
+                    }
+                    return isMerged;
                 }
                 return true;
             }).forEach(transitionModel -> {
