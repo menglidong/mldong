@@ -79,7 +79,7 @@ public class UrlWrapUtil {
     }
     private static String _unWrap(String baseUrl,String url){
         if(StrUtil.isEmpty(url)) return null;
-        if(!url.startsWith("http")) return url;
+        if(url.startsWith("http")) return url;
         return url.replace(baseUrl, "");
     }
 }
