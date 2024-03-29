@@ -51,7 +51,8 @@ public class UrlWrapUtil {
      * @return
      */
     public static String unWrap(String url) {
-      if(StrUtil.isEmpty(url)) return null;
+        if(url == null) return null;
+        if(StrUtil.isEmpty(url)) return "";
         String imgBaseUrl = ConstantContextHolder.getImgBaseUrl();
         String [] urls = url.split(",");
         return Arrays.stream(urls).map(item->{
