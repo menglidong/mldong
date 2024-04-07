@@ -1,6 +1,7 @@
 package com.mldong.modules.sys.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
 import com.mldong.auth.LoginUser;
 import com.mldong.base.*;
@@ -109,7 +110,26 @@ public class UserController {
             return CommonResult.fail("重置用户密码失败");
         }
     }
-
+    @PostMapping("/sys/user/locked")
+    @SaCheckPermission(value = {"sys:user:locked","sys:user:unLocked"},mode = SaMode.OR)
+    public CommonResult<?> locked(@RequestBody IdsParam param) {
+        boolean isSuccess = userService.locked(param.getIds());
+        if(isSuccess) {
+            return CommonResult.ok("锁定用户成功");
+        } else {
+            return CommonResult.fail("锁定用户失败");
+        }
+    }
+    @PostMapping("/sys/user/unLocked")
+    @SaCheckPermission(value = {"sys:user:locked","sys:user:unLocked"},mode = SaMode.OR)
+    public CommonResult<?> unLocked(@RequestBody IdsParam param) {
+        boolean isSuccess = userService.unLocked(param.getIds());
+        if(isSuccess) {
+            return CommonResult.ok("取消锁定用户成功");
+        } else {
+            return CommonResult.fail("取消锁定用户失败");
+        }
+    }
     @PostMapping("/sys/user/select")
     @ApiOperation(value="用户下拉列表", notes="sys:user:select")
     public CommonResult<List<LabelValueVO>> select(@RequestBody @Validated UserPageParam param) {
