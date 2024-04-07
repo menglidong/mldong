@@ -228,6 +228,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    public boolean locked(List<Long> ids) {
+        List<User> userList = baseMapper.selectList(Wrappers.lambdaQuery(User.class).in(User::getId,ids));
+        userList.stream().filter(item->{
+            // 超级管理员不允许锁定
+            return !AdminTypeEnum.SUPER_ADMIN.equals(item.getAdminType());
+        }).forEach(item->{
+            User user = new User();
+            user.setIsLocked(YesNoEnum.YES.getCode());
+            user.setId(item.getId());
+            super.updateById(user);
+        });
+        return true;
+    }
+
+    @Override
+    public boolean unLocked(List<Long> ids) {
+        List<User> userList = baseMapper.selectList(Wrappers.lambdaQuery(User.class).in(User::getId,ids));
+        userList.stream().filter(item->{
+            // 超级管理员不允许锁定
+            return !AdminTypeEnum.SUPER_ADMIN.equals(item.getAdminType());
+        }).forEach(item->{
+            User user = new User();
+            user.setIsLocked(YesNoEnum.NO.getCode());
+            user.setId(item.getId());
+            super.updateById(user);
+        });
+        return true;
+    }
+
+    @Override
     public User getByPhone(String phone) {
         List<User> userList = baseMapper.selectList(
                 Wrappers.lambdaQuery(User.class)

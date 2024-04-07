@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService, StpInterface {
                 visLogService.saveVisLog(VisTypeEnum.LOGIN, param.getUserName(), "N", "登录失败，用户名不存在");
                 throw new ServiceException(SysErrEnum.USER_NOT_EXIST);
             }
-            if(ObjectUtil.equals(user.getIsLocked(), YesNoEnum.YES)) {
+            if(ObjectUtil.equals(user.getIsLocked(), YesNoEnum.YES.getCode())) {
                 visLogService.saveVisLog(VisTypeEnum.LOGIN, param.getUserName(), "N", "登录失败，用户名已被锁定");
                 throw new ServiceException(SysErrEnum.USER_IS_LOCKED);
             }

@@ -83,6 +83,18 @@ public interface UserService extends IService<User> {
   boolean updatePwd(UserParam param);
 
   /**
+   * 锁定用户
+   * @param ids
+   * @return
+   */
+  boolean locked(List<Long> ids);
+  /**
+   * 取消锁定用户
+   * @param ids
+   * @return
+   */
+  boolean unLocked(List<Long> ids);
+  /**
    * 通过手机号获取
    * @param phone
    * @return
