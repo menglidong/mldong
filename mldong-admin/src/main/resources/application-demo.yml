@@ -16,6 +16,8 @@ g:
     - /sys/**/update
     - /sys/**/remove
     - /sys/user/updatePwd
+    - /sys/user/locked
+    - /sys/user/unLocked
     - /wf/**/remove
     - /sys/rbac/saveRoleMenu
     - /sys/rbac/saveUserRole
