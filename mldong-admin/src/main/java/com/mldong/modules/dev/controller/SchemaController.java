@@ -6,7 +6,6 @@ import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.mldong.auth.LoginUser;
 import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
 import com.mldong.base.IdParam;
@@ -152,20 +151,20 @@ public class SchemaController {
                                                  @RequestHeader(value = "appSecret", required = false)String appSecret) {
         // 生产环境需要手动校验权限
         if(ObjectUtil.equals(profileActive,"prod")) {
-            StpUtil.checkLogin();
-            if(!LoginUserHolder.me().isSuperAdmin()) {
-                StpUtil.checkPermission("dev:schema:getByTableName");
-            }
+            StpUtil.checkLogin();// 登录即可访问
+//            if(!LoginUserHolder.me().isSuperAdmin()) {
+//                StpUtil.checkPermission("dev:schema:getByTableName");
+//            }
         } else {
             // 其他环境先校验请求头，appId,appSecret
             String defalutAppId = ConstantContextHolder.getSysConfigWithDefault(DevConst.DEFAULT_SCHEMA_APP_ID,String.class, DevConst.DEFAULT_SCHEMA_APP_ID);
             String defaultAppSecret = ConstantContextHolder.getSysConfigWithDefault(DevConst.DEFAULT_SCHEMA_APP_SECRET,String.class, DevConst.DEFAULT_SCHEMA_APP_SECRET);
             if(!(ObjectUtil.equals(appId, defalutAppId) && ObjectUtil.equals(appSecret, defaultAppSecret))) {
-                // 密钥不正确，手动校验权限
+                // 密钥不正确，手动校验权限--登录即可访问
                 StpUtil.checkLogin();
-                if(!LoginUserHolder.me().isSuperAdmin()) {
-                    StpUtil.checkPermission("dev:schema:getByTableName");
-                }
+//                if(!LoginUserHolder.me().isSuperAdmin()) {
+//                    StpUtil.checkPermission("dev:schema:getByTableName");
+//                }
             }
         }
         return CommonResult.data(schemaService.getByTableName(tableName));
