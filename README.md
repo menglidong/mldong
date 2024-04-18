@@ -1,8 +1,9 @@
 ## 相关项目
 
 - [前端工程](https://gitee.com/mldong/mldong-vue)
-- [演示地址](http://flow.mldong.com/) 
-  
+- [演示地址](https://flow.mldong.com/) 
+- [文档地址](https://doc.mldong.com/)
+
 演示环境账号密码：admin/123456
 
 本地环境账号密码：superAdmin/123456
