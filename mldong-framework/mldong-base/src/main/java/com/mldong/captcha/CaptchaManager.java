@@ -110,7 +110,7 @@ public class CaptchaManager {
     public boolean validate(HttpServletRequest request, CaptchaValid captchaValid) {
         String captchaUuidKey = CommonConstant.CAPTCHA_UUID_KEY;
         String captchaCodeKey = CommonConstant.CAPTCHA_CODE_KEY;
-        if(captchaCodeKey!=null) {
+        if(captchaValid!=null) {
             captchaUuidKey = captchaValid.uuidKey();
             captchaCodeKey = captchaValid.codeKey();
         }
