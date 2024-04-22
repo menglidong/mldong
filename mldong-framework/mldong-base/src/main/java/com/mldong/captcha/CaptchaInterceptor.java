@@ -21,7 +21,7 @@ public class CaptchaInterceptor implements HandlerInterceptor {
             CaptchaValid captchaValid = handlerMethod.getMethodAnnotation(CaptchaValid.class);
             if(captchaValid!=null) {
                 CaptchaManager captchaManager = SpringUtil.getBean(CaptchaManager.class);
-                if(!captchaManager.validate(request)){
+                if(!captchaManager.validate(request, captchaValid)){
                     ServiceException.throwBiz(99999999, "图片验证码错误");
                 }
             }

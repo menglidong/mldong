@@ -3,6 +3,7 @@ package com.mldong.captcha;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.mldong.annotation.CaptchaValid;
 import com.mldong.consts.CommonConstant;
 import com.mldong.web.QueryParamHolder;
 import com.wf.captcha.SpecCaptcha;
@@ -99,9 +100,23 @@ public class CaptchaManager {
      * @return
      */
     public boolean validate(HttpServletRequest request) {
+        return validate(request, null);
+    }
+    /**
+     * 从请求正文中获取校验
+     * @param request
+     * @return
+     */
+    public boolean validate(HttpServletRequest request, CaptchaValid captchaValid) {
+        String captchaUuidKey = CommonConstant.CAPTCHA_UUID_KEY;
+        String captchaCodeKey = CommonConstant.CAPTCHA_CODE_KEY;
+        if(captchaCodeKey!=null) {
+            captchaUuidKey = captchaValid.uuidKey();
+            captchaCodeKey = captchaValid.codeKey();
+        }
         // 从请求对象或请求头中获取
-        String uuid = Convert.toStr(request.getParameter(CommonConstant.CAPTCHA_UUID_KEY), request.getHeader(CommonConstant.CAPTCHA_UUID_KEY));
-        String code = Convert.toStr(request.getParameter(CommonConstant.CAPTCHA_CODE_KEY), request.getHeader(CommonConstant.CAPTCHA_CODE_KEY));
+        String uuid = Convert.toStr(request.getParameter(captchaUuidKey), request.getHeader(captchaUuidKey));
+        String code = Convert.toStr(request.getParameter(captchaCodeKey), request.getHeader(captchaCodeKey));
         if(StrUtil.isEmpty(uuid) && ObjectUtil.isNotEmpty(QueryParamHolder.me())) {
             // 从请求正文中获取
             uuid = QueryParamHolder.me().getStr(CommonConstant.CAPTCHA_UUID_KEY);
