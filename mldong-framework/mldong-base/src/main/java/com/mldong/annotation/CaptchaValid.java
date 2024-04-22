@@ -1,5 +1,7 @@
 package com.mldong.annotation;
 
+import com.mldong.consts.CommonConstant;
+
 import java.lang.annotation.*;
 
 /**
@@ -10,4 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface CaptchaValid {
+    String uuidKey() default CommonConstant.CAPTCHA_UUID_KEY;
+    String codeKey() default CommonConstant.CAPTCHA_CODE_KEY;
 }
