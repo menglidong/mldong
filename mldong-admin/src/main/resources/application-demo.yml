@@ -34,4 +34,4 @@ g:
 
 sa-token:
   is-log: false
-  max-login-count: -1
+  max-login-count: 200
