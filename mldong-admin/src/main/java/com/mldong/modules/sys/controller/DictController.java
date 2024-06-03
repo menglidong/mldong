@@ -6,6 +6,7 @@ import com.mldong.base.CommonPage;
 import com.mldong.base.CommonResult;
 import com.mldong.base.IdParam;
 import com.mldong.base.IdsParam;
+import com.mldong.dict.CustomDictService;
 import com.mldong.dict.DictScanner;
 import com.mldong.dict.model.DictModel;
 import com.mldong.modules.sys.dto.DictPageParam;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +39,7 @@ import java.util.List;
 public class DictController {
     private final DictService dictService;
     private final DictScanner dictScanner;
+    private final List<CustomDictService> customDictServices;
     /**
      * 添加字典
      * @param param
@@ -103,7 +106,20 @@ public class DictController {
     }
 
     @PostMapping("/sys/dict/enumDictList")
+    @ApiOperation(value = "枚举字典")
     public CommonResult<List<DictModel>> enumDictList() {
         return CommonResult.data(dictScanner.getDictList());
+    }
+    @PostMapping("/sys/dict/customDictList")
+    @ApiOperation(value = "自定义字典")
+    public CommonResult<List<DictModel>> customDictList() {
+        List<DictModel> dictList = new ArrayList<>();
+        for (CustomDictService customDictService : customDictServices) {
+            DictModel dictModel = customDictService.getDictModel();
+            if(dictModel!=null) {
+                dictList.add(customDictService.getDictModel());
+            }
+        }
+        return CommonResult.data(dictList);
     }
 }
