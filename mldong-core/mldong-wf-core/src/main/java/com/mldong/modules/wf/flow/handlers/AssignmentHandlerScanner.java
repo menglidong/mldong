@@ -82,17 +82,16 @@ public class AssignmentHandlerScanner implements ResourceLoaderAware, CustomDict
 		}
 	}
 	private DictModel dictModel;
-	/**
-	 * 获取枚举字典
-	 * @return
-	 */
-	private DictModel getDictModel() {
+
+	@Override
+	public DictModel getDictModel() {
 		if(dictModel!=null) return dictModel;
 		dictModel = new DictModel();
-		dictModel.setName("工作流参与者处理类");
+		dictModel.setName("AssignmentHandlerScanner|工作流参与者处理类");
 		dictModel.setDictKey("wf_assignment_handler");
 		List<DictItemModel> items = new ArrayList<>();
 		dictModel.setItems(items);
+		assignmentHandlerList.sort(Comparator.comparingInt(AssignmentHandler::getOrder));
 		assignmentHandlerList.forEach(item->{
 			DictItemModel dictItem = new DictItemModel();
 			dictItem.setName(item.getMessage());
@@ -102,6 +101,12 @@ public class AssignmentHandlerScanner implements ResourceLoaderAware, CustomDict
 		});
 		return dictModel;
 	}
+
+	/**
+	 * 获取枚举字典
+	 * @return
+	 */
+
 	public List<AssignmentHandler> getAssignmentHandlerList() {
 		return assignmentHandlerList;
 	}
