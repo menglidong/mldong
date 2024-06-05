@@ -13,5 +13,11 @@ public interface CustomDictService {
      * @param args
      * @return
      */
-    public DictModel getByDictKey(Map<String, Object> args);
+    DictModel getByDictKey(Map<String, Object> args);
+
+    /**
+     * 获取当前模型
+     * @return
+     */
+    DictModel getDictModel();
 }
