@@ -4,24 +4,29 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.mldong.base.IOneToManyHandler;
-import com.mldong.base.LabelValueVO;
-import com.mldong.base.PageParam;
+import com.mldong.base.*;
 import com.mldong.consts.CommonConstant;
+import com.mldong.excel.IMyExcelExportServer;
 import com.mldong.exception.ServiceException;
+import com.mldong.web.QueryParamHolder;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -473,5 +478,60 @@ public class LowCodeServiceUtil {
         });
         QUERY_SCHEMA_MAP.put(key,finalRes);
         return finalRes;
+    }
+
+    /**
+     * 构造导出下载url
+     * @param module
+     * @param tableName
+     * @return
+     */
+    public static Dict generateExportUrl(String module,String tableName) {
+        RedisTemplate<String,String> redisTemplate = SpringUtil.getBean(
+                new TypeReference<RedisTemplate<String,String>>(){}
+        );
+        String uuid = StrUtil.uuid();
+        String baseUrl = QueryParamHolder.me().getStr("baseUrl");
+        Dict dict = Dict.create();
+        dict.put("url",StrUtil.format("{}/{}/{}/export?token={}", baseUrl,module, tableName, uuid));
+        redisTemplate.opsForValue().set("export-url:"+uuid, JSONUtil.toJsonStr(QueryParamHolder.me()),3, TimeUnit.MINUTES);
+        return dict;
+    }
+    // 导出接口
+    public static void export(String module,String tableName, String token) {
+        String name = StrUtil.upperFirst(tableName);
+        RedisTemplate<String,String> redisTemplate = SpringUtil.getBean(
+                new TypeReference<RedisTemplate<String,String>>(){}
+        );
+        String json = redisTemplate.opsForValue().get("export-url:"+token);
+        String className = StrUtil.format("{}.modules.{}.dto.{}PageParam",
+                CommonConstant.DEFAULT_PACKAGE_NAME,module,name);
+        Class<?> clazz = ClassUtil.loadClass(className);
+        Object object = JSONUtil.toBean(json,clazz);
+        PageParam param = (PageParam) object;
+        String serviceName = StrUtil.format("{}ServiceImpl",tableName);
+        QueryParamHolder.set(JSONUtil.toBean(json,Dict.class));
+        Object service = SpringUtil.getBean(serviceName);
+        IMyExcelExportServer excelExportServer = null;
+        if(service instanceof IMyExcelExportServer) {
+            // 如果服务类实现了导出查询服务接口，则使用导出查询服务接口导出
+            excelExportServer = (IMyExcelExportServer) service;
+            PoiUtil.exportExcelBigWithStream(StrUtil.format("{}_{}.xlsx", param.getExcelName(), DateUtil.formatDate(DateUtil.date())), excelExportServer, param);
+        } else {
+            // 使用反射调用分页接口导出
+            PoiUtil.exportExcelBigWithStream(StrUtil.format("{}_{}.xlsx", param.getExcelName(), DateUtil.formatDate(DateUtil.date())), (IMyExcelExportServer<Object, PageParam>) (pageParam, pageNum) -> {
+                pageParam.setPageNum(pageNum);
+                pageParam.setPageSize(1000);
+                pageParam.setIsCount(YesNoEnum.NO);
+                if(!ObjectUtil.equals(pageParam.getExportScope(),"1")) {
+                    // 1==>导出全部数据；2==>当前筛选结果
+                    QueryParamHolder.set(JSONUtil.toBean(json,Dict.class));
+                } else {
+                    QueryParamHolder.set(Dict.create());
+                }
+                CommonPage<Object> commonPage = ReflectUtil.invoke(service,"page",pageParam);
+                return commonPage.getRows();
+            }, param);
+        }
     }
 }

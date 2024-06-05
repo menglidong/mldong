@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mldong.excel.MyExcelExportEntity;
 import com.mldong.web.QueryParamHolder;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -67,6 +68,12 @@ public class PageParam<T> {
 	private List<Integer> filterTypes;
 	@ApiModelProperty(value = "要排除的查询条件，多个使用英语逗号分割。例：（m_EQ_id,m_LIKE_name）",hidden = true)
 	private String excludeWheres;
+	@ApiModelProperty(value = "excel名称")
+	private String excelName;
+	@ApiModelProperty(value = "导出范围")
+	private String exportScope;
+	@ApiModelProperty(value = "excel列信息")
+	private List<MyExcelExportEntity> excelColumns = new ArrayList<>();
 	/**
 	 * 构建mybatis-plus分页对象
 	 * @return

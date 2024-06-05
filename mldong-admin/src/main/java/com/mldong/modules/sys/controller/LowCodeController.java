@@ -1,17 +1,18 @@
 package com.mldong.modules.sys.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
 import com.mldong.base.CommonResult;
 import com.mldong.base.LabelValueVO;
 import com.mldong.util.LowCodeServiceUtil;
+import com.mldong.web.LoginUserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,5 +38,30 @@ public class LowCodeController {
             @PathVariable("module") String module,
             @PathVariable("tableName")String tableName) {
         return CommonResult.data(LowCodeServiceUtil.buildQuerySchema(module,tableName) );
+    }
+    @PostMapping("/{module}/{tableName}/generateExportUrl")
+    @ApiOperation(value = "获取导出下载链接")
+    public CommonResult<Dict> defaultGenerateExportUrl(@PathVariable("module") String module,
+                                                       @PathVariable("tableName")String tableName) {
+        // 这里做一下鉴权
+        StpUtil.checkLogin();
+        if(!LoginUserHolder.me().isSuperAdmin()) {
+            StpUtil.checkPermissionOr(
+                    StrUtil.format("{}:{}:export", module, tableName),
+                    StrUtil.format("{}:{}:generateExportUrl", module, tableName)
+            );
+        }
+        return CommonResult.data(LowCodeServiceUtil.generateExportUrl(module,tableName));
+    }
+    /**
+     * 导出演示
+     * @return
+     */
+    @GetMapping("/{module}/{tableName}/export")
+    @ApiOperation(value = "导出数据")
+    @SaIgnore
+    public void export(@PathVariable("module") String module,
+                       @PathVariable("tableName")String tableName, String token) {
+        LowCodeServiceUtil.export(module, tableName, token);
     }
 }
