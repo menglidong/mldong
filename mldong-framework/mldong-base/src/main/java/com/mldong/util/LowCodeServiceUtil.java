@@ -504,6 +504,9 @@ public class LowCodeServiceUtil {
                 new TypeReference<RedisTemplate<String,String>>(){}
         );
         String json = redisTemplate.opsForValue().get("export-url:"+token);
+        if(ObjectUtil.isEmpty(json)) {
+            ServiceException.throwBiz(99999999,"导出链接已失效");
+        }
         String className = StrUtil.format("{}.modules.{}.dto.{}PageParam",
                 CommonConstant.DEFAULT_PACKAGE_NAME,module,name);
         Class<?> clazz = ClassUtil.loadClass(className);
