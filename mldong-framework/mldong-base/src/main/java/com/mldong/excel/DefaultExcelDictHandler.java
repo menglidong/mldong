@@ -26,22 +26,23 @@ public class DefaultExcelDictHandler implements IExcelDictHandler {
     public String toName(String dict, Object obj, String name, Object value) {
         if(ObjectUtil.isEmpty(value)) return null;
         if(JSONUtil.isTypeJSON(dict)) {
-            String key = "to_name_"+dict+value;
-            String cacheValue = timedCache.get(key);
-            if(cacheValue!=null) {
-                return cacheValue;
-            }
             MyExcelExportEntity excelExportEntity = JSONUtil.toBean(dict, MyExcelExportEntity.class);
             String handlerType = excelExportEntity.getHandlerType();
             if(StrUtil.isNotEmpty(handlerType)) {
                 IExcelColumnHandler handler = excelColumnHandlerMap.get(handlerType);
-                if(handler!=null) {
-                    String newValue = handler.toName(excelExportEntity, value);
-                    if(newValue!=null) {
-                        timedCache.put(key,newValue);
+                if(handler == null) return value.toString();
+                String key = "to_name_" + dict + value;
+                if(handler.cache()) {
+                    String cacheValue = timedCache.get(key);
+                    if (cacheValue != null) {
+                        return cacheValue;
                     }
-                    return newValue;
                 }
+                String newValue = handler.toName(excelExportEntity, value);
+                if(handler.cache() && newValue!=null) {
+                    timedCache.put(key,newValue);
+                }
+                return newValue;
             }
         }
         return StrUtil.toString(value);
@@ -51,22 +52,23 @@ public class DefaultExcelDictHandler implements IExcelDictHandler {
     public String toValue(String dict, Object obj, String name, Object value) {
         if(ObjectUtil.isEmpty(value)) return null;
         if(JSONUtil.isTypeJSON(dict)) {
-            String key = "to_value_"+dict+value;
-            String cacheValue = timedCache.get(key);
-            if(cacheValue!=null) {
-                return cacheValue;
-            }
             MyExcelExportEntity excelExportEntity = JSONUtil.toBean(dict, MyExcelExportEntity.class);
             String handlerType = excelExportEntity.getHandlerType();
             if(StrUtil.isNotEmpty(handlerType)) {
                 IExcelColumnHandler handler = excelColumnHandlerMap.get(handlerType);
-                if(handler!=null) {
-                    String newValue = handler.toValue(excelExportEntity, value);
-                    if(newValue!=null) {
-                        timedCache.put(key,newValue);
+                if(handler == null) return value.toString();
+                String key = "to_value_"+dict+value;
+                if(handler.cache()) {
+                    String cacheValue = timedCache.get(key);
+                    if (cacheValue != null) {
+                        return cacheValue;
                     }
-                    return newValue;
                 }
+                String newValue = handler.toValue(excelExportEntity, value);
+                if(handler.cache() && newValue!=null) {
+                    timedCache.put(key,newValue);
+                }
+                return newValue;
             }
         }
         return StrUtil.toString(value);

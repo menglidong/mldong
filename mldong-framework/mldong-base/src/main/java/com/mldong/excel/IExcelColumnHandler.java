@@ -62,4 +62,12 @@ public interface IExcelColumnHandler {
         }
         return dict;
     }
+
+    /**
+     * 是否做缓存
+     * @return
+     */
+    default boolean cache() {
+        return true;
+    }
 }
