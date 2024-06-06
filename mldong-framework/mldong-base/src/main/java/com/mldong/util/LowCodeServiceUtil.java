@@ -519,10 +519,10 @@ public class LowCodeServiceUtil {
         if(service instanceof IMyExcelExportServer) {
             // 如果服务类实现了导出查询服务接口，则使用导出查询服务接口导出
             excelExportServer = (IMyExcelExportServer) service;
-            PoiUtil.exportExcelBigWithStream(StrUtil.format("{}_{}.xlsx", param.getExcelName(), DateUtil.formatDate(DateUtil.date())), excelExportServer, param);
+            PoiUtil.exportExcelBigWithStream(StrUtil.format("{}-{}.xlsx", param.getExcelName(), DateUtil.formatDate(DateUtil.date())), excelExportServer, param);
         } else {
             // 使用反射调用分页接口导出
-            PoiUtil.exportExcelBigWithStream(StrUtil.format("{}_{}.xlsx", param.getExcelName(), DateUtil.formatDate(DateUtil.date())), (IMyExcelExportServer<Object, PageParam>) (pageParam, pageNum) -> {
+            PoiUtil.exportExcelBigWithStream(StrUtil.format("{}-{}.xlsx", param.getExcelName(), DateUtil.formatDate(DateUtil.date())), (IMyExcelExportServer<Object, PageParam>) (pageParam, pageNum) -> {
                 pageParam.setPageNum(pageNum);
                 pageParam.setPageSize(1000);
                 pageParam.setIsCount(YesNoEnum.NO);

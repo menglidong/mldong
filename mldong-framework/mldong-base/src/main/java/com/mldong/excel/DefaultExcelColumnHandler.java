@@ -32,4 +32,9 @@ public class DefaultExcelColumnHandler implements IExcelColumnHandler{
     public String getMessage() {
         return "默认处理类";
     }
+
+    @Override
+    public boolean cache() {
+        return false;
+    }
 }
