@@ -108,7 +108,9 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
                     Map<String, Object> args = new HashMap<>();
                     args.put("dictType", dictType);
                     dictModel = customDictService.getByDictKey(args);
-                    break;
+                    if(dictModel != null) {
+                        break;
+                    }
                 }
             }
             if (dictModel == null) {
