@@ -3,10 +3,7 @@ package com.mldong.modules.wf.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
-import com.mldong.base.CommonPage;
-import com.mldong.base.CommonResult;
-import com.mldong.base.IdParam;
-import com.mldong.base.IdsParam;
+import com.mldong.base.*;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.enums.FlowConst;
 import com.mldong.modules.wf.service.ProcessInstanceService;
@@ -91,6 +88,16 @@ public class ProcessInstanceController {
     @ApiOperation(value = "审批记录")
     public CommonResult<List<ProcessTaskVO>> approvalRecord(@RequestBody IdParam param) {
         return CommonResult.data(processInstanceService.approvalRecord(param.getId()));
+    }
+    /**
+     * 获取流程参与人回显文本数据
+     * @param param
+     * @return
+     */
+    @PostMapping("/wf/processInstance/getAssigneeTextData")
+    @ApiOperation(value = "获取流程参与人回显文本数据")
+    public CommonResult<List<LabelValueVO>> getAssigneeTextData(@RequestBody IdParam param) {
+        return CommonResult.data(processInstanceService.getAssigneeTextData(param.getId()));
     }
     /**
      * 撤回流程
