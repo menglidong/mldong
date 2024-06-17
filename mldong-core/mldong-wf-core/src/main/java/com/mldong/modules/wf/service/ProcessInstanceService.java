@@ -2,6 +2,7 @@ package com.mldong.modules.wf.service;
 
 import cn.hutool.core.lang.Dict;
 import com.mldong.base.CommonPage;
+import com.mldong.base.LabelValueVO;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
 import com.mldong.modules.wf.engine.core.Execution;
@@ -190,4 +191,11 @@ public interface ProcessInstanceService extends IService<ProcessInstance> {
      * @return
      */
     CommonPage<ProcessInstanceVO> ccInstancePage(ProcessInstancePageParam param);
+
+    /**
+     * 获取流程参与人回显文本数据
+     * @param processInstanceId
+     * @return
+     */
+    List<LabelValueVO> getAssigneeTextData(Long processInstanceId);
 }

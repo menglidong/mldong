@@ -14,7 +14,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.mldong.base.CommonPage;
+import com.mldong.base.LabelValueVO;
 import com.mldong.base.YesNoEnum;
+import com.mldong.modules.sys.api.UserApi;
+import com.mldong.modules.wf.api.WfUserApi;
 import com.mldong.modules.wf.dto.ProcessInstancePageParam;
 import com.mldong.modules.wf.dto.ProcessInstanceParam;
 import com.mldong.modules.wf.engine.FlowEngine;
@@ -510,5 +513,59 @@ public class ProcessInstanceServiceImpl extends ServiceImpl<ProcessInstanceMappe
     public CommonPage<ProcessInstanceVO> ccInstancePage(ProcessInstancePageParam param) {
         param.setIsCC(YesNoEnum.YES);
         return page(param);
+    }
+
+    @Override
+    public List<LabelValueVO> getAssigneeTextData(Long processInstanceId) {
+        List<ProcessTask> hisProcessTaskList = processTaskMapper.selectList(
+                Wrappers.lambdaQuery(ProcessTask.class)
+                        .eq(ProcessTask::getProcessInstanceId,processInstanceId)
+                        .notIn(ProcessTask::getTaskState,ProcessTaskStateEnum.DOING,ProcessTaskStateEnum.WITHDRAW,ProcessTaskStateEnum.ABANDON)
+                        .orderByAsc(ProcessTask::getUpdateTime)
+        );
+        if(CollectionUtil.isEmpty(hisProcessTaskList)) return Collections.emptyList();
+        // 历史任务：使用 LinkedHashMap 保持顺序并去重
+        Map<String, Set<String>> hisTaskToUniqueActors = new LinkedHashMap<>();
+        for (ProcessTask task : hisProcessTaskList) {
+            String taskName = task.getTaskName();
+            Dict dict = JSONUtil.toBean(task.getVariable(), Dict.class);
+            String realName = dict.getStr(FlowConst.USER_REAL_NAME);
+            // 初始化或获取当前taskName对应的Set
+            hisTaskToUniqueActors.computeIfAbsent(taskName, k -> new LinkedHashSet<>()).add(realName);
+        }
+        // 处理正在进行节点
+        List<ProcessTask> doingProcessTaskList = processTaskMapper.selectList(
+                Wrappers.lambdaQuery(ProcessTask.class)
+                        .eq(ProcessTask::getProcessInstanceId,processInstanceId)
+                        .eq(ProcessTask::getTaskState,ProcessTaskStateEnum.DOING)
+        );
+        // 正在进行中的任务：使用 LinkedHashMap 保持顺序并去重
+        Map<String, Set<String>> taskToUniqueActors = new LinkedHashMap<>();
+        ProcessTaskService processTaskService = ServiceContext.find(ProcessTaskService.class);
+        WfUserApi wfUserApi = ServiceContext.find(WfUserApi.class);
+        for (ProcessTask task : doingProcessTaskList) {
+            String taskName = task.getTaskName();
+            List<String> realNameList = new ArrayList<>();
+            List<String> actorIds = processTaskService.getTaskActors(task.getId());
+            actorIds.forEach(actorId->{
+                String realName = wfUserApi.getRealName(actorId);
+                if(StrUtil.isNotEmpty(realName)) {
+                    realNameList.add(realName);
+                }
+            });
+            // 初始化或获取当前taskName对应的Set
+            taskToUniqueActors.computeIfAbsent(taskName, k -> new LinkedHashSet<>()).add(realNameList.stream().distinct().collect(Collectors.joining(",")));
+        }
+        // 追加到his中，重复key则覆盖
+        hisTaskToUniqueActors.putAll(taskToUniqueActors);
+        // 转换为LabelValueVO列表
+        List<LabelValueVO> result = hisTaskToUniqueActors.entrySet().stream()
+                .map(entry -> {
+                    // 使用StrUtil.join来避免空指针异常，当集合为空时返回空字符串
+                    String actorsJoined = StrUtil.join( ",", entry.getValue());
+                    return LabelValueVO.builder().value(entry.getKey()).label(actorsJoined).build();
+                })
+                .collect(Collectors.toList());
+        return result;
     }
 }
