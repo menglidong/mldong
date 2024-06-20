@@ -1,0 +1,19 @@
+name: Sync from Gitee to GitHub
+ 
+on:
+  schedule:
+    # 每小时同步一次，你可以根据需要调整时间
+    - cron: 0 * * * *
+ 
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+ 
+    - name: Sync from Gitee
+      run: |
+        git remote add https://gitee.com/mldong/mldong.git
+        git pull gitee master
+        git push origin master
